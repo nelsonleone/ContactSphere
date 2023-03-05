@@ -1,0 +1,45 @@
+$bp-tablet: 50rem;
+$bp-desktop: 75rem;
+
+@mixin flexObj($align:center,$justify:space-between,$direction:row){
+   display:flex;
+   align-items:$align;
+   justify-content: $justify;
+   flex-direction:$direction;
+}
+
+@mixin authSections{
+   background-image: linear-gradient(rgba(35, 35, 49, 0.308),rgba(65, 45, 53, 0.397)),url('/images/bg-image.jpg');
+   background-size:cover;
+   background-position: center;
+   position: absolute;
+   @include flexObj($justify:center,$direction:column);
+   width:100%;
+   min-height:100%;
+   font-family:var(--ff1);
+}
+
+@mixin authSectionsInner{
+   background-color:hsla(0, 0%, 100%, 0.92);
+   width:90%;
+   left:0;
+   right:0;
+   margin:auto;
+   text-align: center;
+   padding:1em;
+   padding-top:3em;
+   border-radius: 10px;
+   position:relative;
+}
+
+@mixin MediaQueryDesktop{
+  @media (min-width:$bp-desktop){
+     @content;
+  }
+}
+
+@mixin MediaQueryTablet{
+  @media (min-width:$bp-tablet) {
+     @content;
+  }
+}

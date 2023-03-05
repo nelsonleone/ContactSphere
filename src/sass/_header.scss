@@ -1,0 +1,230 @@
+@use './utils' as *;
+
+header{
+   @include flexObj;
+   padding:3em .5em;
+   position: relative;
+   background: linear-gradient(hsla(240, 40%, 17%, 0.507),hsla(240, 40%, 17%, 0.5)),url('/images/bg-image.jpg');
+   background-repeat: no-repeat;
+   background-size: cover;
+   background-position: center;
+
+   .search-area{
+      position: absolute;
+      left:-50%;
+      right:-50%;
+      margin:auto;
+      top:7.6em;
+      width:100%;
+      
+
+      input{
+         width:90%;
+         padding:.5em;
+         padding-left:4em;
+         background:var(--input-color1);
+         border-radius: 7px;
+         height:3.2em;
+         margin-top:2em;
+         border:none;
+         display:block;
+         margin:auto;
+         font-family:var(--ff2);
+         box-shadow:0 0 3px 3px rgba(0, 0, 0, 0.116);
+
+         &::placeholder{
+            font-size:.9rem;
+            text-transform: capitalize;
+         }
+      }
+
+      .search-icon{
+         position: absolute;
+         left:3em;
+         top:0;
+         bottom:0;
+         margin:auto;
+         color:grey;
+      }
+   }
+
+   .header-actionIcons{
+      .user-image{
+         width:2.5em;
+         border-radius: 50%;
+         aspect-ratio: 1/1;
+         cursor: pointer;
+         transition: .3s ease-in-out;
+         border:1px solid var(--py-color3);
+
+         &:hover{
+            scale:1.1;
+         }
+      }
+   }
+
+   .logo{
+      position: absolute;
+      top:.2em;
+      z-index:100000;
+      left:1em;
+      cursor: pointer;
+   }
+
+   .nav-toggle{
+      position: relative;
+      z-index:100000;
+      filter: brightness(0) invert(1);
+   }
+   .nav-toggle-toggled{
+      filter:none;
+   }
+
+   .header-widjet{
+      width:15em;
+      box-shadow: 0 0 4px 2px rgba(88, 86, 86, 0.199);
+      border-radius: 6px;
+      font-family: var(--ff2);
+      aspect-ratio: 1/.6;
+      position: absolute;
+      background-color: var(--py-color1);
+      z-index:5000;
+      padding:1em;
+      right:.4em;
+
+
+      .widjet-userDetails{
+         max-width:70%;
+         p{
+            margin-block:.4em;
+            color:var(--py-color2);
+         }
+         
+         p:last-of-type{
+            color:var(--py-color3);
+            text-decoration: underline var(--py-color2);
+            font-family: var(--ff1);
+         }
+      }
+
+      .flex-row{
+         margin-top:1em;
+
+         .help-icon,
+         .signout-icon{
+            color:var(--py-color3);
+            font-size:1.5rem;
+            display:block;
+            cursor: pointer;
+            transition: .3s ease-in-out;
+
+            &:hover{
+             color:var(--py-color2);
+            }
+         }
+
+         .help-link-container{
+            @include flexObj($justify:center,$direction:column,$align:flex-start);
+         }
+      }
+
+      .icon-closeWidjet{
+         cursor: pointer;
+         color:var(--py-color3);
+         font-size:1.1rem;
+      }
+
+      .widjet-modal{
+         position: fixed;
+         background:rgba(201, 197, 221, 0.459);
+         color:var(--py-color3);
+         top:0;
+         bottom:0;
+         right:0;
+         left:0;
+         margin:auto;
+         z-index:1000;
+
+         & > div{
+            background:var(--py-color1);
+            width:20em;
+            height:10em;
+            border-radius: 7px;
+            position: absolute;
+            top:0;
+            bottom:0;
+            margin:auto;
+            left:0;
+            right:0;
+            text-align: center;
+            padding:3em;
+
+
+            button{
+               color:inherit;
+               display:block;
+               font-size:1rem;
+               border-bottom: 2px solid var(--py-color2);
+               transition:.3s ease-in-out;
+
+               &:hover{
+                  color:var(--py-color2);
+                  border-color: var(--py-color3);
+               }
+            }
+         }
+      }
+   }
+
+   @include MediaQueryTablet{
+      .search-icon{
+         left:4em !important;
+         bottom:0;
+         z-index:1;
+      }
+   }
+
+
+   @include MediaQueryDesktop{
+      display:grid;
+      grid-template-columns: 20% 1fr 20%;
+      padding-block:2.5em;
+
+
+      .search-area{
+         position: relative;
+         top:unset;
+         left:unset;
+         right:unset;
+         bottom:-4em;
+
+         .search-icon{
+            left:3em;
+            bottom:0;
+            z-index:1;
+         }
+
+         input{
+            height:3em;
+            font-size:1rem;
+            font-family: var(--ff3-nav);
+         }
+      }
+
+      .header-actionIcons{
+         .header-widjet{
+            width:18em;
+            top:6em;
+         }
+
+         .user-image{
+            position: absolute;
+            right:2em;
+            top:2.8em;
+         }
+      }
+      .nav-toggle{
+         display:none;
+      }
+   }
+}

@@ -1,0 +1,24 @@
+@use '../utils/'  as *;
+
+.hidden-contact{
+   position: relative;
+   button{
+      font-size: 1.2rem;
+      position: absolute;
+      right:1em;
+      color:var(--py-color2);
+      transition: .25s ease-in-out;
+
+      .visible-icon path{
+         stroke:var(--py-color2);
+      }
+
+      &:hover{
+         scale: 1.1;
+      }
+
+      @include MediaQueryDesktop{
+         right:5em;
+      }
+   }
+}

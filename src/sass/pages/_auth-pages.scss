@@ -1,0 +1,319 @@
+@use '../utils/' as *;
+
+
+.authSection-logoview{
+  position: absolute;
+  top:0;
+  color:var(--py-color2);
+
+  &::after{
+   background:var(--py-color3);
+  }
+
+  &::before{
+   background:var(--py-color3);
+  }
+}
+
+
+
+// SIGN IN PAGE STYLING
+.signIn-section{
+   @include authSections;
+
+   &-inner{
+      @include authSectionsInner;
+
+      h1{
+         color:var(--py-color);
+         font-size: 2rem;
+      }
+
+      img[aria-hidden="true"]{
+         width:6em;
+         border-radius: 50%;
+         aspect-ratio: 1/1;
+         margin-top:.5em;
+      }
+
+      form{
+         margin-block:1em .5em;
+         text-align: left;
+         box-shadow: 0 0 4px 4px rgba(88, 85, 85, 0.096);
+         border-radius: 10px;
+         padding:.4em 1em;
+
+         div{
+            margin-block:1em; 
+            
+            label,input{
+               display:block;
+               margin-block:.2em;
+            }
+
+            input{
+               width:90%;
+               height:2.3em;
+               border:1px solid var(--py-color1);
+               border-radius: 3px;
+               padding:.3em;
+            }
+         }
+
+         button{
+            font-size:.9rem;
+            background-color:var(--py-color2);
+            border-radius: 4px;
+            padding:.4em 1.4em;
+            color:var(--py-color3);
+            margin-bottom:.3em;
+         }
+      }
+
+      .alt-authActions{
+         margin-top:1em;
+         @include flexObj;
+         a{
+            width:50%;
+            color:var(--py-color2);
+         }
+         button{
+            width:50%;
+            position: relative;
+            @include flexObj($align:"center",$justify:"center");
+            transition: .3s linear;
+
+            &:hover{
+               color: var(--py-color2);
+            }
+
+            img{
+               width:2em;
+            }
+         }
+      }
+
+      .flex-row{
+         @include flexObj;
+         
+         a{
+            color:var(--py-color1);
+            transition: .3s ease-in-out;
+      
+            &:hover{
+               color: var(--py-color2);
+            }
+         }
+      }
+
+
+      @include MediaQueryTablet{
+         width:30em;
+      }
+   }
+
+}
+
+
+// SIGNUP PAGE SECTION STYLING
+.signUp-section{
+   @include authSections;
+
+   .intro-para{
+      margin-block:.5em;
+
+      span{
+         color:var(--py-color2);
+      }
+   }
+
+   &-inner{
+      @include authSectionsInner;
+      img{
+         width:2em;
+      }
+
+      .privacy-info{
+         color: rgb(6, 8, 121);
+         span{
+            display:block;
+         }
+      }
+      .privacy-info-btn{
+         color:var(--py-color2);
+
+         img{
+            width:1.3em;
+            position:relative;
+            right:-.3em;
+            bottom:-.2em;
+         }
+      }
+      .privacy-info-btn-toggled{
+         img{
+            transform: rotate(180deg);
+         }
+      }
+
+
+      form{
+         text-align: left;
+         border-bottom:1px solid var(--py-color1);
+         padding-bottom:.3em;
+
+         div{
+            margin-block:1em;
+
+            label,input{
+               display:block;
+               margin-block:.2em;
+            }
+
+            input{
+               width:90%;
+               height:1.8em;
+               border:1px solid var(--py-color1);
+               border-radius: 3px;
+               padding:.3em;
+            }
+         }
+
+         button{
+            background-color:var(--py-color2);
+            border-radius: 4px;
+            padding:.4em 1.4em;
+            color:white;
+            margin-bottom:.3em;
+         }
+      }
+
+      .alt-authActions{
+         margin-top:1em;
+         @include flexObj;
+         a{
+            width:50%;
+            color:var(--py-color2);
+         }
+         button{
+            width:50%;
+            position: relative;
+            @include flexObj($align:"center",$justify:"center");
+            transition: .3s linear;
+
+            &:hover{
+               color: var(--py-color2);
+            }
+
+            img{
+               width:2em;
+            }
+         }
+      }
+
+      .flex-row{
+         @include flexObj;
+         
+         a{
+            color:var(--py-color1);
+            transition: .3s ease-in-out;
+      
+            &:hover{
+               color: var(--py-color2);
+            }
+         }
+      }
+
+      @include MediaQueryTablet{
+         max-width:30em;
+      }
+   }
+}
+
+
+
+
+// FORGOTTEN PASSWORD PAGE STYLING
+.forgotten-password{
+   @include authSections;
+   
+   &-inner{
+      @include authSectionsInner;
+      text-align: left;
+      padding-top:1em;
+      label,
+      input{
+         display:block;
+         margin-block:.3em;
+      }
+      input{
+         border:1px solid rgb(39, 36, 36);
+         width:90%;
+         height:2.3em;
+         border-radius: 4px;
+         padding:.4em;
+      }
+      h2{
+         margin-block:1em;
+      }
+
+      button{
+         margin-block:1em;
+         display:block;
+         color:green;
+         position: relative;
+
+         &::after{
+            content:"";
+            width:0;
+            height:3px;
+            position:absolute;
+            background-color:green;
+            border-radius: 3px;
+            transition: .3s linear;
+            bottom:0;
+            left:0;
+         }
+
+         &:hover::after{
+            width:100%;
+         }
+      }
+      @include MediaQueryTablet{
+         max-width:30em;
+      }
+   }
+
+}
+
+
+// ERROR PAGE
+.page-notFound{
+   color:var(--py-color1);
+   font-family: var(--ff2);
+   text-align: center;
+   margin-top:6em;
+
+   h2{
+      font-size:2rem;
+   }
+   h3{
+      font-size:3rem;
+      text-decoration: underline;
+      text-decoration-color: red;
+   }
+
+   p{
+      margin-top:1em;
+      span{
+         color:green;
+         margin-inline:.5em;
+      }
+
+      a{
+         color:cyan;
+         display:block;
+         margin-top:.4em;
+
+      }
+   }
+}

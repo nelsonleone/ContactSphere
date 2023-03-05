@@ -1,0 +1,35 @@
+@use '../utils/'  as *;
+
+.trash{
+   .header_labels{
+      @include flexObj($justify:flex-start);
+      gap:50%;
+      h4{
+         display:block !important;
+      }
+   }
+
+   .trash-contact{
+      @include flexObj($justify:space-between);
+      padding-inline:0 1em;
+   }
+
+   .restore-icon{
+      color:var(--py-color2);
+      font-size:1.1rem;
+
+      &:hover{
+         scale:1.1;
+      }
+   }
+
+   @include MediaQueryDesktop{
+      .trash-contact{
+         position: relative;
+      }
+      .restore-icon{
+         position: absolute;
+         right:2em;
+      }
+   }
+}

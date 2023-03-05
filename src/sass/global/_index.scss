@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@300;400&family=Sofia&family=Source+Sans+Pro:wght@400;600&display=swap');
+
+:root{
+  --ff1:'Overpass', Roboto, sans-serif;
+  --ff2:'Source Sans', Roboto , sans-serif;
+  --ff3-nav:'Google Sans', sans-serif;
+  --py-color1:hsl(240, 40%, 17%);
+  --py-color3:hsl(0, 0%, 100%);
+  --py-color2:hsl(327, 84%, 51%);
+  --input-color1:hsl(0, 7%, 84%);
+  --basic-Black:hsl(0, 0%, 0%);
+  --dim-Black:hsla(0, 0%, 0%, 0.486);
+  --contactItem-bgColor:hsla(344, 44%, 95%, 0.726);
+  --star-gold-Color:hsl(49, 90%, 51%);
+}
+
+
+*,
+*::before,
+*::after{
+   box-sizing: border-box;
+   padding:0;
+   margin:0;
+}
+
+html{
+   overflow-x: hidden;
+   min-height: 100vh;
+}
+
+body{
+   background-color:var(--py-color3);
+   width:100%;
+}
+
+button{
+   background:none;
+   cursor: pointer;
+}
+
+button,
+input{
+   font-family:inherit;
+   border:none;
+   &:focus{
+      border:none;
+      outline:none;
+   }
+}
+
+img{
+   max-width:100%;
+   object-fit:cover;
+}
+
+li,
+a{
+   list-style-type: none;
+   text-decoration:none;
+}

@@ -1,0 +1,167 @@
+@use './utils/' as *;
+
+
+.create-contact-section{
+   padding-top:5em;
+   .heading{
+      border-bottom:1px solid  rgb(209, 206, 206);
+      padding-bottom:1em;
+      .cancel-create{
+         position: absolute;
+         top:1.4em;
+         left:1em;
+         font-size:1.1rem;
+      }
+
+      .image-upload{
+         width:9em;
+         position: relative;
+         background-color:var(--py-color1);
+         border-radius: 50%;
+         aspect-ratio: 1/1;
+         @include flexObj($justify:center);
+
+         &-placeholder{
+            font-size:5rem;
+         }
+         
+         img{
+            position: absolute;
+            width:100%;
+            height:100%;
+            border-radius: 50%;
+            aspect-ratio: 1/1;
+         }
+
+         .image-upload-input{
+            position: absolute;
+            z-index:1;
+            opacity: 0;
+            width:100%;
+            height:100%;
+            cursor: pointer;
+         }
+
+      }
+
+      .save-btn{
+         background-color:var(--py-color1);
+         color:var(--py-color3);
+         padding:.6em 1.8em;
+         border-radius: 5px;
+         transition: .3s ease-in-out;
+         font-size:.9rem;
+
+         &:hover{
+            opacity: .8;
+         }
+      }
+   }
+   .icon{
+      color:var(--py-color1);
+      position: absolute;
+      left: .1em;
+      font-size:1.5rem;
+   }
+
+   .show-more-btn{
+      display:inline-block;
+      margin-block:1em;
+      width:100%;
+      text-align: right;
+      color:var(--py-color2);
+      text-decoration: underline var(--py-color2);
+   }
+
+
+   form{
+      margin-top:1em;
+
+      & > div{
+         position:relative;
+         padding-left:3em;
+         margin-block:2em;
+
+         .input-container{
+            position: relative;
+            margin-block:1.5em;
+
+            input{
+               padding:.4em;
+               font-size:inherit;
+               display:block;
+               border-bottom:1px solid rgb(209, 206, 206);
+               width:90%;
+               color:var(--py-color1);
+   
+               &::placeholder{
+                  color:var(--py-color1);
+                  font-size:.9rem;
+               }
+            }
+
+            label{
+               position: absolute;
+               font-size:.8rem;
+               color:var(--py-color2);
+               top:-1em;
+               visibility: hidden;
+               transition: .3s linear;
+               opacity: 0;
+               z-index:-1;
+            }
+
+            &:focus-within{
+               label{
+                  visibility: visible;
+                  opacity: 1;
+                  z-index:1;
+               }
+               input{
+                  border-color: var(--py-color2);
+                  &::placeholder{
+                     opacity: 0;
+                  }
+               }
+            }
+
+         }
+      }
+   }
+
+   @include MediaQueryTablet{
+      padding-top:6em;
+      .cancel-create{
+         top: 3em !important;;
+      }
+   }
+
+
+
+   @include MediaQueryDesktop{
+      .icon{
+         left:-.5em;
+      }
+      .phone-input{
+         width:25em;
+      }
+
+      .heading{
+         .image-upload{
+            width:10em;
+         }
+      }
+
+      form{
+         & > div{
+            left:3em;
+
+            .input-container{
+               input{
+                  width: 30em !important;
+               }
+            }
+         }
+      }
+   }
+}

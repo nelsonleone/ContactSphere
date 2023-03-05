@@ -1,0 +1,185 @@
+@use '../utils/' as *;
+
+.starred-contacts{
+   .page-heading{
+      color:var(--py-color1);
+      font-size:1.4rem;
+      margin-block:.2em;
+      position:relative;
+
+        
+      &::after{
+         content:"";
+         display:block;
+         background:var(--py-color1);
+         position:absolute;
+         bottom:0;
+         left:0;
+         right:0;
+         width:40%;
+         margin:auto;
+         height:2px;
+      }
+
+      @include MediaQueryDesktop{
+         text-align: left !important;
+         margin-block:1.5em;
+
+         &::after{
+            width:10%;
+            left:0;
+            margin:0;
+         }
+      }
+   }
+}
+
+.starred-contactItem-container{
+  margin-block:2em;
+}
+
+.starred-contactItem{
+   margin-block:.6em;
+   background:hsla(246, 16%, 75%, 0.185);
+   padding:.6em .3em;
+   border-radius: 3px;
+   position: relative;
+   cursor: pointer;
+
+   &:hover{
+      .arrow-icon{
+         color:var(--py-color2);
+      }
+   }
+
+   @include MediaQueryTablet{
+      padding-inline:1em;
+   }
+
+   
+   &-lessDisplay{
+      position: relative;
+      @include flexObj($justify:flex-start,$align:flex-start);
+      color:var(--py-color1);
+
+      .arrow-icon{
+         color:inherit;
+         font-size: 1.2rem;
+         position: absolute;
+         cursor:pointer;
+         right:1em;
+      }
+
+      .arrow-icon-rotate{
+         transform: rotate(180deg);
+      }
+
+      .remove-star-btn{
+         color:var(--star-gold-Color);
+         font-size: 1rem;
+         position: absolute;
+         right:4em;
+
+         &:hover{
+            color:rgb(199, 195, 195);
+         }
+      }
+
+      h4{
+         font-weight: 500;
+
+         span:not(:first-of-type){
+            margin-right:.4em;
+         }
+      }
+   }
+
+   &-moreContent{
+      display:none;
+      padding-inline:2em;
+      color:var(--py-color1);
+
+      & > div{
+         margin-block:1em;
+         position: relative;
+      }
+
+      p{
+         text-transform: capitalize;
+      }
+
+      .icon{
+         position: absolute;
+         left:-1.4em;
+         font-size:1.2rem;
+
+         @include MediaQueryDesktop{
+            left:.8em;
+         }
+      }
+
+      .contact-image-container{
+         width:50%;
+         margin: 1em auto;
+         text-align: center;
+         img{
+            width:4em;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+         }
+
+         @include MediaQueryTablet{
+            position: absolute;
+            right:5em;
+            width:30%;
+            top:0;
+            bottom:0;
+            img{
+               width:10em;
+            }
+         }
+      }
+      .contact-area > *{
+         margin-block:.4em;
+      }
+      .birthday-area{
+         p{
+            color:rgb(230, 130, 17);
+         }
+      }
+
+      h3{
+         color:var(--py-color2);
+         font-weight: 500;
+      }
+
+      @include MediaQueryDesktop{
+         & > div{
+            margin-top:2em;
+            padding-left:3.3em;
+         }
+         .contact-image-container{
+            margin:0;
+            padding-left:0;
+            text-align: left;
+            width:10%;
+            position: unset;
+            img{
+               width:5em;
+            }
+         }
+
+      }
+   }
+
+   .showMore-content{
+      display:block;
+
+      @include MediaQueryDesktop{
+        @include flexObj($justify:flex-start);
+        gap:30px;
+      }
+
+   }
+
+}
