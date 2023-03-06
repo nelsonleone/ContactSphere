@@ -1,10 +1,12 @@
-import { MdOutlineEdit } from "react-icons/md"
 import { AiFillStar } from "react-icons/ai"
 import { BsThreeDots } from "react-icons/bs"
 import { useEffect, useState, useCallback, useRef} from "react";
 import { setAddToTrash, setHidenContact , handleContactStarring } from "../redux/features/asyncThunks";
 import { useDispatch, useSelector } from "react-redux";
 import useId from "@mui/material/utils/useId";
+import {useNavigate} from "react-router-dom"
+import ContactImage from "./ContactImage";
+import phoneNumberStringFormatter from "./Helper/phoneNumberStringFormatter";
 
 
 export default function ActiveContact(props){
@@ -28,6 +30,7 @@ export default function ActiveContact(props){
    const id = useId()
    const { error } = useSelector(store => store.contact.contactsData)
    const dispatch = useDispatch()
+   const navigate = useNavigate()
    const contactMenuStyling = {
       visibility: openContactMenu ? "visible" : "hidden"
    }
@@ -52,21 +55,33 @@ export default function ActiveContact(props){
    },[removeContactMenu])
 
 
-   async function handleAddToTrash(){
+   async function handleAddToTrash(e){
+      e.stopPropagation()
       await dispatch(setAddToTrash(props.contactInfo))
       setAddedToTrash(true)
    }
 
-   async function handleHideContact(){
+   async function handleHideContact(e){
+      e.stopPropagation()
       await dispatch(setHidenContact(props.contactInfo))
       setAddedToHiddenContacts(true)
    }
 
+   function handleStarContact(e){
+      e.stopPropagation()
+      dispatch(handleContactStarring(props.contactInfo))
+   }
+
+   function handleDotsClick(e){
+      e.stopPropagation()
+      setOpenContactMenu(!openContactMenu)
+   }
+
    return(
       <>
-         <div className="contact">
+         <div className="contact" onClick={() => navigate(`/contact/${props.contactInfo.id}`)}>
             <div className="name_image-container">
-               <img src={contactImage ? contactImage : "/images/userIcon.webp"} alt="contact image" className="contactUser-image" />
+               <ContactImage image={contactImage} className="contactUser-image" />
                <span className="contact-name" aria-label="name-header">
                   <span>{prefix}</span>
                   <span>{firstName}</span>
@@ -74,12 +89,11 @@ export default function ActiveContact(props){
                </span>
             </div>
             <span className="hide-for-mobile" aria-label="email-header">{email}</span>
-            <span className="hide-for-mobile" aria-label="phoneNumber-header">{phoneNumber}</span>
+            <span className="hide-for-mobile" aria-label="phoneNumber-header">{phoneNumberStringFormatter(phoneNumber)}</span>
             <span className="hide-for-mobile work" aria-label="work-header">{jobTitle}/{companyName}</span>
 
             <div className="contact-icons">
-               <MdOutlineEdit className="edit-icon" aria-label="Edit this contact" />
-               <AiFillStar className={isStarred ? "star-icon starred" : "star-icon"} aria-label="star this contact" onClick={() => dispatch(handleContactStarring(props.contactInfo))} />
+               <AiFillStar className={isStarred ? "star-icon starred" : "star-icon"} aria-label="star this contact" onClick={handleStarContact} />
                <button
                   className="dots-icon" 
                   aria-label="open contact options" 
@@ -87,7 +101,7 @@ export default function ActiveContact(props){
                   aria-controls={`${id}contact-action-menu`}
                   aria-expanded={openContactMenu}
                   ref={contactMenuIconRef}
-                  onClick={() => setOpenContactMenu(!openContactMenu)}
+                  onClick={handleDotsClick}
                >
                   <BsThreeDots/>
                </button>

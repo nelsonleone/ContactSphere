@@ -1,6 +1,7 @@
 import { GrView }  from "react-icons/gr"
 import { useDispatch } from "react-redux";
 import { setHidenContact } from "../redux/features/asyncThunks";
+import ContactImage from "./ContactImage";
 
 export default function HiddenContactItem(props){
 
@@ -29,7 +30,7 @@ export default function HiddenContactItem(props){
       <>
          <div className="contact hidden-contact">
             <div className="name_image-container">
-               <img src={contactImage ? contactImage : "/images/userIcon.webp"} alt="contact image" className="contactUser-image" />
+               <ContactImage image={contactImage} className="contactUser-image"/>
                <span className="contact-name" aria-label="hidden-name-header">
                   <span>{prefix}</span>
                   <span>{firstName}</span>

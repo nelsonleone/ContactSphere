@@ -15,7 +15,7 @@ export default function StarredContacts(){
       if(!isFetching){
          timer = setTimeout(() => {
             setShowContacts(true)
-         }, 6000);
+         }, 3000);
       }
    },[isFetching])
 

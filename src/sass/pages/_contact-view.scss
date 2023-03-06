@@ -1,0 +1,99 @@
+@use '../utils/' as *;
+
+
+.loading-text{
+   color:var(--py-color1);
+   position: absolute;
+   top:0;
+   bottom:0;
+   margin:auto;
+   left:0;
+   right:0;
+
+   @include MediaQueryDesktop{
+      position: unset;
+   }
+}
+
+.viewed-contact{
+
+   .heading-area{
+      @include flexObj;
+      position: relative;
+      padding-top:3em;
+      img{
+         width:11em;
+         border-radius: 50%;
+         aspect-ratio: 1/1;
+   
+      }
+   }
+
+   .close-icon{
+      position:absolute;
+      cursor: pointer;
+      top:.1em;
+      transition: .2s ease-in-out;
+
+      &:hover{
+         color:var(--py-color2);
+      }
+   }
+
+   .edit-btn{
+      background:var(--py-color1);
+      color:var(--py-color3);
+      padding:.6em 2em;
+      border-radius: 5px;
+
+      &:hover{
+         opacity: .8;
+     
+      }
+   }
+
+   .full-details{
+      @include flexObj;
+      flex-wrap: wrap;
+      &>div{
+         margin-block:1em;
+         padding-block:1em;
+         border-bottom:1px solid rgba(212, 210, 210, 0.788);
+         flex-basis: 45%;
+
+         p{
+            margin-block:.6em;
+            span{
+               word-break: break-all;
+               color:var(--text-color-accent);
+               margin-left:1em;
+            }
+         }
+
+         h3{
+            color:var(--py-color2);
+            font-weight: 500;
+         }
+      }
+
+      &>div:nth-child(2n+2){
+         text-align: right;
+      }
+
+      .birthday-area p{
+         color:var(--text-color-accent2);
+         font-family: var(--ff1);
+      }
+
+      .contact-area {
+         .email{
+            color:rgba(7, 70, 7, 0.911);
+         }
+      }
+   }
+
+   @include MediaQueryDesktop{
+      padding-inline:3em;
+   }
+
+}

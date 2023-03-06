@@ -2,34 +2,121 @@
 
 .trash{
    .header_labels{
-      @include flexObj($justify:flex-start);
-      gap:50%;
+      display:grid;
+      grid-template-columns:50% 50%;
+      justify-items: end;
+
+      h4:last-of-type{
+         justify-self: center;
+      }
       h4{
          display:block !important;
       }
    }
 
    .trash-contact{
-      @include flexObj($justify:space-between);
+      display:grid;
+      grid-template-columns:50% 50% 1fr ;
+      justify-items: center;
       padding-inline:0 1em;
-   }
+      width: 100% !important;
+      border-bottom:1px solid rgb(204, 198, 198);
+      padding-block:1em;
+      margin-block:1em;
 
-   .restore-icon{
-      color:var(--py-color2);
-      font-size:1.1rem;
+      .name_image-container{
+         justify-self: start;
+      }
 
-      &:hover{
-         scale:1.1;
+      &::before{
+         display:none;
+      }
+
+
+      .trashContact-action-btns{
+         grid-column: 1/-1;
+         button{
+            display:inline-block;
+            font-size:.9rem;
+            margin-inline:1em;
+            text-decoration: underline;
+            text-decoration-color:var(--py-color2);
+            font-family: var(--ff1);
+
+            &>*{
+               font-size:1.2rem;
+            }
+         }
+
+         .restore-contact-btn:hover{
+            color:green;
+         }
+
+         .delete-contact-btn:hover{
+            color:red;
+         }
+
+         
+         @include MediaQueryDesktop{
+            justify-self: start;
+
+            button{
+               margin-inline:5em;
+            }
+         }
       }
    }
 
-   @include MediaQueryDesktop{
-      .trash-contact{
-         position: relative;
+   .trash-delete-modal{
+      position: fixed;
+      top:0;
+      bottom:0;
+      left:0;
+      right:0;
+      margin:auto;
+      background:hsla(0, 1%, 28%, 0.562);
+      width:100%;
+      z-index:100000;
+      height:100%;
+
+      h2{
+         position: unset;
+         margin-block:2em;
+         font-size:1.3rem;
       }
-      .restore-icon{
+
+      &-inner{
          position: absolute;
-         right:2em;
+         top:0;
+         bottom:0;
+         left:0;
+         right:0;
+         margin:auto;
+         background:var(--py-color3);
+         width:23em;
+         height:12em;
+         border-radius: 4px;
+      }
+
+      .modal-action-btns{
+         @include flexObj;
+         padding-inline: 1em;
+
+         button{
+            background: var(--py-color1);
+            color: var(--py-color3);
+            font-family: var(--ff1);
+            font-size:1rem;
+            padding:.4em 1.2em;
+            border-radius: 6px;
+            transition: .3s ease-in;
+
+
+            &:hover{
+               opacity: .8;
+            }
+         }
       }
    }
+
 }

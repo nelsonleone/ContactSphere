@@ -3,6 +3,9 @@ import { FaTrashRestoreAlt } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { setAddToTrash, setDeleteContactForever } from "../redux/features/asyncThunks";
 import {RiDeleteBin2Fill}  from "react-icons/ri"
+import ContactImage from "./ContactImage"
+import { useState } from "react";
+
 
 export default function TrashContactItem(props){
 
@@ -24,7 +27,7 @@ export default function TrashContactItem(props){
    const date = validTrashDate.toDate()
    const options = { day: 'numeric', month: 'long', year: 'numeric' };
    const formattedTrashData = date.toLocaleDateString('en-US', options).replace(/(\d+)(st|nd|rd|th)/, '$1<sup>$2</sup>')
-   const { setContactRemovedFromTrash, setEmptyTrash, setDeletedContact } = props;
+   const { setContactRemovedFromTrash, setEmptyTrash, setDeletedContact , setContactVisible} = props;
    const [openDeleteModal,setOpenDeleteModal] = useState(false)
    const dispatch = useDispatch()
 
@@ -43,7 +46,7 @@ export default function TrashContactItem(props){
       <>
          <div className="contact trash-contact">
             <div className="name_image-container">
-               <img src={contactImage ? contactImage : "/images/userIcon.webp"} alt="contact image" className="contactUser-image" />
+               <ContactImage image={contactImage} className="contactUser-image"/>
                <span className="contact-name" aria-label="trash-name-header">
                   <span>{prefix}</span>
                   <span>{firstName}</span>
@@ -51,39 +54,44 @@ export default function TrashContactItem(props){
                </span>
             </div>
             <span className="date-deleted" aria-label="trash-date-deleted">{formattedTrashData}</span>
-            <button
-               title="Restore Contact"
-               onClick={handleRestoreContact}
-               className="restore-contact-btn"
-            >
-               Restore
-               <FaTrashRestoreAlt />
-            </button>
-            <button
-              title="delete"
-              onClick={() => setOpenDeleteModal(true)}
-              className="delete-contact-btn"
-              >
-              Delete
-             <RiDeleteBin2Fill  />
-            </button>
+            <div className="trashContact-action-btns">
+               <button
+                  title="Restore Contact"
+                  onClick={handleRestoreContact}
+                  className="restore-contact-btn"
+               >
+                  Restore
+                  <FaTrashRestoreAlt />
+               </button>
+               <button
+               title="delete"
+               onClick={() => setOpenDeleteModal(true)}
+               className="delete-contact-btn"
+               >
+               Delete
+               <RiDeleteBin2Fill  />
+               </button>
+            </div>
          </div>
-         <Modal
-            open={openDeleteModal}
-            onClose={() => setOpenDeleteModal(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            >
-            <Box>
-               <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Sure You Want To Delete This Contact
-               </Typography>
-               <div className="modal-action-btns" sx={{ mt: 2 }} >
-                  <button onClick={handleDelete}>Yes, Delete</button>
-                  <button onClick={() => setOpenDeleteModal(false)}>No, Cancle</button>
+
+         {
+            openDeleteModal && 
+            <div className="trash-delete-modal"
+               onClose={() => setOpenDeleteModal(false)}
+               aria-labelledby="modal-modal-title"
+               id="trash-delete-modal"
+               >
+               <div className="trash-delete-modal-inner">
+                  <h2 id="modal-modal-title">
+                     Sure You Want To Delete This Contact
+                  </h2>
+                  <div className="modal-action-btns">
+                     <button onClick={handleDelete}>Yes, Delete</button>
+                     <button onClick={() => setOpenDeleteModal(false)} aria-controls="trash-delete-modal">No, Cancle</button>
+                  </div>
                </div>
-            </Box>
-         </Modal>
+            </div>
+         }
       </>
    )
 }

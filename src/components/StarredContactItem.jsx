@@ -8,6 +8,8 @@ import { BiServer } from "react-icons/bi"
 import { useState, useEffect, useId } from "react"
 import { useDispatch } from "react-redux"
 import { handleContactStarring } from "../redux/features/asyncThunks"
+import ContactImage from "./ContactImage"
+import phoneNumberStringFormatter from "./Helper/phoneNumberStringFormatter"
 
 export default function StarredContactItem(props){
    const {
@@ -60,7 +62,7 @@ export default function StarredContactItem(props){
            className={!showMoreContent ? "starred-contactItem-moreContent" : "starred-contactItem-moreContent showMore-content" }
            >
             <div className="contact-image-container">
-               <img src={contactImage} />
+               <ContactImage image={contactImage} />
             </div>
             <div className="work-area">
                <MdWork className="icon" />
@@ -79,7 +81,7 @@ export default function StarredContactItem(props){
                   phoneNumber &&
                   <p>
                      <BsTelephone className="icon" />
-                     {phoneNumber}
+                     {phoneNumberStringFormatter(phoneNumber)}
                   </p>
                }
                {
@@ -92,8 +94,10 @@ export default function StarredContactItem(props){
             </div>
             <div className="address-area">
                {
-                  countryName || state || cityName || streetAddress &&
+                  countryName || state || cityName || streetAddress ?
                   <MdOutlineLocationOn  className="icon" />
+                  :
+                  ""
                }
                <h3>{countryName}</h3>
                <p>{state}</p>

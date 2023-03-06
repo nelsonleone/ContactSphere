@@ -25,8 +25,7 @@
       
    .contact-icons{
       position: absolute;
-      right:2em;
-      visibility: hidden;
+      right:.4em;
 
       & > *{
          font-size: 1.3rem;
@@ -58,6 +57,7 @@
 
       .contact-name{
          margin-left:.4em;
+         word-break: break-all;
          span{
             margin-right:.2em;
             font-size:1rem;
@@ -136,6 +136,10 @@
       .contact-name{
          position: absolute;
          left:3em;
+      }
+
+      .contact-icons{
+         visibility: hidden;
       }
 
      .hide-for-mobile{

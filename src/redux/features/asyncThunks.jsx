@@ -101,8 +101,24 @@ export const setAddToTrash = createAsyncThunk(
            inTrash:!contactProperties.inTrash,
            isActive:!contactProperties.isActive,
            trashDate:unixTimestamp,
-           isStarred:!contactProperties.isStarred
+           isStarred:false
          })
+      }
+      catch(err){
+         return err.code;
+      }
+   }
+)
+
+export const getViewedContactDetails = createAsyncThunk(
+   'user,getViewedContactDetails',
+   async (contactId, { getState }) => {
+      const userID = getState().userAuth.authUserDetails.userID;
+      const contactDoc = doc(database,"users",userID,"contacts",contactId)
+      try{
+         const viewedContactDetails = await getDoc(contactDoc)
+         const docArr = viewedContactDetails.data()
+         return docArr;
       }
       catch(err){
          return err.code;
@@ -131,7 +147,45 @@ export const setHidenContact = createAsyncThunk(
       const userID = getState().userAuth.authUserDetails.userID;
       const contactDoc = doc(database,"users",userID,"contacts",contactProperties.id)
       try{
-         await updateDoc(contactDoc,{...contactProperties,isHidden:!contactProperties.isHidden,isActive:!contactProperties.isActive})
+         await updateDoc(contactDoc,{...contactProperties,isHidden:!contactProperties.isHidden,isActive:!contactProperties.isActive,isStarred:false})
+      }
+      catch(err){
+         return err.code;
+      }
+   }
+)
+
+
+export const setEdittedContact = createAsyncThunk(
+   'user,setEdittedContact',
+   async (edittedContactInfo, { getState }) => {
+      const userID = getState().userAuth.authUserDetails.userID;
+      const contactDoc = doc(database,"users",userID,"contacts",edittedContactInfo.id)
+      try{
+         await updateDoc(contactDoc,edittedContactInfo)
+      }
+      catch(err){
+         return err.code;
+      }
+   }
+)
+
+
+export const getSearchQuery = createAsyncThunk(
+   'user,getSearchQuery',
+   async (inputValue, { getState }) => {
+      const userID = getState().userAuth.authUserDetails.userID;
+      const contactsCollection = collection(database,"users",userID,"contacts")
+      const contactSearchQuery = query(contactsCollection, where('firstName', '>=', searchInput).where('firstName', '<=', searchInput + '\uf8ff'))
+
+      try{
+         const contactsDocs = await getDocs(contactSearchQuery)
+         const foundContacts = []
+         contactsDocs.map(doc =>  {
+            foundContacts.push({id:doc.id,contact:doc.data()})
+         })
+
+         return foundContacts;
       }
       catch(err){
          return err.code;

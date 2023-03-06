@@ -75,6 +75,7 @@ export default function Trash(){
                                  contactInfo={{...contactInfo}}
                                  setContactRemovedFromTrash={setContactRemovedFromTrash}
                                  setEmptyTrash={setEmptyTrash}
+                                 setDeletedContact={setDeletedContact}
                               />
                            )
                         })

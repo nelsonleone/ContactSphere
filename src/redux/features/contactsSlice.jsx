@@ -3,7 +3,9 @@ import {
    handleGetUserContactDocs,
    setNewContact,
    handleContactStarring,
-   handleSetUserContactDocs
+   handleSetUserContactDocs,
+   getViewedContactDetails,
+   setEdittedContact
 } from "./asyncThunks";
 
 
@@ -16,6 +18,7 @@ const initialState = {
    },
    error:"",
    isFetching:null,
+   viewedContactDetails: {}
 }
 
 const contactsSlice = createSlice({
@@ -69,10 +72,19 @@ const contactsSlice = createSlice({
          state.error  =  payload;
       })
 
-      // starring contact
-      .addCase(handleContactStarring.rejected,(state,{payload}) => {
-         state.error  =  payload;
+
+      // viewed Contact
+      .addCase(getViewedContactDetails.pending,(state) => {
+         state.isFetching  =  true;
       })
+      .addCase(getViewedContactDetails.fulfilled,(state,{payload}) => {
+         state.viewedContactDetails = payload;
+         state.isFetching = false;
+      })
+      .addCase(getViewedContactDetails.rejected,(state) => {
+         state.isFetching = false;
+      })
+
    }
 })
 

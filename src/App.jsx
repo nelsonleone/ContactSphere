@@ -12,6 +12,8 @@ import Trash from './pages/Trash'
 import HiddenContacts from './pages/HiddenContacts'
 import StarredContacts from './pages/StarredContacts'
 import HelpArticle from './pages/HelpArticle'
+import ContactView from './pages/ContactView'
+import EditSection from './pages/EditSection'
 
 function App() {
   
@@ -40,6 +42,8 @@ function App() {
         <Route path="/trash" element={<Trash />} />
         <Route path="/help" element={<HelpArticle />} />
         <Route path="/create-contact" element={<CreateNewContact />} />
+        <Route path="/contact/:contactId" element={<ContactView />} />
+        <Route path="/edit/:contactId" element={<EditSection />} />
       </Routes>
     </div>
   )

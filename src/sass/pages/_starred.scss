@@ -144,7 +144,8 @@
       }
       .birthday-area{
          p{
-            color:rgb(230, 130, 17);
+            color:var(--text-color-accent2);
+            font-family: var(--ff1);
          }
       }
 

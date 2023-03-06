@@ -25,9 +25,9 @@ export default function Homepage(){
       if(!isFetching){
          timer = setTimeout(() => {
             setShowContacts(true)
-         }, 6000);
+         }, 3000)
       }
-   },[isFetching])
+   },[])
 
    useEffect(() => {
       let timer;

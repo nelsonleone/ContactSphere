@@ -11,6 +11,8 @@
   --dim-Black:hsla(0, 0%, 0%, 0.486);
   --contactItem-bgColor:hsla(344, 44%, 95%, 0.726);
   --star-gold-Color:hsl(49, 90%, 51%);
+  --text-color-accent:hsl(199, 71%, 27%);
+  --text-color-accent2:hsl(29, 100%, 50%);
 }
 
 *,
@@ -116,7 +118,7 @@ a {
   aspect-ratio: 1/1;
   text-align: center;
   position: absolute;
-  top: 50%;
+  top: 70%;
   right: 1em;
   z-index: 100;
 }
@@ -140,7 +142,7 @@ a {
     aspect-ratio: 1/0.7;
     padding: 0.3em;
     left: -12em;
-    top: -1em;
+    top: -1.4em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -235,6 +237,9 @@ a {
 }
 .main-content .header_labels h4:first-of-type {
   display: block;
+}
+.main-content .header_labels h4:last-of-type {
+  justify-self: center;
 }
 @media (min-width: 75rem) {
   .main-content {
@@ -1046,8 +1051,7 @@ header .header-widjet .widjet-modal > div button:hover {
 }
 .contact .contact-icons {
   position: absolute;
-  right: 2em;
-  visibility: hidden;
+  right: 0.4em;
 }
 .contact .contact-icons > * {
   font-size: 1.3rem;
@@ -1074,6 +1078,7 @@ header .header-widjet .widjet-modal > div button:hover {
 }
 .contact .name_image-container .contact-name {
   margin-left: 0.4em;
+  word-break: break-all;
 }
 .contact .name_image-container .contact-name span {
   margin-right: 0.2em;
@@ -1136,6 +1141,9 @@ header .header-widjet .widjet-modal > div button:hover {
   .contact .contact-name {
     position: absolute;
     left: 3em;
+  }
+  .contact .contact-icons {
+    visibility: hidden;
   }
   .contact .hide-for-mobile {
     display: block;
@@ -1307,7 +1315,8 @@ header .header-widjet .widjet-modal > div button:hover {
   margin-block: 0.4em;
 }
 .starred-contactItem-moreContent .birthday-area p {
-  color: rgb(230, 130, 17);
+  color: var(--text-color-accent2);
+  font-family: var(--ff1);
 }
 .starred-contactItem-moreContent h3 {
   color: var(--py-color2);
@@ -1365,37 +1374,107 @@ header .header-widjet .widjet-modal > div button:hover {
 }
 
 .trash .header_labels {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: row;
-  gap: 50%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  justify-items: end;
+}
+.trash .header_labels h4:last-of-type {
+  justify-self: center;
 }
 .trash .header_labels h4 {
   display: block !important;
 }
 .trash .trash-contact {
+  display: grid;
+  grid-template-columns: 50% 50% 1fr;
+  justify-items: center;
+  padding-inline: 0 1em;
+  width: 100% !important;
+  border-bottom: 1px solid rgb(204, 198, 198);
+  padding-block: 1em;
+  margin-block: 1em;
+}
+.trash .trash-contact .name_image-container {
+  justify-self: start;
+}
+.trash .trash-contact::before {
+  display: none;
+}
+.trash .trash-contact .trashContact-action-btns {
+  grid-column: 1/-1;
+}
+.trash .trash-contact .trashContact-action-btns button {
+  display: inline-block;
+  font-size: 0.9rem;
+  margin-inline: 1em;
+  text-decoration: underline;
+  text-decoration-color: var(--py-color2);
+  font-family: var(--ff1);
+}
+.trash .trash-contact .trashContact-action-btns button > * {
+  font-size: 1.2rem;
+}
+.trash .trash-contact .trashContact-action-btns .restore-contact-btn:hover {
+  color: green;
+}
+.trash .trash-contact .trashContact-action-btns .delete-contact-btn:hover {
+  color: red;
+}
+@media (min-width: 75rem) {
+  .trash .trash-contact .trashContact-action-btns {
+    justify-self: start;
+  }
+  .trash .trash-contact .trashContact-action-btns button {
+    margin-inline: 5em;
+  }
+}
+.trash .trash-delete-modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  background: hsla(0deg, 1%, 28%, 0.562);
+  width: 100%;
+  z-index: 100000;
+  height: 100%;
+}
+.trash .trash-delete-modal h2 {
+  position: unset;
+  margin-block: 2em;
+  font-size: 1.3rem;
+}
+.trash .trash-delete-modal-inner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  background: var(--py-color3);
+  width: 23em;
+  height: 12em;
+  border-radius: 4px;
+}
+.trash .trash-delete-modal .modal-action-btns {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  padding-inline: 0 1em;
+  padding-inline: 1em;
 }
-.trash .restore-icon {
-  color: var(--py-color2);
-  font-size: 1.1rem;
+.trash .trash-delete-modal .modal-action-btns button {
+  background: var(--py-color1);
+  color: var(--py-color3);
+  font-family: var(--ff1);
+  font-size: 1rem;
+  padding: 0.4em 1.2em;
+  border-radius: 6px;
+  transition: 0.3s ease-in;
 }
-.trash .restore-icon:hover {
-  scale: 1.1;
-}
-@media (min-width: 75rem) {
-  .trash .trash-contact {
-    position: relative;
-  }
-  .trash .restore-icon {
-    position: absolute;
-    right: 2em;
-  }
+.trash .trash-delete-modal .modal-action-btns button:hover {
+  opacity: 0.8;
 }
 
 .help-article {
@@ -1451,6 +1530,93 @@ header .header-widjet .widjet-modal > div button:hover {
   .help-article .article-footer {
     text-align: left;
     margin-top: 6em;
+  }
+}
+
+.loading-text {
+  color: var(--py-color1);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: 0;
+  right: 0;
+}
+@media (min-width: 75rem) {
+  .loading-text {
+    position: unset;
+  }
+}
+
+.viewed-contact .heading-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  position: relative;
+  padding-top: 3em;
+}
+.viewed-contact .heading-area img {
+  width: 11em;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+}
+.viewed-contact .close-icon {
+  position: absolute;
+  cursor: pointer;
+  top: 0.1em;
+  transition: 0.2s ease-in-out;
+}
+.viewed-contact .close-icon:hover {
+  color: var(--py-color2);
+}
+.viewed-contact .edit-btn {
+  background: var(--py-color1);
+  color: var(--py-color3);
+  padding: 0.6em 2em;
+  border-radius: 5px;
+}
+.viewed-contact .edit-btn:hover {
+  opacity: 0.8;
+}
+.viewed-contact .full-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.viewed-contact .full-details > div {
+  margin-block: 1em;
+  padding-block: 1em;
+  border-bottom: 1px solid rgba(212, 210, 210, 0.788);
+  flex-basis: 45%;
+}
+.viewed-contact .full-details > div p {
+  margin-block: 0.6em;
+}
+.viewed-contact .full-details > div p span {
+  word-break: break-all;
+  color: var(--text-color-accent);
+  margin-left: 1em;
+}
+.viewed-contact .full-details > div h3 {
+  color: var(--py-color2);
+  font-weight: 500;
+}
+.viewed-contact .full-details > div:nth-child(2n+2) {
+  text-align: right;
+}
+.viewed-contact .full-details .birthday-area p {
+  color: var(--text-color-accent2);
+  font-family: var(--ff1);
+}
+.viewed-contact .full-details .contact-area .email {
+  color: rgba(7, 70, 7, 0.911);
+}
+@media (min-width: 75rem) {
+  .viewed-contact {
+    padding-inline: 3em;
   }
 }
 

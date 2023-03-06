@@ -1,5 +1,4 @@
 import Hamburger  from 'hamburger-react'
-import { FaSearch } from 'react-icons/fa'
 import { BiHelpCircle } from 'react-icons/bi'
 import { MdClose } from 'react-icons/md'
 import { FaSignOutAlt } from 'react-icons/fa'
@@ -10,6 +9,7 @@ import { signOut } from 'firebase/auth'
 import { auth } from '../firebase/firebase-features'
 import { Link, useNavigate } from 'react-router-dom'
 import { signOutUser } from '../redux/features/userAuthSlice'
+import Search from './Search'
 
 export default function Header(props){
 
@@ -63,10 +63,7 @@ export default function Header(props){
             </button>
             <Logo className={!openNav ? "logo" : "logo toggledNav-logoView" }/>
         </div>
-        <div className="search-area">
-            <FaSearch className="search-icon" />
-            <input type="text" placeholder="search" />
-        </div>
+        <Search />
         <div className="header-actionIcons">
             <img 
                src={authUserDetails?.photoURL ? authUserDetails.photoURL : "/images/userIcon.webp"}
