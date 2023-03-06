@@ -2,7 +2,6 @@ export default function HelpArticle(){
    return(
       <article className="help-article main-content">
          <h2>ContactSphere Help Section</h2>
-         <p>NOTE: Update Coming soon...enhanced user experienced with SSR</p>
          <p>Am happy you are having a wonderful and awesome user experince using our app</p>
          <p>Or is there any issue <img src="/images/sad-emoji.png" />?</p>
 
