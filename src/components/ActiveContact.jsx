@@ -12,6 +12,8 @@ import phoneNumberStringFormatter from "./Helper/phoneNumberStringFormatter";
 export default function ActiveContact(props){
    const {
       isStarred,
+      isHidden,
+      inTrash,
       email,
       phoneNumber,
       jobTitle,

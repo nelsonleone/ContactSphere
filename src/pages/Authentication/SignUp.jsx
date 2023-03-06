@@ -24,6 +24,7 @@ export default function SignUp(){
    const [signUpSuccess,setSignUpSuccess] = useState({show:false,message:"Signed Up Successfully"})
    const [passwordMatch,setPasswordMatch] = useState(null)
    const navigate = useNavigate()
+   const dispatch = useDispatch()
 
 
    useEffect(() => {

@@ -2,11 +2,11 @@
 
 :root{
   --ff1:'Overpass', Roboto, sans-serif;
-  --ff2:'Source Sans', Roboto , sans-serif;
-  --ff3-nav:'Google Sans', sans-serif;
+  --ff2:'Inter' ,Roboto, sans-serif;
+  --ff3-nav:'Open Sans', sans-serif;
   --py-color1:hsl(240, 40%, 17%);
   --py-color3:hsl(0, 0%, 100%);
-  --py-color2:hsl(327, 84%, 51%);
+  --py-color2:hsl(327, 72%, 50%);
   --input-color1:hsl(0, 7%, 84%);
   --basic-Black:hsl(0, 0%, 0%);
   --dim-Black:hsla(0, 0%, 0%, 0.486);
@@ -31,7 +31,6 @@ html{
 }
 
 body{
-   background-color:var(--py-color3);
    width:100%;
 }
 

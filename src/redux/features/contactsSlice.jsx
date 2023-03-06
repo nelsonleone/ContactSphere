@@ -72,6 +72,11 @@ const contactsSlice = createSlice({
          state.error  =  payload;
       })
 
+      // // edit contact
+      
+      .addCase(setEdittedContact.rejected,(state,{payload}) => {
+         state.error  =  payload;
+      })
 
       // viewed Contact
       .addCase(getViewedContactDetails.pending,(state) => {

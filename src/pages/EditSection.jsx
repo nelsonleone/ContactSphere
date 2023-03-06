@@ -69,7 +69,7 @@ export default function EditSection(){
    },[contactDetails])
 
 
-   async function handleContactCreateSubmit(e){
+   async function handleContactEditSubmit(e){
       e.preventDefault()
       dispatch(setLoading(true))
       await dispatch(setEdittedContact({...contactDetails,id:viewedContactDetails.id}))
@@ -102,7 +102,7 @@ export default function EditSection(){
                <FcAddImage className="image-upload-placeholder" />
                <div className="image-upload-output"></div>
             </div>
-            <button className="save-btn" onClick={handleContactCreateSubmit} disabled={disableSave}>Save</button>
+            <button className="save-btn" onClick={handleContactEditSubmit} disabled={disableSave}>Save</button>
          </div>
          <button onClick={() =>  setShowMore(!showMore)} className="show-more-btn">{showMore ? "Show Less" : "Show More"}</button>
         

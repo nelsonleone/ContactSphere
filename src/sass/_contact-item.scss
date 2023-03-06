@@ -72,7 +72,7 @@
       background-color: var(--py-color3);
       box-shadow: 0 0 3px 3px hsla(0, 3%, 25%, 0.164);
       width:6em;
-      z-index:10;
+      z-index:10 !important;
       aspect-ratio: 1/.7;
       border-radius: 4px;
       padding:.5em;
@@ -99,8 +99,7 @@
     display:none;
   }
 
-  .work{
-    font-family: var(--ff2);
+   .work{
     color:rgb(44, 87, 82);
   }
 
@@ -108,7 +107,6 @@
   @include MediaQueryDesktop{
       display: grid;
       grid-template-columns: 21% 21% 19% 21%;
-
       &:hover{
          &::before{
             background: var(--contactItem-bgColor);

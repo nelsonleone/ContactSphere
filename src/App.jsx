@@ -25,7 +25,7 @@ function App() {
     <div className="App">
       {
         location.pathname !== "/signin" && location.pathname !== "/signup" &&
-        location.pathname !== "*" ?
+        location.pathname !== "*" && location.pathname !== "/auth/forgotten-password" ?
         <Layout openNav={openNav} setOpenNav={value => setOpenNav(value)}/>
         :
         ""
@@ -33,7 +33,7 @@ function App() {
       <AuthManager />
       <Routes>
         <Route path="signin" element={<SignIn />} />
-        <Route path="forgotten-password" element={<ForgottenPassword />} />
+        <Route path="/auth/forgotten-password" element={<ForgottenPassword />} />
         <Route path="signup" element={<SignUp />} />
 
         <Route path="/" element={<Homepage />} />
