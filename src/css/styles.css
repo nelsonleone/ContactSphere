@@ -1148,6 +1148,10 @@ header .header-widjet .widjet-modal > div button:hover {
   .contact .hide-for-mobile {
     display: block;
   }
+  .contact .work {
+    justify-self: center;
+    padding-right: 1.2em;
+  }
 }
 
 .not-loggedIn {
@@ -1618,6 +1622,40 @@ header .header-widjet .widjet-modal > div button:hover {
   .viewed-contact {
     padding-inline: 3em;
   }
+}
+
+.search-result {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 90%;
+  overflow-y: auto;
+  max-height: 8em;
+  background: var(--py-color3);
+  box-shadow: 0 3px 3px rgba(128, 128, 128, 0.397);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  z-index: 1000;
+}
+.search-result .loading-placeholder {
+  font-size: 4rem;
+  display: block;
+  color: grey;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.search-result .found-contact {
+  font-family: var(--ff1);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 1em;
+  border-top: 1px solid rgba(128, 128, 128, 0.397);
+}
+.search-result .found-contact:hover {
+  background-color: rgba(231, 185, 199, 0.329);
 }
 
 /*# sourceMappingURL=styles.css.map */

@@ -66,7 +66,7 @@ export default function Header(props){
         <Search />
         <div className="header-actionIcons">
             <img 
-               src={authUserDetails?.photoURL ? authUserDetails.photoURL : "/images/userIcon.webp"}
+               src={authUserDetails.photoURL ? authUserDetails.photoURL : "/images/userIcon.webp"}
                alt="user's image" 
                className="user-image" 
                aria-controls="header-widjet"

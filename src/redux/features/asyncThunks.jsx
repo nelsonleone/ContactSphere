@@ -11,7 +11,8 @@ import {
    query,
    orderBy,
    Timestamp,
-   deleteDoc
+   deleteDoc,
+   where
 } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { database } from "../../firebase/firebase-features";
@@ -172,23 +173,27 @@ export const setEdittedContact = createAsyncThunk(
 
 
 export const getSearchQuery = createAsyncThunk(
-   'user,getSearchQuery',
+   'user/getSearchQuery',
    async (inputValue, { getState }) => {
-      const userID = getState().userAuth.authUserDetails.userID;
-      const contactsCollection = collection(database,"users",userID,"contacts")
-      const contactSearchQuery = query(contactsCollection, where('firstName', '>=', searchInput).where('firstName', '<=', searchInput + '\uf8ff'))
-
-      try{
-         const contactsDocs = await getDocs(contactSearchQuery)
-         const foundContacts = []
-         contactsDocs.map(doc =>  {
-            foundContacts.push({id:doc.id,contact:doc.data()})
-         })
-
-         return foundContacts;
-      }
-      catch(err){
-         return err.code;
-      }
+     const userID = getState().userAuth.authUserDetails.userID;
+     const contactsCollection = collection(database, "users", userID, "contacts");
+     const contactSearchQuery = query(
+       contactsCollection,
+       where("firstName", ">=", inputValue),
+       where("firstName", "<=", inputValue + "\uf8ff")
+     )
+ 
+     try {
+       const foundContacts = [];
+       const contactsDocs = await getDocs(contactSearchQuery)
+       contactsDocs.forEach((doc) => {
+         foundContacts.push({...doc.data(),id: doc.id})
+       })
+ 
+       return foundContacts;
+      } 
+      catch (err) {
+       return err.code;
+     }
    }
-)
+ )

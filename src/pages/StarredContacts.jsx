@@ -5,17 +5,18 @@ import { Snackbar } from "@mui/material";
 
 export default function StarredContacts(){
    
-   const { starredContacts, isFetching } = useSelector(store => store.contact.contactsData)
-   const [showContacts,setShowContacts] = useState(false)
+   const { starredContacts } = useSelector(store => store.contact.contactsData)
+   const { isFetching } = useSelector(store => store.contact)
+   const [showContacts,setShowContacts] = useState(isFetching ? false : true)
    const { isLoading } = useSelector(store => store.loading)
    const [starredContactRemoved,setStarredContactRemoved] = useState(false)
 
    useEffect(()=> {
       let timer;
-      if(!isFetching){
+      if(isFetching){
          timer = setTimeout(() => {
             setShowContacts(true)
-         }, 3000);
+         }, 3000)
       }
    },[isFetching])
 

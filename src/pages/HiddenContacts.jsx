@@ -8,17 +8,18 @@ import { Snackbar } from "@mui/material";
 export default function HiddenContacts(){
 
    const { isLoading } = useSelector(store => store.loading)
-   const { hiddenContacts, isFetching } = useSelector(store => store.contact.contactsData)
-   const [showContacts,setShowContacts] = useState(false)
+   const { hiddenContacts } = useSelector(store => store.contact.contactsData)
+   const { isFetching } = useSelector(store => store.contact)
+   const [showContacts,setShowContacts] = useState(isFetching ? false : true)
    const [contactVisible,setContactVisible] = useState(false)
 
 
    useEffect(()=> {
       let timer;
-      if(!isFetching){
+      if(isFetching){
          timer = setTimeout(() => {
             setShowContacts(true)
-         }, 6000);
+         }, 4000)
       }
    },[isFetching])
 

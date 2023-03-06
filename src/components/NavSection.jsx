@@ -24,6 +24,12 @@ export default function NavSection(props){
       return () =>  window.removeEventListener('resize',resize)
    },[window.innerWidth])
 
+   function handleLinksClick(){
+      if(window.innerWidth < 1200 ){
+         setOpenNav(false)
+      }
+   }
+
 
    return(
       <nav className="main-nav" id="main-nav" style={navDisplayStyling}>
@@ -31,21 +37,21 @@ export default function NavSection(props){
             <ul>
                <li>
                   <CiUser className="contacts-icon"/>
-                  <NavLink to="/">Contacts</NavLink>
+                  <NavLink to="/" onClick={handleLinksClick}>Contacts</NavLink>
                </li>
                <li>
                   <AiOutlineFieldTime className="frequently-icon" />
-                  <NavLink to="/starred-contacts">Starred</NavLink>
+                  <NavLink to="/starred-contacts" onClick={handleLinksClick}>Starred</NavLink>
                </li>
             </ul>
             <ul>
                <li>
                   <BiHide className="hide-icon"/>
-                  <NavLink to="/hidden-contacts">Hidden Contacts</NavLink>
+                  <NavLink to="/hidden-contacts" onClick={handleLinksClick}>Hidden Contacts</NavLink>
                </li>
                <li>
                   <FaTrash className="trash-icon"/>
-                  <NavLink to="/trash">Trash</NavLink>
+                  <NavLink to="/trash" onClick={handleLinksClick}>Trash</NavLink>
                </li>
             </ul>
          </div>

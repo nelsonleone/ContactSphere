@@ -24,6 +24,7 @@ export default function ActiveContact(props){
 
 
    const { setAddedToTrash , setAddedToHiddenContacts} = props;
+   const [localIsStarredValue,setLocalIsStarredValue] = useState(isStarred)
    const [openContactMenu,setOpenContactMenu] = useState(false)
    const contactMenuRef = useRef(null)
    const contactMenuIconRef = useRef(null)
@@ -69,6 +70,7 @@ export default function ActiveContact(props){
 
    function handleStarContact(e){
       e.stopPropagation()
+      setLocalIsStarredValue(!localIsStarredValue)
       dispatch(handleContactStarring(props.contactInfo))
    }
 
@@ -93,7 +95,7 @@ export default function ActiveContact(props){
             <span className="hide-for-mobile work" aria-label="work-header">{jobTitle}/{companyName}</span>
 
             <div className="contact-icons">
-               <AiFillStar className={isStarred ? "star-icon starred" : "star-icon"} aria-label="star this contact" onClick={handleStarContact} />
+               <AiFillStar className={localIsStarredValue ? "star-icon starred" : "star-icon"} aria-label="star this contact" onClick={handleStarContact} />
                <button
                   className="dots-icon" 
                   aria-label="open contact options" 

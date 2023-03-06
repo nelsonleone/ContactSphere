@@ -53,15 +53,15 @@ export default function AuthManager(){
       }
    },[auth.currentUser])
 
-   // auth.signOut()
 
    useEffect(() => {
+      if(!auth.currentUser)return;
       const stopLoading = setTimeout(() => {
          dispatch(setLoading(false))
       }, 3000)
 
       return () =>  clearTimeout(stopLoading)
-   },[])
+   },[auth.currentUser])
 
 
    useEffect(() =>  {

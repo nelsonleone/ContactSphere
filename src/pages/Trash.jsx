@@ -6,8 +6,9 @@ import TrashContactItem from "../components/TrashContactItem"
 export default function Trash(){
 
    const { isLoading } = useSelector(store => store.loading)
-   const { inTrash, isFetching } = useSelector(store => store.contact.contactsData)
-   const [showContacts,setShowContacts] = useState(false)
+   const { inTrash } = useSelector(store => store.contact.contactsData)
+   const { isFetching } = useSelector(store => store.contact)
+   const [showContacts,setShowContacts] = useState(isFetching ? false : true)
    const [contactRemovedFromTrash,setContactRemovedFromTrash] = useState(false)
    const [deletedContact,setDeletedContact] = useState(false)
    const [emptyTrash,setEmptyTrash] =  useState(false)
@@ -15,10 +16,10 @@ export default function Trash(){
 
    useEffect(()=> {
       let timer;
-      if(!isFetching){
+      if(isFetching){
          timer = setTimeout(() => {
             setShowContacts(true)
-         }, 5000);
+         }, 5000)
       }
 
       return () => clearTimeout(timer)

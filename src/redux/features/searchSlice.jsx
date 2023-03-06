@@ -19,7 +19,7 @@ const searchSlice = createSlice({
          })
          .addCase(getSearchQuery.fulfilled,(state,{payload}) => {
             state.isFetching = false;
-            state.foundContacts = payload;
+            state.foundContacts = payload || [];
          })
          .addCase(getSearchQuery.rejected,(state,{payload}) => {
             state.isFetching = false;

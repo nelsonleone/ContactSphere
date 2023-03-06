@@ -33,7 +33,7 @@ export default function ContactView(){
 
    useEffect(() =>  {
       dispatch(getViewedContactDetails(contactId))
-   },[])
+   },[contactId])
 
    useEffect(() => {
       if(!isFetching){
