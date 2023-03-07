@@ -86,7 +86,7 @@ export default function ActiveContact(props){
 
 
    useEffect(() => {
-      
+
       const blurTimeout = setTimeout(() => {
          setBlur({opacity:""})
       }, 2000);
@@ -96,7 +96,7 @@ export default function ActiveContact(props){
 
    return(
       <>
-         <div className="contact" onClick={() => navigate(`/contact/${props.contactInfo.id}`)}>
+         <div className="contact" onClick={() => navigate(`/contact/${props.contactInfo.id}`)} style={blur}>
             <div className="name_image-container">
                <ContactImage image={contactImage} className="contactUser-image" />
                <span className="contact-name" aria-label="name-header">
