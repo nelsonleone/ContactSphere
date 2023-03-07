@@ -91,7 +91,7 @@
    @include MediaQueryDesktop{
       background:none;
       width:15%;
-      z-index:1;
+      z-index:1 !important;
       
       div{
          padding-top:9em;
