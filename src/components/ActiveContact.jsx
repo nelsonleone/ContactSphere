@@ -89,7 +89,7 @@ export default function ActiveContact(props){
 
       const blurTimeout = setTimeout(() => {
          setBlur({opacity:""})
-      }, 2000);
+      }, 3000)
 
       return () => clearTimeout(blurTimeout)
    },[blur])
