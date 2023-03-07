@@ -29,6 +29,7 @@ export default function ActiveContact(props){
    const [localIsStarredValue,setLocalIsStarredValue] = useState(isStarred)
    const [openContactMenu,setOpenContactMenu] = useState(false)
    const contactMenuRef = useRef(null)
+   const [blur,setBlur] = useState({opacity:""})
    const contactMenuIconRef = useRef(null)
    const id = useId()
    const { error } = useSelector(store => store.contact.contactsData)
@@ -60,12 +61,14 @@ export default function ActiveContact(props){
 
    async function handleAddToTrash(e){
       e.stopPropagation()
+      setBlur({opacity:".4"})
       await dispatch(setAddToTrash(props.contactInfo))
       setAddedToTrash(true)
    }
 
    async function handleHideContact(e){
       e.stopPropagation()
+      setBlur({opacity:".4"})
       await dispatch(setHidenContact(props.contactInfo))
       setAddedToHiddenContacts(true)
    }
@@ -80,6 +83,16 @@ export default function ActiveContact(props){
       e.stopPropagation()
       setOpenContactMenu(!openContactMenu)
    }
+
+
+   useEffect(() => {
+      
+      const blurTimeout = setTimeout(() => {
+         setBlur({opacity:""})
+      }, 2000);
+
+      return () => clearTimeout(blurTimeout)
+   },[blur])
 
    return(
       <>
