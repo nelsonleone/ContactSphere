@@ -61,7 +61,7 @@ export default function AuthManager(){
             dispatch(setLoading(false))
          }, 4000)
       }
-      else if(auth.currentUser){
+      if(auth.currentUser){
          dispatch(setLoading(false))
       }
       return () =>  clearTimeout(stopLoading)

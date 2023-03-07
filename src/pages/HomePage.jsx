@@ -93,7 +93,7 @@ export default function Homepage(){
             open={addedToTrash}
             autoHideDuration={5000}
             onClose={() => setAddedToTrash(false)}
-            message={"Contact Have Been Trashed"}
+            message={"Contact Sent To Trash"}
          />
          <Snackbar
             open={hiddenContact}
