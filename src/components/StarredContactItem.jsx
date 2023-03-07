@@ -47,7 +47,7 @@ export default function StarredContactItem(props){
       <div className="starred-contactItem" onClick={() => setShowMoreContent(!showMoreContent)} aria-controls={`${id}contact-fullContent`}>
          <div className="starred-contactItem-lessDisplay">
             <h4>
-               <span>{prefix}</span>
+               <span className="prefix">{prefix}</span>
                <span>{firstName}</span>
                <span>{lastName}</span>
             </h4>

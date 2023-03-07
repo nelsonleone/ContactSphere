@@ -88,8 +88,11 @@
       h4{
          font-weight: 500;
 
+         .prefix{
+            margin-right:.4em !important;
+         }
          span{
-            margin-right:.4em;
+            margin-left:.4em;
          }
       }
    }
