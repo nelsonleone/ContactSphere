@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react'
-import { Autocomplete, Loader, TextInput, createStyles, rem } from '@mantine/core';
+import { useState } from 'react'
+import { TextInput, createStyles, rem } from '@mantine/core';
 import React from 'react';
 import { TbFaceIdError } from 'react-icons/tb';
 
@@ -7,52 +7,9 @@ import { TbFaceIdError } from 'react-icons/tb';
 interface IProps {
   fieldValue: string,
   error: string | null,
-  setFormData: React.Dispatch<React.SetStateAction<IFormData>>
+  setFormData: React.Dispatch<React.SetStateAction<IFormData>>,
+  for: string
 }
-
-export function AutocompleteForm(props:IProps) {
-  const { setFormData, fieldValue, error } = props;
-  const timeoutRef = useRef<number>(-1)
-  const [value, setValue] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<string[]>([])
-
-  const handleChange = (val: string) => {
-    window.clearTimeout(timeoutRef.current)
-    setValue(val)
-    setData([])
-
-    if (val.trim().length === 0 || val.includes('@')) {
-      setLoading(false)
-    } else {
-      setLoading(true)
-      timeoutRef.current = window.setTimeout(() => {
-        setLoading(false)
-        setData(['gmail.com', 'outlook.com', 'yahoo.com'].map((provider) => `${val}@${provider}`))
-      }, 1000)
-    }
-
-    setFormData((prevState) => {
-      return {...prevState,password: {
-        value: val,
-        error: value === "" ? "This Field is required" : null
-      }}
-    })
-
-  }
-
-  return (
-    <Autocomplete
-      value={fieldValue}
-      data={data}
-      onChange={handleChange}
-      rightSection={loading ? <Loader size="1rem" /> : null}
-      label="Async Autocomplete data"
-      placeholder="Enter Your email"
-    />
-  )
-}
-
 
 
 const useStyles = createStyles((theme, { floating }: { floating: boolean }) => ({
@@ -96,15 +53,6 @@ const useStyles = createStyles((theme, { floating }: { floating: boolean }) => (
   },
 }))
 
-
-
-
-
-
-
-
-
-
 export function FloatingLabelInput(props:IProps) {
   const [focused, setFocused] = useState(false)
   const { classes } = useStyles({ floating: props.fieldValue.trim().length !== 0 || focused })
@@ -131,8 +79,8 @@ export function FloatingLabelInput(props:IProps) {
   return (
     <div>
       <TextInput
-        label="Password"
-        placeholder="Enter Your Password"
+        label={props.for === "displayName" ? "Display Name" : "Password"}
+        placeholder={props.for === "displayName" ? "Enter Your Display Name" : "Enter Your Password"}
         required
         classNames={classes}
         value={props.fieldValue}
@@ -140,11 +88,11 @@ export function FloatingLabelInput(props:IProps) {
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         mt="md"
-        name="password"
+        name={props.for === "displayName" ? "displayname" : "password"}
         autoComplete="nope"
         rightSection={<TbFaceIdError stroke={1.5} size="1.1rem" className={classes.icon} />}
       />
       
     </div>
   )
-}
+ }

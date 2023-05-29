@@ -1,7 +1,8 @@
-import { AutocompleteForm, FloatingLabelInput } from '../../lib/CustomInputs';
 import { FcGoogle } from 'react-icons/fc';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { useState } from 'react';
+import  { FloatingLabelInput } from '../../lib/customInputs/FloatingLabelInput'
+import  { AutocompleteInput } from '../../lib/customInputs/AutoCompleteInput'
 
 interface IProps{
    location: string
@@ -28,16 +29,28 @@ export default function AuthForm(props:IProps){
    return(
       <div className="auth-contents">
          <form>
-            <AutocompleteForm 
+            <AutocompleteInput 
                fieldValue={formData.email.value} 
                error={formData.email.error} 
                setFormData={setFormData}
                />
-            <FloatingLabelInput 
+            <FloatingLabelInput
                fieldValue={formData.password.value} 
                error={formData.password.error} 
                setFormData={setFormData}
+               for="password"
             />
+            {
+               props.location === "signup" ?
+               <FloatingLabelInput
+                  fieldValue={formData.displayName?.value!} 
+                  error={formData.displayName?.error!} 
+                  setFormData={setFormData}
+                  for="displayName"
+               />
+               :
+               ""
+            }
             <button type="submit">{props.location === "signin" ? "Sign In" : "Create Account"}</button>
          </form>
 
