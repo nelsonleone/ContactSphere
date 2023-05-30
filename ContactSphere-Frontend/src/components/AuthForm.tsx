@@ -38,7 +38,7 @@ export default function AuthForm(props:IProps){
                fieldValue={formData.password.value} 
                error={formData.password.error} 
                setFormData={setFormData}
-               for="password"
+               inputFor="password"
             />
             {
                props.location === "signup" ?
@@ -46,7 +46,7 @@ export default function AuthForm(props:IProps){
                   fieldValue={formData.displayName?.value!} 
                   error={formData.displayName?.error!} 
                   setFormData={setFormData}
-                  for="displayName"
+                  inputFor="displayName"
                />
                :
                ""
@@ -54,7 +54,7 @@ export default function AuthForm(props:IProps){
             <button type="submit">{props.location === "signin" ? "Sign In" : "Create Account"}</button>
          </form>
 
-         <h2>Continue With..</h2>
+         <h3>Continue With..</h3>
          <div className='alt_auth_methods'>
             <button>
                <FcGoogle />

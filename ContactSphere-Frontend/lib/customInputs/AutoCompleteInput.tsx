@@ -1,9 +1,6 @@
 import { useState, useRef } from 'react'
-import { Autocomplete, Loader, TextInput, createStyles, rem } from '@mantine/core';
+import { Autocomplete, Loader } from '@mantine/core';
 import React from 'react';
-import { TbFaceIdError } from 'react-icons/tb';
-
-
 interface IProps {
   fieldValue: string,
   error: string | null,
@@ -13,14 +10,19 @@ interface IProps {
 export function AutocompleteInput(props:IProps) {
   const { setFormData, fieldValue, error } = props;
   const timeoutRef = useRef<number>(-1)
-  const [value, setValue] = useState('')
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<string[]>([])
 
   const handleChange = (val: string) => {
     window.clearTimeout(timeoutRef.current)
-    setValue(val)
     setData([])
+    
+    setFormData((prevState) => {
+      return {...prevState,email: {
+        value: val,
+        error: val === "" ? "This Field is required" : null
+      }}
+    })
 
     if (val.trim().length === 0 || val.includes('@')) {
       setLoading(false)
@@ -31,24 +33,21 @@ export function AutocompleteInput(props:IProps) {
         setData(['gmail.com', 'outlook.com', 'yahoo.com'].map((provider) => `${val}@${provider}`))
       }, 1000)
     }
-
-    setFormData((prevState) => {
-      return {...prevState,password: {
-        value: val,
-        error: value === "" ? "This Field is required" : null
-      }}
-    })
-
   }
 
   return (
-    <Autocomplete
-      value={fieldValue}
-      data={data}
-      onChange={handleChange}
-      rightSection={loading ? <Loader size="1rem" /> : null}
-      label="Async Autocomplete data"
-      placeholder="Enter Your email"
-    />
+    <div>
+      <Autocomplete
+        value={fieldValue}
+        data={data}
+        onChange={handleChange}
+        rightSection={loading ? <Loader size="1rem" /> : null}
+        label="Email Address"
+        placeholder="Enter Your email"
+      />
+      {
+        error && <p role="alert" aria-label="Email Input Error">{error}</p>
+      }
+    </div>
   )
 }

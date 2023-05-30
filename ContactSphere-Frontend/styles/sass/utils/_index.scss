@@ -1,0 +1,15 @@
+@mixin flexObj($align:center,$justify:space-between,$direction:row){
+   display: flex;
+   align-items: $align;
+   justify-content: $justify;
+   flex-direction: $direction;
+}
+
+@mixin centerContentObj($left:0,$right:0,$bottom:0,$top:0){
+   position: absolute;
+   left: $left;
+   right: $right;
+   top: $top;
+   bottom: $bottom;
+   margin-inline: auto;
+}

@@ -1,0 +1,64 @@
+@use '../utils' as *;
+@use '../global/colors' as *;
+
+.header_main{
+   @include flexObj($align:baseline);
+   padding-bottom:3em;
+   width: 96%;
+   margin: auto;
+   gap: 1em;
+   position: relative;
+   svg{
+      font-size: 1.2rem;
+      color: $text-color1;
+   }
+
+
+   .user_utils{
+      position: absolute;
+      bottom: 1em;
+      left: calc(100% - 97%);
+      @include flexObj;
+      gap:1em;
+   }
+
+   h1{
+      flex-basis: 60%;
+   }
+}
+
+.main_nav{
+ position: absolute;
+}
+
+span[role=tooltip]{
+   opacity: 0;
+   display: none;
+}
+
+button[aria-controls=user-menu]{
+   aspect-ratio: 1/1;
+   width:2.5em;
+   border-radius: 50%;
+   margin-inline:.3em;
+   border: 2px dotted $accent_color_1;
+
+   svg{
+      color: $accent_color_1;
+   }
+}
+
+
+// searchbar styling
+.searchbar{
+   input{
+      display:none;
+   }
+}
+
+
+
+
+.hamburger-icon{
+  padding:0;
+}

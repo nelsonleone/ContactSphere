@@ -8,7 +8,7 @@ interface IProps {
   fieldValue: string,
   error: string | null,
   setFormData: React.Dispatch<React.SetStateAction<IFormData>>,
-  for: string
+  inputFor: string
 }
 
 
@@ -53,13 +53,18 @@ const useStyles = createStyles((theme, { floating }: { floating: boolean }) => (
   },
 }))
 
+
+
+
+
+
 export function FloatingLabelInput(props:IProps) {
+  const {  fieldValue, error , inputFor , setFormData } = props;
   const [focused, setFocused] = useState(false)
-  const { classes } = useStyles({ floating: props.fieldValue.trim().length !== 0 || focused })
+  const { classes } = useStyles({ floating: fieldValue.trim().length !== 0 || focused })
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const { setFormData } = props;
 
     setFormData((prevState) => {
       return {...prevState,[name]: {
@@ -79,20 +84,28 @@ export function FloatingLabelInput(props:IProps) {
   return (
     <div>
       <TextInput
-        label={props.for === "displayName" ? "Display Name" : "Password"}
-        placeholder={props.for === "displayName" ? "Enter Your Display Name" : "Enter Your Password"}
+        label={inputFor === "displayName" ? "Display Name" : "Password"}
+        placeholder={inputFor === "displayName" ? "Enter Your Display Name" : "Enter Your Password"}
         required
         classNames={classes}
-        value={props.fieldValue}
+        value={fieldValue}
         onChange={handleChange}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         mt="md"
-        name={props.for === "displayName" ? "displayname" : "password"}
+        name={inputFor === "displayName" ? "displayname" : "password"}
         autoComplete="nope"
-        rightSection={<TbFaceIdError stroke={1.5} size="1.1rem" className={classes.icon} />}
+        rightSection={<TbFaceIdError stroke={1.5} style={{height:"1.1rem",width:"1.1rem"}} className={classes.icon} />}
       />
-      
+      {
+        error && 
+        <p 
+          role="alert" 
+          aria-label={inputFor === "displayName" ? "Display name Input Error" : "Password Input Error"}
+          >
+          {error}
+        </p>
+      }
     </div>
   )
  }

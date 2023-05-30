@@ -12,9 +12,10 @@ export default function HamburgerIcon(){
          aria-controls='main-nav' 
          aria-expanded={isOpen}
          aria-label='Open Navigation Menu'
+         className="hamburger-icon"
         >
          <span className='AT_only'>Menu</span>
-         <Hamburger toggled={isOpen} />
+         <Hamburger toggled={isOpen} size={25} />
       </button>
    )
 }

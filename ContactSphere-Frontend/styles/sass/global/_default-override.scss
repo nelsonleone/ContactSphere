@@ -1,0 +1,62 @@
+@use './typography' as *;
+@use './colors' as *;
+
+*,
+*::after,
+*::before{
+   padding:0;
+   margin:0;
+   box-sizing: border-box;
+}
+
+html,body{
+   height: 100%;
+}
+
+img{
+   max-width: 100%;
+   object-fit: cover;
+}
+
+button,
+input{
+   background: none;
+   border:none;
+   font-family: inherit;
+   cursor: pointer;
+
+   &:focus{
+      border: none;
+      outline: none;
+   }
+}
+
+a,
+li{
+   list-style-type: none;
+   text-decoration: none;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5{
+   color: $text-color1;
+}
+
+h1{
+   font-family: $ff_secondary;
+   font-size: 1.4rem;
+}
+
+.AT_only {
+   font-size: 1px;
+   width:0;
+   clip: rect(0,0,0,0);
+   position:absolute;
+   left:-100000px;
+   top: -100000px;
+   opacity:  0;
+}

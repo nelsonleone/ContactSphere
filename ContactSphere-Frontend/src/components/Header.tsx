@@ -1,99 +1,49 @@
-import { useNavigate, NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import HamburgerIcon from '../../lib/HamburgerIcon'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import SearchBar from './SearchBar'
-import { Setting, Help } from './UserUtils'
+import { FaUser } from 'react-icons/fa'
+import {  MemoizedHelp as  Help, MemoizedSetting as  Setting } from './UserUtils'
+import NavMenu from './NavMenu'
+
+export interface IHeaderState {
+   openUserMenu: boolean,
+   toggleSettingSection: boolean,
+   openHelpArea: boolean,
+   openNav: boolean
+}
 
 export default function Header(){
 
    const navigate = useNavigate()
-   const [openUserMenu,setOpenUserMenu] = useState<boolean>(false)
+   const hamburgerRef = useRef<HTMLButtonElement>(null)
+   const [state,setState] = useState<IHeaderState>({
+      openUserMenu: false,
+      toggleSettingSection: false,
+      openHelpArea: false,
+      openNav: window.innerWidth > 900
+   })
 
    return(
-      <header>
-         <HamburgerIcon />
-         <img 
-            src="/images/logo.png" 
-            alt="ContactSphere Logo" 
-            width={200} 
-            height={150}
-            onClick={() => navigate('/')}
-         />
+      <header className="header_main">
+         <HamburgerIcon  />
+         <h1 onClick={() => navigate('/')}>ContactSphere</h1>
 
-         <nav>
-            <ul>
-               <li>
-                  <NavLink 
-                     to="/"
-                     className={({ isActive, isPending }) =>
-                        isPending ? "pendingLink" : isActive ? "active" : ""
-                     }
-                   >
-                     <i class="fa-regular fa-user"></i>
-                     Contacts
-                  </NavLink>
-               </li>
-               <li>
-                  <NavLink 
-                     to="/favourites"
-                     className={({ isActive, isPending }) =>
-                        isPending ? "pendingLink" : isActive ? "activeLink" : ""
-                     }
-                     >
-                     <i class="fa-regular fa-star"></i>
-                     Favourites
-                  </NavLink>
-               </li>
-               <li>
-                  <NavLink 
-                     to="/hidden"
-                     className={({ isActive, isPending }) =>
-                        isPending ? "pendingLink" : isActive ? "activeLink" : ""
-                     }
-                     >
-                     Hidden
-                  </NavLink>
-               </li>
-               <li>
-                  <NavLink 
-                     to="/duplicates"
-                     className={({ isActive, isPending }) =>
-                        isPending ? "pendingLink" : isActive ? "activeLink" : ""
-                     }
-                     >
-                     Duplicates
-                  </NavLink>
-               </li>
-               <li>
-                  <NavLink 
-                     to="/trash"
-                     className={({ isActive, isPending }) =>
-                        isPending ? "pendingLink" : isActive ? "active" : ""
-                     }
-                     >
-                     Trash
-                  </NavLink>
-               </li>
-               <li>
-                  <button>Labels</button>
-               </li>
-            </ul>
-         </nav>
-
+         <NavMenu componentStateName='openNav' openNav={state.openNav} setState={setState} togglerRef={hamburgerRef} />
          <SearchBar />
 
-         <div className="user-utils-container">
-            <Setting />
-            <Help />
+         <div className="user_utils">
+            <Help setState={setState} state={state} />
+            <Setting setState={setState} state={state} />
          </div>
-
+         
         <button 
            className='toggle-user-menu' 
            aria-controls='user-menu' 
-           aria-expanded={openUserMenu}
-           onClick={() => setOpenUserMenu(prevState => prevState = !prevState)}
+           aria-expanded={state.openUserMenu}
+           onClick={() => setState(prevState => ({...prevState,openUserMenu:prevState.openUserMenu}))}
            >
-           <i className="fa-solid fa-user"></i>
+           <FaUser />
         </button>
       </header>
    )
