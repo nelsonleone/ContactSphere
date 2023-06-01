@@ -1,14 +1,13 @@
 import { useState } from 'react'
 import { TextInput, createStyles, rem } from '@mantine/core';
 import React from 'react';
-import { TbFaceIdError } from 'react-icons/tb';
+import { IFormData } from '../../src/vite-env';
 
 
 interface IProps {
   fieldValue: string,
   error: string | null,
   setFormData: React.Dispatch<React.SetStateAction<IFormData>>,
-  inputFor: string
 }
 
 
@@ -31,7 +30,7 @@ const useStyles = createStyles((theme, { floating }: { floating: boolean }) => (
       ? theme.colors.dark[3]
       : theme.colors.gray[5],
     transition: 'transform 150ms ease, color 150ms ease, font-size 150ms ease',
-    transform: floating ? `translate(-${theme.spacing.sm}, ${rem(-28)})` : 'none',
+    transform: floating ? `translate(-${theme.spacing.sm}, ${rem(-35)})` : 'none',
     fontSize: floating ? theme.fontSizes.xs : theme.fontSizes.sm,
     fontWeight: floating ? 500 : 400,
   },
@@ -59,7 +58,7 @@ const useStyles = createStyles((theme, { floating }: { floating: boolean }) => (
 
 
 export function FloatingLabelInput(props:IProps) {
-  const {  fieldValue, error , inputFor , setFormData } = props;
+  const {  fieldValue, error , setFormData } = props;
   const [focused, setFocused] = useState(false)
   const { classes } = useStyles({ floating: fieldValue.trim().length !== 0 || focused })
 
@@ -82,10 +81,10 @@ export function FloatingLabelInput(props:IProps) {
   }  
 
   return (
-    <div>
+    <div className="floating_input_container">
       <TextInput
-        label={inputFor === "displayName" ? "Display Name" : "Password"}
-        placeholder={inputFor === "displayName" ? "Enter Your Display Name" : "Enter Your Password"}
+        label="Display Name"
+        placeholder="Enter Your Display Name"
         required
         classNames={classes}
         value={fieldValue}
@@ -93,15 +92,14 @@ export function FloatingLabelInput(props:IProps) {
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         mt="md"
-        name={inputFor === "displayName" ? "displayname" : "password"}
+        name="displayName"
         autoComplete="nope"
-        rightSection={<TbFaceIdError stroke={1.5} style={{height:"1.1rem",width:"1.1rem"}} className={classes.icon} />}
       />
       {
         error && 
         <p 
           role="alert" 
-          aria-label={inputFor === "displayName" ? "Display name Input Error" : "Password Input Error"}
+          aria-label="Display name Input Error"
           >
           {error}
         </p>

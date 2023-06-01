@@ -1,0 +1,25 @@
+@use '../global/typography' as *;
+@use '../global/colors' as *;
+
+.not_found_page{
+   padding-block: 1em;
+   font-family: $ff_primary;
+   color: $text-color1;
+
+   svg{
+      font-size: 5rem;
+      display: block;
+      margin-inline: auto;
+   }
+
+   h2{
+      color: $accent_color_1;
+      font-size: 1.2rem;
+      text-align: center; 
+      text-shadow: 0 4px  3px $util_color2;
+   }
+
+   p{
+      margin-block: 1em;
+   }
+}

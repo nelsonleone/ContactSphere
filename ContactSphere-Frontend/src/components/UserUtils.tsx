@@ -3,7 +3,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import { orange } from '@mui/material/colors';
 import Radio from '@mui/material/Radio';
-import { Dispatch, SetStateAction, useState, memo } from 'react';
+import { Dispatch, SetStateAction, useState, memo, useCallback } from 'react';
 import { BsColumnsGap } from 'react-icons/bs'
 import { Link } from 'react-router-dom';
 import { HelpIcon, SettingsIcon } from '../../lib/with-tooltip/index'
@@ -22,21 +22,22 @@ function Setting(props:IProps){
     setSelectedValue(event.target.value)
   }
 
-   const controlProps = (item: string) => ({
-    checked: selectedValue === item,
-    onChange: handleChange,
-    value: item,
-    name: 'sortby-firstname',
-    inputProps: { 'aria-label': item },
-  })
+  const controlProps = useCallback((item:string) => ({
+      checked: selectedValue === item,
+      onChange: handleChange,
+      value: item,
+      name: 'sortby-firstname',
+      inputProps: { 'aria-label': item },
+   }), [selectedValue])
+ 
 
-   const controlProps2 = (item: string) => ({
+   const controlProps2 = useCallback((item: string) => ({
     checked: selectedValue === item,
     onChange: handleChange,
     value: item,
     name: 'sortby-lastname',
     inputProps: { 'aria-label': item },
-  })
+  }), [selectedValue])
 
    return(
       <>

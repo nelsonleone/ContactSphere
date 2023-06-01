@@ -24,9 +24,10 @@ export default function Header(){
       openNav: window.innerWidth > 900
    })
 
+
    return(
       <header className="header_main">
-         <HamburgerIcon  />
+         <HamburgerIcon openNav={state.openNav} ref={hamburgerRef} setState={setState}  />
          <h1 onClick={() => navigate('/')}>ContactSphere</h1>
 
          <NavMenu componentStateName='openNav' openNav={state.openNav} setState={setState} togglerRef={hamburgerRef} />
@@ -41,7 +42,7 @@ export default function Header(){
            className='toggle-user-menu' 
            aria-controls='user-menu' 
            aria-expanded={state.openUserMenu}
-           onClick={() => setState(prevState => ({...prevState,openUserMenu:prevState.openUserMenu}))}
+           onClick={() => setState(prevState => ({...prevState, openUserMenu: !prevState.openUserMenu}))}
            >
            <FaUser />
         </button>

@@ -19,6 +19,21 @@ type IFormData = {
 }
 
 
+type UserCredentials = {
+   email: string,
+   displayName?: string,
+   password: string
+}
+
+
+type AuthUserDetails = {
+   email: string,
+   displayName: string,
+   photoURL?: string,
+   _id: string
+}
+
+
 
 type ComponentStateName = keyof IHeaderState;
 

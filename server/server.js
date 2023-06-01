@@ -29,7 +29,7 @@ app.use(cookieParser())
 
 
 // Auth routes
-app.use('/auth',authRoutes)
+app.use('/server/auth',authRoutes)
 
 
 

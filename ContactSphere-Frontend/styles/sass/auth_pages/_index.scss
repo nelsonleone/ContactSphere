@@ -1,3 +1,128 @@
+@use '../utils/' as *;
+@use '../global/typography' as *;
+@use '../global/colors' as *;
+
 .auth-page{
-   padding: 1em;
+   margin-top: 1em;
+   height: 100%;
+   padding-bottom: 3em;
+   border-top: 1px solid $util_color1;
+   padding-top: 2em;
+   background: #FAFAFA;
+   
+   h2{
+      font-size: 1.4rem;
+      text-align: center;
+   }
+}
+
+.auth-contents{
+   width: 90%;
+   margin-inline: auto;
+
+   // form styling
+   form {
+      &>div{
+         margin-block: 1.4em 1.7em;
+      }
+
+      p[role=alert]{
+         color: $radiant_color1;
+         font-size: .83rem;
+         text-transform: capitalize;
+         font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+         margin-bottom: .5em;
+      }
+
+      input{
+         width: 20em;
+         font-family: $ff_primary;
+         border: 2px solid $util_color1;
+         height: 3em;
+         padding: 1em;
+         font-weight: $fw_bold;
+         font-size: 1rem;
+
+         &::placeholder{
+            font-family: inherit;
+         }
+
+         &:focus{
+            border: 1px dotted $accent_color_1;
+            outline: none !important;
+         }
+      }
+
+      label,
+      p{
+         font-family: $ff_primary;
+      }
+
+      label{
+         font-size: .85rem;
+         margin-block: .3em ;
+      }
+
+      .floating_input_container{
+         label{
+            font-family: $ff_primary;
+            color: $text-color1; 
+         }
+         input::placeholder{
+            font-family: inherit;
+         }
+      }
+
+
+
+      // form submit button
+      button[type=submit]{
+         font-family: $ff_secondary;
+         font-size: .9rem;
+         margin-bottom: 1.6em;
+         color: $text-color2;
+         text-transform: uppercase;
+         text-decoration: underline $accent_color_2;
+         background: $accent_color_2;
+         color: $generic_color_1;
+         padding: .5em;
+         min-width: 5em;
+         border-radius: 4px;
+      }
+   }
+
+
+   // alternative auth options
+   .alt_auth_methods{
+      h3{
+         text-align: center;
+         font-size: 1.1rem;
+      }
+
+      button{
+         width: 20em;
+         height: 3em;
+         padding: 1em;
+         border:  2px solid $util_color1;
+         border-radius: 5px;
+         display: block;
+         margin-inline: auto;
+         margin-block: 1em;
+         font-family: $ff_primary;
+         color: $text-color2;
+         font-weight: $fw_bold;
+         letter-spacing: 1px;
+         font-size:.9rem;
+         @include flexObj($justify:center);
+         gap: 1em;
+
+         &:focus{
+            border: 1px dotted $accent_color_1;
+         }
+
+         svg{
+            font-size: 1.5rem;
+         }
+      }
+   }
 }

@@ -3,6 +3,8 @@ import { FaPhoneAlt } from 'react-icons/fa';
 import { useState } from 'react';
 import  { FloatingLabelInput } from '../../lib/customInputs/FloatingLabelInput'
 import  { AutocompleteInput } from '../../lib/customInputs/AutoCompleteInput'
+import  AuthFormPasswordInput from '../../lib/customInputs/PasswordInput'
+import { IFormData } from '../vite-env';
 
 interface IProps{
    location: string
@@ -33,12 +35,11 @@ export default function AuthForm(props:IProps){
                fieldValue={formData.email.value} 
                error={formData.email.error} 
                setFormData={setFormData}
-               />
-            <FloatingLabelInput
+            />
+            <AuthFormPasswordInput
                fieldValue={formData.password.value} 
                error={formData.password.error} 
                setFormData={setFormData}
-               inputFor="password"
             />
             {
                props.location === "signup" ?
@@ -46,7 +47,6 @@ export default function AuthForm(props:IProps){
                   fieldValue={formData.displayName?.value!} 
                   error={formData.displayName?.error!} 
                   setFormData={setFormData}
-                  inputFor="displayName"
                />
                :
                ""
@@ -54,8 +54,8 @@ export default function AuthForm(props:IProps){
             <button type="submit">{props.location === "signin" ? "Sign In" : "Create Account"}</button>
          </form>
 
-         <h3>Continue With..</h3>
          <div className='alt_auth_methods'>
+            <h3>Continue With..</h3>
             <button>
                <FcGoogle />
                <span>Google</span>

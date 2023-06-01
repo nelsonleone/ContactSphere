@@ -9,7 +9,11 @@
    box-sizing: border-box;
 }
 
-html,body{
+html{
+   min-height: 100vh;
+}
+
+body{
    height: 100%;
 }
 
@@ -44,10 +48,10 @@ h3,
 h4,
 h5{
    color: $text-color1;
+   font-family: $ff_secondary;
 }
 
 h1{
-   font-family: $ff_secondary;
    font-size: 1.4rem;
 }
 
@@ -59,4 +63,9 @@ h1{
    left:-100000px;
    top: -100000px;
    opacity:  0;
+}
+
+section{
+   width: 95%;
+   margin:  auto;
 }

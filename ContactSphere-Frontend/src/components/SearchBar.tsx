@@ -7,11 +7,10 @@ function SearchBar() {
 
   return (
     <div className="searchbar">
-      <HiSearch className="search-icon" onClick={() => setShowSearchbar(!showSearchbar)} />
-      {
-        showSearchbar &&
-        <input type="text" placeholder="Search" />
-      }
+      <button aria-controls="searchbar-input" className="search-icon" onClick={() => setShowSearchbar(!showSearchbar)} >
+        <HiSearch />
+      </button>
+      <input type="text" id="searchbar-input" name="searchbar-input" placeholder="Search" className={showSearchbar ? "searchbar-input" : "searchbar-input hide-searchbar"} />
     </div>
   )
 }
