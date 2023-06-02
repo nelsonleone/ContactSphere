@@ -45,7 +45,7 @@
 
          &::placeholder{
             font-family: inherit;
-            color: $util_color2;
+            color: hsl(220, 1%, 41%) !important;
             font-size: .9rem;
          }
 
@@ -60,6 +60,7 @@
             height:  4.2em;
             width: 19em;
             border-radius: 4px;
+            background: $generic_color_1;
             
             button{
                position: absolute;
@@ -68,7 +69,7 @@
                bottom: .7em;
                
                svg{
-                  color: hsl(0, 1%, 35%);
+                  color: hsl(220, 1%, 41%);
                   font-size: 1.5rem;
                }
             }
@@ -80,6 +81,7 @@
                position: absolute;
                bottom: 0;
                left: 0;
+               z-index: 2;
             }
          }
       }
@@ -88,8 +90,7 @@
          font-family: $ff_primary;
       }
       
-      label,
-      .auth_form_password label{
+      label{
          font-family: $ff_primary;
          font-size: .85rem;
          font-weight: $fw_bold;

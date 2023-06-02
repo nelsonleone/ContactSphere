@@ -12,7 +12,15 @@ const extendedAuthQuerySlice = authQuerySlice.injectEndpoints({
         body: userCredentials,
       }),
     }),
+
+    signInUser: builder.mutation<AuthUserDetails, UserCredentials>({
+      query: (userCredentials) => ({
+        url: `${AUTH_URL}/signin?method=email_and_password`,
+        method: 'POST',
+        body: userCredentials,
+      }),
+    })
   }),
 })
 
-export const { useSetNewUserMutation } = extendedAuthQuerySlice;
+export const { useSetNewUserMutation, useSignInUserMutation } = extendedAuthQuerySlice;

@@ -42,6 +42,11 @@ const authSignIn = asyncHandler(async (req,res) => {
 const authSignUp = asyncHandler(async (req,res) => {
   const { email, password, displayName } = req.body;
 
+  if(!email || !pasaword || !displayName){
+    res.status(400)
+    throw new Error("Invalid Credentials")
+  }
+
   const alreadySignedUp = await AuthUser.findOne({ email })
 
   if(alreadySignedUp){

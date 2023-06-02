@@ -12,6 +12,7 @@ const corsOptions = {
   optionsSuccessStatus: 200, // Some legacy browsers (IE11) choke on 204
 }
 
+
 // Connect to MongoDB (mongoose)
 mongoose
   .connect(process.env.MONGODB_URI, {
