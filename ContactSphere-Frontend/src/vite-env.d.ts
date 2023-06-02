@@ -3,20 +3,26 @@
 import { Dispatch, RefObject, SetStateAction } from "react";
 import { IHeaderState } from "./components/Header";
 
+type IFormFieldError = {
+   message: string
+} | null
+
+
 type IFormData = {
    email: {
       value: string,
-      error: string | null,
+      error: IFormFieldError,
    },
    password: {
       value: string,
-      error: string | null,
-   }
-   displayName?: {
+      error: IFormFieldError,
+   },
+   displayName: {
       value: string,
-      error: string | null,
+      error: IFormFieldError
    }
 }
+
 
 
 type UserCredentials = {

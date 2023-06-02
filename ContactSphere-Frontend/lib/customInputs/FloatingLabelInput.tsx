@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { TextInput, createStyles, rem } from '@mantine/core';
 import React from 'react';
-import { IFormData } from '../../src/vite-env';
+import { IFormData, IFormFieldError } from '../../src/vite-env';
 
 
 interface IProps {
   fieldValue: string,
-  error: string | null,
-  setFormData: React.Dispatch<React.SetStateAction<IFormData>>,
+  error: IFormFieldError | null,
+  setFormData: React.Dispatch<React.SetStateAction<IFormData>>
 }
 
 
@@ -75,7 +75,7 @@ export function FloatingLabelInput(props:IProps) {
     setFormData((prevState) => {
       return {...prevState,[name]: {
         value,
-        error: value === "" ? "This Field is required" : null
+        error: value === "" ? { message: "This Field is required" } : null
       }}
     })
   }  
@@ -96,12 +96,12 @@ export function FloatingLabelInput(props:IProps) {
         autoComplete="nope"
       />
       {
-        error && 
+        error?.message && 
         <p 
           role="alert" 
           aria-label="Display name Input Error"
           >
-          {error}
+          {error.message}
         </p>
       }
     </div>

@@ -2,10 +2,15 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 const mongoose = require('mongoose')
+const cors = require('cors')
 const cookieParser = require('cookie-parser')
 
 const authRoutes = require('./routes/authRoutes')
 const { noContentFound, errorHandler } = require('./middlewares/errorMiddlewares')
+const corsOptions = {
+  origin: process.env.NODE_ENV === "development" ? "http://localhost:5173" : process.env.FRONTEND_APP_URL ,
+  optionsSuccessStatus: 200, // Some legacy browsers (IE11) choke on 204
+}
 
 // Connect to MongoDB (mongoose)
 mongoose
@@ -22,6 +27,7 @@ mongoose
   })
 
 // Middlewares
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())

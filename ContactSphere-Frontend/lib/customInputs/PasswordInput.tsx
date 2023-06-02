@@ -1,14 +1,18 @@
-import { PasswordInput, Text, Group} from '@mantine/core'
-import React from 'react';
-import { IFormData } from '../../src/vite-env';
+import React, { useState } from 'react';
+import { IFormData, IFormFieldError } from '../../src/vite-env';
+import { FaEyeSlash } from 'react-icons/fa'
+import { BiShow }  from 'react-icons/bi'
 
 interface IProps {
   fieldValue: string,
-  error: string | null,
+  error: IFormFieldError | null,
   setFormData: React.Dispatch<React.SetStateAction<IFormData>>
 }
 
 export default function AuthFormPasswordInput(props: IProps) {
+
+  const [showPassword,setShowPassword] = useState<boolean>(false)
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -16,22 +20,32 @@ export default function AuthFormPasswordInput(props: IProps) {
       ...prevState,
       [name]: {
         value,
-        error: value === '' ? 'This Field is required' : null,
+        error: value === '' ? {message:'This Field is required'} : null,
       },
     }))
   }
 
    return (
-    <div>
-      <Group position="apart" mb={5}>
-        <Text component="label" htmlFor="your-password" size="sm" weight={500}>
-          Enter Your password
-        </Text>
-      </Group>
-      <PasswordInput onChange={handleChange} name="password" value={props.fieldValue} placeholder="Your password" id="your-password" />
-      {props.error && (
+    <div  className="auth_form_password">
+      <div className="input-container">
+        <label htmlFor='password'>Password</label>
+        {
+          !showPassword ?
+          <button aria-controls="password" aria-label="Show Password" onClick={() => setShowPassword((prevState) => prevState = !prevState)}>
+            <BiShow aria-hidden="true" />
+            <span className="AT_only">Show Password</span>
+          </button>
+          :
+          <button aria-controls="password" aria-label="Hide Password" onClick={() => setShowPassword((prevState) => prevState = !prevState)}>
+            <FaEyeSlash aria-hidden="true" />
+            <span className="AT_only">Hide Password</span>
+          </button>
+        }
+        <input type={showPassword ? "text" : "password"} placeholder="Enter Your Password" onChange={handleChange} id="password" name="password" value={props.fieldValue} /> 
+      </div>
+      {props.error?.message && (
         <p role="alert" aria-label="Display name Input Error">
-          {props.error}
+          {props.error.message}
         </p>
       )}
     </div>

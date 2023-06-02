@@ -38,28 +38,61 @@
          width: 20em;
          font-family: $ff_primary;
          border: 2px solid $util_color1;
-         height: 3em;
+         height: 2.8em;
          padding: 1em;
          font-weight: $fw_bold;
-         font-size: 1rem;
+         font-size: .95rem;
 
          &::placeholder{
             font-family: inherit;
+            color: $util_color2;
+            font-size: .9rem;
          }
 
          &:focus{
             border: 1px dotted $accent_color_1;
-            outline: none !important;
          }
       }
 
-      label,
+      .auth_form_password{
+         .input-container{
+            position: relative;
+            height:  4.2em;
+            width: 19em;
+            border-radius: 4px;
+            
+            button{
+               position: absolute;
+               right: .5em;
+               z-index: 2;
+               bottom: .7em;
+               
+               svg{
+                  color: hsl(0, 1%, 35%);
+                  font-size: 1.5rem;
+               }
+            }
+            
+            input{
+               border-radius: 4px;
+               height: 68%;
+               width: 100%;
+               position: absolute;
+               bottom: 0;
+               left: 0;
+            }
+         }
+      }
+
       p{
          font-family: $ff_primary;
       }
-
-      label{
+      
+      label,
+      .auth_form_password label{
+         font-family: $ff_primary;
          font-size: .85rem;
+         font-weight: $fw_bold;
          margin-block: .3em ;
       }
 

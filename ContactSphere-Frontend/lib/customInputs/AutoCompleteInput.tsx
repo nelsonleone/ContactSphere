@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react'
 import { Autocomplete, Loader } from '@mantine/core';
 import React from 'react';
+import { IFormData, IFormFieldError } from '../../src/vite-env';
 interface IProps {
   fieldValue: string,
-  error: string | null,
+  error: IFormFieldError | null,
   setFormData: React.Dispatch<React.SetStateAction<IFormData>>
 }
 
@@ -20,7 +21,7 @@ export function AutocompleteInput(props:IProps) {
     setFormData((prevState) => {
       return {...prevState,email: {
         value: val,
-        error: val === "" ? "This Field is required" : null
+        error: val === "" ? {message:"This Field is required"} : null
       }}
     })
 
@@ -46,7 +47,7 @@ export function AutocompleteInput(props:IProps) {
         placeholder="Enter Your email"
       />
       {
-        error && <p role="alert" aria-label="Email Input Error">{error}</p>
+        error?.message && <p role="alert" aria-label="Email Input Error">{error.message}</p>
       }
     </div>
   )

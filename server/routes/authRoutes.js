@@ -9,7 +9,7 @@ const express = require('express')
 const router = express.Router()
 
 router.post('/signin',authSignIn)
-router.post('/signup',authSignUp)
+router.post('/create_account',authSignUp)
 router.post('/signout',authSignOut)
 
 module.exports = router;
