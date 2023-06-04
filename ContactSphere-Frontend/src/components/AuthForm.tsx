@@ -1,17 +1,18 @@
 import { FcGoogle } from 'react-icons/fc';
 import { FaPhoneAlt } from 'react-icons/fa';
-import { FormEvent, useState } from 'react';
+import { FormEvent } from 'react';
 import  { FloatingLabelInput } from '../../lib/customInputs/FloatingLabelInput'
 import  { AutocompleteInput } from '../../lib/customInputs/AutoCompleteInput'
 import  AuthFormPasswordInput from '../../lib/customInputs/PasswordInput'
 import  LoadingButton from '../../lib/buttons/LoadingButton'
 import { IFormData } from '../vite-env';
-import { signinState, signupState } from './FormStateObj';
-import setInputErrors from '../utils/helperFns/setInputError';
-import { AuthFormLocation } from '../enums';
+import { AlertSeverity, AuthFormLocation } from '../enums';
 import useAuthentication from '../customHooks/useAuthentication';
 import { useAppDispatch } from '../customHooks/reduxCustomHooks';
-import { hideAlert } from '../RTK/features/alertSlice'
+import { setShowAlert } from '../RTK/features/alertSlice'
+import { setUserDetails } from '../RTK/features/authUserSlice';
+import { Link } from 'react-router-dom';
+import { useForm, SubmitHandler } from "react-hook-form";
 
 interface IProps{
    location: string
@@ -20,92 +21,90 @@ interface IProps{
 
 export default function AuthForm(props:IProps){
 
-   const [formData, setFormData] = useState<IFormData>(
-      props.location === AuthFormLocation.SIGN_IN ?
-      signinState :
-      signupState
-   )
    const dispatch = useAppDispatch()
+   const { location } = props;
+   const { authRequest, isLoading } = useAuthentication(props.location)
 
-   const { authRequest, isLoading, isError } = useAuthentication(props.location)
+   // Form Handler
+   const { register, handleSubmit, getValues, formState: { errors } } = useForm<IFormData>()
 
 
-   // signin handler
-   const handleSignin = async (e:FormEvent<HTMLFormElement>) => {
+   // form submission
+   const onSubmit = (e:FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-
-      // handle check for invalid inputs
-      setInputErrors(props.location,formData,setFormData)
-
-      const hasError = Object.values(formData).some(field =>  field.error !== null)
-      if(hasError){
-         return;
-      }
-
-      try{
-         await authRequest(
-            {
-               email:formData.email.value,
-               password:formData.password.value,
-               displayName:formData.displayName.value
-            }
-         )
-      }
-      catch(err:unknown){
-         dispatch(showAlert())
-      }
+      handleSubmit(handleAuthRequest)
    }
 
+   const handleAuthRequest :SubmitHandler<IFormData> = async(formData)  =>  {
+      const { email, password, displayName } = formData;
+      //   USER SIGNIN HANDLER
+      if (location === AuthFormLocation.SIGN_IN){
 
-   // signup handler
-   const handleCreateNewAccount = async(e:FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-
-      // handle check for Invalid Inputs
-      setInputErrors(props.location,formData,setFormData)
-
-      const hasError = Object.values(formData).some(field =>  field.error !== null)
-      if(hasError){
-         return;
+         try{
+            const res = await authRequest({email,password}).unwrap()
+            dispatch(setUserDetails(res))
+            dispatch(setShowAlert(
+               {
+                  alertMessage:"Signed In Successfully",
+                  severity: AlertSeverity.SUCCESS
+               }
+            ))
+         }
+   
+         catch(err:any){
+            dispatch(setShowAlert({alertMessage:err?.data?.message || err.error, severity: AlertSeverity.ERROR}))
+         }
       }
 
-      try{
-         await authRequest(
-            {
-               email:formData.email.value,
-               password:formData.password.value
-            }
-         )
+
+      // USER SIGNUP HANDLER
+      else if (location === AuthFormLocation.SIGN_UP){
+         try{
+            const res = await authRequest({email,password,displayName}).unwrap()
+            dispatch(setUserDetails(res))
+            dispatch(setShowAlert(
+               {
+                  alertMessage:"Signed In Successfully",
+                  severity: AlertSeverity.SUCCESS
+               }
+            ))
+         }
+         catch(err:any){
+            dispatch(setShowAlert({alertMessage:err?.data?.message|| err.error, severity: AlertSeverity.ERROR}))
+         }
       }
-      catch(err:any){console.log(err.message)}
    }
 
 
 
    return(
       <div className="auth-contents">
-         <form onSubmit={props.location === AuthFormLocation.SIGN_IN ? handleSignin : handleCreateNewAccount}>
+         <form onSubmit={onSubmit}>
             <AutocompleteInput 
-               fieldValue={formData.email.value} 
-               error={formData.email.error} 
-               setFormData={setFormData}
+               registerField={register} 
+               error={errors.email?.message} 
             />
             <AuthFormPasswordInput
-               fieldValue={formData.password.value} 
-               error={formData.password.error} 
-               setFormData={setFormData}
+               registerField={register} 
+               error={errors.password?.message} 
             />
             {
                props.location === AuthFormLocation.SIGN_UP ?
                <FloatingLabelInput
-                  fieldValue={formData.displayName?.value!} 
-                  error={formData.displayName?.error!} 
-                  setFormData={setFormData}
+                  registerField={register} 
+                  error={errors.displayName?.message}
+                  getValues={getValues}
                />
                :
                ""
             }
-            <LoadingButton location={props.location} buttonType="submit" loading={isLoading} />
+
+            <div className="flex-row">
+               <LoadingButton location={location} buttonType="submit" loading={isLoading} />
+               <Link to={props.location === AuthFormLocation.SIGN_UP ? "/auth/signin" : "/auth/create_account"}>
+               {location === AuthFormLocation.SIGN_IN ? "Create Account" : "Sign In"}
+               </Link>
+            </div>
          </form>
 
          <div className='alt_auth_methods'>

@@ -2,27 +2,24 @@
 
 import { Dispatch, RefObject, SetStateAction } from "react";
 import { IHeaderState } from "./components/Header";
+import { UseFormGetValues, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
-type IFormFieldError = {
-   message: string
-} | null
 
 
 type IFormData = {
-   email: {
-      value: string,
-      error: IFormFieldError,
-   },
-   password: {
-      value: string,
-      error: IFormFieldError,
-   },
-   displayName: {
-      value: string,
-      error: IFormFieldError
-   }
+   email: string,
+   password: string
+   displayName: string
 }
 
+interface ICustomInputsProps {
+   registerField:  UseFormRegister<IFormData>,
+   error: string | undefined,
+}
+
+interface ICustomInputsProps_Password extends ICustomInputsProps {
+   getValues: UseFormGetValues<IFormData>
+}
 
 
 type UserCredentials = {

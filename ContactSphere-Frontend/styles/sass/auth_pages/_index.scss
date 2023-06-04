@@ -45,7 +45,7 @@
 
          &::placeholder{
             font-family: inherit;
-            color: hsl(220, 1%, 41%) !important;
+            color: hsl(240, 7%, 42%) !important;
             font-size: .9rem;
          }
 
@@ -60,17 +60,19 @@
             height:  4.2em;
             width: 19em;
             border-radius: 4px;
-            background: $generic_color_1;
             
-            button{
+            svg{
                position: absolute;
                right: .5em;
                z-index: 2;
-               bottom: .7em;
-               
-               svg{
-                  color: hsl(220, 1%, 41%);
-                  font-size: 1.5rem;
+               bottom: .5em;
+               color: hsl(220, 1%, 41%);
+               font-size: 1.5rem;
+               cursor: pointer;
+               transition: .3s ease-in;
+
+               &:hover{
+                  color: $accent_color_2;
                }
             }
             
@@ -81,7 +83,6 @@
                position: absolute;
                bottom: 0;
                left: 0;
-               z-index: 2;
             }
          }
       }
@@ -113,7 +114,6 @@
       button[type=submit]{
          font-family: $ff_secondary;
          font-size: .9rem;
-         margin-bottom: 1.6em;
          color: $text-color2;
          text-transform: uppercase;
          text-decoration: underline $accent_color_2;
@@ -122,6 +122,18 @@
          padding: .5em;
          min-width: 5em;
          border-radius: 4px;
+      }
+      
+      
+      .flex-row{
+         margin-bottom: 1.6em;
+         @include flexObj;
+
+         a{
+            color: $accent_color_1;
+            text-decoration: underline $accent_color_1;
+            font-family: $ff_secondary;
+         }
       }
    }
 

@@ -1,30 +1,39 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, FormEvent } from 'react'
 import { Autocomplete, Loader } from '@mantine/core';
 import React from 'react';
-import { IFormData, IFormFieldError } from '../../src/vite-env';
-interface IProps {
-  fieldValue: string,
-  error: IFormFieldError | null,
-  setFormData: React.Dispatch<React.SetStateAction<IFormData>>
-}
+import { ICustomInputsProps } from '../../src/vite-env';
 
-export function AutocompleteInput(props:IProps) {
-  const { setFormData, fieldValue, error } = props;
+
+
+export function AutocompleteInput(props:ICustomInputsProps) {
+  const { setValue, registerField, error } = props;
   const timeoutRef = useRef<number>(-1)
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<string[]>([])
 
-  const handleChange = (val: string) => {
+  const handleChange = (val:string) => {
     window.clearTimeout(timeoutRef.current)
     setData([])
     
-    setFormData((prevState) => {
-      return {...prevState,email: {
-        value: val,
-        error: val === "" ? {message:"This Field is required"} : null
-      }}
-    })
+    if (setValue){
+      setValue('email',val,{
+        shouldValidate:  true
+      })
+    }
+    
+    // set value to corresponding registered input field value
+    registerField('email',
+      {
+        required: "This Field is required",
+        pattern: {
+          value:  /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+          message: "Invalid Email Format"
+        }
+      }
+    )
 
+
+    // handle email domain suggestions
     if (val.trim().length === 0 || val.includes('@')) {
       setLoading(false)
     } else {
@@ -39,15 +48,16 @@ export function AutocompleteInput(props:IProps) {
   return (
     <div>
       <Autocomplete
-        value={fieldValue}
         data={data}
         onChange={handleChange}
         rightSection={loading ? <Loader size="1rem" /> : null}
         label="Email Address"
         placeholder="Enter Your email"
+        type="email"
+        name="email"
       />
       {
-        error?.message && <p role="alert" aria-label="Email Input Error">{error.message}</p>
+        error && <p role="alert" aria-label="Email Input Error">{error}</p>
       }
     </div>
   )

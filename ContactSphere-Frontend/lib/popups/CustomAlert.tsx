@@ -4,16 +4,27 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
-import { hideAlert } from '../../src/RTK/features/alertSlice';
+import { setHideAlert } from '../../src/RTK/features/alertSlice';
+import { useLocation } from 'react-router-dom';
 
 export default function CustomAlert() {
   const { severity, alertMessage, showAlert } = useAppSelector(store => store.alert)
-  const dispatch = useAppDispatch
+  const dispatch = useAppDispatch()
+  const location = useLocation()
+
+  React.useEffect(() => {
+      const hideTimer = setTimeout(() => {
+         dispatch(setHideAlert())
+      }, 4000)
+
+      return () => clearTimeout(hideTimer)
+   },[showAlert,location.pathname])
 
   return (
    showAlert ?
    <Collapse in={showAlert}>
-      <Alert
+      <Alert 
+         style={{width:"90%",position: "absolute", top: "4em", zIndex:"100"}} 
          severity={severity}
          action={
          <IconButton
@@ -21,7 +32,7 @@ export default function CustomAlert() {
             color="inherit"
             size="small"
             onClick={() => {
-               dispatch(hideAlert())
+               dispatch(setHideAlert())
             }}
          >
             <CloseIcon fontSize="inherit" />

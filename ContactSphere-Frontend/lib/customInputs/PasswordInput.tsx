@@ -1,51 +1,56 @@
 import React, { useState } from 'react';
-import { IFormData, IFormFieldError } from '../../src/vite-env';
+import { ICustomInputsProps } from '../../src/vite-env';
 import { FaEyeSlash } from 'react-icons/fa'
 import { BiShow }  from 'react-icons/bi'
 
-interface IProps {
-  fieldValue: string,
-  error: IFormFieldError | null,
-  setFormData: React.Dispatch<React.SetStateAction<IFormData>>
-}
 
-export default function AuthFormPasswordInput(props: IProps) {
+
+export default function AuthFormPasswordInput(props:ICustomInputsProps) {
 
   const [showPassword,setShowPassword] = useState<boolean>(false)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    props.setFormData((prevState) => ({
-      ...prevState,
-      [name]: {
-        value,
-        error: value === '' ? {message:'This Field is required'} : null,
-      },
-    }))
-  }
-
-   return (
+  return (
     <div  className="auth_form_password">
       <div className="input-container">
         <label htmlFor='password'>Password</label>
         {
           !showPassword ?
-          <button aria-controls="password" aria-label="Show Password" onClick={() => setShowPassword((prevState) => prevState = !prevState)}>
-            <BiShow aria-hidden="true" />
-            <span className="AT_only">Show Password</span>
-          </button>
+          <BiShow 
+            onClick={() => setShowPassword((prevState) => prevState = !prevState)}
+            type="button" 
+            aria-controls="password" 
+            aria-label="Show Password" 
+           />
           :
-          <button aria-controls="password" aria-label="Hide Password" onClick={() => setShowPassword((prevState) => prevState = !prevState)}>
-            <FaEyeSlash aria-hidden="true" />
-            <span className="AT_only">Hide Password</span>
-          </button>
+          <FaEyeSlash 
+            type="button" 
+            aria-label="Hide Password"
+            aria-controls="password" 
+            onClick={() => setShowPassword((prevState) => prevState = !prevState)}
+          />
         }
-        <input type={showPassword ? "text" : "password"} placeholder="Enter Your Password" onChange={handleChange} id="password" name="password" value={props.fieldValue} /> 
+        <input 
+          type={showPassword ? "text" : "password"} 
+          required  
+          placeholder="Enter Your Password" 
+          id="password"
+          aria-invalid={props.error ? "true" : "false"}
+          {
+            ...props.registerField('password',
+              {
+                required: 'This field is required',
+                minLength: {
+                  value: 6,
+                  message: 'Password must be at least 6 characters long',
+                },
+              }
+            )
+          }
+        /> 
       </div>
-      {props.error?.message && (
+      {props.error && (
         <p role="alert" aria-label="Display name Input Error">
-          {props.error.message}
+          {props.error}
         </p>
       )}
     </div>

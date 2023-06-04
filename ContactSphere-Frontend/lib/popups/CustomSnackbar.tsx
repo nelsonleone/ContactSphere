@@ -4,12 +4,14 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
 import { hideSnackbar } from '../../src/RTK/features/snackbarDisplaySlice';
+import { useLocation } from 'react-router-dom';
 
 
 export default function CustomSnackbar() {
 
    const { showSnackbar, snackbarMessage } = useAppSelector(store => store.snackbar)
    const dispatch = useAppDispatch()
+   const location = useLocation()
 
    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
       if (reason === 'clickaway') {
@@ -18,6 +20,17 @@ export default function CustomSnackbar() {
 
       dispatch(hideSnackbar())
    }
+
+   React.useEffect(() => {
+      const hideTimer = setTimeout(() => {
+         dispatch(hideSnackbar())
+      }, 4000)
+
+      return () => clearTimeout(hideTimer)
+   },[showSnackbar,location.pathname])
+
+
+
 
    const action = (
          <IconButton

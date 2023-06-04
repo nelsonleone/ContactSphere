@@ -1,14 +1,7 @@
 import { useState } from 'react'
 import { TextInput, createStyles, rem } from '@mantine/core';
 import React from 'react';
-import { IFormData, IFormFieldError } from '../../src/vite-env';
-
-
-interface IProps {
-  fieldValue: string,
-  error: IFormFieldError | null,
-  setFormData: React.Dispatch<React.SetStateAction<IFormData>>
-}
+import { ICustomInputsProps_Password } from '../../src/vite-env';
 
 
 const useStyles = createStyles((theme, { floating }: { floating: boolean }) => ({
@@ -57,51 +50,40 @@ const useStyles = createStyles((theme, { floating }: { floating: boolean }) => (
 
 
 
-export function FloatingLabelInput(props:IProps) {
-  const {  fieldValue, error , setFormData } = props;
+export function FloatingLabelInput(props:ICustomInputsProps_Password) {
+  const { registerField, error, getValues } = props;
   const [focused, setFocused] = useState(false)
-  const { classes } = useStyles({ floating: fieldValue.trim().length !== 0 || focused })
+  const { displayName } = getValues()
+  const { classes } = useStyles({ floating: displayName.trim().length !== 0 || focused })
 
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    setFormData((prevState) => {
-      return {...prevState,[name]: {
-        value,
-        error: value === "" ? "This Field is required" : null
-      }}
-    })
-
-    setFormData((prevState) => {
-      return {...prevState,[name]: {
-        value,
-        error: value === "" ? { message: "This Field is required" } : null
-      }}
-    })
-  }  
 
   return (
     <div className="floating_input_container">
       <TextInput
         label="Display Name"
         placeholder="Enter Your Display Name"
-        required
         classNames={classes}
-        value={fieldValue}
-        onChange={handleChange}
+        {
+          ...registerField('displayName',
+            {
+              required: "This Field is required"
+            }
+          )
+        }
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         mt="md"
         name="displayName"
         autoComplete="nope"
+        aria-invalid={error ? "true" : "false"}
       />
       {
-        error?.message && 
+        error && 
         <p 
           role="alert" 
           aria-label="Display name Input Error"
           >
-          {error.message}
+          {error}
         </p>
       }
     </div>

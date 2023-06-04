@@ -15,6 +15,7 @@ export default function LoadingButton(props:IButtonProps){
      <Button 
        type={props.buttonType} 
        loading={props.loading} 
+       disabled={props.loading}
        leftIcon={props.location === AuthFormLocation.SIGN_IN ? <FaSignInAlt size="1rem" /> : <FaUserCheck />} 
        loaderPosition="right"
       >

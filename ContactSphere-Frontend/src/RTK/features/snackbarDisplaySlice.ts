@@ -19,12 +19,6 @@ const snackbarDisplaySlice = createSlice({
       setShowSnackbar: (state,{ payload }:PayloadAction<SnackbarPayload>) => {
          state.showSnackbar = true;
          state.snackbarMessage = payload.snackbarMessage
-
-
-         setTimeout(() => {
-            state.showSnackbar = false
-            state.snackbarMessage =  ""
-         },4000)
       },
 
       hideSnackbar: state => {
