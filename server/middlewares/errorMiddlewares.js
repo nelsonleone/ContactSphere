@@ -9,7 +9,7 @@ const noContentFound = (req,res,next) => {
 
 
 const errorHandler = (error,request,response,next) => {
-   let statusCode = response.statusCode || 500;
+   let statusCode = response.statusCode === 200 ? 500 : response.statusCode;
    let message = error.message;
 
    if (error.name === 'CastError' && error.kind === 'ObjectId') {

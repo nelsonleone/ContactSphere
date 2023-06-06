@@ -13,6 +13,7 @@ import { setShowAlert } from '../RTK/features/alertSlice'
 import { setUserDetails } from '../RTK/features/authUserSlice';
 import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from "react-hook-form";
+import Button from '@mui/material/Button';
 
 interface IProps{
    location: string
@@ -26,14 +27,12 @@ export default function AuthForm(props:IProps){
    const { authRequest, isLoading } = useAuthentication(props.location)
 
    // Form Handler
-   const { register, handleSubmit, getValues, formState: { errors } } = useForm<IFormData>()
+   const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm<IFormData>({
+      defaultValues: {
+         displayName: "#"
+      }
+   })
 
-
-   // form submission
-   const onSubmit = (e:FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-      handleSubmit(handleAuthRequest)
-   }
 
    const handleAuthRequest :SubmitHandler<IFormData> = async(formData)  =>  {
       const { email, password, displayName } = formData;
@@ -79,10 +78,11 @@ export default function AuthForm(props:IProps){
 
    return(
       <div className="auth-contents">
-         <form onSubmit={onSubmit}>
+         <form onSubmit={handleSubmit(handleAuthRequest)}>
             <AutocompleteInput 
                registerField={register} 
                error={errors.email?.message} 
+               setValue={setValue}
             />
             <AuthFormPasswordInput
                registerField={register} 
@@ -109,15 +109,13 @@ export default function AuthForm(props:IProps){
 
          <div className='alt_auth_methods'>
             <h3>Continue With..</h3>
-            <button>
-               <FcGoogle />
-               <span>Google</span>
-            </button>
+            <Button startIcon={<FcGoogle />}>
+               Google
+            </Button>
 
-            <button>
-               <FaPhoneAlt />
-               <span>Phone Number</span>
-            </button>
+            <Button startIcon={ <FaPhoneAlt />}>
+               Phone Number
+            </Button>
          </div>
       </div>
    )

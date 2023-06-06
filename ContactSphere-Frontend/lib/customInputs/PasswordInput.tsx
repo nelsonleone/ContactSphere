@@ -31,7 +31,6 @@ export default function AuthFormPasswordInput(props:ICustomInputsProps) {
         }
         <input 
           type={showPassword ? "text" : "password"} 
-          required  
           placeholder="Enter Your Password" 
           id="password"
           aria-invalid={props.error ? "true" : "false"}

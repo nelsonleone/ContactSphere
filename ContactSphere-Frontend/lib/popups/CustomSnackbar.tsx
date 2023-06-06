@@ -30,27 +30,33 @@ export default function CustomSnackbar() {
    },[showSnackbar,location.pathname])
 
 
-
-
    const action = (
-         <IconButton
-         size="small"
-         aria-label="close"
-         color="inherit"
-         onClick={handleClose}
-         >
-         <CloseIcon fontSize="small" />
-         </IconButton>
+      <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleClose}
+      >
+      <CloseIcon fontSize="small" />
+      </IconButton>
    )
 
    return (
       <Snackbar
          open={showSnackbar}
+         className="popup-prompt"
          autoHideDuration={6000}
          onClose={handleClose}
          message={snackbarMessage}
          action={action}
-         style={{backgroundColor: "#d85a06",color:"#FAFAFA"}}
+         style={ {
+            backgroundColor: "#d85a06",
+            color:"#FAFAFA",
+            width:"20em",
+            position: "fixed",
+            bottom: "2em",
+            zIndex:"100",
+         }}
       />
    )
 }

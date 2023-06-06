@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import HamburgerIcon from '../../lib/HamburgerIcon'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import SearchBar from './SearchBar'
 import { FaUser } from 'react-icons/fa'
 import {  MemoizedHelp as  Help, MemoizedSetting as  Setting } from './UserUtils'

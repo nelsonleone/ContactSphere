@@ -30,7 +30,8 @@
 
       &::before{
          content: "";
-         width: 90%;
+         width: 97%;
+         margin-inline: auto;
          height: 3px;
          position: absolute;
          background-color: $accent_color_2;
@@ -113,7 +114,7 @@ button[aria-controls=user-menu]{
    width:3em;
    border-radius: 50%;
    margin-inline:.3em;
-   border: 1px solid $text-color1;
+   border: 1px solid $accent_color_2;
 
    svg{
       color: $accent_color_1;
@@ -131,10 +132,11 @@ button[aria-controls=user-menu]{
   font-family: $ff_primary;
   font-weight: 500;
   color: $text-color1;
-  z-index: 102;
+  z-index: 99;
   background-color: $generic_color_1;
   border-radius: 6px;
   border: 1px solid rgb(192, 186, 186);
+  background: $bg_color2;
   
   &:focus{
      border: 1px solid rgb(192, 186, 186);
@@ -150,4 +152,100 @@ button[aria-controls=user-menu]{
 
 .hamburger-icon{
   z-index: 101;
+}
+
+
+
+
+// MEDIA QUERIES
+@media (min-width:40rem) {
+   .header_main{
+      gap: .5em;
+      h1{
+         flex-basis:unset;
+         margin-right: 4em;
+      }
+   }
+
+   .searchbar{
+      position: relative;
+      @include flexObj;
+      right: -4em;
+
+      svg{
+         display: none;
+      }
+   }
+
+   .searchbar-input{
+      bottom: unset;
+      left: unset;
+      right: 2em;
+      width: 20em;
+   }
+
+   .main_nav{
+      width: 50%;
+   }
+
+}
+
+
+
+
+
+
+@media (min-width:60rem) {
+   .header_main{
+      padding-block: 1em;
+      position: relative;
+      padding-left: 4em;
+
+         
+      .user_utils{
+         position: unset;
+         gap: 1em;
+
+         svg{
+            font-size: 1.4rem;
+         }
+      }
+   }
+
+  .main_nav{
+      box-shadow: none;
+      top: 5em;
+      padding-top: 1em;
+      background: transparent;
+      width: 20%;
+      left: -1%;
+      z-index: 1;
+
+      li{
+         margin-block: 1.5em;
+      }
+   }
+
+   .hamburger-icon{
+      position: absolute;
+      left: 0;
+   }
+
+   .searchbar{
+      flex-basis: 33%;
+      right: unset;
+      .searchbar-input{
+         width: 40em;
+         right: 0;
+         margin: auto;
+         height: 2.5em;
+         padding: 1.5em 1em;
+         font-size: 1rem;
+
+         &::placeholder{
+            color: $text-color2;
+         }
+      }
+   }
+
 }

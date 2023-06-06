@@ -1,4 +1,4 @@
-import { useState, useRef, FormEvent } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Autocomplete, Loader } from '@mantine/core';
 import React from 'react';
 import { ICustomInputsProps } from '../../src/vite-env';
@@ -11,17 +11,8 @@ export function AutocompleteInput(props:ICustomInputsProps) {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<string[]>([])
 
-  const handleChange = (val:string) => {
-    window.clearTimeout(timeoutRef.current)
-    setData([])
-    
-    if (setValue){
-      setValue('email',val,{
-        shouldValidate:  true
-      })
-    }
-    
-    // set value to corresponding registered input field value
+  useEffect(() => {
+    // register input field
     registerField('email',
       {
         required: "This Field is required",
@@ -31,8 +22,21 @@ export function AutocompleteInput(props:ICustomInputsProps) {
         }
       }
     )
+  
+  },[])
 
+  const handleChange = (val:string) => {
+    window.clearTimeout(timeoutRef.current)
+    setData([])
+    
 
+    // set value to corresponding registered input field
+    if (setValue){
+      setValue('email',val,{
+        shouldValidate:  true
+      })
+    }
+    
     // handle email domain suggestions
     if (val.trim().length === 0 || val.includes('@')) {
       setLoading(false)
@@ -53,8 +57,8 @@ export function AutocompleteInput(props:ICustomInputsProps) {
         rightSection={loading ? <Loader size="1rem" /> : null}
         label="Email Address"
         placeholder="Enter Your email"
-        type="email"
         name="email"
+        type="email"
       />
       {
         error && <p role="alert" aria-label="Email Input Error">{error}</p>

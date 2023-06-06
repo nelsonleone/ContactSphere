@@ -30,7 +30,7 @@
          color: $radiant_color1;
          font-size: .83rem;
          text-transform: capitalize;
-         font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+         font-family: $ff_prompts;
          margin-bottom: .5em;
       }
 
@@ -45,7 +45,8 @@
 
          &::placeholder{
             font-family: inherit;
-            color: hsl(240, 7%, 42%) !important;
+            color: $text-color2;
+            opacity: .5;
             font-size: .9rem;
          }
 
@@ -54,6 +55,19 @@
          }
       }
 
+      p{
+         font-family: $ff_primary;
+      }
+      
+      label{
+         font-family: $ff_primary;
+         font-size: .85rem;
+         font-weight: $fw_bold;
+         margin-block: .3em ;
+         color: $text-color2; 
+      }
+
+      // password input
       .auth_form_password{
          .input-container{
             position: relative;
@@ -78,6 +92,7 @@
             
             input{
                border-radius: 4px;
+               background-color: $generic_color_1;
                height: 68%;
                width: 100%;
                position: absolute;
@@ -87,21 +102,14 @@
          }
       }
 
-      p{
-         font-family: $ff_primary;
-      }
-      
-      label{
-         font-family: $ff_primary;
-         font-size: .85rem;
-         font-weight: $fw_bold;
-         margin-block: .3em ;
-      }
 
+      // displayName input
       .floating_input_container{
+
+         margin-top: 3em;
+
          label{
             font-family: $ff_primary;
-            color: $text-color1; 
          }
          input::placeholder{
             font-family: inherit;
@@ -140,6 +148,7 @@
 
    // alternative auth options
    .alt_auth_methods{
+      margin-top: 2.5em;
       h3{
          text-align: center;
          font-size: 1.1rem;
@@ -157,10 +166,10 @@
          font-family: $ff_primary;
          color: $text-color2;
          font-weight: $fw_bold;
-         letter-spacing: 1px;
-         font-size:.9rem;
+         letter-spacing: .05rem;
+         font-size:.88rem;
          @include flexObj($justify:center);
-         gap: 1em;
+         gap: .2em;
 
          &:focus{
             border: 1px dotted $accent_color_1;
@@ -172,3 +181,67 @@
       }
    }
 }
+
+
+// MEDIA QUERIES
+@media (min-width:40rem) {
+ 
+   .auth-contents{
+      form{
+
+         input{
+            width: 27em;
+         }
+
+         .auth_form_password .input-container{
+            width: 26em;
+         }
+      }
+
+      .alt_auth_methods{
+         h3{
+            text-align: left;
+         }
+         button{
+            width: 26em;
+            margin-inline: 0;
+         }
+      }
+   }
+
+}
+
+@media (min-width:60rem) {
+ 
+   .auth-contents{
+      form{
+         @include flexObj($direction:column,$justify:center);
+         &>div{
+            width: 35%;
+            margin:1em auto;
+         }
+
+         input{
+            width: 100%;
+         }
+         .auth_form_password{
+            .input-container{
+               width: 100%;
+            }
+         }
+      }
+
+      .alt_auth_methods{
+         width: 35%;
+         margin-inline: auto;
+         @include flexObj($direction:column,$justify:center);
+         h3{
+            text-align: center;
+         }
+         button{
+            width: 100%;
+         }
+      }
+   }
+}
+

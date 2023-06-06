@@ -52,7 +52,7 @@ h5{
 }
 
 h1{
-   font-size: 1.4rem;
+   font-size: clamp(1.406rem, 0.545vw + 1.28rem, 1.65rem);
 }
 
 .AT_only {
@@ -63,6 +63,10 @@ h1{
    left:-100000px;
    top: -100000px;
    opacity:  0;
+}
+
+.popup-prompt {
+   font-family: $ff_prompts !important;
 }
 
 section{

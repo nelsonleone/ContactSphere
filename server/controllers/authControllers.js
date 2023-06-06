@@ -1,80 +1,44 @@
-const AuthUser = require('../models/authUserModel')
 const asyncHandler = require('express-async-handler')
-const bcrypt = require('bcryptjs')
-const generateAuthToken = require('../utils/generateAuthToken')
+const cleanDisplayName = require('../utils/cleanDisplayName')
+const firebaseAdmin = require('../firebase/firebaseAdmin')
+const verifyIdToken = require('../utils/authAid/verifyIdToken')
+const checkCsrfToken = require('../utils/authAid/checkCsrfToken')
 
-// Handled SignIn Request
-const authSignIn = asyncHandler(async (req,res) => {
-  if (req.query.method === "email_and_password") {
-    const { email, password  } = req.body;
+// Handled User authorization Request
+const authorizeUser = asyncHandler(async (req,res) => {
+  const idToken = res.body.idToken.toString()
   
-    const signedUpUser = await AuthUser.findOne({ email })
-  
-    if (!signedUpUser){
-      res.status(401)
-      throw new Error('Invalid Email Address')
-    }
-  
-    const isCorrectPassword = await bcrypt.compare(password,signedUpUser.password)
-  
-    if (!isCorrectPassword){
-      res.status(401)
-      throw new Error('Wrong Password')
-    }
-  
-    generateAuthToken(res,signedUpUser._id)
-    res.status(200)
-  
-    res.json({
-      displayName: signedUpUser.displayName,
-      email: signedUpUser.email,
-      _id: signedUpUser._id
-    })
+  await checkCsrfToken(req,res)
+  const { uid } = await verifyIdToken(idToken)
 
-  } else if (req.query.method === "google_signin") {
-    handleGoogleSignin(req,res)
+  try {
+    const expiresIn = 60 * 60 * 24 * 3 * 1000;
+    const sessionCookie = await getAuth().createSessionCookie(idToken, { expiresIn })
+    const options = { 
+      maxAge: expiresIn, 
+      httpOnly: true, 
+      secure: true, 
+      domain: process.env.NODE_ENV === "production" ? process.env.FRONTEND_APP_URL : 'localhost:5173',
+      url: '/',
+      sameSite: 'strict'
+    }
+    res.cookie('authSessionCookie', sessionCookie, options)
+    res.status(200).end(JSON.stringify({
+      message:  "SUCCESS"
+    }))
+  } 
+  
+  catch (error) {
+    res.status(401).send('UNAUTHORIZED REQUEST!')
   }
 })
 
-
-
-// Handled New User Register
-const authSignUp = asyncHandler(async (req,res) => {
-  const { email, password, displayName } = req.body;
-
-  if(!email || !pasaword || !displayName){
-    res.status(400)
-    throw new Error("Invalid Credentials")
-  }
-
-  const alreadySignedUp = await AuthUser.findOne({ email })
-
-  if(alreadySignedUp){
-    res.status(400)
-    throw new Error('User Already Exists')
-  }
-
-  const newAuthUser = await AuthUser.create({
-    email,
-    password,
-    displayName
-  })
-
-  newAuthUser.save()
-
-  generateAuthToken(res,newAuthUser._id)
-  res.status(201).json({
-    displayName: newAuthUser.displayName,
-    email: newAuthUser.email,
-    _id: newAuthUser._id
-  })
-})
 
 
 
 // Handled Signout Request
 const authSignOut = (req,res) => {
-  res.clearCookie('authToken')
+  res.clearCookie('authSessionCookie')
 
   // fallback
   res.cookie('authToken','',{ expiresIn: new Date(0) })
@@ -84,12 +48,11 @@ const authSignOut = (req,res) => {
 
 
 const handleGoogleSignin = (req,res) => {
-  console.log("hh")
+  
 }
 
 
 module.exports = {
-  authSignIn,
-  authSignUp,
+  authorizeUser,
   authSignOut
 }

@@ -66,7 +66,11 @@ export function FloatingLabelInput(props:ICustomInputsProps_Password) {
         {
           ...registerField('displayName',
             {
-              required: "This Field is required"
+              required: "This Field is required",
+              minLength: {
+                value: 3,
+                message: "Enter a valid Display Name"
+              }
             }
           )
         }

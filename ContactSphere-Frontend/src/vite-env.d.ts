@@ -15,6 +15,7 @@ type IFormData = {
 interface ICustomInputsProps {
    registerField:  UseFormRegister<IFormData>,
    error: string | undefined,
+   setValue?: UseFormSetValue<IFormData>
 }
 
 interface ICustomInputsProps_Password extends ICustomInputsProps {
