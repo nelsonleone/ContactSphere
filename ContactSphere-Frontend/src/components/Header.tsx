@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import HamburgerIcon from '../../lib/HamburgerIcon'
 import { useRef, useState, useEffect } from 'react'
 import SearchBar from './SearchBar'
@@ -17,12 +17,21 @@ export default function Header(){
 
    const navigate = useNavigate()
    const hamburgerRef = useRef<HTMLButtonElement>(null)
+   const location = useLocation()
    const [state,setState] = useState<IHeaderState>({
       openUserMenu: false,
       toggleSettingSection: false,
       openHelpArea: false,
-      openNav: window.innerWidth > 900
+      openNav: window.innerWidth > 900 
    })
+
+   useEffect(() => {
+      // hide main nav contents in auth locations
+      if(location.pathname === '/auth/signin' ||  location.pathname ==='/auth/create_account'){
+         setState(prevState => ({ ...prevState, openNav: false }))
+         hamburgerRef.current?.disabled === false ? true : true
+      }
+   },[])
 
 
    return(

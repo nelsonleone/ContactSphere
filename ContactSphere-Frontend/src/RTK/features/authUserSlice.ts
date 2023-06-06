@@ -6,7 +6,7 @@ interface ISliceState {
       displayName: string | null,
       email: string | null,
       photoURL?: string | null,
-      _id: string | null
+      uid: string | null
    }
 }
 
@@ -16,7 +16,7 @@ const initialState: ISliceState = {
       displayName: null,
       email: null,
       photoURL: null,
-      _id: null
+      uid: null
    }
 }
 
@@ -25,20 +25,20 @@ const authUserSlice = createSlice({
    initialState,
    reducers: {
       setUserDetails: (state, action: PayloadAction<ISliceState['userDetails']>) => {
-         const { displayName, email, photoURL, _id } = action.payload;
+         const { displayName, email, photoURL, uid } = action.payload;
 
          state.userDetails = {
             displayName ,
             email,
             photoURL,
-            _id
+            uid
          }
          state.beenAuthenticated = true;
      },
 
      setLocalLogout: state => {
          state.beenAuthenticated = false;
-         state.userDetails = { _id: null , displayName: null, email: null,  photoURL: null }
+         state.userDetails = { uid: null , displayName: null, email: null,  photoURL: null }
       }
    }
 })

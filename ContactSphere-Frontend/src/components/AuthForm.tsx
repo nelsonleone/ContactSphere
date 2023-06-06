@@ -1,19 +1,20 @@
 import { FcGoogle } from 'react-icons/fc';
 import { FaPhoneAlt } from 'react-icons/fa';
-import { FormEvent } from 'react';
 import  { FloatingLabelInput } from '../../lib/customInputs/FloatingLabelInput'
 import  { AutocompleteInput } from '../../lib/customInputs/AutoCompleteInput'
 import  AuthFormPasswordInput from '../../lib/customInputs/PasswordInput'
 import  LoadingButton from '../../lib/buttons/LoadingButton'
 import { IFormData } from '../vite-env';
 import { AlertSeverity, AuthFormLocation } from '../enums';
-import useAuthentication from '../customHooks/useAuthentication';
 import { useAppDispatch } from '../customHooks/reduxCustomHooks';
 import { setShowAlert } from '../RTK/features/alertSlice'
 import { setUserDetails } from '../RTK/features/authUserSlice';
 import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from "react-hook-form";
 import Button from '@mui/material/Button';
+import { useAuthorizeUserMutation } from '../RTK/features/injectedApiQueries';
+import emailSignInHandler from '../firebaseClient/signInWithEmailAndPassword';
+import emailSignupHandler from '../firebaseClient/createUserWithEmailAndPassword';
 
 interface IProps{
    location: string
@@ -24,7 +25,7 @@ export default function AuthForm(props:IProps){
 
    const dispatch = useAppDispatch()
    const { location } = props;
-   const { authRequest, isLoading } = useAuthentication(props.location)
+   const [ authorizeUser, { isLoading } ] = useAuthorizeUserMutation()
 
    // Form Handler
    const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm<IFormData>({
@@ -40,18 +41,32 @@ export default function AuthForm(props:IProps){
       if (location === AuthFormLocation.SIGN_IN){
 
          try{
-            const res = await authRequest({email,password}).unwrap()
-            dispatch(setUserDetails(res))
-            dispatch(setShowAlert(
-               {
-                  alertMessage:"Signed In Successfully",
-                  severity: AlertSeverity.SUCCESS
-               }
-            ))
+            const userCredentials= await emailSignInHandler(email,password)
+
+            // send IdToken To Server For Further Authentication
+            await authorizeUser(await userCredentials.user.getIdToken())
+            dispatch(
+               setShowAlert(
+                  {
+                     alertMessage: "Signed In Successfully",
+                     severity: AlertSeverity.SUCCESS
+                  }
+               )
+            )
+
+            // set User Details
+            dispatch(
+               setUserDetails({
+                  email: userCredentials.user.email,
+                  displayName: userCredentials.user.displayName,
+                  photoURL: userCredentials.user.photoURL,
+                  uid: userCredentials.user.uid
+               })
+            )
          }
    
          catch(err:any){
-            dispatch(setShowAlert({alertMessage:err?.data?.message || err.error, severity: AlertSeverity.ERROR}))
+            dispatch(setShowAlert({alertMessage:err?.data?.message || err.message, severity: AlertSeverity.ERROR}))
          }
       }
 
@@ -59,8 +74,24 @@ export default function AuthForm(props:IProps){
       // USER SIGNUP HANDLER
       else if (location === AuthFormLocation.SIGN_UP){
          try{
-            const res = await authRequest({email,password,displayName}).unwrap()
-            dispatch(setUserDetails(res))
+            const userCredentials = await emailSignupHandler(email,password)
+            const { 
+               getIdToken, 
+               email:UserEmail, 
+               displayName:UserDisplayName, 
+               photoURL:UserPhotoURL, 
+               uid:UserUid
+            } = userCredentials.user;
+
+            // send IdToken To Server For Further Authentication
+            await authorizeUser(await getIdToken())
+
+            dispatch(setUserDetails({
+               email: UserEmail,
+               displayName: UserDisplayName,
+               uid: UserUid,
+               photoURL: UserPhotoURL
+            }))
             dispatch(setShowAlert(
                {
                   alertMessage:"Signed In Successfully",

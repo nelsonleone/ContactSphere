@@ -152,6 +152,10 @@ button[aria-controls=user-menu]{
 
 .hamburger-icon{
   z-index: 101;
+
+  &:disabled{
+     cursor: not-allowed;
+  }
 }
 
 

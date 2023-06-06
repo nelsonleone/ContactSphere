@@ -1,5 +1,5 @@
 const {
-   authorizeUser
+   authorizeUser,
    authSignOut
 } = require('../controllers/authControllers')
 
