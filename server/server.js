@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser')
 const authRoutes = require('./routes/authRoutes')
 const { noContentFound, errorHandler } = require('./middlewares/errorMiddlewares')
 const corsOptions = {
-  origin: process.env.NODE_ENV === "development" ? "http://localhost:5173" : process.env.FRONTEND_APP_URL ,
+  origin: process.env.FRONTEND_APP_URL ,
   optionsSuccessStatus: 200, // Some legacy browsers (IE11) choke on 204
 }
 
@@ -20,12 +20,12 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(process.env.PORT || 9000)
     console.log(`Connected To DB!......Server served at port ${process.env.PORT || 9000}`)
   })
   .catch((err) => {
     console.log('Error connecting to the database', err.message)
   })
+  app.listen(process.env.PORT || 9000)
 
 // Middlewares
 app.use(cors(corsOptions))

@@ -1,5 +1,6 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebaseInit";
+import customFirebaseError from "../utils/helperFns/customFirebaseError";
 
 export default async function emailSignupHandler(email:string,password:string){
    try{
@@ -8,6 +9,6 @@ export default async function emailSignupHandler(email:string,password:string){
    }
 
    catch(error:unknown|any){
-      throw new Error(error.message)
+      throw new Error(customFirebaseError(error.code))
    }
 }

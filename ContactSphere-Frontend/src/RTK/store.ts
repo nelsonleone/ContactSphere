@@ -3,12 +3,14 @@ import authUserReducer from './features/authUserSlice'
 import { authQuerySlice } from './features/authQuerySlice'
 import snackbarDisplayReducer from './features/snackbarDisplaySlice';
 import alertReducer from './features/alertSlice';
+import loadingReducer from './features/loadingSlice';
 
 const appStore = configureStore({
    reducer: {
       authUser: authUserReducer,
       alert: alertReducer,
       snackbar: snackbarDisplayReducer,
+      loading: loadingReducer,
       [authQuerySlice.reducerPath]: authQuerySlice.reducer,
    },
    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authQuerySlice.middleware)

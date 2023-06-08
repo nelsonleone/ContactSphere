@@ -3,24 +3,26 @@ const cleanDisplayName = require('../utils/cleanDisplayName')
 const firebaseAdmin = require('../firebase/firebaseAdmin')
 const verifyIdToken = require('../utils/authAid/verifyIdToken')
 const checkCsrfToken = require('../utils/authAid/checkCsrfToken')
+const csrfTokenGen = require('../utils/authAid/csrfTokenGen')
+
 
 // Handled User authorization Request
 const authorizeUser = asyncHandler(async (req,res) => {
   const idToken = res.body.idToken.toString()
   
   await checkCsrfToken(req,res)
-  const { uid } = await verifyIdToken(idToken)
+  await verifyIdToken(idToken)
 
   try {
     const expiresIn = 60 * 60 * 24 * 3 * 1000;
-    const sessionCookie = await getAuth().createSessionCookie(idToken, { expiresIn })
+    const sessionCookie = await firebaseAdmin.auth().createSessionCookie(idToken, { expiresIn })
     const options = { 
       maxAge: expiresIn, 
       httpOnly: true, 
-      secure: true, 
-      domain: process.env.NODE_ENV === "production" ? process.env.FRONTEND_APP_URL : 'localhost:5173',
+      secure: process.env.NODE_ENV === "production", 
+      domain: process.env.FRONTEND_APP_URL,
       url: '/',
-      sameSite: 'strict'
+      sameSite: 'Strict'
     }
     res.cookie('authSessionCookie', sessionCookie, options)
     res.status(200).end(JSON.stringify({
@@ -29,11 +31,43 @@ const authorizeUser = asyncHandler(async (req,res) => {
   } 
   
   catch (error) {
-    res.status(401).send('UNAUTHORIZED REQUEST!')
+    res.status(401)
+    throw new Error('UNAUTHORIZED REQUEST!')
   }
 })
 
 
+// set csrfToken to user client device
+const setCsrfToken = asyncHandler(async(req,res) => {
+
+  const token = csrfTokenGen()
+
+  const options = { 
+    secure: process.env.NODE_ENV === "production", 
+    domain: process.env.FRONTEND_APP_URL,
+    url: '/',
+    sameSite: 'none'
+  }
+
+  res.cookie('csrfToken',token,options)
+  res.status(201).json({message:"CSRFTOKEN SET"})
+})
+
+
+const setAuthState = asyncHandler(async(req,res) =>{
+  const authSessionToken = req.cookies.authSessionCookie;
+
+  try{
+    const decodedIdToken = await firebaseAdmin.auth().verifySessionCookie(authSessionToken,true)
+    const userDetails = await verifyIdToken(decodedIdToken)
+    res.status(200).json({authUserDetails:userDetails})
+  }
+
+  catch(err){
+    res.status(401)
+    throw new Error("UNAUTHENTICATED USER")
+  }
+})
 
 
 // Handled Signout Request
@@ -42,7 +76,9 @@ const authSignOut = (req,res) => {
 
   // fallback
   res.cookie('authToken','',{ expiresIn: new Date(0) })
-  res.status(200).send("Signed Out User")
+  res.status(200).json({
+    message:"Signed Out User"
+  })
 }
 
 
@@ -54,5 +90,7 @@ const handleGoogleSignin = (req,res) => {
 
 module.exports = {
   authorizeUser,
-  authSignOut
+  authSignOut,
+  setCsrfToken,
+  setAuthState
 }

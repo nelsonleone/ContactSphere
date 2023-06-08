@@ -1,5 +1,6 @@
 @use './typography' as *;
 @use './colors' as *;
+@use '../utils' as *;
 
 *,
 *::after,
@@ -72,4 +73,9 @@ h1{
 section{
    width: 95%;
    margin:  auto;
+
+   @include useMediaQuery_LS{
+      width: 80%;
+      margin-inline: 15% 5%;
+   }
 }

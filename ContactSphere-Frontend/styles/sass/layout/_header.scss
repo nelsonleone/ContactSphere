@@ -27,6 +27,7 @@
       flex-basis: 60%;
       position: relative;
       z-index: 101;
+      cursor: pointer;
 
       &::before{
          content: "";
@@ -45,13 +46,13 @@
 
 // Navigation menu
 .main_nav{
-   position: absolute;
-   left: -4%;
+   position: fixed;
+   left: 0%;
    top: 0;
    z-index: 100;
    opacity: 1;
    transition: all .35s linear;
-   padding: 4.2em 1.5em;
+   padding: 4.2em 1em;
    background: $generic_color_1;
    width: 74%;
    height: 100vh;
@@ -114,10 +115,10 @@ button[aria-controls=user-menu]{
    width:3em;
    border-radius: 50%;
    margin-inline:.3em;
-   border: 1px solid $accent_color_2;
 
    svg{
       color: $accent_color_1;
+      transform: translateY(.3em);
    }
 }
 
@@ -152,17 +153,13 @@ button[aria-controls=user-menu]{
 
 .hamburger-icon{
   z-index: 101;
-
-  &:disabled{
-     cursor: not-allowed;
-  }
 }
 
 
 
 
 // MEDIA QUERIES
-@media (min-width:40rem) {
+@include  useMediaQuery_MD{
    .header_main{
       gap: .5em;
       h1{
@@ -199,7 +196,7 @@ button[aria-controls=user-menu]{
 
 
 
-@media (min-width:60rem) {
+@include  useMediaQuery_LS{
    .header_main{
       padding-block: 1em;
       position: relative;
@@ -214,6 +211,10 @@ button[aria-controls=user-menu]{
             font-size: 1.4rem;
          }
       }
+
+      h1{
+         margin: 0;
+      }
    }
 
   .main_nav{
@@ -222,7 +223,6 @@ button[aria-controls=user-menu]{
       padding-top: 1em;
       background: transparent;
       width: 20%;
-      left: -1%;
       z-index: 1;
 
       li{
@@ -236,15 +236,16 @@ button[aria-controls=user-menu]{
    }
 
    .searchbar{
-      flex-basis: 33%;
+      flex-basis: 55%;
       right: unset;
       .searchbar-input{
-         width: 40em;
+         width: 100%;
          right: 0;
          margin: auto;
          height: 2.5em;
          padding: 1.5em 1em;
          font-size: 1rem;
+         position: relative;
 
          &::placeholder{
             color: $text-color2;

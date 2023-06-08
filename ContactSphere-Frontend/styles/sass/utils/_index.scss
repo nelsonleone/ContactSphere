@@ -13,3 +13,15 @@
    bottom: $bottom;
    margin-inline: auto;
 }
+
+@mixin useMediaQuery_MD{
+   @media (min-width:40rem){
+      @content;
+   }
+}
+
+@mixin useMediaQuery_LS{
+   @media (min-width:60rem){
+      @content;
+   }
+}

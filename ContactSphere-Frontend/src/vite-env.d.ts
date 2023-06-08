@@ -25,7 +25,7 @@ interface ICustomInputsProps_Password extends ICustomInputsProps {
 
 type UserCredentials = {
    email: string,
-   displayName?: string,
+   displayName: string | null,
    password: string,
    uid: string
 }

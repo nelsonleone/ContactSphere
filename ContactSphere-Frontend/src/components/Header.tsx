@@ -1,10 +1,10 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import HamburgerIcon from '../../lib/HamburgerIcon'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import SearchBar from './SearchBar'
-import { FaUser } from 'react-icons/fa'
 import {  MemoizedHelp as  Help, MemoizedSetting as  Setting } from './UserUtils'
 import NavMenu from './NavMenu'
+import { UserIcon } from '../../lib/with-tooltip/index'
 
 export interface IHeaderState {
    openUserMenu: boolean,
@@ -17,21 +17,12 @@ export default function Header(){
 
    const navigate = useNavigate()
    const hamburgerRef = useRef<HTMLButtonElement>(null)
-   const location = useLocation()
    const [state,setState] = useState<IHeaderState>({
       openUserMenu: false,
       toggleSettingSection: false,
       openHelpArea: false,
       openNav: window.innerWidth > 900 
    })
-
-   useEffect(() => {
-      // hide main nav contents in auth locations
-      if(location.pathname === '/auth/signin' ||  location.pathname ==='/auth/create_account'){
-         setState(prevState => ({ ...prevState, openNav: false }))
-         hamburgerRef.current?.disabled === false ? true : true
-      }
-   },[])
 
 
    return(
@@ -46,15 +37,8 @@ export default function Header(){
             <Help setState={setState} state={state} />
             <Setting setState={setState} state={state} />
          </div>
-         
-        <button 
-           className='toggle-user-menu' 
-           aria-controls='user-menu' 
-           aria-expanded={state.openUserMenu}
-           onClick={() => setState(prevState => ({...prevState, openUserMenu: !prevState.openUserMenu}))}
-           >
-           <FaUser />
-        </button>
+
+         <UserIcon setState={setState} state={state}  />
       </header>
    )
 }

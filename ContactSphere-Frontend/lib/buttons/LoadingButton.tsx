@@ -1,6 +1,6 @@
 import { Button } from '@mantine/core';
 import React from 'react';
-import { FaSignInAlt, FaUserCheck } from "react-icons/fa"
+import { FaSignInAlt, FaUserPlus } from "react-icons/fa"
 import { AuthFormLocation } from '../../src/enums'
 
 
@@ -16,7 +16,7 @@ export default function LoadingButton(props:IButtonProps){
        type={props.buttonType} 
        loading={props.loading} 
        disabled={props.loading}
-       leftIcon={props.location === AuthFormLocation.SIGN_IN ? <FaSignInAlt size="1rem" /> : <FaUserCheck />} 
+       leftIcon={props.location === AuthFormLocation.SIGN_IN ? <FaSignInAlt size="1rem" /> : <FaUserPlus />} 
        loaderPosition="right"
       >
       {props.location === AuthFormLocation.SIGN_IN ? "Sign In" : "Create Account"}

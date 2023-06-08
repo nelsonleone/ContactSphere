@@ -9,6 +9,14 @@ async function verifyIdToken(res,idToken){
       res.status(400)
       throw new Error("Error Validating User")
     }
+
+    const userRecord = await firebaseAdmin.auth().getUser(decodedClaims.uid);
+    return{
+      email: userRecord.email,
+      displayName: userRecord.displayName,
+      photoURL: userRecord.photoURL,
+      uid: userRecord.uid
+    }
   }
 
    catch(err){

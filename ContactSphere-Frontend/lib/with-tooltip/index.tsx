@@ -4,6 +4,7 @@ import { IHeaderState } from '../../src/components/Header'
 import { AiFillSetting } from 'react-icons/ai'
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import { FaUser } from 'react-icons/fa'
 
 interface IProps {
    setState: Dispatch<SetStateAction<IHeaderState>>,
@@ -40,5 +41,21 @@ export function SettingsIcon(props:IProps){
             </IconButton>
          </Tooltip>
       </div>
+   )
+}
+
+
+export function UserIcon(props:IProps){
+   return(
+      <Tooltip title="User Menu">
+        <button
+            className='toggle-user-menu' 
+            aria-controls='user-menu' 
+            aria-expanded={props.state.openUserMenu}
+            onClick={() => setState(prevState => ({...prevState, openUserMenu: !prevState.openUserMenu}))}
+            >
+            <FaUser />
+         </button>
+      </Tooltip>
    )
 }
