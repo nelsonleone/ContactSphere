@@ -15,6 +15,10 @@ import Button from '@mui/material/Button';
 import { useAuthorizeUserMutation } from '../RTK/features/injectedApiQueries';
 import emailSignInHandler from '../firebaseClient/signInWithEmailAndPassword';
 import emailSignupHandler from '../firebaseClient/createUserWithEmailAndPassword';
+import { useState, useEffect } from 'react'
+import updateUserProfile from '../firebaseClient/updateUserProfile';
+import Cookies from 'js-cookie';
+ 
 
 interface IProps{
    location: string
@@ -26,6 +30,7 @@ export default function AuthForm(props:IProps){
    const dispatch = useAppDispatch()
    const { location } = props;
    const [ authorizeUser, { isLoading } ] = useAuthorizeUserMutation()
+   const [requestLoading,setRequestLoading] = useState(isLoading)
 
    // Form Handler
    const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm<IFormData>({
@@ -34,17 +39,27 @@ export default function AuthForm(props:IProps){
       }
    })
 
+   useEffect(() => {
+      setRequestLoading(isLoading)
+   },[isLoading])
+
 
    const handleAuthRequest :SubmitHandler<IFormData> = async(formData)  =>  {
+
+      
+
       const { email, password, displayName } = formData;
       //   USER SIGNIN HANDLER
       if (location === AuthFormLocation.SIGN_IN){
 
          try{
+            setRequestLoading(true)
             const userCredentials= await emailSignInHandler(email,password)
 
             // send IdToken To Server For Further Authentication
-            await authorizeUser(await userCredentials.user.getIdToken())
+            const idToken = await userCredentials.user.getIdToken()
+            const csrfToken = Cookies.get('csrfToken')
+            await authorizeUser({idToken,csrfToken})
             dispatch(
                setShowAlert(
                   {
@@ -66,7 +81,12 @@ export default function AuthForm(props:IProps){
          }
    
          catch(err:any){
+            console.log(err.message,err.code)
             dispatch(setShowAlert({alertMessage:err?.data?.message || err.message, severity: AlertSeverity.ERROR}))
+         }
+
+         finally{
+            setRequestLoading(false)
          }
       }
 
@@ -74,6 +94,7 @@ export default function AuthForm(props:IProps){
       // USER SIGNUP HANDLER
       else if (location === AuthFormLocation.SIGN_UP){
          try{
+            setRequestLoading(true)
             const userCredentials = await emailSignupHandler(email,password)
             const { 
                getIdToken, 
@@ -84,7 +105,12 @@ export default function AuthForm(props:IProps){
             } = userCredentials.user;
 
             // send IdToken To Server For Further Authentication
-            await authorizeUser(await getIdToken())
+            const idToken = await getIdToken()
+            const csrfToken = Cookies.get('csrfToken')
+            await authorizeUser({idToken,csrfToken})
+
+            // update User DisplayName
+            await updateUserProfile(displayName)
 
             dispatch(setUserDetails({
                email: UserEmail,
@@ -100,7 +126,13 @@ export default function AuthForm(props:IProps){
             ))
          }
          catch(err:any){
-            dispatch(setShowAlert({alertMessage:err?.data?.message|| err.error, severity: AlertSeverity.ERROR}))
+            console.log(err.message,err.code)
+            dispatch(setShowAlert({alertMessage:err?.data?.message|| err.message, severity: AlertSeverity.ERROR}))
+         }
+
+         
+         finally{
+            setRequestLoading(false)
          }
       }
    }
@@ -131,7 +163,7 @@ export default function AuthForm(props:IProps){
             }
 
             <div className="flex-row">
-               <LoadingButton location={location} buttonType="submit" loading={isLoading} />
+               <LoadingButton location={location} buttonType="submit" loading={requestLoading} />
                <Link to={props.location === AuthFormLocation.SIGN_UP ? "/auth/signin" : "/auth/create_account"}>
                {location === AuthFormLocation.SIGN_IN ? "Create Account" : "Sign In"}
                </Link>
