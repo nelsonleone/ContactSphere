@@ -1,21 +1,19 @@
-import { Routes, Route, useNavigate } from 'react-router-dom'
-import Homepage from './pages/Homepage'
-import Header from './components/Header'
-import NotFoundPage from './pages/NotFoundPage'
-import CustomSnackbar from '../lib/popups/CustomSnackbar'
-import CustomAlert from '../lib/popups/CustomAlert'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setUserDetails } from './RTK/features/authUserSlice'
 import { useGetAuthStateQuery, useGetCsrfTokenQuery } from "./RTK/features/injectedApiQueries";
 import { setLoad } from './RTK/features/loadingSlice'
+import Layout from './pages/Layout'
+import RouteHandler from './routes'
+import { useNavigate } from 'react-router-dom';
+
 
 export default function App(){
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { data:UserDetails, isError, isLoading } = useGetAuthStateQuery('')
-  const { data:response } = useGetCsrfTokenQuery('')
+  const { data:UserDetails, isError, isLoading } = useGetAuthStateQuery()
+  const { data:response } = useGetCsrfTokenQuery()
   
   useEffect(() => {
 
@@ -37,16 +35,8 @@ export default function App(){
   },[UserDetails,isLoading,isError])
 
   return(
-    <>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Cust
-        <Route path="/auth/create_account" element={<SignUpPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-      <CustomSnackbar />
-      <CustomAlert />
-    </>
+    <Layout>
+      <RouteHandler />
+    </Layout>
   )
 }

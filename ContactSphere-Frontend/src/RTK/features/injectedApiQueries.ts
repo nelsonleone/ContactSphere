@@ -18,11 +18,11 @@ const extendedAuthQuerySlice = authQuerySlice.injectEndpoints({
       })
     }),
 
-    getCsrfToken: builder.query({
+    getCsrfToken: builder.query<void,void>({
       query: () => `${AUTH_URL}/setCsrfToken`
     }),
 
-    getAuthState: builder.query<UserCredentials,''>({
+    getAuthState: builder.query<UserCredentials,void>({
       query: () => `${AUTH_URL}/setAuthState`
     })
   }),

@@ -5,6 +5,7 @@
    padding-block: 1em;
    font-family: $ff_primary;
    color: $text-color1;
+   text-align: center;
 
    svg{
       font-size: 5rem;
@@ -21,5 +22,6 @@
 
    p{
       margin-block: 1em;
+      font-weight: $fw_bold;
    }
 }

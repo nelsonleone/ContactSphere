@@ -41,6 +41,7 @@
          height: 2.8em;
          padding: 1em;
          font-weight: $fw_bold;
+         color: $text-color1;
          font-size: .95rem;
 
          &::placeholder{
@@ -184,7 +185,7 @@
 
 
 // MEDIA QUERIES
-@media (min-width:40rem) {
+@include useMediaQuery_MD{
  
    .auth-contents{
       form{
@@ -211,13 +212,13 @@
 
 }
 
-@media (min-width:60rem) {
+@include useMediaQuery_LS{
  
    .auth-contents{
       form{
          @include flexObj($direction:column,$justify:center);
          &>div{
-            width: 35%;
+            width: 27em;
             margin:1em auto;
          }
 
@@ -232,7 +233,7 @@
       }
 
       .alt_auth_methods{
-         width: 35%;
+         width: 23em;
          margin-inline: auto;
          @include flexObj($direction:column,$justify:center);
          h3{

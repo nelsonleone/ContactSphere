@@ -24,9 +24,9 @@
    }
 
    h1{
-      flex-basis: 60%;
       position: relative;
       z-index: 101;
+      margin-right:  3em;
       cursor: pointer;
 
       &::before{
@@ -51,7 +51,7 @@
    top: 0;
    z-index: 100;
    opacity: 1;
-   transition: all .35s linear;
+   transition: all .25s linear;
    padding: 4.2em 1em;
    background: $generic_color_1;
    width: 74%;
@@ -162,16 +162,11 @@ button[aria-controls=user-menu]{
 @include  useMediaQuery_MD{
    .header_main{
       gap: .5em;
-      h1{
-         flex-basis:unset;
-         margin-right: 4em;
-      }
    }
 
    .searchbar{
       position: relative;
       @include flexObj;
-      right: -4em;
 
       svg{
          display: none;
@@ -179,14 +174,17 @@ button[aria-controls=user-menu]{
    }
 
    .searchbar-input{
+      position: relative;
       bottom: unset;
       left: unset;
       right: 2em;
-      width: 20em;
+      height: 3em;
+      padding-block: 1.6em;
+      width: 35em;
    }
 
    .main_nav{
-      width: 50%;
+      width: 30%;
    }
 
 }

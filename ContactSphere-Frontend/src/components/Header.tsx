@@ -1,6 +1,6 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import HamburgerIcon from '../../lib/HamburgerIcon'
-import { useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import SearchBar from './SearchBar'
 import {  MemoizedHelp as  Help, MemoizedSetting as  Setting } from './UserUtils'
 import NavMenu from './NavMenu'
@@ -13,9 +13,14 @@ export interface IHeaderState {
    openNav: boolean
 }
 
-export default function Header(){
+interface IHeaderProps {
+   setResizePageWidth: Dispatch<SetStateAction<boolean>>
+}
+
+export default function Header(props:IHeaderProps){
 
    const navigate = useNavigate()
+   const location = useLocation()
    const hamburgerRef = useRef<HTMLButtonElement>(null)
    const [state,setState] = useState<IHeaderState>({
       openUserMenu: false,
@@ -24,6 +29,15 @@ export default function Header(){
       openNav: window.innerWidth > 900 
    })
 
+   useEffect(() =>{
+      if(window.innerWidth < 900 ){
+         setState(prevState => ({ ...prevState, openNav: false }))
+      }
+   },[location.pathname])
+
+   useEffect(() => {
+      props.setResizePageWidth(state.openNav)
+   },[state.openNav])
 
    return(
       <header className="header_main">

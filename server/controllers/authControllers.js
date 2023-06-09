@@ -8,7 +8,7 @@ const csrfTokenGen = require('../utils/authAid/csrfTokenGen')
 
 // Handled User authorization Request
 const authorizeUser = asyncHandler(async (req,res) => {
-  const idToken = res.body.idToken.toString()
+  const idToken = req.body.idToken.toString()
   
   await checkCsrfToken(req,res)
   await verifyIdToken(idToken)
@@ -43,10 +43,11 @@ const setCsrfToken = asyncHandler(async(req,res) => {
   const token = csrfTokenGen()
 
   const options = { 
-    secure: process.env.NODE_ENV === "production", 
-    domain: process.env.FRONTEND_APP_URL,
+    secure: true, 
+    domain: process.env.DOMAIN,
     url: '/',
-    sameSite: 'none'
+    sameSite: 'none',
+    credentials: true
   }
 
   res.cookie('csrfToken',token,options)

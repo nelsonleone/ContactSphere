@@ -1,12 +1,12 @@
-import AuthForm from "../components/AuthForm";
+import AuthFormHandler from "../components/AuthComponents/AuthFormHandler";
 import { AuthFormLocation } from "../enums";
 
 export default function SignInPage(){
 
    return(
-      <section className="auth-page signin">
+      <main className="page auth-page signin">
          <h2>Welcome Back</h2>
-         <AuthForm location={AuthFormLocation.SIGN_IN} />
-      </section>
+         <AuthFormHandler location={AuthFormLocation.SIGN_IN} />
+      </main>
    )
 }

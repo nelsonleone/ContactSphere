@@ -6,7 +6,7 @@ function customFirebaseError(errorCode:string) {
      case 'auth/wrong-password':
        return 'Wrong password.';
       break;
-     case 'auth/email-already-exists':
+     case 'auth/email-already-in-use':
        return 'Email Already Exists.';
       break;
      case 'auth/internal-error':

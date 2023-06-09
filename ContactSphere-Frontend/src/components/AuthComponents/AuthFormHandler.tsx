@@ -1,23 +1,18 @@
-import { FcGoogle } from 'react-icons/fc';
-import { FaPhoneAlt } from 'react-icons/fa';
-import  { FloatingLabelInput } from '../../lib/customInputs/FloatingLabelInput'
-import  { AutocompleteInput } from '../../lib/customInputs/AutoCompleteInput'
-import  AuthFormPasswordInput from '../../lib/customInputs/PasswordInput'
-import  LoadingButton from '../../lib/buttons/LoadingButton'
-import { IFormData } from '../vite-env';
-import { AlertSeverity, AuthFormLocation } from '../enums';
-import { useAppDispatch } from '../customHooks/reduxCustomHooks';
-import { setShowAlert } from '../RTK/features/alertSlice'
-import { setUserDetails } from '../RTK/features/authUserSlice';
-import { Link } from 'react-router-dom';
+import { IFormData } from '../../vite-env';
+import { AlertSeverity, AuthFormLocation } from '../../enums';
+import { useAppDispatch } from '../../customHooks/reduxCustomHooks';
+import { setShowAlert } from '../../RTK/features/alertSlice'
+import { setUserDetails } from '../../RTK/features/authUserSlice';
 import { useForm, SubmitHandler } from "react-hook-form";
-import Button from '@mui/material/Button';
-import { useAuthorizeUserMutation } from '../RTK/features/injectedApiQueries';
-import emailSignInHandler from '../firebaseClient/signInWithEmailAndPassword';
-import emailSignupHandler from '../firebaseClient/createUserWithEmailAndPassword';
+import { useAuthorizeUserMutation } from '../../RTK/features/injectedApiQueries';
+import emailSignInHandler from '../../firebaseClient/signInWithEmailAndPassword';
+import emailSignupHandler from '../../firebaseClient/createUserWithEmailAndPassword';
 import { useState, useEffect } from 'react'
-import updateUserProfile from '../firebaseClient/updateUserProfile';
+import updateUserProfile from '../../firebaseClient/updateUserProfile';
 import Cookies from 'js-cookie';
+import { auth } from '../../firebaseClient/firebaseInit';
+import AltAuthMethods from './AltAuthMethods'
+import AuthForm from './AuthForm';
  
 
 interface IProps{
@@ -25,7 +20,7 @@ interface IProps{
 }
 
 
-export default function AuthForm(props:IProps){
+export default function AuthFormHandler(props:IProps){
 
    const dispatch = useAppDispatch()
    const { location } = props;
@@ -56,9 +51,14 @@ export default function AuthForm(props:IProps){
             setRequestLoading(true)
             const userCredentials= await emailSignInHandler(email,password)
 
+            if(!userCredentials) {
+               // precaution
+               throw new Error("Incorrect Credentials")
+            }
+
             // send IdToken To Server For Further Authentication
             const idToken = await userCredentials.user.getIdToken()
-            const csrfToken = Cookies.get('csrfToken')
+            const csrfToken = Cookies.get('csrfToken') || '';
             await authorizeUser({idToken,csrfToken})
             dispatch(
                setShowAlert(
@@ -81,7 +81,6 @@ export default function AuthForm(props:IProps){
          }
    
          catch(err:any){
-            console.log(err.message,err.code)
             dispatch(setShowAlert({alertMessage:err?.data?.message || err.message, severity: AlertSeverity.ERROR}))
          }
 
@@ -97,7 +96,6 @@ export default function AuthForm(props:IProps){
             setRequestLoading(true)
             const userCredentials = await emailSignupHandler(email,password)
             const { 
-               getIdToken, 
                email:UserEmail, 
                displayName:UserDisplayName, 
                photoURL:UserPhotoURL, 
@@ -105,8 +103,8 @@ export default function AuthForm(props:IProps){
             } = userCredentials.user;
 
             // send IdToken To Server For Further Authentication
-            const idToken = await getIdToken()
-            const csrfToken = Cookies.get('csrfToken')
+            const idToken = await auth?.currentUser?.getIdToken() || '';
+            const csrfToken = Cookies.get('csrfToken') || '';
             await authorizeUser({idToken,csrfToken})
 
             // update User DisplayName
@@ -126,7 +124,6 @@ export default function AuthForm(props:IProps){
             ))
          }
          catch(err:any){
-            console.log(err.message,err.code)
             dispatch(setShowAlert({alertMessage:err?.data?.message|| err.message, severity: AlertSeverity.ERROR}))
          }
 
@@ -141,45 +138,17 @@ export default function AuthForm(props:IProps){
 
    return(
       <div className="auth-contents">
-         <form onSubmit={handleSubmit(handleAuthRequest)}>
-            <AutocompleteInput 
-               registerField={register} 
-               error={errors.email?.message} 
-               setValue={setValue}
-            />
-            <AuthFormPasswordInput
-               registerField={register} 
-               error={errors.password?.message} 
-            />
-            {
-               props.location === AuthFormLocation.SIGN_UP ?
-               <FloatingLabelInput
-                  registerField={register} 
-                  error={errors.displayName?.message}
-                  getValues={getValues}
-               />
-               :
-               ""
-            }
-
-            <div className="flex-row">
-               <LoadingButton location={location} buttonType="submit" loading={requestLoading} />
-               <Link to={props.location === AuthFormLocation.SIGN_UP ? "/auth/signin" : "/auth/create_account"}>
-               {location === AuthFormLocation.SIGN_IN ? "Create Account" : "Sign In"}
-               </Link>
-            </div>
-         </form>
-
-         <div className='alt_auth_methods'>
-            <h3>Continue With..</h3>
-            <Button startIcon={<FcGoogle />}>
-               Google
-            </Button>
-
-            <Button startIcon={ <FaPhoneAlt />}>
-               Phone Number
-            </Button>
-         </div>
+         <AuthForm 
+           handleSubmit={handleSubmit}
+           handleAuthRequest={handleAuthRequest}
+           register={register}
+           location={location}
+           setValue={setValue}
+           requestLoading={requestLoading}
+           errors={errors}
+           getValues={getValues}
+         />
+         <AltAuthMethods />
       </div>
    )
 }

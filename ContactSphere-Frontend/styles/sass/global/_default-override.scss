@@ -70,12 +70,18 @@ h1{
    font-family: $ff_prompts !important;
 }
 
-section{
+
+.page{
    width: 95%;
    margin:  auto;
+   transition: all .25s ease-in-out;
+}
 
-   @include useMediaQuery_LS{
-      width: 80%;
-      margin-inline: 15% 5%;
+.resize-page{
+   .page{
+      @include useMediaQuery_LS {
+         width: 80%;
+         margin-inline: 15% 5%;
+      }
    }
 }
