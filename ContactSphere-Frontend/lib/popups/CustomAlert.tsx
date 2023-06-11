@@ -24,7 +24,7 @@ export default function CustomAlert() {
    showAlert ?
    <Collapse in={showAlert}>
       <Alert 
-         style={{width:"20em",position: "fixed", top: "4em", zIndex:"100"}} 
+         style={{width:"20em",position: "fixed", top: "4em", zIndex:"100", left: "1em"}} 
          className="popup-prompt"
          severity={severity}
          action={

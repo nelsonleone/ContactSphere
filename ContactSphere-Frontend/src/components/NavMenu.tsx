@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { BiUser , BiStar , BiTrashAlt, BiPlus } from 'react-icons/bi'
 import { FiEyeOff } from 'react-icons/fi'
 import { GrClone } from 'react-icons/gr'
@@ -11,7 +11,6 @@ import { useAppSelector } from '../customHooks/reduxCustomHooks'
 
 function NavMenu(props:UsedHOC){
 
-   const location = useLocation()
    const { beenAuthenticated } = useAppSelector(store => store.authUser)
 
    return(

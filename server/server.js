@@ -6,10 +6,12 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 
 const authRoutes = require('./routes/authRoutes')
+const contactsHandlerRoutes = require('./routes/contactsHandlerRoutes')
 const { noContentFound, errorHandler } = require('./middlewares/errorMiddlewares')
 const corsOptions = {
   origin: process.env.FRONTEND_APP_URL ,
   optionsSuccessStatus: 200, // Some legacy browsers (IE11) choke on 204
+  credentials: true
 }
 
 
@@ -24,19 +26,24 @@ mongoose
   })
   .catch((err) => {
     console.log('Error connecting to the database', err.message)
-  })
-  app.listen(process.env.PORT || 9000)
+  }
+)
+app.listen(process.env.PORT || 9000)
 
 // Middlewares
+app.use(cookieParser())
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cookieParser())
 
 
 
-// Auth routes
+// Auth Route
 app.use('/server/auth',authRoutes)
+
+
+// Contacts Route
+app.use('/server/contacts',contactsHandlerRoutes)
 
 
 

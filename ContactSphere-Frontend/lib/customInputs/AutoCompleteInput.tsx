@@ -54,7 +54,7 @@ export function AutocompleteInput(props:ICustomInputsProps) {
       <Autocomplete
         data={data}
         onChange={handleChange}
-        rightSection={loading ? <Loader size="1rem" /> : null}
+        rightSection={loading ? <Loader size="30" /> : null}
         label="Email Address"
         placeholder="Enter Your email"
         name="email"

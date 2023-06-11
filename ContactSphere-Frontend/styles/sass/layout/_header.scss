@@ -4,11 +4,12 @@
 
 .header_main{
    @include flexObj($align:baseline);
-   padding-bottom:2em;
+   padding-bottom:2.5em;
    width: 96%;
    margin: auto;
    gap: 1em;
    position: relative;
+   border-bottom: 1px solid $util_color1;
    svg{
       font-size: 1.2rem;
       color: $text-color1;
@@ -18,7 +19,7 @@
    .user_utils{
       position: absolute;
       bottom: 0;
-      left: .3em;
+      left: 0em;
       @include flexObj;
       gap: 0.5em;
    }
@@ -26,7 +27,7 @@
    h1{
       position: relative;
       z-index: 101;
-      margin-right:  3em;
+      margin-right:  1em;
       cursor: pointer;
 
       &::before{
@@ -35,8 +36,11 @@
          margin-inline: auto;
          height: 3px;
          position: absolute;
+         left: 0;
+         right: 0;
          background-color: $accent_color_2;
-         bottom: 6px;
+         bottom: 5px;
+         border-radius: 10px;
          z-index: -1;
       }
    }
@@ -46,13 +50,13 @@
 
 // Navigation menu
 .main_nav{
-   position: fixed;
-   left: 0%;
+   position: absolute;
+   left: -2%;
    top: 0;
    z-index: 100;
    opacity: 1;
    transition: all .25s linear;
-   padding: 4.2em 1em;
+   padding: 4.2em 1.8em;
    background: $generic_color_1;
    width: 74%;
    height: 100vh;
@@ -124,10 +128,10 @@ button[aria-controls=user-menu]{
 
 
 // searchbar styling
-.searchbar-input{
+.header_main .searchbar-input{
   position: absolute;
   left: .5em;
-  bottom: -1em;
+  bottom: 0;
   height: 3em;
   padding: 1em;
   font-family: $ff_primary;
@@ -142,6 +146,10 @@ button[aria-controls=user-menu]{
   &:focus{
      border: 1px solid rgb(192, 186, 186);
   }
+
+  &::placeholder{
+   color: $text-color1 !important;
+  }
 }
 
 .hide-searchbar{
@@ -153,8 +161,77 @@ button[aria-controls=user-menu]{
 
 .hamburger-icon{
   z-index: 101;
+  @include flexObj($justify:center);
 }
 
+
+
+// User Info Menu Styling Section
+.user-menu{
+   position: absolute;
+   padding: 1em;
+   animation-name: slideIn_One;
+   animation-timing-function: linear;
+   animation-fill-mode: forwards;
+   animation-duration: .2s;
+   width: 10em;
+   max-height: 11.3em;
+   border-radius: 8px;
+   background-color: $bg_color2;
+   right: 1em;
+   font-family: $ff_primary;
+   z-index: 10;
+   @include flexObj($justify:center,$direction:column);
+   box-shadow: 0px 2px 2px 2px $util_color2;
+
+   &>span{
+      color: $accent_color_1;
+      font-weight: $fw_xBold;
+      font-size: .9rem;
+      display: block;
+      text-decoration: underline;
+   }
+
+   p{
+      font-family: $ff_secondary;
+      text-transform: capitalize;
+      margin-block: 1em;
+   }
+
+   img{
+      width: 4em;
+      border-radius: 50%;
+      aspect-ratio: 1/1;
+   }
+   
+   
+   button {
+      display: block;
+      background-color: $accent_color_1;
+      cursor: pointer;
+      margin-block: 1em;
+      margin-inline: auto;
+      font-family: $ff_primary;
+      padding: .6em;
+      height: 2.5em;
+      font-weight: $fw_bold;
+      color: $generic_color_1;
+      @include flexObj;
+      font-size: 1rem;
+
+      &:hover{
+         background: $accent_color_2;
+      }
+
+      svg{
+         color: $generic_color_1;
+      }
+
+      span {
+         color: inherit;
+      }
+   }
+}
 
 
 
@@ -164,7 +241,7 @@ button[aria-controls=user-menu]{
       gap: .5em;
    }
 
-   .searchbar{
+   .header_main .searchbar{
       position: relative;
       @include flexObj;
 
@@ -173,18 +250,18 @@ button[aria-controls=user-menu]{
       }
    }
 
-   .searchbar-input{
+   .header_main .searchbar-input{
       position: relative;
       bottom: unset;
       left: unset;
       right: 2em;
       height: 3em;
       padding-block: 1.6em;
-      width: 35em;
+      width: 25em;
    }
 
    .main_nav{
-      width: 30%;
+      width: 40%;
    }
 
 }
@@ -206,7 +283,7 @@ button[aria-controls=user-menu]{
          gap: 1em;
 
          svg{
-            font-size: 1.4rem;
+            font-size: 1.2rem;
          }
       }
 
@@ -240,8 +317,8 @@ button[aria-controls=user-menu]{
          width: 100%;
          right: 0;
          margin: auto;
-         height: 2.5em;
-         padding: 1.5em 1em;
+         height: 2em;
+         padding: 1.3em 1em;
          font-size: 1rem;
          position: relative;
 

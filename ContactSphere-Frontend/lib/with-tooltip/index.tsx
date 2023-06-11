@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, Ref, SetStateAction, forwardRef } from 'react'
 import { BiHelpCircle } from 'react-icons/bi'
 import { IHeaderState } from '../../src/components/Header'
 import { AiFillSetting } from 'react-icons/ai'
@@ -45,17 +45,21 @@ export function SettingsIcon(props:IProps){
 }
 
 
-export function UserIcon(props:IProps){
+function UserIcon(props:IProps,ref:Ref<HTMLButtonElement>){
    return(
       <Tooltip title="User Menu">
         <button
+            ref={ref}
             className='toggle-user-menu' 
             aria-controls='user-menu' 
             aria-expanded={props.state.openUserMenu}
-            onClick={() => setState(prevState => ({...prevState, openUserMenu: !prevState.openUserMenu}))}
+            onClick={() => props.setState(prevState => ({...prevState, openUserMenu: !prevState.openUserMenu}))}
             >
             <FaUser />
          </button>
       </Tooltip>
    )
 }
+
+const UserIconWithRef = forwardRef(UserIcon)
+export {UserIconWithRef as UserIcon} 

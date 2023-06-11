@@ -6,9 +6,7 @@
    margin-top: 1em;
    height: 100%;
    padding-bottom: 3em;
-   border-top: 1px solid $util_color1;
    padding-top: 2em;
-   background: #FAFAFA;
    
    h2{
       font-size: 1.4rem;
@@ -17,8 +15,7 @@
 }
 
 .auth-contents{
-   width: 90%;
-   margin-inline: auto;
+   @include flexObj($justify:center,$direction:column);
 
    // form styling
    form {
@@ -32,6 +29,7 @@
          text-transform: capitalize;
          font-family: $ff_prompts;
          margin-bottom: .5em;
+         font-weight: $fw_bold;
       }
 
       input{
@@ -63,7 +61,7 @@
       label{
          font-family: $ff_primary;
          font-size: .85rem;
-         font-weight: $fw_bold;
+         font-weight: $fw_xBold;
          margin-block: .3em ;
          color: $text-color2; 
       }
@@ -125,12 +123,17 @@
          font-size: .9rem;
          color: $text-color2;
          text-transform: uppercase;
-         text-decoration: underline $accent_color_2;
-         background: $accent_color_2;
+         text-shadow: 2px 2px 2px $text-color1;
+         background: $accent_color_1;
          color: $generic_color_1;
          padding: .5em;
          min-width: 5em;
          border-radius: 4px;
+         transition: .3s ease-in-out;
+
+         &:hover{
+            background: $accent_color_2;
+         }
       }
       
       
@@ -166,19 +169,24 @@
          margin-block: 1em;
          font-family: $ff_primary;
          color: $text-color2;
-         font-weight: $fw_bold;
+         font-weight: $fw_xBold;
          letter-spacing: .05rem;
          font-size:.88rem;
          @include flexObj($justify:center);
          gap: .2em;
 
          &:focus{
-            border: 1px dotted $accent_color_1;
+            border: 2px dotted $accent_color_1;
          }
 
          svg{
             font-size: 1.5rem;
          }
+      }
+
+      // disbaled auth method (phone number)
+      button:disabled{
+         cursor: not-allowed !important;
       }
    }
 }
@@ -216,7 +224,6 @@
  
    .auth-contents{
       form{
-         @include flexObj($direction:column,$justify:center);
          &>div{
             width: 27em;
             margin:1em auto;
@@ -233,7 +240,7 @@
       }
 
       .alt_auth_methods{
-         width: 23em;
+         width: 20em;
          margin-inline: auto;
          @include flexObj($direction:column,$justify:center);
          h3{

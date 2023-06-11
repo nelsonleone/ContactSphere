@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setUserDetails } from './RTK/features/authUserSlice'
-import { useGetAuthStateQuery, useGetCsrfTokenQuery } from "./RTK/features/injectedApiQueries";
+import { useGetAuthStateQuery, useGetCsrfTokenQuery } from "./RTK/features/injectedAuthApiQueries";
 import { setLoad } from './RTK/features/loadingSlice'
 import Layout from './pages/Layout'
 import RouteHandler from './routes'

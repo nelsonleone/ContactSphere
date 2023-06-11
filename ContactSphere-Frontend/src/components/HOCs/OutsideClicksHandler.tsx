@@ -7,7 +7,9 @@ export default function OutsideClicksHandler(Component: FC<UsedHOC>) {
 
     
     const handleOutsideClick = useCallback((e: MouseEvent | TouchEvent | Event) => {
+
       if (
+        !props.stop &&
         wrapperRef.current &&
         !wrapperRef.current.contains(e.target as Node) &&
         !props.togglerRef.current!.contains(e.target as Node)
@@ -26,10 +28,12 @@ export default function OutsideClicksHandler(Component: FC<UsedHOC>) {
     
       document.addEventListener('click', clickHandler)
       document.addEventListener('touchstart', touchHandler)
+      document.addEventListener('mouseup', mousemoveHandler)
     
       return () => {
         document.removeEventListener('click', clickHandler)
         document.removeEventListener('touchstart', touchHandler)
+        document.removeEventListener('mouseup', mousemoveHandler)
       }
     }, [handleOutsideClick])
     

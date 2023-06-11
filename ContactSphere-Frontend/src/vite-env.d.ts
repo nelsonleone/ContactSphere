@@ -32,6 +32,7 @@ type UserCredentials = {
 
 
 
+// Componentss Thats Uses The OutsideClick HOC
 type ComponentStateName = keyof IHeaderState;
 
 type UsedHOC = {
@@ -39,4 +40,31 @@ type UsedHOC = {
   componentStateName: ComponentStateName,
   togglerRef: RefObject<HTMLButtonElement>,
   openNav?: boolean,
+  openUserMenu?: boolean,
+  stop?: boolean
+}
+
+
+
+
+// Contact
+
+interface IAddressProperties {
+   country: string,
+   city: string,
+   street: string
+}
+
+type Contact = {
+   address?: IAddressProperties,
+   email?: string,
+   companyName?: string,
+   inTrash: boolean,
+   isActive: boolean,
+   isHidden: boolean,
+   jobTitle?: string,
+   labelledBy?: string,
+   name: string
+   phoneNumber: number,
+   repPhoto?: string
 }
