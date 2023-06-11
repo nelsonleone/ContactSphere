@@ -11,6 +11,7 @@ export default function Layout({children}:{ children:ReactNode}){
    return(
       <div className={resizePageWidth ? "app-layout resize-page" : "app-layout"}>
          <Header setResizePageWidth={setResizePageWidth} />
+         <Create
          {children}
          <CustomSnackbar />
          <CustomAlert />
