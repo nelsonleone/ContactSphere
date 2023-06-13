@@ -8,8 +8,8 @@ interface IFormInputProps {
    type: string,
    register:UseFormRegister<Contact>,
    label: string,
-   placeholder: string,
-   name: string
+   name: string,
+   show: boolean
 }
 
 export default function NewContactFormInput(props:IFormInputProps){
@@ -20,10 +20,13 @@ export default function NewContactFormInput(props:IFormInputProps){
       label,
       id,
       type,
-      placeholder
+      show
    } = props;
 
+   const isRequired = name === InputPropertyValueName.FirstName || name === InputPropertyValueName.PhoneNumber ? "This Field Is Required" : false;
+
    return(
+      show ?
       <div className="new_contact_form_input">
          <label htmlFor={id}>{label}</label>
          <input 
@@ -31,14 +34,16 @@ export default function NewContactFormInput(props:IFormInputProps){
            id={id} 
            {
             ...register(
-                 InputPropertyValueName.,
+                 name as keyof Contact,
                  {
-                    required: name === 
+                    required: isRequired,
                  }
                )
            }
-           placeholder={placeholder} 
+           placeholder={label} 
          />
       </div>
+      :
+      null
    )
 }

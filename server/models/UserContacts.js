@@ -8,13 +8,16 @@ const {
 const Contact = new Schema({
    Address: {
       country: String,
+      state: String,
       city: String,
-      street: String
+      street: String,
+      postalCode: String
    },
-   email: String,
+   birthday:  String,
    chat: String,
    companyName: String,
    department: String,
+   email: String,
    firstName: String,
    inTrash: Boolean,
    isActive: Boolean,
@@ -28,7 +31,6 @@ const Contact = new Schema({
       required: true
    },
    nickname: String,
-   postalCode: String,
    phoneNumber: Number,
    notes: String,
    prefix: String,

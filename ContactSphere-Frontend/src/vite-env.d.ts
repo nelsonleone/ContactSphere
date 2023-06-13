@@ -50,29 +50,31 @@ type UsedHOC = {
 // Contact
 
 interface IAddressProperties {
-   country: string,
-   city: string,
-   street: string
+  country: string,
+  state: string,
+  city: string,
+  street: string,
+  postalCode: string
 }
 
 type Contact = {
-  address: IAddressProperties
+  address: IAddressProperties,
+  birthday: string,
   email: string;
   chat: string;
   companyName: string;
   department: string;
-  firstname: string;
+  firstName: string;
   inTrash: boolean;
   isActive: boolean;
   isHidden: boolean;
   jobTitle: string;
-  lastname: string;
+  lastName: string;
   labelledBy: string;
-  middlename: string;
+  middleName: string;
   name: string;
   nickname: string;
-  postalCode: string;
-  phoneNumber: number;
+  phoneNumber: string;
   notes: string;
   prefix: string;
   repPhoto: string;
@@ -83,3 +85,23 @@ type Contact = {
   suffix: string;
   website: string;
 }
+
+
+
+// country list for dropdown
+type countryDataObj = {
+   name:{
+     common:string,
+     official:string,
+     nativeName:{
+       dan:{
+         official:string,
+         common:string
+       },
+       fao:{
+         official: string,
+         common:string
+       }
+     }
+   }
+ }

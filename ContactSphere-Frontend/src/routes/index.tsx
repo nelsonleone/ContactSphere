@@ -4,6 +4,7 @@ import SignUpPage from '../pages/SignUpPage'
 import SignInPage from '../pages/SignInPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import Homepage from '../pages/Homepage'
+import CreateContact from '../pages/CreateContact'
 
 export default function RouteHandler(){
 
@@ -32,6 +33,7 @@ export default function RouteHandler(){
           )
         }
       />
+      <Route path="new" element={<CreateContact />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )

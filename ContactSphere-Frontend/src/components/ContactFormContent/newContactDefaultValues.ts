@@ -3,29 +3,36 @@ import { Contact } from "../../vite-env";
 export const defaultValues: Contact = {
    address: {
      country: '',
+     state: '',
      city: '',
      street: '',
+     postalCode: ''
     },
-   email: '',
+   birthday:  '',
    chat: '',
    companyName: '',
    department: '',
-   firstname: '',
+   email: '',
+   firstName: '',
    inTrash: false,
    isActive: false,
    isHidden: false,
    jobTitle: '',
-   lastname: '',
+   lastName: '',
    labelledBy: '',
-   middlename: '',
+   middleName: '',
    name: '',
    nickname: '',
-   postalCode: '',
    phoneNumber: '',
    notes: '',
    prefix: '',
    repPhoto: '',
-   relatedPeople: [],
+   relatedPeople: [
+      {
+         name: '',
+         label: ''
+      }
+   ],
    suffix: '',
    website: '',
 }

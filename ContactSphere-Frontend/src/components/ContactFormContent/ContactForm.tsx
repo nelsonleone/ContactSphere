@@ -1,27 +1,29 @@
-import { useForm } from "react-hook-form"
+import { useFieldArray, useForm } from "react-hook-form"
 import { defaultValues } from "./newContactDefaultValues"
 import { Contact } from "../../vite-env"
-import { useId, useState } from "react"
-import NewContactFormInput from '../../../lib/customInputs/NewContactFormInput'
+import { useState } from "react"
+import NameInputSection from "./input_sections/NameSection"
+import FormalInputSection from "./input_sections/FormalInputSection"
+import ContactInputSection from "./input_sections/ContactInputSection"
+import AddressInputSection from "./input_sections/AddressInputSection"
+import { InputPropertyValueName } from "../../enums"
+import AdditionalFields from "./input_sections/AdditionalFields"
 
 export default function ContactForm(){
 
-   const {register,handleSubmit} = useForm<Contact>({defaultValues})
+   const {register,handleSubmit,setValue} = useForm<Contact>({defaultValues})
+   const { fields } = useFieldArray<Contact>({ name: InputPropertyValueName.RelatedPeople })
    const [showMore,setShowMore] = useState<boolean>(false)
-   const id = useId()
 
    const handleOnSubmit = async() => {}
 
    return(
       <form onSubmit={handleSubmit(handleOnSubmit)}>
-         <div className="name_section">
-            <NewContactFormInput
-               placeholder="Prefix"
-               label="Prefix"
-               id={`${id}-prefix`}
-               type="text"
-            />
-         </div>
+         <NameInputSection showMore={showMore} register={register} />
+         <FormalInputSection showMore={showMore} register={register} />
+         <ContactInputSection setValue={setValue} register={register} />
+         <AddressInputSection showMore={showMore} register={register}  />
+         <AdditionalFields fields={fields} register={register} showMore={showMore} />
       </form>
    )
 }
