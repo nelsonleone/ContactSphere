@@ -69,19 +69,3 @@ h1{
 .popup-prompt {
    font-family: $ff_prompts !important;
 }
-
-
-.page{
-   width: 95%;
-   margin:  auto;
-   transition: all .3s ease-in-out;
-}
-
-.resize-page{
-   .page{
-      @include useMediaQuery_LS {
-         width: 80%;
-         margin-inline: 15% 5%;
-      }
-   }
-}

@@ -56,15 +56,30 @@ interface IAddressProperties {
 }
 
 type Contact = {
-   address?: IAddressProperties,
-   email?: string,
-   companyName?: string,
-   inTrash: boolean,
-   isActive: boolean,
-   isHidden: boolean,
-   jobTitle?: string,
-   labelledBy?: string,
-   name: string
-   phoneNumber: number,
-   repPhoto?: string
+  address: IAddressProperties
+  email: string;
+  chat: string;
+  companyName: string;
+  department: string;
+  firstname: string;
+  inTrash: boolean;
+  isActive: boolean;
+  isHidden: boolean;
+  jobTitle: string;
+  lastname: string;
+  labelledBy: string;
+  middlename: string;
+  name: string;
+  nickname: string;
+  postalCode: string;
+  phoneNumber: number;
+  notes: string;
+  prefix: string;
+  repPhoto: string;
+  relatedPeople: {
+    name: string;
+    label: string;
+  }[];
+  suffix: string;
+  website: string;
 }

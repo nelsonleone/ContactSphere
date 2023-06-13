@@ -197,12 +197,6 @@ button[aria-controls=user-menu]{
       text-transform: capitalize;
       margin-block: 1em;
    }
-
-   img{
-      width: 4em;
-      border-radius: 50%;
-      aspect-ratio: 1/1;
-   }
    
    
    button {
@@ -294,7 +288,7 @@ button[aria-controls=user-menu]{
 
   .main_nav{
       box-shadow: none;
-      top: 5em;
+      top: 8em;
       padding-top: 1em;
       background: transparent;
       width: 20%;
@@ -311,16 +305,17 @@ button[aria-controls=user-menu]{
    }
 
    .searchbar{
-      flex-basis: 55%;
+      flex-basis: 65%;
       right: unset;
+      position: relative;
       .searchbar-input{
-         width: 100%;
-         right: 0;
-         margin: auto;
+         width: 85%;
+         right: unset;
+         position: absolute;
+         margin-block: auto;
          height: 2em;
          padding: 1.3em 1em;
          font-size: 1rem;
-         position: relative;
 
          &::placeholder{
             color: $text-color2;

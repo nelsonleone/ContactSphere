@@ -1,5 +1,6 @@
 import { ReactNode, useState } from "react";
 import Loader from "../../lib/loaders/Loader";
+import CreateNewContactButton from "../../lib/buttons/CreateNewContactButton";
 import CustomAlert from "../../lib/popups/CustomAlert";
 import CustomSnackbar from "../../lib/popups/CustomSnackbar";
 import Header from "../components/Header";
@@ -11,7 +12,7 @@ export default function Layout({children}:{ children:ReactNode}){
    return(
       <div className={resizePageWidth ? "app-layout resize-page" : "app-layout"}>
          <Header setResizePageWidth={setResizePageWidth} />
-         <Create
+         <CreateNewContactButton />
          {children}
          <CustomSnackbar />
          <CustomAlert />

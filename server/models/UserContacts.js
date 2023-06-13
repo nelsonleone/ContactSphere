@@ -12,18 +12,35 @@ const Contact = new Schema({
       street: String
    },
    email: String,
+   chat: String,
    companyName: String,
+   department: String,
+   firstName: String,
    inTrash: Boolean,
    isActive: Boolean,
    isHidden: Boolean,
    jobTitle: String,
+   lastName: String,
    labelledBy: String,
+   middleName: String,
    name: {
       type: String,
       required: true
    },
+   nickname: String,
+   postalCode: String,
    phoneNumber: Number,
-   repPhoto: Buffer
+   notes: String,
+   prefix: String,
+   repPhoto: String,
+   relatedPeople: [
+      {
+         name: String,
+         label: String
+      }
+   ],
+   suffix: String,
+   website: String,
 })
 
 const userContactsSchema = new Schema({
@@ -34,6 +51,12 @@ const userContactsSchema = new Schema({
    },
    contacts: [Contact]
 })
+
+
+userContactsSchema.pre('save', function(next) {
+   this.name = `${this.firstName} ${this.lastName} ${this.middleName}`;
+   next()
+}) 
 
 
 const UserContacts = model('UserContacts',userContactsSchema,'usercontacts')

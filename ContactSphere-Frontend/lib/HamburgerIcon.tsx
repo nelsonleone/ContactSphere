@@ -34,7 +34,7 @@ function HamburgerIcon(props:IProps,ref:Ref<HTMLButtonElement>){
          className="hamburger-icon"
         >
          <span className='AT_only'>Menu</span>
-         <Hamburger toggled={isOpen} size={25} />
+         <Hamburger toggled={false} size={23} />
       </button>
    )
 }

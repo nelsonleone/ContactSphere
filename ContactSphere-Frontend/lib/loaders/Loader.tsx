@@ -25,7 +25,7 @@ export default function Loader(){
    return(
       load ?
       <div style={loaderStyles}>
-         <img src="/images/loader-icon.svg" width={120} height={120} aria-label="loading" alt="Loading" />
+         <img src="/images/loading-icon.svg" width={120} height={120} aria-label="loading" alt="Loading" />
       </div>
       :
       null

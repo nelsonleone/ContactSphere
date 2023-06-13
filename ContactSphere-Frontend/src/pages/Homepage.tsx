@@ -1,9 +1,7 @@
 export default function Homepage(){
    return(
-      <button>
-         {
-            window.innerWidth >
-         }
-      </button>
+      <main className="page">
+         
+      </main>
    )
 }

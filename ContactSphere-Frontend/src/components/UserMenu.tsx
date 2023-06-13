@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '../customHooks/reduxCustomHooks'
 import { Button } from '@mui/material'
 import { useSetAuthSignOutMutation } from '../RTK/features/injectedAuthApiQueries'
 import { setShowAlert } from '../RTK/features/alertSlice'
+import PhotoUrlAvatar from '../../lib/Avatars/PhotoUrlAvatar'
 import { AlertSeverity } from '../enums'
 import { CgLogOut } from 'react-icons/cg'
 import { UsedHOC } from '../vite-env'
@@ -46,10 +47,7 @@ function UserMenu(props:UsedHOC){
    return(
       beenAuthenticated ?
       <div className="user-menu">
-         {
-            photoURL && 
-            <img src={photoURL || ''} alt="User Image" />
-         }
+         <PhotoUrlAvatar nameForAlt={displayName || ''} photoURL={photoURL || ''} />
          <p>{displayName}</p>
          <span>{email}</span>
 

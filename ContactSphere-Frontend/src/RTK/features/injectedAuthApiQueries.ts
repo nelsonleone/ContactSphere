@@ -6,7 +6,7 @@ interface IMutationArgs {
   csrfToken: string
 }
 
-const AUTH_URL = '/server/auth';
+const AUTH_URL = '/auth';
 
 const extendedAuthQuerySlice = authQuerySlice.injectEndpoints({
   endpoints: (builder) => ({
