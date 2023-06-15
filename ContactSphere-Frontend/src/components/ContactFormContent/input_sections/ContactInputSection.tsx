@@ -23,7 +23,7 @@ export default function ContactInputSection(props:IProps){
 
    return(
       <div className="contact_section">
-         <div className="email_input_container">
+         <div className="dx_container email_input_container">
             <GoMail />
             <NewContactFormInput
                label="Email"
@@ -35,7 +35,7 @@ export default function ContactInputSection(props:IProps){
             />
          </div>
 
-         <div className="phone_input_container">
+         <div className="dx_container phone_input_container">
             <BsTelephone />
             <PhoneInput setValue={setValue} register={register} />
          </div>

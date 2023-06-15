@@ -38,8 +38,8 @@ export default function CustomPhoneInput(props:IPhoneInputProps){
          placeholder="Phone Number"
          defaultCountry="US"
          onChange={handlePhoneInputChange}
+         className="phone_number_input"
          value={value}
-         flags={flags}
       />
    )
 }

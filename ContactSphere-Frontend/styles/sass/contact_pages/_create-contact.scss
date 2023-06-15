@@ -1,0 +1,224 @@
+@use '../utils/' as *;
+@use '../global/' as *;
+
+
+.image_upload_input{
+   width: 6.4em;
+   border-radius: 50%;
+   aspect-ratio: 1/1;
+   position: relative;
+   margin-inline: auto;
+   background: $accent_color_2;
+   @include flexObj($justify:center);
+
+   input{
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+
+      &::-webkit-file-upload-button::before {
+         content: none;
+         display: none;
+      }
+
+      &::-webkit-file-upload-button::after {
+         content: "";
+      }
+   }
+
+   img{
+      width: 100%;
+      height: 100%;
+      border: 1px solid green;
+      border-radius: 50%;
+      @include centerContentObj;
+   }
+
+   svg{
+      position: absolute;
+      font-size: 2rem;
+      pointer-events: none;
+      color: $text_color2;
+   }
+}
+
+.create_contact_page form {
+   position: relative;
+   padding: 1.5em 1em;
+
+
+   .top_section{
+
+      button {
+         font-family: $ff_primary;
+         font-weight: $fw_xBold;
+      }
+
+      .fx-button{
+         position: absolute;
+         top: 1em;
+         right: 1.5em;
+
+
+         svg{
+            color: $text_color1;
+            font-size: 1.4rem;
+         }
+      }
+   
+      .fx-button:nth-of-type(3){
+         right: unset;
+         left: 1.5em;
+         
+
+         svg{
+            font-size: 1rem;
+         }
+      }
+
+      .image_upload_input{
+         margin-top: 2.5em;
+      }
+
+      .add_label_btn{
+         text-decoration: underline $accent_color_1;
+         color: $text_color1;
+         @include flexObj($justify:center);
+         gap: .4em;
+         font-weight: $fw_xBold;
+         font-family: $ff_primary;
+         border-radius: 7px;
+         display: block;
+         margin: 2em auto;
+
+         svg{
+            color: $accent_color_1;
+            font-size: 1.3rem;
+         }
+      }
+   }
+}
+
+
+
+.create_contact_page form {
+   
+   .fields_area>div{
+      margin-block: 1.5em;
+   }
+
+   .dx_container{
+      position: relative;
+      width: 100%;
+      @include flexObj($justify:center,$direction:column);
+
+
+      svg{
+         position: absolute;
+         top: .7em;
+         left: 0;
+         font-size: 1.1rem;
+         color: $accent_color_1;
+      }
+
+      .contact-input{
+         margin-inline: auto;
+         margin-bottom: .6em;
+         width: 80%;
+
+         &>label{
+            font-family: $ff_secondary;
+            font-size: .9rem;
+            font-weight: $fw_bold;
+            color: hsla(0, 3%, 68%, 0.966);
+         }
+
+         &:focus-within {
+            label{
+               font-family: $ff_prompts;
+            }
+         }
+
+         input{
+            font-weight: $fw_bold;
+            font-family: $ff_secondary;
+            font-size: .9rem;
+            color: $text_color1;
+
+            &::placeholder{
+               font-size: .9rem;
+            }
+         }
+      }
+
+
+      .phone_number_input{
+         border: 1px solid hsla(0, 3%, 74%, 0.897);
+         width: 80%;
+         padding: .65em;
+         border-radius: 6px;
+         margin-block: 1em;
+         font-weight: $fw_bold;
+         font-family: $ff_secondary;
+         font-size: .9rem;
+         color: $text_color1;
+
+         &>label{
+            color: hsla(0, 3%, 68%, 0.959);
+            font-weight: $fw_bold;
+         }
+      }
+
+      .custom_label_select{
+         width: 80%;
+         margin-block: 1em;
+
+         &>*{
+            font-weight: $fw_bold;
+            font-family: $ff_secondary;
+            font-size: .9rem;
+            color: $text_color1;
+         } 
+
+         label{
+           color: hsla(0, 3%, 68%, 0.966);
+         }
+      }
+
+   }
+
+   .related_people_field_inputs{
+      position: relative;
+
+      &>div:last-of-type{
+         margin-bottom: 2em;
+      }
+
+      .field_append_btn{
+         position: absolute;
+         right: 1em;
+         top: 20%;
+         display: none;
+        
+         svg{
+            font-size: 1.3rem;
+            color: $accent_color_1;
+         }
+      }
+
+      .append_btn_0{
+         display: block;
+      }
+   }
+
+   .show_more_btn{
+      color: $text_color1;
+      font-family: $ff_primary;
+      font-weight: $fw_bold;
+      font-size: 1rem;
+      text-decoration: underline $accent_color_1
+   }
+}
+

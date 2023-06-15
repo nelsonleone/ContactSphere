@@ -5,6 +5,8 @@ import { AiFillSetting } from 'react-icons/ai'
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { FaUser } from 'react-icons/fa'
+import { BiPlus } from 'react-icons/bi';
+
 
 interface IProps {
    setState: Dispatch<SetStateAction<IHeaderState>>,
@@ -43,6 +45,21 @@ export function SettingsIcon(props:IProps){
       </div>
    )
 }
+
+
+
+
+export function ManageLabelButton({ className }:{className:string}){
+   return(
+      <Tooltip title="Manage Labels">
+         <button className={className} type="button" aria-label="Choose Label For This Contact">
+               <BiPlus />
+               <span>Labels</span>
+         </button>
+      </Tooltip>
+   )
+}
+
 
 
 function UserIcon(props:IProps,ref:Ref<HTMLButtonElement>){

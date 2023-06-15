@@ -17,7 +17,7 @@ function FormalInputSection(props:IProps) {
    const { register, showMore } = props;
 
   return (
-     <div className="formal_section">
+     <div className="dx_container formal_section">
          <BsBuildings />
          <NewContactFormInput
             label="Company"

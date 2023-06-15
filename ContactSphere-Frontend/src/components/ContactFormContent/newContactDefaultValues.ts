@@ -2,7 +2,7 @@ import { Contact } from "../../vite-env";
 
 export const defaultValues: Contact = {
    address: {
-     country: '',
+     country: 'United States',
      state: '',
      city: '',
      street: '',

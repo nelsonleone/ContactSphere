@@ -22,7 +22,7 @@ const authorizeUser = asyncHandler(async (req,res) => {
       secure: process.env.NODE_ENV === "production", 
       domain: process.env.DOMAIN,
       url: '/',
-      sameSite: 'lax',
+      sameSite: 'Strict',
     }
 
     res.cookie('authSessionCookie', sessionCookie, options)
@@ -47,7 +47,7 @@ const setCsrfToken = asyncHandler(async(req,res) => {
     secure: process.env.NODE_ENV === "production", 
     domain: process.env.DOMAIN,
     url: '/',
-    sameSite: 'Strict',
+    sameSite: 'lax',
   }
 
   res.cookie('csrfToken',token,options)
@@ -74,7 +74,7 @@ const setAuthState = asyncHandler(async(req,res) =>{
 
   catch(err){
     res.status(401)
-    throw new Error(`${err.message || err.code},UNAUTHENTICATED USER`)
+    throw new Error(`UNAUTHENTICATED USER`)
   }
 })
 

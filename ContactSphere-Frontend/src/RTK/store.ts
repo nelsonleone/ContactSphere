@@ -5,6 +5,7 @@ import { contactsQuerySlice } from './features/contactsQuerySlice'
 import snackbarDisplayReducer from './features/snackbarDisplaySlice';
 import alertReducer from './features/alertSlice';
 import loadingReducer from './features/loadingSlice';
+import userDataReducer from './features/userDataSlice';
 
 const appStore = configureStore({
    reducer: {
@@ -12,6 +13,7 @@ const appStore = configureStore({
       alert: alertReducer,
       snackbar: snackbarDisplayReducer,
       loading: loadingReducer,
+      userData: userDataReducer,
       [authQuerySlice.reducerPath]: authQuerySlice.reducer,
       [contactsQuerySlice.reducerPath]: contactsQuerySlice.reducer,
    },

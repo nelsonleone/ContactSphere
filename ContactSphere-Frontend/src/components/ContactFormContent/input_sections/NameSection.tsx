@@ -5,15 +5,17 @@ import { UseFormRegister } from "react-hook-form";
 import { Contact } from "../../../vite-env";
 import { CiUser } from 'react-icons/ci';
 import { nameSectionInputPropsArray } from "./inputPropsArray";
+import { InputPropertyValueName } from "../../../enums";
 
 interface IProps {
    register:UseFormRegister<Contact>,
-   showMore: boolean
+   showMore: boolean,
+   error: string | undefined;
 }
 
 export default function NameInputSection(props:IProps){
 
-   const {register, showMore } = props;
+   const {register, showMore, error } = props;
    const id = useId()
 
    return(
@@ -27,10 +29,15 @@ export default function NameInputSection(props:IProps){
                      key={nanoid()}
                      label={value.label}
                      register={register}
+                     error={error}
                      name={value.name}
                      id={`${id}-${value.id}`}
                      type={value.type}
-                     show={showMore}
+                     show={
+                        value.name === InputPropertyValueName.FirstName || value.name === InputPropertyValueName.LastName ? 
+                        true:
+                        showMore
+                     }
                   />
                )
             })

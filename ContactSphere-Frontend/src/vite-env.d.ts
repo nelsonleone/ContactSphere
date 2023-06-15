@@ -88,6 +88,14 @@ type Contact = {
 
 
 
+
+type UserData = {
+  contacts: Contact[],
+  labels: string[]
+}
+
+
+
 // country list for dropdown
 type countryDataObj = {
    name:{

@@ -24,28 +24,30 @@ export default function Header(props:IHeaderProps){
    const location = useLocation()
    const hamburgerRef = useRef<HTMLButtonElement>(null)
    const userIconRef = useRef<HTMLButtonElement>(null)
+   const [innerWidth,setInnerWidth] = useState<number>(window.innerWidth)
    const [state,setState] = useState<IHeaderState>({
       openUserMenu: false,
       toggleSettingSection: false,
       openHelpArea: false,
-      openNav: window.innerWidth > 900 
+      openNav: window.innerWidth > 960 
    })
 
-   const handleResize = useCallback(() => {
-      window.innerWidth < 900 ?
+   const handleResize = () => {
+      setInnerWidth(window.innerWidth)
+      window.innerWidth < 960 ?
       setState(prevState => ({ ...prevState, openNav: false })) :
       setState(prevState => ({ ...prevState, openNav: true }))
-   },[])
+   }
 
    useEffect(() =>{
       // close nav menu onRouteChange
-      if (window.innerWidth < 900){
+      if (window.innerWidth < 960){
          setState(prevState => ({ ...prevState, openNav: false }))
       }
    },[location.pathname])
 
    useEffect(() => {
-      handleResize()
+      setInnerWidth(window.innerWidth)
       window.addEventListener('resize',handleResize)
       return() => {
          window.removeEventListener('resize',handleResize)
@@ -68,7 +70,7 @@ export default function Header(props:IHeaderProps){
                openNav={state.openNav} 
                setState={setState} 
                togglerRef={hamburgerRef}
-               stop={window.innerWidth > 900}
+               stop={innerWidth > 960}
             />
             <SearchBar />
 

@@ -45,22 +45,23 @@ const Contact = new Schema({
    website: String,
 })
 
-const userContactsSchema = new Schema({
+const authUserSchema = new Schema({
    uid: {
       type: String,
       required: true,
       unique: true
    },
-   contacts: [Contact]
+   contacts: [Contact],
+   labels: [string]
 })
 
 
-userContactsSchema.pre('save', function(next) {
+Contact.pre('save', function(next) {
    this.name = `${this.firstName} ${this.lastName} ${this.middleName}`;
    next()
 }) 
 
 
-const UserContacts = model('UserContacts',userContactsSchema,'usercontacts')
+const AuthUserData = model('UserContacts',userContactsSchema,'usercontacts')
 
 module.exports = UserContacts;

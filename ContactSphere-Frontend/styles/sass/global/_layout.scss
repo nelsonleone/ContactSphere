@@ -23,10 +23,10 @@
    aspect-ratio: 1/1;
    width: 3.6em;
    @include flexObj($justify:center);
-   position: absolute;
+   position: fixed;
    bottom: 4.5em;
    z-index: 10;
-   box-shadow: 0 0 2px 2px $text_color2;
+   box-shadow: 0 0 2px 2px $text_color1;
    right: 1em;
    font-family: $ff_prompts;
    font-weight: $fw_bold;
@@ -38,7 +38,11 @@
    }
 
    &:hover{
-      background: $accent_color_2;
+      background: $accent_color_3;
+
+      span{
+         color: $generic_color_1;
+      }
 
       svg{
          color: $generic_color_1;
@@ -50,6 +54,7 @@
    @include useMediaQuery_LS{
       bottom: unset;
       top: 7.5em;
+      background-color: transparent;
       left: 1em;
       width: 11em;
       height: unset;

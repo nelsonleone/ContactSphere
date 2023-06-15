@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler')
-const UserContacts = require('../models/UserContacts')
+const AuthUserData = require('../models/AuthUserData')
 
 
 // Create Contact 
@@ -12,7 +12,7 @@ const createContact = asyncHandler(async(request,response) => {
    }
 
    try{
-      const newUserContact = await UserContacts.findOneAndUpdate(
+      const newUserContact = await AuthUserData.findOneAndUpdate(
          { uid },
          { $push: { contacts: newContact } },
          { new: true }
@@ -30,19 +30,19 @@ const createContact = asyncHandler(async(request,response) => {
 
 
 // Set Auth User Contacts
-const setAuthUserContacts = asyncHandler(async(request,response) => {
+const setAuthAuthUserData = asyncHandler(async(request,response) => {
    const authUserUid = req.query.uid;
 
    try{
-      const userContactsDoc = await UserContacts.findOne({ uid: authUserUid })
+      const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
 
-      if (!userContactsDoc){
+      if (!AuthUserDataDoc){
          response.status(200).json({
             contacts: []
          })
       }
 
-      const contacts = userContactsDoc.contacts;
+      const contacts = authUserDataDoc.contacts;
       response.status(200).json(contacts)
    }
    catch(error){
@@ -65,7 +65,7 @@ const setUpdate = asyncHandler(async(request,response) => {
    }
 
    try{
-      const updatedDocument = await UserContacts.findOneAndUpdate(
+      const updatedDocument = await AuthUserData.findOneAndUpdate(
          { uid, "contacts._id": contactId },
          { $set: { "contacts.$": updatedContactsData } },
          { new: true }
@@ -83,6 +83,6 @@ const setUpdate = asyncHandler(async(request,response) => {
 
 module.exports = {
    setUpdate,
-   setAuthUserContacts,
+   setAuthUserData,
    createContact
 }

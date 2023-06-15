@@ -1,27 +1,40 @@
 import { useId } from "react";
 import NewContactFormInput from "../../../../lib/customInputs/NewContactFormInput";
-import CustomCountrySelect from "../../../../lib/customInputs/CustomCountrySelect";
-import { UseFormRegister } from "react-hook-form";
+import CustomLabelSelect from "../../../../lib/customInputs/CustomLabelSelect";
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { Contact } from "../../../vite-env";
 import { MdLocationOn } from 'react-icons/md'
 import { addressSectionInputPropsArray } from "./inputPropsArray";
 import { nanoid } from "@reduxjs/toolkit";
+import { InputPropertyValueName } from "../../../enums";
 
 
 interface IProps {
    register:UseFormRegister<Contact>,
-   showMore: boolean
+   showMore: boolean,
+   setValue: UseFormSetValue<Contact>
 }
 
 export default function AddressInputSection(props:IProps){
 
-   const { register, showMore } = props;
+   const { register, showMore , setValue} = props;
    const id = useId()
 
    return(
-      <div className="address_section">
-         <MdLocationOn />
-         <CustomCountrySelect register={register} showMore={showMore} />
+      <div className="dx_container address_section">
+         {
+            showMore &&
+            <MdLocationOn />
+         }
+         <CustomLabelSelect
+            index={0}
+            labelFor="country_select" 
+            register={register} 
+            show={showMore} 
+            label="Country" 
+            name={InputPropertyValueName.AddressCountry} 
+            setValue={setValue}
+         />
 
          {
             addressSectionInputPropsArray.map(propValues => {

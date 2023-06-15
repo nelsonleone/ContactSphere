@@ -1,7 +1,13 @@
 import * as React from 'react';
+import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import { MdOutlineAddPhotoAlternate } from 'react-icons/md'
+import { Contact } from '../../src/vite-env';
+import { InputPropertyValueName } from '../../src/enums';
 
 interface IProps {
-   name: string
+   name: string,
+   setValue: UseFormSetValue<Contact> ,
+   register: UseFormRegister<Contact>
 }
 
 export default function ImageUploadInput(props:IProps){
@@ -16,19 +22,26 @@ export default function ImageUploadInput(props:IProps){
       imageReader.onload = (e) => {
          const result = e.target?.result;
          if(result){
-            const blob = new Blob([result], { type: file.type })
-            const imageUrl = URL.createObjectURL(blob)
-            setPhoto(imageUrl)
-            console.log(imageUrl)
+            // refactoring soon [REASON: Large Image  Data String]
+            setPhoto(result as string)
+            props.setValue(InputPropertyValueName.RepPhoto,result as string)
          }
       }
    }
 
+   React.useEffect(() => {
+      props.register(InputPropertyValueName.RepPhoto)
+   },[])
+
    return(
       <div className="image_upload_input">
-         <input type="file" name={props.name} onChange={handleImageFileOutput} />
+         <MdOutlineAddPhotoAlternate />
+         <input type="file" name={props.name} accept=".jpg, .jpeg, .png, .gif, .pdf" onChange={handleImageFileOutput} />
          <output>
-            <img src={photo} alt="Uploaded Image" />
+            {
+               photo &&
+               <img src={photo} alt="Uploaded Image" />
+            }
          </output>
       </div>
    )
