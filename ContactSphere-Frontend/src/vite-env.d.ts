@@ -70,7 +70,9 @@ type Contact = {
   isHidden: boolean;
   jobTitle: string;
   lastName: string;
-  labelledBy: string[];
+  labelledBy: {
+    label: string
+  }[] | [];
   middleName: string;
   name: string;
   nickname: string;

@@ -349,6 +349,10 @@ button[aria-controls=user-menu]{
    .hamburger-icon{
       position: absolute;
       left: 0;
+      
+      &>*{
+         transform: translateY(-.36em);
+      }
    }
 
    .header_main .searchbar{
@@ -356,12 +360,12 @@ button[aria-controls=user-menu]{
       right: unset;
       position: relative;
       .searchbar-input{
-         width: 90%;
+         width: 80%;
          right: unset;
          position: absolute;
          margin-block: auto;
          height: 2em;
-         padding: 1.3em 1em;
+         padding: 1.5em 1em;
          font-size: 1rem;
 
          &::placeholder{

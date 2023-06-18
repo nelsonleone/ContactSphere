@@ -15,6 +15,7 @@ import { RxCross1 } from 'react-icons/rx'
 import { deepOrange } from '@mui/material/colors';
 import { ManageLabelButton } from "../../../lib/with-tooltip"
 import { useNavigate } from "react-router-dom"
+import AddedLabels from "./input_sections/AddedLabels"
 
 
 
@@ -35,15 +36,15 @@ function ContactForm(){
          <form onSubmit={handleSubmit(handleOnSubmit)}>
             <div className="top_section">
                <ImageUploadInput name={InputPropertyValueName.RepPhoto} register={register} setValue={setValue} />
-               <div className="added_labels_container">
-                  {
-                     labelsArray?.length &&
-                     labelsArray.map(label => (
-                        
-                     ))
-                  }
-               </div>
-               <ManageLabelButton className="add_label_btn" handleClick={() => setShowLabelMenu(!showLabelMenu)} />
+               {
+                  labelsArray?.length &&
+                  <AddedLabels control={control} />
+               }
+               <ManageLabelButton 
+                  penMode={labelsArray?.length ? true : false} 
+                  className={!labelsArray?.length ? "add_label_btn" : "add_label_btn penMode"}
+                  handleClick={() => setShowLabelMenu(!showLabelMenu)} 
+               />
                <Button 
                   type="submit" 
                   className="fx-button" 

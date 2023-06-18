@@ -70,7 +70,7 @@
       .auth_form_password{
          .input-container{
             position: relative;
-            height:  4.2em;
+            height:  4.1em;
             width: 19em;
             border-radius: 4px;
             
@@ -222,6 +222,14 @@
 
 @include useMediaQuery_LS{
  
+   // overriding default layout styling in the [_layout] for auth_pages
+   .auth-page{
+      padding-top: 7em !important;
+      margin-inline: 17% 5% !important;
+   }
+
+   
+
    .auth-contents{
       form{
          &>div{

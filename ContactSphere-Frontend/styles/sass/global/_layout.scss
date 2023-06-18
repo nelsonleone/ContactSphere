@@ -11,6 +11,7 @@
 .resize-page{
    .page{
       @include useMediaQuery_LS {
+         padding-top: 5em;
          width: 78%;
          background-color: $generic_color_1;
          margin-inline: 20% 2%;

@@ -4,7 +4,7 @@ function customFirebaseError(errorCode:string) {
        return 'User not found.';
       break;
      case 'auth/wrong-password':
-       return 'Wrong password.';
+       return 'Wrong Credentials.';
       break;
      case 'auth/email-already-in-use':
        return 'Email Already Exists.';

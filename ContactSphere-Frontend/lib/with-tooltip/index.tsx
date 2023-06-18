@@ -4,7 +4,7 @@ import { IHeaderState } from '../../src/components/Header'
 import { AiFillSetting } from 'react-icons/ai'
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { FaUser } from 'react-icons/fa'
+import { FaPenAlt, FaUser } from 'react-icons/fa'
 import { BiPlus } from 'react-icons/bi';
 
 
@@ -49,12 +49,19 @@ export function SettingsIcon(props:IProps){
 
 
 
-export function ManageLabelButton({ className, handleClick }:{className:string, handleClick: () => void}){
+export function ManageLabelButton({ className, penMode, handleClick }:{ penMode:boolean, className:string, handleClick: () => void}){
    return(
       <Tooltip title="Manage Labels">
          <button className={className} type="button" aria-label="Choose Label For This Contact" onClick={handleClick}>
-               <BiPlus />
-               <span>Labels</span>
+            {
+               !penMode ?
+               <>
+                  <BiPlus />
+                  <span>Labels</span>
+               </>
+               :
+               <FaPenAlt />
+            }
          </button>
       </Tooltip>
    )
