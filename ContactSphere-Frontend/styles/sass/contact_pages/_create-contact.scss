@@ -78,6 +78,12 @@
          }
       }
 
+      button[type=submit]{
+         &:hover{
+            background: $accent_color_2;
+         }
+      }
+
       .image_upload_input{
          margin-top: 2.5em;
       }
@@ -132,12 +138,14 @@
             font-family: $ff_secondary;
             font-size: .9rem;
             font-weight: $fw_bold;
-            color: hsla(0, 3%, 68%, 0.966);
+            color: hsl(0, 2%, 56%);
          }
 
          &:focus-within {
             label{
                font-family: $ff_prompts;
+               font-size:.9rem;
+               font-weight: $fw_bold;
             }
          }
 
@@ -166,7 +174,7 @@
          color: $text_color1;
 
          &>label{
-            color: hsla(0, 3%, 68%, 0.959);
+            color: hsl(0, 2%, 56%);
             font-weight: $fw_bold;
          }
       }
@@ -183,11 +191,13 @@
          } 
 
          label{
-           color: hsla(0, 3%, 68%, 0.966);
+            color: hsl(0, 2%, 56%);
+            text-align:center;
          }
       }
 
    }
+
 
    .related_people_field_inputs{
       position: relative;
@@ -222,3 +232,113 @@
    }
 }
 
+
+
+.label_menu{
+   padding: .3em;
+   position: absolute;
+   left: 20%;
+   top: 9em;
+   &>*{
+      font-family: $ff_secondary;
+      font-size: .95rem;
+   }
+
+   svg{
+      font-size: 1.3rem;
+   }
+
+   .label{
+      @include flexObj;
+      margin-block: .5em;
+      gap: .4em;
+   }
+
+   .flex-row{
+      @include flexObj($justify:flex-start);
+      gap: 1em;
+      margin-top: 1em;
+   }
+}
+
+
+
+
+
+
+
+// Media queries
+@include useMediaQuery_LS {
+   .image_upload_input{
+      width: 9.5em;
+      margin-inline: 3em;
+   }
+
+   .create_contact_page{
+      padding-top: 1em;
+      form {
+         position: relative;
+
+         .fields_area{
+            padding-top: 16.5em;
+         }
+
+
+         .top_section{
+            border-bottom: 1px solid $util_color2;
+            padding-bottom: 1em;
+            padding-top: 1em;
+            min-height: 11em;
+            position: fixed;
+            width: 78%;
+            z-index: 2;
+            top: 4.7em;
+            margin-inline: 15% 2%;
+            background-color: $generic_color_1;
+            margin-inline: auto;
+
+            .add_label_btn{
+               position: absolute;
+               top: 5em;
+               left: 20em;
+            }
+
+            .image_upload_input{
+               margin-top: .7em;
+            }
+
+            .fx-button:nth-of-type(3){
+               top: 1em;
+            }
+
+            button[type=submit]{
+               top: 5em;
+            }
+         }
+      }
+   }
+
+
+
+   .create_contact_page form{
+
+      .dx_container{
+         @include flexObj($justify:flex-start,$direction:column);
+         width: 57%;
+         padding-left: 3em;
+
+         .contact-input,
+         .phone_number_input,
+         .custom_label_select{
+            width: 100%;
+            margin-inline: 0;
+         }
+      }
+
+      .related_people_field_inputs{
+         .append_btn_0{
+            right: -1em;
+         }
+      }
+   }
+}

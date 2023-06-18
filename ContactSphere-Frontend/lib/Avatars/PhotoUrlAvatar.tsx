@@ -3,15 +3,17 @@ import Avatar from '@mui/material/Avatar';
 import { deepOrange } from '@mui/material/colors';
 
 interface IChipProps {
-   photoURL?: string,
-   nameForAlt: string
+  photoURL?: string,
+  nameForAlt: string,
+  size?: number
 }
 
 function PhotoUrlAvatar(props:IChipProps) {
   return (
       <Avatar
-        sx={{ bgcolor: deepOrange[500] }}
+        sx={{ bgcolor: deepOrange[400], width: props.size && props.size || 60, height: props.size && props.size || 60 }}
         alt={props.nameForAlt}
+        className='avatar'
         src={props.photoURL}
       >
         {props.nameForAlt.slice(0,1)}

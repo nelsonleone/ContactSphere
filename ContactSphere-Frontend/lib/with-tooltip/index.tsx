@@ -49,10 +49,10 @@ export function SettingsIcon(props:IProps){
 
 
 
-export function ManageLabelButton({ className }:{className:string}){
+export function ManageLabelButton({ className, handleClick }:{className:string, handleClick: () => void}){
    return(
       <Tooltip title="Manage Labels">
-         <button className={className} type="button" aria-label="Choose Label For This Contact">
+         <button className={className} type="button" aria-label="Choose Label For This Contact" onClick={handleClick}>
                <BiPlus />
                <span>Labels</span>
          </button>
@@ -63,14 +63,27 @@ export function ManageLabelButton({ className }:{className:string}){
 
 
 function UserIcon(props:IProps,ref:Ref<HTMLButtonElement>){
+
+   const handleClick = () => {
+      if(props.state.openUserMenu)return;
+
+      props.setState(prevState => (
+         {
+            ...prevState,
+            openUserMenu: true
+         }
+      ))
+   }
+
    return(
       <Tooltip title="User Menu">
         <button
             ref={ref}
             className='toggle-user-menu' 
             aria-controls='user-menu' 
-            aria-expanded={props.state.openUserMenu}
-            onClick={() => props.setState(prevState => ({...prevState, openUserMenu: !prevState.openUserMenu}))}
+            aria-expanded={props.state.openUserMenu ? "true" : "false"}
+            aria-haspopup="true"
+            onClick={handleClick}
             >
             <FaUser />
          </button>

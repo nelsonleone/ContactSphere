@@ -61,7 +61,11 @@ function AltAuthMethods() {
             Google
          </Button>
 
-         <Button startIcon={ <FaPhoneAlt />} disabled style={{cursor:"not-allowed"}} onClick={() => handleClick("phone")}>
+
+         {/* Phone number signup is disabled at the momemt  */}
+         <Button 
+            startIcon={ <FaPhoneAlt />} 
+            onClick={() => dispatch(setShowAlert({alertMessage:"Phone Number Sign-In IS Disabled",severity:AlertSeverity.ERROR}))}>
             Phone Number
          </Button>
       </div>

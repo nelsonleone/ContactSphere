@@ -29,6 +29,7 @@ export default function NewContactFormInput(props:IFormInputProps){
       show,
       helperText
    } = props;
+   
    const isRequired = name === InputPropertyValueName.FirstName || name === InputPropertyValueName.PhoneNumber ? "This Field Is Required" : false;
 
    return(

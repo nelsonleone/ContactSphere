@@ -22,12 +22,15 @@ export default function CustomLabelSelect(props:IProps) {
 
    const { register, show, label, name , setValue, labelFor} = props;
    const [countriesNameListData,setCountriesNameListData] = React.useState<countryDataObj[]>()
-   const [localValue,setLocalValue] = React.useState<string>("")
+   const [localValue,setLocalValue] = React.useState<string>(labelFor === "country_select" ? "United States" : "")
 
    const fetchCountriesNameListData = async() => {
       const res = await fetch("https://restcountries.com/v3.1/all?fields=name")
-      const resData = await res.json()
-      setCountriesNameListData(resData)
+      const resData: countryDataObj[] = await res.json()
+      const sortedData = resData.sort((a,b) => (
+         a.name.common.localeCompare(b.name.common)
+      ))
+      setCountriesNameListData(sortedData)
    }
 
    React.useEffect(() => {
@@ -60,7 +63,7 @@ export default function CustomLabelSelect(props:IProps) {
             {
                labelFor === "country_select" && countriesNameListData?.length ?
                countriesNameListData?.map(value => (
-                  <MenuItem onClick={() => setLocalValue(value.name.common)} key={nanoid()} value={value.name.common.toLowerCase()}>{value.name.common}</MenuItem>
+                  <MenuItem onClick={() => setLocalValue(value.name.common)} key={nanoid()} value={value.name.common}>{value.name.common}</MenuItem>
                ))
 
                :

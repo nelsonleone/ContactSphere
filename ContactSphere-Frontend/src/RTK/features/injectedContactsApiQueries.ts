@@ -5,15 +5,23 @@ const CONTACTS_API_URL = '/server/contacts';
 
 const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
    endpoints: builder => ({
-      getContacts: builder.query<void,string>({
-         query: (authUserUid) => `${CONTACTS_API_URL}/getAuthUserContacts?uid=${authUserUid}`
+      getUserData: builder.query<void,string>({
+         query: (authUserUid) => `${CONTACTS_API_URL}/getAuthUserData?uid=${authUserUid}`
       }),
 
       createContact: builder.mutation<void,{contactDetails:Contact,authUserUid:string}>({
          query: (args) => ({
-            url: `${CONTACTS_API_URL}/getAuthUserContacts?uid=${args.authUserUid}`,
+            url: `${CONTACTS_API_URL}/setNewContact?uid=${args.authUserUid}`,
             method: 'POST',
             body: args.contactDetails
+         })
+      }),
+
+      addLabel: builder.mutation<void,{label:string,authUserUid:string}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/addLabel?uid=${args.authUserUid}`,
+            method: 'POST',
+            body: { label: args.label }
          })
       }),
    })
@@ -21,5 +29,6 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
 
 export const {
    useCreateContactMutation,
-   useGetContactsQuery
+   useGetUserDataQuery,
+   useAddLabelMutation
 } = extendedContactsQuerySlice;

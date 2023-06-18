@@ -56,20 +56,10 @@ export const addressSectionInputPropsArray = [
       id: 'city'
    },
    {
-      label: "Postal Code",
-      name: InputPropertyValueName.AddressPostalCode,
+      label: "Street",
+      name: InputPropertyValueName.AddressStreet,
       type: "text",
-      id: 'postalcode'
-   }
-]
-
-
-export const additionalFieldInputPropsArray = [
-   {
-      label: "C",
-      name: InputPropertyValueName.AddressCity,
-      type: "text",
-      id: 'city'
+      id: 'street'
    },
    {
       label: "Postal Code",

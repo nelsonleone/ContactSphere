@@ -1,10 +1,11 @@
 import { FaPlus } from 'react-icons/fa'
 import * as React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 export default function CreateNewContactButton(){
 
    const navigate = useNavigate()
+   const location = useLocation()
    const [showText,setShowText] = React.useState(window.innerWidth > 960)
 
    const resizeHandler = () => {
@@ -18,6 +19,7 @@ export default function CreateNewContactButton(){
    },[])
 
    return(
+      !location.pathname.match("/auth") && location.pathname !== "/new" ? 
       <button className="cnc_btn" title="Add New Contact" onClick={() => navigate('/new')}>
          <FaPlus />
          {
@@ -25,5 +27,7 @@ export default function CreateNewContactButton(){
             <span>Create Contact</span>
          }
       </button>
+      :
+      null
    )
 }

@@ -7,27 +7,27 @@ import { UseFormGetValues, UseFormRegister, UseFormSetValue } from 'react-hook-f
 
 
 type IFormData = {
-   email: string,
-   password: string
-   displayName: string
+  email: string,
+  password: string
+  displayName: string
 }
 
 interface ICustomInputsProps {
-   registerField:  UseFormRegister<IFormData>,
-   error: string | undefined,
-   setValue?: UseFormSetValue<IFormData>
+  registerField:  UseFormRegister<IFormData>,
+  error: string | undefined,
+  setValue?: UseFormSetValue<IFormData>
 }
 
 interface ICustomInputsProps_Password extends ICustomInputsProps {
-   getValues: UseFormGetValues<IFormData>
+  getValues: UseFormGetValues<IFormData>
 }
 
 
 type UserCredentials = {
-   email: string,
-   displayName: string | null,
-   password: string,
-   uid: string
+  email: string,
+  displayName: string | null,
+  password: string,
+  uid: string
 }
 
 
@@ -36,8 +36,8 @@ type UserCredentials = {
 type ComponentStateName = keyof IHeaderState;
 
 type UsedHOC = {
-  setState: Dispatch<SetStateAction<IHeaderState>>,
-  componentStateName: ComponentStateName,
+  setState: Dispatch<SetStateAction<IHeaderState>> | Dispatch<SetStateAction<boolean>>,
+  componentStateName?: ComponentStateName,
   togglerRef: RefObject<HTMLButtonElement>,
   openNav?: boolean,
   openUserMenu?: boolean,
@@ -70,12 +70,11 @@ type Contact = {
   isHidden: boolean;
   jobTitle: string;
   lastName: string;
-  labelledBy: string;
+  labelledBy: string[];
   middleName: string;
   name: string;
   nickname: string;
   phoneNumber: string;
-  notes: string;
   prefix: string;
   repPhoto: string;
   relatedPeople: {
@@ -98,18 +97,18 @@ type UserData = {
 
 // country list for dropdown
 type countryDataObj = {
-   name:{
-     common:string,
-     official:string,
-     nativeName:{
-       dan:{
-         official:string,
-         common:string
-       },
-       fao:{
-         official: string,
-         common:string
-       }
-     }
-   }
- }
+  name:{
+    common:string,
+    official:string,
+    nativeName:{
+      dan:{
+        official:string,
+        common:string
+      },
+      fao:{
+        official: string,
+        common:string
+      }
+    }
+  }
+}

@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
 const {
    Schema,
-   model,
-   models
+   model
 } = mongoose;
 
 const Contact = new Schema({
@@ -24,7 +23,7 @@ const Contact = new Schema({
    isHidden: Boolean,
    jobTitle: String,
    lastName: String,
-   labelledBy: String,
+   labelledBy: [String],
    middleName: String,
    name: {
       type: String,
@@ -52,7 +51,7 @@ const authUserSchema = new Schema({
       unique: true
    },
    contacts: [Contact],
-   labels: [string]
+   labels: [String]
 })
 
 
@@ -62,6 +61,6 @@ Contact.pre('save', function(next) {
 }) 
 
 
-const AuthUserData = model('UserContacts',userContactsSchema,'usercontacts')
+const AuthUserData = model('AuthUserData',authUserSchema,'authuserdata')
 
-module.exports = UserContacts;
+module.exports = AuthUserData;

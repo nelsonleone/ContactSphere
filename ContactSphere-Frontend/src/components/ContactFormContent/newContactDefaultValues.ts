@@ -19,12 +19,11 @@ export const defaultValues: Contact = {
    isHidden: false,
    jobTitle: '',
    lastName: '',
-   labelledBy: '',
+   labelledBy: [],
    middleName: '',
    name: '',
    nickname: '',
    phoneNumber: '',
-   notes: '',
    prefix: '',
    repPhoto: '',
    relatedPeople: [

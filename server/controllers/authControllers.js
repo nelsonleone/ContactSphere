@@ -3,6 +3,7 @@ const firebaseAdmin = require('../firebase/firebaseAdmin')
 const verifyIdToken = require('../utils/authAid/verifyIdToken')
 const checkCsrfToken = require('../utils/authAid/checkCsrfToken')
 const csrfTokenGen = require('../utils/authAid/csrfTokenGen')
+const AuthUserData = require('../models/AuthUserData')
 
 
 // Handled User authorization Request

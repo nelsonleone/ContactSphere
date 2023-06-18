@@ -32,6 +32,10 @@ export  const relatedPeopleArray = [
       text: 'Manager'
    },
    {
+      value: 'mother',
+      text: 'Mother'
+   },
+   {
       value: 'reference',
       text: 'Reference'
    },

@@ -65,13 +65,7 @@ export default function Header(props:IHeaderProps){
             <HamburgerIcon openNav={state.openNav} ref={hamburgerRef} setState={setState}  />
             <h1 onClick={() => navigate('/')}>ContactSphere</h1>
 
-            <NavMenu 
-               componentStateName='openNav' 
-               openNav={state.openNav} 
-               setState={setState} 
-               togglerRef={hamburgerRef}
-               stop={innerWidth > 960}
-            />
+            <NavMenu openNav={state.openNav} setState={setState} />
             <SearchBar />
 
             <div className="user_utils">
@@ -83,7 +77,7 @@ export default function Header(props:IHeaderProps){
          </header>
          {
             state.openUserMenu ?
-            <UserMenu componentStateName='openUserMenu' openUserMenu={state.openUserMenu} setState={setState} togglerRef={userIconRef} />
+            <UserMenu setState={setState}  />
             :
             null
          }

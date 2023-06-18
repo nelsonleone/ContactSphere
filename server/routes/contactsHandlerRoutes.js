@@ -1,14 +1,14 @@
 const express = require('express')
 const router = express.Router()
 const {
-   setUpdate,
-   setAuthUserContacts,
+   getAuthUserData,
+   setNewContactLabel,
    createContact
 } = require('../controllers/contactsHandlerController')
 
-router.get('/getAuthUserContacts',setAuthUserContacts)
-router.post('/updateContact',setUpdate)
-router.post('/createNewContact',createContact)
+router.get('/getAuthUserData',getAuthUserData)
+router.post('/setNewContact',createContact)
+router.post('/addLabel',setNewContactLabel)
 
 
 module.exports = router;

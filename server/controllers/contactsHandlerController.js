@@ -13,7 +13,7 @@ const createContact = asyncHandler(async(request,response) => {
 
    try{
       const newUserContact = await AuthUserData.findOneAndUpdate(
-         { uid },
+         { uid: authUserUid },
          { $push: { contacts: newContact } },
          { new: true }
       )
@@ -30,20 +30,26 @@ const createContact = asyncHandler(async(request,response) => {
 
 
 // Set Auth User Contacts
-const setAuthAuthUserData = asyncHandler(async(request,response) => {
+const getAuthUserData = asyncHandler(async(request,response) => {
    const authUserUid = req.query.uid;
 
    try{
       const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
 
-      if (!AuthUserDataDoc){
-         response.status(200).json({
-            contacts: []
+      if (!authUserDataDoc){
+         // Initialize User In Database
+         await AuthUserData.create({
+            uid: authUserUid,
+            contacts: [],
+            labels: []
          })
       }
-
-      const contacts = authUserDataDoc.contacts;
-      response.status(200).json(contacts)
+      
+      response.status(200).json({
+         uid: authUserDataDoc.uid,
+         contacts: authUserDataDoc.contacts,
+         labels: authUserDataDoc.labels
+      })
    }
    catch(error){
       response.status(500)
@@ -52,37 +58,59 @@ const setAuthAuthUserData = asyncHandler(async(request,response) => {
 })
 
 
-// Handle Auth User Update Request
-const setUpdate = asyncHandler(async(request,response) => {
 
-   const authUserUid = request.query.uid;
-   const { contactId } = request.query;
-   const { updatedContactsData } = request.body;
-
-   if(!updatedContactsData){
-      response.status(400)
-      throw new Error("BAD REQUEST, INVALID UPDATE FIELDS")
-   }
+// Set New Contact Label
+const setNewContactLabel = asyncHandler(async(request,response) => {
+   const authUserUid = req.query.uid;
+   const newLabel = req.body.label
 
    try{
-      const updatedDocument = await AuthUserData.findOneAndUpdate(
-         { uid, "contacts._id": contactId },
-         { $set: { "contacts.$": updatedContactsData } },
+      const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
+      await AuthUserData.findOneAndUpdate(
+         { uid: authUserUid },
+         { $push: { labels: label } },
          { new: true }
       )
-
-      response.status(201).json(updatedDocument)
    }
 
    catch(error){
-      response.status(500)
-      throw new Error(`Error Updating Data,... ${err.message}`)
+      res.status(500)
+      throw new Error(error.message)
    }
 })
 
 
+// // Handle Auth User Update Request
+// const setUpdate = asyncHandler(async(request,response) => {
+
+//    const authUserUid = request.query.uid;
+//    const { contactId } = request.query;
+//    const { updatedContactsData } = request.body;
+
+//    if(!updatedContactsData){
+//       response.status(400)
+//       throw new Error("BAD REQUEST, INVALID UPDATE FIELDS")
+//    }
+
+//    try{
+//       const updatedDocument = await AuthUserData.findOneAndUpdate(
+//          { uid, "contacts._id": contactId },
+//          { $set: { "contacts.$": updatedContactsData } },
+//          { new: true }
+//       )
+
+//       response.status(201).json(updatedDocument)
+//    }
+
+//    catch(error){
+//       response.status(500)
+//       throw new Error(`Error Updating Data,... ${err.message}`)
+//    }
+// })
+
+
 module.exports = {
-   setUpdate,
-   setAuthUserData,
-   createContact
+   getAuthUserData,
+   createContact,
+   setNewContactLabel
 }

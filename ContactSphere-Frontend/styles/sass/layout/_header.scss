@@ -69,10 +69,10 @@
       margin-top: 3em;
 
       p{
-         margin-block: 1.1em;
-         color: $text-color2;
+         margin-block: 1.2em;
+         color: $text-color1;
          font-weight: $fw_bold;
-         font-size: 1.1rem;
+         font-size: 1rem;
       }
    }
 
@@ -126,6 +126,7 @@
          font-size: 1.1rem;
          @include flexObj;
          width: 100%;
+         color: $text-color2;
       }
    }
 }
@@ -192,61 +193,63 @@ button[aria-controls=user-menu]{
 
 // User Info Menu Styling Section
 .user-menu{
-   position: absolute;
+   position: fixed;
    padding: 1em;
    animation-name: slideIn_One;
    animation-timing-function: linear;
    animation-fill-mode: forwards;
    animation-duration: .2s;
-   width: 10em;
-   max-height: 11.3em;
+   width: 12em;
+   height: 0;
    border-radius: 8px;
-   background-color: $bg_color2;
    right: 1em;
    font-family: $ff_primary;
+   top: 4.7em;
    z-index: 10;
+   box-shadow: 0px 2px 2px 2px $util_color1;
    @include flexObj($justify:center,$direction:column);
-   box-shadow: 0px 2px 2px 2px $util_color2;
 
-   &>span{
-      color: $accent_color_1;
-      font-weight: $fw_xBold;
-      font-size: .9rem;
-      display: block;
-      text-decoration: underline;
+   .avatar{
+      position: relative;
+      margin-top: 1em;
+   }
+
+   &>*{
+      font-family: $ff_primary;
    }
 
    p{
-      font-family: $ff_secondary;
-      text-transform: capitalize;
+     text-transform: uppercase;
+     font-weight: $fw_bold;
+   }
+
+   &>span{
+      font-size: .9rem;
       margin-block: 1em;
+      color: $accent_color_1;
+      text-decoration: underline $accent_color_1;
+      font-weight: $fw_xBold;
    }
    
    
    button {
       display: block;
-      background-color: $accent_color_1;
       cursor: pointer;
       margin-block: 1em;
       margin-inline: auto;
-      font-family: $ff_primary;
-      padding: .6em;
-      height: 2.5em;
       font-weight: $fw_bold;
-      color: $generic_color_1;
       @include flexObj;
-      font-size: 1rem;
-
-      &:hover{
-         background: $accent_color_2;
-      }
+      font-family: $ff_primary;
+      font-size: .9rem;
+      text-align: center;
+      border-bottom: 1px solid $accent_color_1;
 
       svg{
-         color: $generic_color_1;
+         color: $generic_color_2;
       }
 
       span {
-         color: inherit;
+         color: $text-color2;
       }
    }
 }
@@ -259,23 +262,29 @@ button[aria-controls=user-menu]{
       gap: .5em;
    }
 
-   .header_main .searchbar{
-      position: relative;
-      @include flexObj;
 
-      svg{
-         display: none;
+
+   .header_main {
+      .searchbar{
+         flex-basis: 50%;
+
+         position: relative;
+         @include flexObj;
+   
+         svg{
+            display: none;
+         }
+
+         .searchbar-input{
+            position: relative;
+            bottom: unset;
+            left: unset;
+            right: 2em;
+            height: 3em;
+            padding-block: 1.6em;
+            width: 35em;
+         }
       }
-   }
-
-   .header_main .searchbar-input{
-      position: relative;
-      bottom: unset;
-      left: unset;
-      right: 2em;
-      height: 3em;
-      padding-block: 1.6em;
-      width: 25em;
    }
 
    .main_nav{
@@ -294,6 +303,13 @@ button[aria-controls=user-menu]{
       padding-block: 1em;
       position: relative;
       padding-left: 4em;
+      width: 98%;
+      background-color: $generic_color_1;
+      z-index: 2;
+      position: fixed;
+      margin-inline: auto;
+      left: 0;
+      right: 0;
 
          
       .user_utils{
@@ -307,6 +323,7 @@ button[aria-controls=user-menu]{
 
       h1{
          margin: 0;
+         transform: translateX(-.5em);
       }
    }
 
@@ -317,6 +334,8 @@ button[aria-controls=user-menu]{
       background: transparent;
       width: 20%;
       z-index: 1;
+      position: fixed;
+      left: 0;
 
       li{
          margin-block:1.8em;
@@ -332,12 +351,12 @@ button[aria-controls=user-menu]{
       left: 0;
    }
 
-   .searchbar{
-      flex-basis: 65%;
+   .header_main .searchbar{
+      flex-basis: 73%;
       right: unset;
       position: relative;
       .searchbar-input{
-         width: 85%;
+         width: 90%;
          right: unset;
          position: absolute;
          margin-block: auto;
