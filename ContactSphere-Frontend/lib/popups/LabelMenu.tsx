@@ -35,9 +35,9 @@ export default function LabelMenu(props:ILabelMenuProps) {
    const handleClickAway = () => {
       setShowLabelMenu(false)
    }
-   
+
    const handleAddLabel = (label) => {
-      const labelAreadyAdded = fields.some(field => field === label)
+      const labelAlreadyAdded = fields.some(field => field === label)
       if (labelAlreadyAdded)return;
 
       append(label)

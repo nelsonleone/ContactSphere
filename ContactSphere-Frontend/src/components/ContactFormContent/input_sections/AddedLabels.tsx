@@ -14,7 +14,7 @@ function AddedLabels({ control }: { control: Control<Contact,any> }) {
             labelsArray.map(label => (
                <div>
                   <button>
-                     <
+                     <Md
                      <span>{label}</span>
                   </button>
                </div>
