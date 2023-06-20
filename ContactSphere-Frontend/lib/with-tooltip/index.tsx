@@ -72,14 +72,17 @@ export function ManageLabelButton({ className, penMode, handleClick }:{ penMode:
 function UserIcon(props:IProps,ref:Ref<HTMLButtonElement>){
 
    const handleClick = () => {
-      if(props.state.openUserMenu)return;
-
-      props.setState(prevState => (
-         {
-            ...prevState,
-            openUserMenu: true
-         }
-      ))
+      if (props.state.openUserMenu){
+         return;
+      }
+      else{
+         props.setState(prevState => (
+            {
+               ...prevState,
+               openUserMenu: !prevState.openUserMenu
+            }
+         ))
+      }
    }
 
    return(
@@ -90,7 +93,7 @@ function UserIcon(props:IProps,ref:Ref<HTMLButtonElement>){
             aria-controls='user-menu' 
             aria-expanded={props.state.openUserMenu ? "true" : "false"}
             aria-haspopup="true"
-            onClick={handleClick}
+            onClick={() => !props.state.openUserMenu ? handleClick : ""}
             >
             <FaUser />
          </button>
