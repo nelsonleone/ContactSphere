@@ -45,21 +45,20 @@ export default function AddLabelDialog(props:IDialogProps) {
   return (
       <Dialog open={open} onClose={handleClose}>
          <DialogTitle>Create Label</DialogTitle>
-         <DialogContent>
+         <DialogContent sx={{width:"20em"}}>
             <TextField
                autoFocus
                margin="dense"
                id="create-label"
                label="Label"
                type="text"
-               sx={{width: 100}}
                variant="standard"
                onChange={(e) => setLabel(e.target.value)}
             />
          </DialogContent>
          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleClose}>Save</Button>
+            <Button type="button" onClick={handleClose}>Cancel</Button>
+            <Button type="button" onClick={handleClose}>Save</Button>
          </DialogActions>
       </Dialog>
    )

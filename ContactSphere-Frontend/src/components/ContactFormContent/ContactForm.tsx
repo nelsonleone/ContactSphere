@@ -14,6 +14,7 @@ import { Button } from "@mui/material"
 import { RxCross1 } from 'react-icons/rx'
 import { deepOrange } from '@mui/material/colors';
 import { ManageLabelButton } from "../../../lib/with-tooltip"
+import AddLabelDialog from "../../../lib/popups/AddLabelDialog"
 import { useNavigate } from "react-router-dom"
 import AddedLabels from "./input_sections/AddedLabels"
 
@@ -25,6 +26,7 @@ function ContactForm(){
    const { fields:labelsArray } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
    const [showMore,setShowMore] = useState<boolean>(false)
    const [showLabelMenu,setShowLabelMenu] = useState<boolean>(false)
+   const [openAddLabelModal,setOpenAddLabelModal] = useState<boolean>(false)
    const navigate = useNavigate()
 
    const handleOnSubmit: SubmitHandler<Contact> = (data) => {
@@ -37,8 +39,10 @@ function ContactForm(){
             <div className="top_section">
                <ImageUploadInput name={InputPropertyValueName.RepPhoto} register={register} setValue={setValue} />
                {
-                  labelsArray?.length &&
+                  labelsArray?.length ?
                   <AddedLabels control={control} />
+                  :
+                  null
                }
                <ManageLabelButton 
                   penMode={labelsArray?.length ? true : false} 
@@ -57,7 +61,7 @@ function ContactForm(){
                   <RxCross1 />
                </button>
 
-               <LabelMenu register={register} control={control} showLabelMenu={showLabelMenu} setShowLabelMenu={setShowLabelMenu} />
+               <LabelMenu setOpenAddLabelModal={setOpenAddLabelModal} register={register} control={control} showLabelMenu={showLabelMenu} setShowLabelMenu={setShowLabelMenu} />
             </div>
 
             <div className="fields_area">
@@ -70,6 +74,8 @@ function ContactForm(){
 
             <button type="button"  className="show_more_btn" onClick={() => setShowMore(!showMore)}>Show {showMore ? "Less" : "More"}</button>
          </form>
+
+         <AddLabelDialog setOpen={setOpenAddLabelModal} open={openAddLabelModal} />
       </>
    )
 }

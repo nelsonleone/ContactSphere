@@ -35,7 +35,7 @@ export default function NewContactFormInput(props:IFormInputProps){
    return(
       show && type === "text" ?
       <TextField
-         className="contact-input"
+         className="contact-input textField"
          error={name === InputPropertyValueName.FirstName && error ? true : false}
          id={id}
          size="small"

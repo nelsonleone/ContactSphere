@@ -143,9 +143,10 @@
 
          &:focus-within {
             label{
-               font-family: $ff_prompts;
+               font-family: $ff_primary;
                font-size:.9rem;
                font-weight: $fw_bold;
+               color: $accent_color_2;
             }
          }
 
@@ -176,6 +177,10 @@
          &>label{
             color: hsl(0, 2%, 56%);
             font-weight: $fw_bold;
+         }
+
+         &:focus{
+            border-color: $accent_color_2;
          }
       }
 
@@ -280,7 +285,7 @@
          position: relative;
 
          .fields_area{
-            padding-top: 16.5em;
+            padding-top: 11.5em;
          }
 
 
@@ -289,11 +294,12 @@
             padding-bottom: 1em;
             padding-top: 1em;
             min-height: 11em;
+            padding-inline: 0;
             position: fixed;
             width: 78%;
             z-index: 2;
             top: 4.7em;
-            margin-inline: 15% 2%;
+            margin-inline: 20% 2%;
             background-color: $generic_color_1;
             margin-inline: auto;
 
@@ -309,6 +315,7 @@
 
             .fx-button:nth-of-type(3){
                top: 1em;
+               left: 0;
             }
 
             button[type=submit]{
@@ -339,6 +346,25 @@
          .append_btn_0{
             right: -1em;
          }
+      }
+   }
+}
+
+
+
+
+// Overriding MUI TextField Bordder Properties
+
+.textField{
+   & .MuiOutlinedInput-root {
+      &.Mui-focused fieldset {
+         border-color: $accent_color_2 !important;
+      }
+   }
+   
+   & .MuiOutlinedInput-root {
+      &.Mui-focused fieldset:hover{
+         border-color: $accent_color_2 !important;
       }
    }
 }

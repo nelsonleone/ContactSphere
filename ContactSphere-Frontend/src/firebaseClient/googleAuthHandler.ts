@@ -23,6 +23,6 @@ export default async function googleAuthHandler(){
    }
 
    catch(err:unknown|any){
-      throw new Error(err.code || "Error Authenticating User, Try Again")
+      throw new Error(err?.code || "Error Authenticating User, Try Again")
    }
 }

@@ -67,7 +67,7 @@ function UserMenu(props:IProps){
          touchEvent="onTouchStart"
          onClickAway={handleClickAway}
          >
-         <Card variant="elevation" className="user-menu">
+         <Card variant="elevation" className="user-menu" id="user-menu">
             <PhotoUrlAvatar nameForAlt={displayName || ''} photoURL={photoURL || ''} />
             <p>{displayName}</p>
             <span>{email}</span>
@@ -78,7 +78,21 @@ function UserMenu(props:IProps){
          </Card>
       </ClickAwayListener>
       :
-      <p role="alert" style={{color: "#af2121",textTransform: "uppercase", textAlign: "center"}}>No Currently Signed In User</p>
+      <p 
+         role="alert" 
+         style={
+            {
+               color: "#af2121",
+               textTransform: "uppercase", 
+               textAlign: "center",
+               position:"fixed",
+               top:"5em",
+               left: "20%",
+            }
+         }
+        >
+         No Currently Signed In User
+      </p>
    )
 }
 

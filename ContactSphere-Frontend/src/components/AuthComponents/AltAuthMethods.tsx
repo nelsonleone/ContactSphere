@@ -42,7 +42,7 @@ function AltAuthMethods() {
       catch(err:unknown|any){
          dispatch(setShowAlert(
             {
-               alertMessage: err.data.message || err.message || "An Error Occured, Try Again",
+               alertMessage: err?.data?.message || err?.message || "An Error Occured, Try Again",
                severity: AlertSeverity.ERROR
             }
          ))

@@ -23,7 +23,7 @@ function SearchBar() {
 
   return (
     <div className="searchbar">
-      <button aria-controls="searchbar-input" className="search-icon" onClick={()  => setShowSearchbar(!showSearchbar)} >
+      <button aria-haspopup={window.innerWidth < 640 ? "true" : "false"} aria-controls="searchbar-input" className="search-icon" onClick={()  => setShowSearchbar(!showSearchbar)} >
         <HiSearch />
       </button>
       <input type="text" id="searchbar-input" name="searchbar-input" placeholder="Search" className={showSearchbar ? "searchbar-input" : "searchbar-input hide-searchbar"} />

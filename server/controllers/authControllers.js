@@ -60,7 +60,8 @@ const setCsrfToken = asyncHandler(async(req,res) => {
 
 // Set Auth Session Persistence
 const setAuthState = asyncHandler(async(req,res) =>{
-  const authSessionToken = req.cookies.authSessionCookie;
+  console.log(req.cookies.authSessionCookie)
+  const authSessionToken = req.cookies.authSessionCookie || '';
 
   try{
     const decodedClaims = await firebaseAdmin.auth().verifySessionCookie(authSessionToken,true)

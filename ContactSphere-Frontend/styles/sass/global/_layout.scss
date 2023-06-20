@@ -23,7 +23,7 @@
    background-color: $util_color1;
    border-radius: 50%;
    aspect-ratio: 1/1;
-   width: 3.6em;
+   min-width: 3.6em;
    @include flexObj($justify:center);
    position: fixed;
    bottom: 4.5em;
@@ -32,7 +32,7 @@
    right: 1em;
    font-family: $ff_prompts;
    font-weight: $fw_bold;
-   transition: .2s ease-in-out;
+   transition: .2s ease-in;
 
    svg{
       color: $accent_color_1;
@@ -40,16 +40,8 @@
    }
 
    &:hover{
-      background: $accent_color_3;
       box-shadow: unset;
-
-      span{
-         color: $generic_color_1;
-      }
-
-      svg{
-         color: $generic_color_1;
-      }
+      border: 1px solid $accent_color_3;
    }
 
 
@@ -59,7 +51,7 @@
       top: 7.5em;
       background-color: transparent;
       left: 1em;
-      width: 11em;
+      width: 12em;
       height: unset;
       aspect-ratio: 1/.3;
       padding: .7em;

@@ -18,7 +18,8 @@ interface ILabelMenuProps {
    showLabelMenu: boolean, 
    setShowLabelMenu:React.Dispatch<React.SetStateAction<boolean>>,
    register: UseFormRegister<Contact>,
-   control:  Control<Contact, any>
+   control:  Control<Contact, any>,
+   setOpenAddLabelModal: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 export default function LabelMenu(props:ILabelMenuProps) {
@@ -26,21 +27,21 @@ export default function LabelMenu(props:ILabelMenuProps) {
    const {
       showLabelMenu,
       setShowLabelMenu,
-      control
+      control,
+      setOpenAddLabelModal
    } = props;
    const { labels } = useAppSelector(state => state.userData)
-   const [openAddLabelModal,setOpenAddLabelModal] = React.useState(false)
    const { fields, append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
 
    const handleClickAway = () => {
       setShowLabelMenu(false)
    }
 
-   const handleAddLabel = (label) => {
-      const labelAlreadyAdded = fields.some(field => field === label)
+   const handleAddLabel = (label:string) => {
+      const labelAlreadyAdded = fields.some(field => field.label === label)
       if (labelAlreadyAdded)return;
 
-      append(label)
+      append({label})
    }
 
    return (
@@ -59,7 +60,7 @@ export default function LabelMenu(props:ILabelMenuProps) {
                            <ListItemIcon>
                               <MdLabelOutline  />
                            </ListItemIcon>
-                           <button onClick={() => handleAddLabel(label)}>{label}</button>
+                           <button type="button" onClick={() => handleAddLabel(label)}>{label}</button>
                         </MenuItem>
                      ))
                      :
@@ -70,7 +71,7 @@ export default function LabelMenu(props:ILabelMenuProps) {
                  <ListItemIcon>
                    <BiPlus />
                  </ListItemIcon>
-                 <button onClick={()  => setOpenAddLabelModal(!openAddLabelModal)}>
+                 <button onClick={()  => setOpenAddLabelModal(prevState => prevState = !prevState)}>
                    <ListItemText style={{fontSize:'.9rem'}}>Create Label</ListItemText>
                   </button>
                </MenuItem>

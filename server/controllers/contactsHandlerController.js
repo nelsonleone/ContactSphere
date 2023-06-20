@@ -60,9 +60,10 @@ const getAuthUserData = asyncHandler(async(request,response) => {
 
 
 // Set New Contact Label
-const setNewContactLabel = asyncHandler(async(request,response) => {
+const setNewLabel = asyncHandler(async(request,response) => {
    const authUserUid = req.query.uid;
-   const newLabel = req.body.label
+   const newLabel = req.body.label;
+   console.log(newLabel)
 
    try{
       const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
@@ -112,5 +113,5 @@ const setNewContactLabel = asyncHandler(async(request,response) => {
 module.exports = {
    getAuthUserData,
    createContact,
-   setNewContactLabel
+   setNewLabel
 }

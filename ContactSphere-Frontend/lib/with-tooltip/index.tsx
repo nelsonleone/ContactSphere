@@ -72,17 +72,12 @@ export function ManageLabelButton({ className, penMode, handleClick }:{ penMode:
 function UserIcon(props:IProps,ref:Ref<HTMLButtonElement>){
 
    const handleClick = () => {
-      if (props.state.openUserMenu){
-         return;
-      }
-      else{
-         props.setState(prevState => (
-            {
-               ...prevState,
-               openUserMenu: !prevState.openUserMenu
-            }
-         ))
-      }
+      props.setState(prevState => (
+         {
+            ...prevState,
+            openUserMenu: !prevState.openUserMenu
+         }
+      ))
    }
 
    return(

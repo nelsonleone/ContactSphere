@@ -1,7 +1,7 @@
 import { Contact } from "../../vite-env";
 import { contactsQuerySlice } from "./contactsQuerySlice";
 
-const CONTACTS_API_URL = '/server/contacts';
+const CONTACTS_API_URL = '/contacts';
 
 const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
    endpoints: builder => ({
