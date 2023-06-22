@@ -71,6 +71,7 @@ type Contact = {
   jobTitle: string;
   lastName: string;
   labelledBy: {
+    name?: string
     label: string
   }[] | [];
   middleName: string;
@@ -87,12 +88,22 @@ type Contact = {
   website: string;
 }
 
+interface IContactsFromDB extends Contact {
+  _id: string,
+  createdAt: string,
+  updatedAt: string,
+  deletedAt: string
+}
+
 
 
 
 type UserData = {
   contacts: Contact[],
-  labels: string[]
+  labels: {
+    _id: string,
+    label: string
+  }[] | []
 }
 
 

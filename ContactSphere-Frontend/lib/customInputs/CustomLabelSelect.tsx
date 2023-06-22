@@ -8,6 +8,8 @@ import { Contact, countryDataObj } from '../../src/vite-env.d'
 import { nanoid } from '@reduxjs/toolkit';
 import { relatedPeopleArray } from './relatedPeopleArray'
 
+
+
 interface IProps {
    register: UseFormRegister<Contact>,
    name: string,
@@ -58,7 +60,7 @@ export default function CustomLabelSelect(props:IProps) {
             label={label}
             size="small"
             value={localValue}
-            className={`${labelFor}-select`}
+            className={`${labelFor}-select custom_select`}
          >
             {
                labelFor === "country_select" && countriesNameListData?.length ?

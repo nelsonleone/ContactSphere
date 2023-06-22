@@ -61,21 +61,21 @@ const getAuthUserData = asyncHandler(async(request,response) => {
 
 // Set New Contact Label
 const setNewLabel = asyncHandler(async(request,response) => {
-   const authUserUid = req.query.uid;
-   const newLabel = req.body.label;
-   console.log(newLabel)
+   const authUserUid = request.query.uid;
+   const newLabel = request.body.label;
 
    try{
-      const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
-      await AuthUserData.findOneAndUpdate(
+      const updatedAuthUserData = await AuthUserData.findOneAndUpdate(
          { uid: authUserUid },
-         { $push: { labels: label } },
+         { $push: { labels: newLabel } },
          { new: true }
       )
+
+      res.status(201).json(updatedAuthUserData.labels)
    }
 
    catch(error){
-      res.status(500)
+      response.status(500)
       throw new Error(error.message)
    }
 })

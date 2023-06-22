@@ -8,6 +8,7 @@
    width: 96%;
    margin: auto;
    gap: 1em;
+   z-index: 3;
    position: relative;
    border-bottom: 1px solid $util_color1;
    svg{
@@ -106,6 +107,10 @@
             position: absolute;
             z-index: -1;
          }
+   
+         &:hover{
+            color: $accent_color_2;
+         }
       }
 
       &>.active{
@@ -117,6 +122,8 @@
    }
 
 
+
+   // User Saved Labels section
    .label-area{
       margin-top: 2em;
       button{
@@ -134,7 +141,7 @@
 
 
 .hide_nav{
-  left: -1000px;
+  left: -1000px !important;
   opacity: 0;
 }
 
@@ -205,7 +212,6 @@ button[aria-controls=user-menu]{
    right: 1em;
    font-family: $ff_primary;
    top: 4.7em;
-   z-index: 10;
    box-shadow: 0px 2px 2px 2px $util_color1;
    @include flexObj($justify:center,$direction:column);
 
@@ -219,6 +225,7 @@ button[aria-controls=user-menu]{
    }
 
    p{
+     font-family: $ff_secondary;
      text-transform: uppercase;
      font-weight: $fw_bold;
    }
@@ -306,7 +313,7 @@ button[aria-controls=user-menu]{
       padding-left: 4em;
       width: 98%;
       background-color: $generic_color_1;
-      z-index: 2;
+      z-index: 3;
       position: fixed;
       margin-inline: auto;
       left: 0;

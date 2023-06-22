@@ -2,6 +2,19 @@
 @use './colors' as *;
 @use '../utils' as *;
 
+:root {
+   --PhoneInput-color--focus: rgb(196, 120, 8);
+   --PhoneInputCountrySelect-marginRight: 0.35em;
+   --PhoneInputCountrySelectArrow-width: 0.5em;
+   --PhoneInputCountrySelectArrow-opacity: 0.45;
+   --PhoneInputCountrySelectArrow-color: currentColor;
+   --PhoneInputCountryFlag-aspectRatio: 1.5;
+   --PhoneInputCountryFlag-height: 1.8em;
+   --PhoneInputCountryFlag-borderColor--focus: var(--PhoneInput-color--focus);
+   --PhoneInputCountryFlag-backgroundColor--loading: rgba(0,0,0,0.1);
+   --PhoneInputCountrySelect-marginRight: .8em;
+}
+
 *,
 *::after,
 *::before{
@@ -15,6 +28,7 @@ html{
 }
 
 body{
+   overflow-x: hidden;
    height: 100%;
 }
 

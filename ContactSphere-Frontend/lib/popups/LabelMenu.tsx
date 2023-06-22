@@ -37,7 +37,8 @@ export default function LabelMenu(props:ILabelMenuProps) {
       setShowLabelMenu(false)
    }
 
-   const handleAddLabel = (label:string) => {
+   const handleAddLabel = (e:React.MouseEvent<HTMLButtonElement>,label:string) => {
+      e.stopPropagation()
       const labelAlreadyAdded = fields.some(field => field.label === label)
       if (labelAlreadyAdded)return;
 
@@ -55,12 +56,12 @@ export default function LabelMenu(props:ILabelMenuProps) {
             <MenuList>
 
                {
-                     labels ? labels.map(label => (
-                        <MenuItem className="label">
+                     labels ? labels.map(value => (
+                        <MenuItem className="label" key={value._id}>
                            <ListItemIcon>
                               <MdLabelOutline  />
                            </ListItemIcon>
-                           <button type="button" onClick={() => handleAddLabel(label)}>{label}</button>
+                           <button type="button" onClick={(e) => handleAddLabel(e,value.label)}>{value.label}</button>
                         </MenuItem>
                      ))
                      :
@@ -71,7 +72,7 @@ export default function LabelMenu(props:ILabelMenuProps) {
                  <ListItemIcon>
                    <BiPlus />
                  </ListItemIcon>
-                 <button onClick={()  => setOpenAddLabelModal(prevState => prevState = !prevState)}>
+                 <button type="button" onClick={()  => setOpenAddLabelModal(prevState => prevState = !prevState)}>
                    <ListItemText style={{fontSize:'.9rem'}}>Create Label</ListItemText>
                   </button>
                </MenuItem>

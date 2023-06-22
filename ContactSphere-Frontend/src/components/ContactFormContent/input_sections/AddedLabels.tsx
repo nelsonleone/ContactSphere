@@ -2,10 +2,11 @@ import { useFieldArray, Control } from "react-hook-form"
 import { Contact } from "../../../vite-env"
 import { InputPropertyValueName } from "../../../enums"
 import { MdLabelOutline } from "react-icons/md"
+import { nanoid } from "@reduxjs/toolkit"
 
-function AddedLabels({ control }: { control: Control<Contact,any> }) {
+function AddedLabels({ control, labelsArray }: { control: Control<Contact,any>, labelsArray: {label:string}[]}) {
 
-   const { fields:labelsArray, remove } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy }) 
+   const { remove } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy }) 
 
    return (
       labelsArray ?
@@ -13,7 +14,7 @@ function AddedLabels({ control }: { control: Control<Contact,any> }) {
          {
             labelsArray?.length &&
             labelsArray.map((value,index) => (
-               <div key={value.id}>
+               <div key={nanoid()}>
                   <button onClick={() => remove(index)}>
                      <MdLabelOutline />
                      <span>{value.label}</span>

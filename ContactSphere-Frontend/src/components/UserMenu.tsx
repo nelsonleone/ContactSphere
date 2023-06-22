@@ -5,17 +5,11 @@ import { setShowAlert } from '../RTK/features/alertSlice'
 import PhotoUrlAvatar from '../../lib/Avatars/PhotoUrlAvatar'
 import { AlertSeverity } from '../enums'
 import { CgLogOut } from 'react-icons/cg'
-import { Dispatch, SetStateAction, memo } from "react";
-import { FaUserPlus } from 'react-icons/fa';
-import ClickAwayListener from '@mui/base/ClickAwayListener';
-import { IHeaderState } from "./Header";
+import { memo } from "react";
 import { useNavigate } from 'react-router-dom'
 
-interface IProps{
-   setState: Dispatch<SetStateAction<IHeaderState>>
-}
 
-function UserMenu(props:IProps){
+function UserMenu(){
 
    const { userDetails: {
       displayName,
@@ -27,14 +21,6 @@ function UserMenu(props:IProps){
    const [setAuthSignOut, {isLoading:signingOut}] = useSetAuthSignOutMutation()
    const dispatch = useAppDispatch()
    const navigate = useNavigate()
-
-   const handleClickAway = () => {
-      props.setState(prevState => (
-         {
-            ...prevState, openUserMenu: false
-         }
-      ))
-   }
 
 
    const handleUserSignOut = async() => {
@@ -62,21 +48,15 @@ function UserMenu(props:IProps){
 
    return(
       beenAuthenticated ?
-      <ClickAwayListener
-         mouseEvent="onMouseDown"
-         touchEvent="onTouchStart"
-         onClickAway={handleClickAway}
-         >
-         <Card variant="elevation" className="user-menu" id="user-menu">
-            <PhotoUrlAvatar nameForAlt={displayName || ''} photoURL={photoURL || ''} />
-            <p>{displayName}</p>
-            <span>{email}</span>
+      <Card variant="elevation" className="user-menu" id="user-menu">
+         <PhotoUrlAvatar nameForAlt={displayName || ''} photoURL={photoURL || ''} />
+         <p>{displayName}</p>
+         <span>{email}</span>
 
-            <Button variant="text" endIcon={<CgLogOut />} disabled={signingOut} onClick={handleUserSignOut}>
-               <span>Sign Out</span>
-            </Button>
-         </Card>
-      </ClickAwayListener>
+         <Button variant="text" type="button" endIcon={<CgLogOut />} disabled={signingOut} onClick={handleUserSignOut}>
+            <span>Sign Out</span>
+         </Button>
+      </Card>
       :
       <p 
          role="alert" 

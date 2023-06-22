@@ -2,7 +2,7 @@ import { memo, useId } from "react";
 import NewContactFormInput from "../../../../lib/customInputs/NewContactFormInput";
 import CustomLabelSelect from "../../../../lib/customInputs/CustomLabelSelect";
 import { UseFormRegister, useFieldArray } from "react-hook-form"
-import {  Control , UseFormSetValue} from "react-hook-form";
+import {  Control , UseFormSetValue } from "react-hook-form";
 import { Contact } from "../../../vite-env";
 import { InputPropertyValueName } from "../../../enums";
 import { HiPlusCircle } from "react-icons/hi";
@@ -61,7 +61,7 @@ function AdditionalFields(props:IProps){
          {
             showMore && fields.map((field,index) => (
                <div key={field.id} className="dx_container related_people_field_inputs">
-                  <TbCirclesRelation className={`related_people_icon_${index}`} />
+                  <TbCirclesRelation className={`related_people_icon related_people_icon_${index}`} />
                   <NewContactFormInput 
                      label='Related People'
                      register={register}

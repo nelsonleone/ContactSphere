@@ -1,11 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import HamburgerIcon from '../../lib/HamburgerIcon'
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import SearchBar from './SearchBar'
 import {  MemoizedHelp as  Help, MemoizedSetting as  Setting } from './UserUtils'
 import NavMenu from './NavMenu'
 import { UserIcon } from '../../lib/with-tooltip/index'
 import UserMenu from './UserMenu'
+import ClickAwayListener from '@mui/base/ClickAwayListener';
 
 export interface IHeaderState {
    openUserMenu: boolean,
@@ -24,7 +25,6 @@ export default function Header(props:IHeaderProps){
    const location = useLocation()
    const hamburgerRef = useRef<HTMLButtonElement>(null)
    const userIconRef = useRef<HTMLButtonElement>(null)
-   const [innerWidth,setInnerWidth] = useState<number>(window.innerWidth)
    const [state,setState] = useState<IHeaderState>({
       openUserMenu: false,
       toggleSettingSection: false,
@@ -33,10 +33,13 @@ export default function Header(props:IHeaderProps){
    })
 
    const handleResize = () => {
-      setInnerWidth(window.innerWidth)
       window.innerWidth < 960 ?
       setState(prevState => ({ ...prevState, openNav: false })) :
       setState(prevState => ({ ...prevState, openNav: true }))
+   }
+
+   const handleClickAway = () => {
+      setState(prevState => ({ ...prevState, openUserMenu: false }))
    }
 
    useEffect(() =>{
@@ -47,7 +50,6 @@ export default function Header(props:IHeaderProps){
    },[location.pathname])
 
    useEffect(() => {
-      setInnerWidth(window.innerWidth)
       window.addEventListener('resize',handleResize)
       return() => {
          window.removeEventListener('resize',handleResize)
@@ -73,14 +75,22 @@ export default function Header(props:IHeaderProps){
                <Setting setState={setState} state={state} />
             </div>
 
-            <UserIcon setState={setState} state={state} ref={userIconRef}  />
+            <ClickAwayListener
+               mouseEvent="onMouseDown"
+               touchEvent="onTouchStart"
+               onClickAway={handleClickAway}
+               >
+               <div>
+                  <UserIcon setState={setState} state={state} ref={userIconRef}  />
+                  {
+                     state.openUserMenu ?
+                     <UserMenu  />
+                     :
+                     null
+                  }
+               </div>
+            </ClickAwayListener>
          </header>
-         {
-            state.openUserMenu ?
-            <UserMenu setState={setState}  />
-            :
-            null
-         }
       </>
    )
 }

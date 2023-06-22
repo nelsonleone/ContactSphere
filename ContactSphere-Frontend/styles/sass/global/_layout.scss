@@ -9,12 +9,27 @@
 }
 
 .resize-page{
-   .page{
-      @include useMediaQuery_LS {
+   @include useMediaQuery_LS {
+      .page{
          padding-top: 5em;
-         width: 78%;
-         background-color: $generic_color_1;
-         margin-inline: 20% 2%;
+            width: 78%;
+            background-color: $generic_color_1;
+            margin-inline: 20% 2%;
+      }
+   
+      .create_contact_page{
+         form {
+            .top_section{
+               width:  78%;
+               left: 0;
+               right: 0;
+               margin-inline:  20% 2%;
+            }
+
+            .fields_area{
+               padding-top: 10.5em !important;
+            }
+         }
       }
    }
 }
@@ -41,7 +56,7 @@
 
    &:hover{
       box-shadow: unset;
-      border: 1px solid $accent_color_3;
+      border: 1px solid $accent_color_1;
    }
 
 

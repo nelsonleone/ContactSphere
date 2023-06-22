@@ -1,11 +1,11 @@
-import { Contact } from "../../vite-env";
+import { Contact, UserData } from "../../vite-env";
 import { contactsQuerySlice } from "./contactsQuerySlice";
 
 const CONTACTS_API_URL = '/contacts';
 
 const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
    endpoints: builder => ({
-      getUserData: builder.query<void,string>({
+      getUserData: builder.query<UserData,string>({
          query: (authUserUid) => `${CONTACTS_API_URL}/getAuthUserData?uid=${authUserUid}`
       }),
 

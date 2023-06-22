@@ -31,6 +31,7 @@ function HamburgerIcon(props:IProps,ref:Ref<HTMLButtonElement>){
          aria-expanded={isOpen ? "true" : "false"}
          aria-haspopup="true"
          ref={ref}
+         type="button"
          aria-label='Open Navigation Menu'
          className="hamburger-icon"
         >

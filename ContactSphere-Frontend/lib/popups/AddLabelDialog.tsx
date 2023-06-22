@@ -7,43 +7,39 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAddLabelMutation } from '../../src/RTK/features/injectedContactsApiQueries';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
-import { setShowAlert } from '../../src/RTK/features/alertSlice';
-import { AlertSeverity } from '../../src/enums';
+import { InputPropertyValueName } from '../../src/enums';
+import LoadingButton from '../buttons/LoadingButton';
+import {  Control , useFieldArray} from "react-hook-form";
+import { Contact } from "../../src/vite-env";
+import postCreatedLabel from '../../src/utils/helperFns/postCreatedLabel';
 
 interface IDialogProps {
    setOpen: Dispatch<SetStateAction<boolean>>,
-   open: boolean
+   open: boolean,
+   control: Control<Contact,any>
 }
 
 export default function AddLabelDialog(props:IDialogProps) {
 
-   const {  open, setOpen } = props;
-   const [addLabel,{}] = useAddLabelMutation()
+   const {  open, setOpen, control } = props;
+   const [addLabel,{ isLoading }] = useAddLabelMutation()
+   const { append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
    const { uid } = useAppSelector(store => store.authUser.userDetails)
    const [label,setLabel] = useState("")
    const dispatch = useAppDispatch()
 
-   const handleClose = async() => {
-      try{
-         if (uid){
-            await addLabel({ authUserUid: uid,label })
-         }
-         else{
-            throw new Error("Unauthourized Request")
-         }
-      }
+   const handleAddLabel = () => {
 
-      catch(err){
-         dispatch(setShowAlert({
-            alertMessage: "Error Occured While Adding Label",
-            severity: AlertSeverity.ERROR
-         }))
-      }
+      append({label})
+      
+      // Add the Label to the user's data in database 
+      postCreatedLabel(addLabel,dispatch,label,uid) 
       setOpen(false)
    }
 
+
   return (
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={()=> setOpen(false)}>
          <DialogTitle>Create Label</DialogTitle>
          <DialogContent sx={{width:"20em"}}>
             <TextField
@@ -53,12 +49,19 @@ export default function AddLabelDialog(props:IDialogProps) {
                label="Label"
                type="text"
                variant="standard"
+               className="textField add_label_dialog_input"
                onChange={(e) => setLabel(e.target.value)}
             />
          </DialogContent>
          <DialogActions>
-            <Button type="button" onClick={handleClose}>Cancel</Button>
-            <Button type="button" onClick={handleClose}>Save</Button>
+            <Button type="button" className="add_label_dialog_btn" onClick={() => setOpen(false)}>Cancel</Button>
+            <LoadingButton 
+               buttonText="SAVE" 
+               className="add_label_dialog_btn"
+               buttonType="button"
+               loading={isLoading}
+               handleClick={handleAddLabel}
+             />
          </DialogActions>
       </Dialog>
    )

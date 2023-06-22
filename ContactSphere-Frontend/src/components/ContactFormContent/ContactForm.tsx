@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form"
 import { defaultValues } from "./newContactDefaultValues"
 import { Contact } from "../../vite-env"
-import { memo, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import NameInputSection from "./input_sections/NameSection"
 import FormalInputSection from "./input_sections/FormalInputSection"
 import ContactInputSection from "./input_sections/ContactInputSection"
@@ -12,7 +12,6 @@ import ImageUploadInput from '../../../lib/customInputs/ImageUploadInput'
 import LabelMenu from '../../../lib/popups/LabelMenu'
 import { Button } from "@mui/material"
 import { RxCross1 } from 'react-icons/rx'
-import { deepOrange } from '@mui/material/colors';
 import { ManageLabelButton } from "../../../lib/with-tooltip"
 import AddLabelDialog from "../../../lib/popups/AddLabelDialog"
 import { useNavigate } from "react-router-dom"
@@ -22,16 +21,21 @@ import AddedLabels from "./input_sections/AddedLabels"
 
 function ContactForm(){
 
-   const { register, handleSubmit, setValue, formState: {errors}, control} = useForm<Contact>({defaultValues})
-   const { fields:labelsArray } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
-   const [showMore,setShowMore] = useState<boolean>(false)
-   const [showLabelMenu,setShowLabelMenu] = useState<boolean>(false)
-   const [openAddLabelModal,setOpenAddLabelModal] = useState<boolean>(false)
+   const { register, handleSubmit, setValue, watch, formState: {errors}, control} = useForm<Contact>({defaultValues})
+   const [showMore,setShowMore] = useState(false)
+   const [showLabelMenu,setShowLabelMenu] = useState(false)
+   const [openAddLabelModal,setOpenAddLabelModal] = useState(false)
+   const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(errors.firstName?.message || errors.phoneNumber?.message ? true : false)
    const navigate = useNavigate()
+   const labelsArray = watch('labelledBy')
 
    const handleOnSubmit: SubmitHandler<Contact> = (data) => {
       console.log(data)
    }
+
+   useEffect(() => {
+      errors.firstName?.message || errors.phoneNumber?.message ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
+   },[errors.firstName?.message,errors.phoneNumber?.message])
 
    return(
       <>
@@ -40,7 +44,7 @@ function ContactForm(){
                <ImageUploadInput name={InputPropertyValueName.RepPhoto} register={register} setValue={setValue} />
                {
                   labelsArray?.length ?
-                  <AddedLabels control={control} />
+                  <AddedLabels labelsArray={labelsArray} control={control} />
                   :
                   null
                }
@@ -52,9 +56,9 @@ function ContactForm(){
                <Button 
                   type="submit" 
                   className="fx-button" 
-                  disabled={errors.firstName?.message || errors.phoneNumber?.message  ? true : false} 
                   variant="contained"  
-                  sx={{ bgcolor: deepOrange[400] }} >
+                  disabled={disabledSaveBtn}
+                  sx={{ bgcolor: '#f57e0fd0' }} >
                   Save
                </Button>
                <button type="button" className="fx-button" onClick={() => navigate(-1)}>
@@ -75,7 +79,7 @@ function ContactForm(){
             <button type="button"  className="show_more_btn" onClick={() => setShowMore(!showMore)}>Show {showMore ? "Less" : "More"}</button>
          </form>
 
-         <AddLabelDialog setOpen={setOpenAddLabelModal} open={openAddLabelModal} />
+         <AddLabelDialog control={control} setOpen={setOpenAddLabelModal} open={openAddLabelModal} />
       </>
    )
 }

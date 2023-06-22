@@ -5,21 +5,34 @@ import { AuthFormLocation } from '../../src/enums'
 
 
 interface IButtonProps {
-   location: string,
-   buttonType: "button" | "submit",
-   loading: boolean
+  location?: string,
+  buttonType: "button" | "submit",
+  loading: boolean,
+  buttonText?: string,
+  className?: string
+  handleClick?: () => void
 }
 
 export default function LoadingButton(props:IButtonProps){
    return(
-     <Button 
+      <Button 
        type={props.buttonType} 
+       className={props.className}
        loading={props.loading} 
        disabled={props.loading}
-       leftIcon={props.location === AuthFormLocation.SIGN_IN ? <FaSignInAlt size="1rem" /> : <FaUserPlus />} 
+       onClick={() => props.handleClick? props.handleClick() : ""}
+       leftIcon={
+         props.location === AuthFormLocation.SIGN_IN ? <FaSignInAlt size="1rem" /> :  
+         props.location === AuthFormLocation.SIGN_UP ? <FaUserPlus /> :
+         ""
+        } 
        loaderPosition="right"
       >
-      {props.location === AuthFormLocation.SIGN_IN ? "Sign In" : "Create Account"}
+      {
+       props.location === AuthFormLocation.SIGN_IN ? "Sign In" : 
+       props.location === AuthFormLocation.SIGN_UP ? "Create Account" :
+       props.buttonText ? props.buttonText : ""
+      }
     </Button>
    )
 }

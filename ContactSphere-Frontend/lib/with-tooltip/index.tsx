@@ -17,7 +17,8 @@ export function HelpIcon(props:IProps){
    return(
       <div>
          <Tooltip title="Help Menu">
-            <IconButton                   
+            <IconButton  
+               type="button"                 
                onClick={() => props.setState((prevState) => ({ ...prevState, openHelpArea: !prevState.openHelpArea }))} 
                aria-controls="help-area"
                aria-expanded={props.state.openHelpArea}
@@ -36,6 +37,7 @@ export function SettingsIcon(props:IProps){
          <Tooltip title="Settings Menu">
             <IconButton
                aria-expanded={props.state.toggleSettingSection}
+               type="button"
                onClick={() => props.setState((prevState) => ({ ...prevState, toggleSettingSection: !prevState.toggleSettingSection }))} 
                aria-controls="setting-section" 
               >
@@ -71,24 +73,16 @@ export function ManageLabelButton({ className, penMode, handleClick }:{ penMode:
 
 function UserIcon(props:IProps,ref:Ref<HTMLButtonElement>){
 
-   const handleClick = () => {
-      props.setState(prevState => (
-         {
-            ...prevState,
-            openUserMenu: !prevState.openUserMenu
-         }
-      ))
-   }
-
    return(
       <Tooltip title="User Menu">
         <button
             ref={ref}
+            type="button"
             className='toggle-user-menu' 
             aria-controls='user-menu' 
             aria-expanded={props.state.openUserMenu ? "true" : "false"}
             aria-haspopup="true"
-            onClick={() => !props.state.openUserMenu ? handleClick : ""}
+            onClick={() => props.setState(prevState => ({ ...prevState,openUserMenu:!prevState.openUserMenu }))}
             >
             <FaUser />
          </button>
