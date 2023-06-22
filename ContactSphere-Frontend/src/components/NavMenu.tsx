@@ -8,6 +8,7 @@ import { FaUserPlus } from 'react-icons/fa';
 import { useAppSelector } from '../customHooks/reduxCustomHooks'
 import ClickAwayListener from '@mui/base/ClickAwayListener';
 import { IHeaderState } from "./Header";
+import { MdLabel } from 'react-icons/md'
 
 interface IProps{
    setState: Dispatch<SetStateAction<IHeaderState>>,
@@ -17,6 +18,7 @@ interface IProps{
 function NavMenu(props:IProps){
 
    const { beenAuthenticated } = useAppSelector(store => store.authUser)
+   const { labels } = useAppSelector(store => store.userData)
    
    const handleClickAway = () => {
       // don't close navMenu automatically on larger screens
@@ -78,6 +80,21 @@ function NavMenu(props:IProps){
                         <span>Labels</span>
                         <BiPlus />
                      </button>
+
+                     <ul>
+                        {
+                           labels && labels.map(value => {
+                              return(
+                                 <li key={value._id} >
+                                    <NavLink to={`/labels/${value._id}`}>
+                                       <MdLabel />
+                                       <span>{value.label}</span>
+                                    </NavLink>
+                                 </li>
+                              )
+                           })
+                        }
+                     </ul>
                   </li>
                </ul>
                :
