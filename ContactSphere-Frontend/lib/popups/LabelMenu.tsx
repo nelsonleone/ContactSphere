@@ -56,7 +56,7 @@ export default function LabelMenu(props:ILabelMenuProps) {
             <MenuList>
 
                {
-                     labels ? labels.map(value => (
+                     labels.length ? labels.map(value => (
                         <MenuItem className="label" key={value._id}>
                            <ListItemIcon>
                               <MdLabelOutline  />

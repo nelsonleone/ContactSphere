@@ -44,6 +44,10 @@ const Contact = new Schema({
    website: String,
 })
 
+const labelsSchema = new Schema({
+   label: String
+})
+
 const authUserSchema = new Schema({
    uid: {
       type: String,
@@ -51,7 +55,7 @@ const authUserSchema = new Schema({
       unique: true
    },
    contacts: [Contact],
-   labels: [String]
+   labels: [labelsSchema]
 })
 
 

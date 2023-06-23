@@ -1,11 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { UserData } from '../../vite-env'
-
-
-type ILabelsPayload = {
-   _id: string,
-   label: string
-}[]
+import { UserData, UserLabels } from '../../vite-env'
 
 const initialState:UserData = {
    labels: [],
@@ -21,7 +15,7 @@ const userDataSlice = createSlice({
          state.labels = payload.labels;
       },
 
-      updateLabels: (state, { payload }:PayloadAction<ILabelsPayload|[]>) => {
+      updateLabels: (state, { payload }:PayloadAction<UserLabels|[]>) => {
          state.labels = payload;
       } 
    }

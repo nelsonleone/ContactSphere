@@ -7,30 +7,31 @@ import googleAuthHandler from '../../firebaseClient/googleAuthHandler';
 import { auth } from '../../firebaseClient/firebaseInit';
 import { setUserDetails } from '../../RTK/features/authUserSlice';
 import { setShowAlert } from '../../RTK/features/alertSlice';
-import Cookies from 'js-cookie';
 import { AlertSeverity } from '../../enums';
-import { MouseEvent} from 'react';
-
+import handlePostCredentials from '../../utils/helperFns/handlePostCredentials';
+import { useNavigate } from 'react-router-dom';
 
 function AltAuthMethods() {
 
    const dispatch = useAppDispatch()
    const [authorizeUser, {isLoading}] = useAuthorizeUserMutation()
+   const navigate = useNavigate()
 
   const handleClick = async(authType:string) => {
      try{
          const userDetails = authType === "google" ? await googleAuthHandler() : "";
-
+         
          const idToken = await auth?.currentUser?.getIdToken() || '';
-         const csrfToken = Cookies.get('csrfToken') || '';
-         await authorizeUser({idToken,csrfToken})
-
+         handlePostCredentials(idToken,authorizeUser)
+         
          if(!userDetails){
             //  precaution
             throw new Error("An Error Occurred, Try again")
          }
-
          dispatch(setUserDetails(userDetails))
+         navigate("/")
+
+
          dispatch(setShowAlert(
             {
                alertMessage:"Signed In Successfully",
@@ -50,8 +51,8 @@ function AltAuthMethods() {
 
      finally{
       // remove default firebase browser persisted user
-      auth.signOut()
-     }
+       auth.signOut()
+      }
   }
 
   return (

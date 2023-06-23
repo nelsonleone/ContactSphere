@@ -31,7 +31,7 @@ const createContact = asyncHandler(async(request,response) => {
 
 // Set Auth User Contacts
 const getAuthUserData = asyncHandler(async(request,response) => {
-   const authUserUid = req.query.uid;
+   const authUserUid = request.query.uid;
 
    try{
       const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
@@ -62,7 +62,7 @@ const getAuthUserData = asyncHandler(async(request,response) => {
 // Set New Contact Label
 const setNewLabel = asyncHandler(async(request,response) => {
    const authUserUid = request.query.uid;
-   const newLabel = request.body.label;
+   const newLabel = request.body;
 
    try{
       const updatedAuthUserData = await AuthUserData.findOneAndUpdate(

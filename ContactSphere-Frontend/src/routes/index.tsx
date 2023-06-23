@@ -5,6 +5,7 @@ import SignInPage from '../pages/SignInPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import Homepage from '../pages/Homepage'
 import CreateContact from '../pages/CreateContact'
+import LabelPage from '../pages/LabelPage'
 
 export default function RouteHandler(){
 
@@ -13,6 +14,7 @@ export default function RouteHandler(){
   return(
     <Routes>
       <Route path="/" element={<Homepage />} />
+
       <Route 
         path='/auth/create_account'
         element={
@@ -23,6 +25,7 @@ export default function RouteHandler(){
           )
         }
       />
+
       <Route 
         path='/auth/signin'
         element={
@@ -33,6 +36,7 @@ export default function RouteHandler(){
           )
         }
       />
+      <Route path="/labels/:id" element={<LabelPage />} />
       <Route path="new" element={<CreateContact />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

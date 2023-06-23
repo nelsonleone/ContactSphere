@@ -13,26 +13,28 @@ import { AlertSeverity } from "../enums";
 export default function Layout({children}:{ children:ReactNode}){
 
    const [resizePageWidth, setResizePageWidth] = useState(window.innerWidth > 960)
-   const { uid } = useAppSelector(store => store.authUser.userDetails)
+   const { uid } = useAppSelector((store) => store.authUser.userDetails)
    const dispatch = useAppDispatch()
-   const { data, isError } = useGetUserDataQuery(uid || '')
-
+   const { data, isError } = uid ? useGetUserDataQuery(uid) : { data: null, isError: null}
+ 
    useEffect(() => {
-
-      if(data){
-         dispatch(setUserData({
-            labels: data?.labels,
-            contacts: data?.contacts
-         }))
+      if (data) {
+         dispatch(
+            setUserData({
+            labels: data.labels,
+            contacts: data.contacts,
+            })
+         )
+      } 
+      else if (isError) {
+         dispatch(
+            setShowAlert({
+            alertMessage: 'Error Occured Getting User Data',
+            severity: AlertSeverity.ERROR,
+            })
+         )
       }
-
-      else if(isError){
-         dispatch(setShowAlert({
-            alertMessage: "Error Occured Getting User Data",
-            severity: AlertSeverity.ERROR
-         }))
-      }
-   }, [])
+   }, [data, isError])
    
 
    return(

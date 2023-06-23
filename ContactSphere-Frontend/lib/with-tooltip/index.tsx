@@ -4,8 +4,10 @@ import { IHeaderState } from '../../src/components/Header'
 import { AiFillSetting } from 'react-icons/ai'
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { FaPenAlt, FaUser } from 'react-icons/fa'
+import {  FaUser } from 'react-icons/fa'
 import { BiPlus } from 'react-icons/bi';
+import { MdNewLabel } from 'react-icons/md';
+import { useAppSelector } from '../../src/customHooks/reduxCustomHooks'
 
 
 interface IProps {
@@ -32,6 +34,9 @@ export function HelpIcon(props:IProps){
 
 
 export function SettingsIcon(props:IProps){
+
+   const { beenAuthenticated } = useAppSelector(store => store.authUser)
+
    return(
       <div>
          <Tooltip title="Settings Menu">
@@ -39,6 +44,7 @@ export function SettingsIcon(props:IProps){
                aria-expanded={props.state.toggleSettingSection}
                type="button"
                onClick={() => props.setState((prevState) => ({ ...prevState, toggleSettingSection: !prevState.toggleSettingSection }))} 
+               disabled={beenAuthenticated  ? false : true}
                aria-controls="setting-section" 
               >
                <AiFillSetting  />
@@ -62,7 +68,7 @@ export function ManageLabelButton({ className, penMode, handleClick }:{ penMode:
                   <span>Labels</span>
                </>
                :
-               <FaPenAlt />
+               <MdNewLabel />
             }
          </button>
       </Tooltip>

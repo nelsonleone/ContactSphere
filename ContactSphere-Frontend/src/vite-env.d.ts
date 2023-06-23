@@ -96,7 +96,10 @@ interface IContactsFromDB extends Contact {
 }
 
 
-
+type UserLabels = {
+  _id: string,
+  label: string
+}[]
 
 type UserData = {
   contacts: Contact[],

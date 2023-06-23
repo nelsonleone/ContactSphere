@@ -1,5 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit"
 import { updateLabels } from "../../RTK/features/userDataSlice"
+import { UserLabels } from "../../vite-env"
 
 export default async function postCreatedLabel(
    // add label is a mutation trigger for adding a label 
@@ -11,6 +12,6 @@ export default async function postCreatedLabel(
    {
 
 
-   const labels: string[] = addLabel({ authUserUid: uid,label }).unwrap()
+   const labels: UserLabels = addLabel({ authUserUid: uid,label }).unwrap()
    dispatch(updateLabels(labels))
 }

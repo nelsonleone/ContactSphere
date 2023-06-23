@@ -14,6 +14,7 @@ import { auth } from '../../firebaseClient/firebaseInit';
 import AltAuthMethods from './AltAuthMethods'
 import AuthForm from './AuthForm';
 import cleanDisplayName from '../../utils/helperFns/cleanDisplayName';
+import { inMemoryPersistence, setPersistence } from 'firebase/auth';
  
 
 interface IProps{
@@ -36,6 +37,7 @@ export default function AuthFormHandler(props:IProps){
    })
 
    useEffect(() => {
+      setPersistence(auth, inMemoryPersistence)
       setRequestLoading(isLoading)
    },[isLoading])
 
