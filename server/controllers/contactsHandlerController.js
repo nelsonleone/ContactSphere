@@ -38,11 +38,14 @@ const getAuthUserData = asyncHandler(async(request,response) => {
 
       if (!authUserDataDoc){
          // Initialize User In Database
-         await AuthUserData.create({
+         const authUserDataDoc = await AuthUserData.create({
             uid: authUserUid,
             contacts: [],
             labels: []
          })
+
+         response.status.json(authUserDataDoc)
+         return;
       }
       
       response.status(200).json({
@@ -53,7 +56,7 @@ const getAuthUserData = asyncHandler(async(request,response) => {
    }
    catch(error){
       response.status(500)
-      throw new Error(`Error Occured Fetching Resource... ${err.message}`)
+      throw new Error(`Error Occured Fetching Resource... ${error.message}`)
    }
 })
 
@@ -65,13 +68,22 @@ const setNewLabel = asyncHandler(async(request,response) => {
    const newLabel = request.body;
 
    try{
+      const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
+      const labelAlreadyExists = authUserDataDoc.labels.some(val => val.label === newLabel.label)
+
+      // Don't Add Label If It Already Exist
+      if (labelAlreadyExists){
+         response.status(204).end()
+         return;
+      }
+
       const updatedAuthUserData = await AuthUserData.findOneAndUpdate(
          { uid: authUserUid },
          { $push: { labels: newLabel } },
          { new: true }
       )
 
-      res.status(201).json(updatedAuthUserData.labels)
+      response.status(201).json(updatedAuthUserData.labels)
    }
 
    catch(error){

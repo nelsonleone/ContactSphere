@@ -104,24 +104,36 @@
             font-size: 1.3rem;
          }
       }
-   }
-}
 
-.added_labels_container{
-   @include flexObj($direction:column,$justify:flex-start);
-   gap:.4em;
-   margin-block: 1em;
-   button{
-      @include flexObj($justify:center);
-      gap: .2em;
+
+
+      // Added Label Section In Form Top Section
+      .added_labels_container{
+         @include flexObj($direction:column,$justify:flex-start);
+         gap:.4em;
+         margin-block: 1em;
+         button{
+            @include flexObj($justify:center);
+            gap: .2em;
+            background-color: $text-color1;
+            border-radius: 10px;
+            padding:.2em .4em;
+
+            &:hover{
+               opacity: .9;
+            }
+
+            
+            span{
+               font-family: $ff_primary;
+               color: $generic_color_1;
+            }
       
-      span{
-         font-family: $ff_primary;
-         color: $text_color1;
-      }
-
-      svg{
-         color: $accent_color_1;
+            svg{
+               color: $generic_color_1;
+               font-size: 1.1rem;
+            }
+         }
       }
    }
 }
@@ -142,10 +154,11 @@
 
       svg{
          position: absolute;
-         top: .7em;
+         top: .8em;
          left: 0;
          font-size: 1.1rem;
          color: $text_color1;
+         opacity:.9;
       }
 
 
@@ -201,15 +214,14 @@
             color: $text_color1;
             font-size: 1rem;
             font-weight: $fw_bold;
+
+            &::placeholder{
+               font-weight: $fw_regular;
+            }
          }
 
          &:hover{
             border-color: $accent_color_2;
-         }
-
-         &>label{
-            color: hsl(0, 2%, 56%);
-            font-weight: $fw_bold;
          }
 
          &:focus-within{
@@ -286,33 +298,35 @@
 }
 
 
-
-.label_menu{
+// Label Menu Styling
+.create_contact_page form .label_menu{
    padding: .3em;
    position: absolute;
    left: 20%;
    top: 9em;
-   &>*{
-      font-family: $ff_secondary;
-      font-size: .95rem;
-   }
 
    svg{
       font-size: 1.3rem;
    }
 
    .label{
-      @include flexObj;
-      margin-block: .5em;
-      gap: .4em;
+      margin-block: 0 !important;
    }
 
    .flex-row{
       @include flexObj($justify:flex-start);
-      gap: 1em;
+      gap: .5em;
       margin-top: 1em;
+
+      button{
+         font-size: .9rem;
+         font-weight: $fw_regular;
+         font-family: $ff_secondary;
+         color: $text_color2;
+      }
    }
 }
+
 
 
 // overwrite Add label MUI dialog  styling
@@ -366,7 +380,16 @@
 
 
 
-
+.creating_contact_loader{
+   position: fixed;
+   z-index: 4;
+   top: 6.2em;
+   width: 100%;
+   height:1em;
+   left: 0;
+   right: 0;
+   margin-inline: auto;
+}
 
 
 
@@ -375,6 +398,10 @@
    .image_upload_input{
       width: 9.5em;
       margin-inline: 3em;
+   }
+
+   .creating_contact_loader{
+      top: 4.5em;
    }
 
    .create_contact_page{
@@ -413,14 +440,14 @@
 
             .added_labels_container{
                position: absolute;
-               top: 5em;
+               top: 5.2em;
                left: 20em;
                display: grid;
                grid-template-columns: auto;
                grid-template-rows: 1fr 1fr;
 
                button{
-                  font-size: .95rem;
+                  font-size: .85rem;
 
                   &>*{
                      font-size: inherit;

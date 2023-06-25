@@ -16,12 +16,13 @@ import postCreatedLabel from '../../src/utils/helperFns/postCreatedLabel';
 interface IDialogProps {
    setOpen: Dispatch<SetStateAction<boolean>>,
    open: boolean,
-   control: Control<Contact,any>
+   control: Control<Contact,any>,
+   labelsArray: Contact['labelledBy']
 }
 
 export default function AddLabelDialog(props:IDialogProps) {
 
-   const {  open, setOpen, control } = props;
+   const {  open, setOpen, control, labelsArray } = props;
    const [addLabel,{ isLoading }] = useAddLabelMutation()
    const { append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
    const { uid } = useAppSelector(store => store.authUser.userDetails)
@@ -30,8 +31,12 @@ export default function AddLabelDialog(props:IDialogProps) {
 
    const handleAddLabel = () => {
 
-      append({label})
+      const labelArrayExists = labelsArray.some(val => val.label === label)
       
+      if (!labelArrayExists){
+         append({label})
+      }
+               
       // Add the Label to the user's data in database 
       postCreatedLabel(addLabel,dispatch,label,uid) 
       setOpen(false)

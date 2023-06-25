@@ -50,12 +50,13 @@ export default function CustomSnackbar() {
          message={snackbarMessage}
          action={action}
          style={ {
-            backgroundColor: "#d85a06",
             color:"#FAFAFA",
-            width:"20em",
             position: "fixed",
             bottom: "2em",
             zIndex:"100",
+         }}
+         sx={{
+            bgColor: "#ff6600d5e4"
          }}
       />
    )

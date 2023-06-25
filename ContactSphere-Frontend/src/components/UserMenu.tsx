@@ -5,11 +5,13 @@ import { setShowAlert } from '../RTK/features/alertSlice'
 import PhotoUrlAvatar from '../../lib/Avatars/PhotoUrlAvatar'
 import { AlertSeverity } from '../enums'
 import { CgLogOut } from 'react-icons/cg'
-import { memo } from "react";
+import { Dispatch, SetStateAction, memo } from "react";
 import { useNavigate } from 'react-router-dom'
+import { setLocalLogout } from '../RTK/features/authUserSlice'
+import { IHeaderState } from './Header'
 
 
-function UserMenu(){
+function UserMenu({ setState }:{setState:Dispatch<SetStateAction<IHeaderState>>}){
 
    const { userDetails: {
       displayName,
@@ -26,6 +28,13 @@ function UserMenu(){
    const handleUserSignOut = async() => {
       try{
          await setAuthSignOut()
+         dispatch(setLocalLogout())
+         setState(prevState => (
+            {
+               ...prevState,
+               openUserMenu:false
+            }
+         ))
          dispatch(setShowAlert(
             {
               alertMessage: "User Signed-Out Successfully",
@@ -58,19 +67,7 @@ function UserMenu(){
          </Button>
       </Card>
       :
-      <p 
-         role="alert" 
-         style={
-            {
-               color: "#af2121",
-               textTransform: "uppercase", 
-               textAlign: "center",
-               position:"fixed",
-               top:"5em",
-               left: "20%",
-            }
-         }
-        >
+      <p role="alert" className="no_user_para">
          No Currently Signed In User
       </p>
    )

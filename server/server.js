@@ -22,19 +22,19 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
+    app.listen(process.env.PORT || 9000)
     console.log(`Connected To DB!......Server served at port ${process.env.PORT || 9000}`)
   })
   .catch((err) => {
     console.log('Error connecting to the database', err.message)
   }
 )
-app.listen(process.env.PORT || 9000)
 
 // Middlewares
 app.use(cookieParser())
 app.use(cors(corsOptions))
+app.use(express.urlencoded({ extended: true, limit: '10mb'}))
 app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
 
 
 

@@ -4,7 +4,7 @@ import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta, Mutati
 
 type IAuthorizeUserMutation = MutationTrigger<MutationDefinition<any, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, never, "", "authQueryApi">>
 
-export default async function handlePostCredentials(
+export default function handlePostCredentials(
    idToken:string,
    authorizeUser: IAuthorizeUserMutation,
    ){

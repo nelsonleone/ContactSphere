@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm, useFieldArray } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 import { defaultValues } from "./newContactDefaultValues"
 import { Contact } from "../../vite-env"
 import { memo, useEffect, useState } from "react"
@@ -6,16 +6,20 @@ import NameInputSection from "./input_sections/NameSection"
 import FormalInputSection from "./input_sections/FormalInputSection"
 import ContactInputSection from "./input_sections/ContactInputSection"
 import AddressInputSection from "./input_sections/AddressInputSection"
-import { InputPropertyValueName } from "../../enums"
+import { AlertSeverity, InputPropertyValueName } from "../../enums"
 import AdditionalFields from "./input_sections/AdditionalFields"
 import ImageUploadInput from '../../../lib/customInputs/ImageUploadInput'
 import LabelMenu from '../../../lib/popups/LabelMenu'
-import { Button } from "@mui/material"
+import { Button, LinearProgress } from "@mui/material"
 import { RxCross1 } from 'react-icons/rx'
 import { ManageLabelButton } from "../../../lib/with-tooltip"
 import AddLabelDialog from "../../../lib/popups/AddLabelDialog"
 import { useNavigate } from "react-router-dom"
 import AddedLabels from "./input_sections/AddedLabels"
+import { useCreateContactMutation } from '../../RTK/features/injectedContactsApiQueries'
+import { useAppDispatch, useAppSelector } from "../../customHooks/reduxCustomHooks"
+import { setShowAlert } from "../../RTK/features/alertSlice"
+import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice"
 
 
 
@@ -25,17 +29,49 @@ function ContactForm(){
    const [showMore,setShowMore] = useState(false)
    const [showLabelMenu,setShowLabelMenu] = useState(false)
    const [openAddLabelModal,setOpenAddLabelModal] = useState(false)
-   const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(errors.firstName?.message || errors.phoneNumber?.message ? true : false)
    const navigate = useNavigate()
    const labelsArray = watch('labelledBy')
+   const [createContact, { isLoading }] = useCreateContactMutation()
+   const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(
+      errors.firstName?.message || 
+      errors.phoneNumber?.message ||
+      isLoading  ? true : false
+   )
+   const uid = useAppSelector(store => store.authUser.userDetails.uid)
+   const dispatch = useAppDispatch()
 
-   const handleOnSubmit: SubmitHandler<Contact> = (data) => {
-      console.log(data)
+   const handleOnSubmit: SubmitHandler<Contact> = async(data) => {
+      try{
+         if(!uid){
+            // precaution
+            throw new Error("Unauthourized Request, Please Login")
+         }
+
+         await createContact({
+            contactDetails: data,
+            authUserUid: uid
+         })
+
+         dispatch(setShowSnackbar({
+            snackbarMessage: "Contact Created",
+         }))
+
+         navigate("/")
+      }
+
+      catch(err:any|unknown){
+         dispatch(setShowAlert({
+            alertMessage: err?.message || "Error Occured Creating Contact",
+            severity: AlertSeverity.ERROR
+         }))
+      }
    }
 
    useEffect(() => {
-      errors.firstName?.message || errors.phoneNumber?.message ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
-   },[errors.firstName?.message,errors.phoneNumber?.message])
+      errors.firstName?.message || 
+      errors.phoneNumber?.message ||
+      isLoading ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
+   },[errors.firstName?.message,errors.phoneNumber?.message,isLoading])
 
    return(
       <>
@@ -44,7 +80,7 @@ function ContactForm(){
                <ImageUploadInput name={InputPropertyValueName.RepPhoto} register={register} setValue={setValue} />
                {
                   labelsArray?.length ?
-                  <AddedLabels labelsArray={labelsArray} control={control} />
+                  <AddedLabels setValue={setValue} labelsArray={labelsArray} control={control} />
                   :
                   null
                }
@@ -65,7 +101,7 @@ function ContactForm(){
                   <RxCross1 />
                </button>
 
-               <LabelMenu setOpenAddLabelModal={setOpenAddLabelModal} register={register} control={control} showLabelMenu={showLabelMenu} setShowLabelMenu={setShowLabelMenu} />
+               <LabelMenu labelsArray={labelsArray} setOpenAddLabelModal={setOpenAddLabelModal} register={register} control={control} showLabelMenu={showLabelMenu} setShowLabelMenu={setShowLabelMenu} />
             </div>
 
             <div className="fields_area">
@@ -79,7 +115,13 @@ function ContactForm(){
             <button type="button"  className="show_more_btn" onClick={() => setShowMore(!showMore)}>Show {showMore ? "Less" : "More"}</button>
          </form>
 
-         <AddLabelDialog control={control} setOpen={setOpenAddLabelModal} open={openAddLabelModal} />
+         <AddLabelDialog labelsArray={labelsArray} control={control} setOpen={setOpenAddLabelModal} open={openAddLabelModal} />
+         {
+            isLoading &&
+            <div className="creating_contact_loader" style={{color:"#f57e0f" }}>
+               <LinearProgress color="inherit" />
+            </div>
+         }
       </>
    )
 }

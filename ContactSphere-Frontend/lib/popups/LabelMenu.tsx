@@ -20,29 +20,35 @@ interface ILabelMenuProps {
    register: UseFormRegister<Contact>,
    control:  Control<Contact, any>,
    setOpenAddLabelModal: React.Dispatch<React.SetStateAction<boolean>>,
+   labelsArray: Contact['labelledBy']
 }
 
-export default function LabelMenu(props:ILabelMenuProps) {
+function LabelMenu(props:ILabelMenuProps) {
    
    const {
       showLabelMenu,
       setShowLabelMenu,
       control,
-      setOpenAddLabelModal
+      setOpenAddLabelModal,
+      labelsArray
    } = props;
    const { labels } = useAppSelector(state => state.userData)
-   const { fields, append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
+   const { append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
 
    const handleClickAway = () => {
       setShowLabelMenu(false)
    }
-
+   
    const handleAddLabel = (e:React.MouseEvent<HTMLButtonElement>,label:string) => {
       e.stopPropagation()
-      const labelAlreadyAdded = fields.some(field => field.label === label)
-      if (labelAlreadyAdded)return;
-
+      const labelAlreadyAdded = labelsArray.some(field => field.label === label)
+      if (labelAlreadyAdded){
+         setShowLabelMenu(false)
+         return;
+      }
+      
       append({label})
+      setShowLabelMenu(false)
    }
 
    return (
@@ -57,7 +63,7 @@ export default function LabelMenu(props:ILabelMenuProps) {
 
                {
                      labels.length ? labels.map(value => (
-                        <MenuItem className="label" key={value._id}>
+                        <MenuItem className="label flex-row" key={value._id}>
                            <ListItemIcon>
                               <MdLabelOutline  />
                            </ListItemIcon>
@@ -83,3 +89,5 @@ export default function LabelMenu(props:ILabelMenuProps) {
       null
    )
 }
+
+export default React.memo(LabelMenu)

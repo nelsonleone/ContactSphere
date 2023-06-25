@@ -12,6 +12,6 @@ export default async function postCreatedLabel(
    {
 
 
-   const labels: UserLabels = addLabel({ authUserUid: uid,label }).unwrap()
+   const labels: UserLabels = await addLabel({ authUserUid: uid,label }).unwrap()
    dispatch(updateLabels(labels))
 }

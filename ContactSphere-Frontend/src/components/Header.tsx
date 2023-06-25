@@ -84,7 +84,7 @@ export default function Header(props:IHeaderProps){
                   <UserIcon setState={setState} state={state} ref={userIconRef}  />
                   {
                      state.openUserMenu ?
-                     <UserMenu  />
+                     <UserMenu setState={setState}  />
                      :
                      null
                   }

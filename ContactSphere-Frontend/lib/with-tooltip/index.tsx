@@ -40,15 +40,21 @@ export function SettingsIcon(props:IProps){
    return(
       <div>
          <Tooltip title="Settings Menu">
-            <IconButton
-               aria-expanded={props.state.toggleSettingSection}
-               type="button"
-               onClick={() => props.setState((prevState) => ({ ...prevState, toggleSettingSection: !prevState.toggleSettingSection }))} 
-               disabled={beenAuthenticated  ? false : true}
-               aria-controls="setting-section" 
-              >
-               <AiFillSetting  />
-            </IconButton>
+            {
+               beenAuthenticated ?
+               <IconButton
+                  aria-expanded={props.state.toggleSettingSection}
+                  type="button"
+                  onClick={() => props.setState((prevState) => ({ ...prevState, toggleSettingSection: !prevState.toggleSettingSection }))} 
+                  aria-controls="setting-section" 
+               >
+                  <AiFillSetting  />
+               </IconButton>
+               :
+               <IconButton>
+                  <AiFillSetting style={{cursor:"not-allowed"}} />
+               </IconButton>
+            }
          </Tooltip>
       </div>
    )
@@ -68,7 +74,7 @@ export function ManageLabelButton({ className, penMode, handleClick }:{ penMode:
                   <span>Labels</span>
                </>
                :
-               <MdNewLabel />
+               <MdNewLabel style={{fontSize:'1.9rem',color:'#097f83'}} />
             }
          </button>
       </Tooltip>

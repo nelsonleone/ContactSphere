@@ -64,6 +64,7 @@
    overflow-y: auto;
    box-shadow: 0 4px 4px 5px hsla(0, 0%, 0%, 0.137);
    font-family:  $ff_primary;
+   scroll-behavior: smooth;
 
 
    div{
@@ -130,10 +131,31 @@
          margin-block: 1em;
          font-family:  inherit;
          font-weight: $fw_bold;
-         font-size: 1.1rem;
+         font-size: 1rem;
          @include flexObj;
          width: 100%;
          color: $text-color2;
+      }
+
+      ul li{
+         font-size: .95rem;
+         margin-block: .5em;
+         font-family: $ff_prompts;
+         font-weight: $fw_bold;
+
+         &:hover{
+            svg{
+               path{
+                  color: $accent_color_2;
+               }
+            }
+         }
+
+         a{
+            &:hover{
+               color: $text-color2;
+            }
+         }
       }
    }
 }
@@ -209,7 +231,7 @@ button[aria-controls=user-menu]{
    width: 12em;
    height: 0;
    border-radius: 8px;
-   right: 1em;
+   right: 0;
    font-family: $ff_primary;
    top: 4.7em;
    box-shadow: 0px 2px 2px 2px $util_color1;
@@ -250,15 +272,24 @@ button[aria-controls=user-menu]{
       font-size: .9rem;
       text-align: center;
       border-bottom: 1px solid $accent_color_1;
+      background-color: $accent_color_2;
 
-      svg{
-         color: $generic_color_2;
-      }
-
-      span {
+      svg, 
+      span{
          color: $text-color2;
       }
    }
+}
+
+.no_user_para{
+   position: fixed;
+   top: 6em;
+   left: 0;
+   right: 0;
+   text-align: center;
+   color: $radiant_color1;
+   font-weight: $fw_xBold;
+   font-family: $ff_prompts;
 }
 
 
@@ -344,6 +375,25 @@ button[aria-controls=user-menu]{
       z-index: 1;
       position: fixed;
       left: 0;
+      overflow: hidden;
+      scrollbar-width: thin;
+
+      &:hover{
+         overflow-y: auto;
+      }
+         
+      &::-webkit-scrollbar{
+         width: 8px;
+      }
+      &::-webkit-scrollbar-track{
+         width: thin;
+      }
+      &::-webkit-scrollbar-button{
+         display: none;
+      }
+      &::-webkit-scrollbar-thumb{
+         border-radius: 5px;
+      }
 
       li{
          margin-block:1.8em;
@@ -373,13 +423,19 @@ button[aria-controls=user-menu]{
          position: absolute;
          margin-block: auto;
          height: 2em;
-         padding: 1.5em 1em;
+         padding: 1.3em 1em;
          font-size: 1rem;
 
          &::placeholder{
             color: $text-color2;
          }
       }
+   }
+
+
+
+   .user-menu{
+      right: 1em;
    }
 
 }

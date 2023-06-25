@@ -5,5 +5,6 @@ const baseQuery = fetchBaseQuery({ baseUrl: import.meta.env.VITE_SERVER_URL  })
 export const contactsQuerySlice = createApi({
    reducerPath: 'contactsQueryApi',
    baseQuery,
+   tagTypes: ['Contact','Label'],
    endpoints: builder => ({})
 })

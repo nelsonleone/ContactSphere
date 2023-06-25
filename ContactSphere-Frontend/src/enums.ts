@@ -9,6 +9,13 @@ export enum AlertSeverity {
 }
 
 
+export enum AuthMethod {
+   Google = "googleAuthMethod",
+   Email = "EmailAndPasswordAuthMethod",
+   PhoneNumber = "PhoneNumberAuthMethod",
+   AuthSession = "AuthSessionToken"
+}
+
 
 export enum InputPropertyValueName {
    Name = 'name',

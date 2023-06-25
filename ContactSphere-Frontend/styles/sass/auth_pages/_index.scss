@@ -176,11 +176,22 @@
          gap: .2em;
 
          &:focus{
-            border: 1px dotted $accent_color_2;
+            border: 2px dotted $accent_color_2;
          }
 
          svg{
             font-size: 1.5rem;
+         }
+
+         &:hover{
+            border-color: $accent_color_3;
+         }
+      }
+
+
+      button:last-of-type{
+         svg{
+            color: $radiant_color2;
          }
       }
 
@@ -224,7 +235,7 @@
  
    // overriding default layout styling in the [_layout] for auth_pages
    .auth-page{
-      padding-top: 9.1em !important;
+      padding-top: 7em !important;
    }
 
    

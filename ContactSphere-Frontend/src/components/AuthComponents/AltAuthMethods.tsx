@@ -7,28 +7,34 @@ import googleAuthHandler from '../../firebaseClient/googleAuthHandler';
 import { auth } from '../../firebaseClient/firebaseInit';
 import { setUserDetails } from '../../RTK/features/authUserSlice';
 import { setShowAlert } from '../../RTK/features/alertSlice';
-import { AlertSeverity } from '../../enums';
+import { AlertSeverity, AuthMethod } from '../../enums';
 import handlePostCredentials from '../../utils/helperFns/handlePostCredentials';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 function AltAuthMethods() {
 
    const dispatch = useAppDispatch()
    const [authorizeUser, {isLoading}] = useAuthorizeUserMutation()
    const navigate = useNavigate()
+   const [idToken,setIdToken] = useState("")
 
   const handleClick = async(authType:string) => {
      try{
          const userDetails = authType === "google" ? await googleAuthHandler() : "";
-         
-         const idToken = await auth?.currentUser?.getIdToken() || '';
          handlePostCredentials(idToken,authorizeUser)
          
          if(!userDetails){
             //  precaution
             throw new Error("An Error Occurred, Try again")
          }
-         dispatch(setUserDetails(userDetails))
+         dispatch(setUserDetails({
+            ...userDetails,
+            authMethod: AuthMethod.Google
+         }))
+         const token = await auth?.currentUser?.getIdToken() || '';
+         handlePostCredentials(token,authorizeUser)
+         setIdToken(token)
          navigate("/")
 
 
@@ -55,6 +61,7 @@ function AltAuthMethods() {
       }
   }
 
+
   return (
       <div className='alt_auth_methods'>
          <h3>Continue With..</h3>
@@ -66,7 +73,7 @@ function AltAuthMethods() {
          {/* Phone number signup is disabled at the momemt  */}
          <Button 
             startIcon={ <FaPhoneAlt />} 
-            onClick={() => dispatch(setShowAlert({alertMessage:"Phone Number Sign-In IS Disabled",severity:AlertSeverity.ERROR}))}>
+            onClick={() => dispatch(setShowAlert({alertMessage:"Phone Number Sign-In Is Disabled",severity:AlertSeverity.ERROR}))}>
             Phone Number
          </Button>
       </div>

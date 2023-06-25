@@ -1,12 +1,18 @@
-import { useFieldArray, Control } from "react-hook-form"
+import { useFieldArray, Control, UseFormSetValue } from "react-hook-form"
 import { Contact } from "../../../vite-env"
 import { InputPropertyValueName } from "../../../enums"
 import { MdLabelOutline } from "react-icons/md"
 import { nanoid } from "@reduxjs/toolkit"
+import { memo } from 'react'
 
-function AddedLabels({ control, labelsArray }: { control: Control<Contact,any>, labelsArray: {label:string}[]}) {
+function AddedLabels({ control, labelsArray, setValue }: { setValue:UseFormSetValue<Contact>, control: Control<Contact,any>, labelsArray: {label:string}[]}) {
 
    const { remove } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy }) 
+
+   const handleClick = (index:number) => {
+      setValue(`${InputPropertyValueName.LabelledBy}.${index}.label`,'')
+      remove(index)
+   }
 
    return (
       labelsArray ?
@@ -15,7 +21,7 @@ function AddedLabels({ control, labelsArray }: { control: Control<Contact,any>, 
             labelsArray?.length &&
             labelsArray.map((value,index) => (
                <div key={nanoid()}>
-                  <button onClick={() => remove(index)}>
+                  <button onClick={() => handleClick(index)}>
                      <MdLabelOutline />
                      <span>{value.label}</span>
                   </button>
@@ -28,4 +34,4 @@ function AddedLabels({ control, labelsArray }: { control: Control<Contact,any>, 
    )
 }
 
-export default AddedLabels;
+export default memo(AddedLabels)

@@ -1,5 +1,5 @@
 import { IFormData } from '../../vite-env';
-import { AlertSeverity, AuthFormLocation } from '../../enums';
+import { AlertSeverity, AuthFormLocation, AuthMethod } from '../../enums';
 import { useAppDispatch } from '../../customHooks/reduxCustomHooks';
 import { setShowAlert } from '../../RTK/features/alertSlice'
 import { setUserDetails } from '../../RTK/features/authUserSlice';
@@ -84,7 +84,8 @@ export default function AuthFormHandler(props:IProps){
                email: userCredentials.user.email,
                displayName: userCredentials.user.displayName,
                photoURL: userCredentials.user.photoURL,
-               uid: userCredentials.user.uid
+               uid: userCredentials.user.uid,
+               authMethod: AuthMethod.Email
             })
          )
       }
