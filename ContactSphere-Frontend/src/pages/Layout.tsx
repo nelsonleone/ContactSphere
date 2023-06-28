@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState } from "react";
 import Loader from "../../lib/loaders/Loader";
 import CreateNewContactButton from "../../lib/buttons/CreateNewContactButton";
 import CustomAlert from "../../lib/popups/CustomAlert";

@@ -15,13 +15,14 @@ interface IProps {
    register:UseFormRegister<Contact>,
    showMore: boolean,
    setValue: UseFormSetValue<Contact>,
-   control:  Control<Contact, any>
+   control:  Control<Contact, any>,
+   error: string | undefined
 }
 
 
 function AdditionalFields(props:IProps){
 
-   const { register, showMore, setValue, control} = props;
+   const { register, showMore, setValue, control, error } = props;
    const { fields, append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.RelatedPeople })
    const id = useId()
 
@@ -39,7 +40,8 @@ function AdditionalFields(props:IProps){
                id={`${id}-birthday`}
                type='text'
                show={showMore}
-               helperText="dd/mm/yyyy"
+               error={error}
+               helperText="Use Format - MM/DD/YYYY"
             />
          </div>
 

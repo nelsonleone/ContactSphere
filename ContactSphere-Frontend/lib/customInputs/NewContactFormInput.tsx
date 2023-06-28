@@ -17,7 +17,7 @@ interface IFormInputProps {
    index?: number
 }
 
-export default function NewContactFormInput(props:IFormInputProps){
+function NewContactFormInput(props:IFormInputProps){
 
    const {
       register,
@@ -30,13 +30,30 @@ export default function NewContactFormInput(props:IFormInputProps){
       helperText
    } = props;
    
-   const isRequired = name === InputPropertyValueName.FirstName || name === InputPropertyValueName.PhoneNumber ? "This Field Is Required" : false;
+   const isRequired = name === InputPropertyValueName.FirstName || 
+      name === InputPropertyValueName.PhoneNumber
+      ? "This Field Is Required" : false
+   ;
+
+   const postalCodePatternRule = {
+      value:  /^\d+$/,
+      message: 'Enter A valid Postal Code'
+   }
+
+   const birthdayPatternRule = {
+      value: /^\d{1,2}\/\d{1,2}\/\d{4}$/,
+      message: "Use The Provided Format"
+   }
 
    return(
       show && type === "text" ?
       <TextField
          className="contact-input textField"
-         error={name === InputPropertyValueName.FirstName && error ? true : false}
+         error={
+            name === InputPropertyValueName.FirstName && error ||
+            name === InputPropertyValueName.AddressPostalCode && error || 
+            name === InputPropertyValueName.Birthday && error ? true : false
+         }
          id={id}
          size="small"
          margin="dense"
@@ -45,7 +62,9 @@ export default function NewContactFormInput(props:IFormInputProps){
             ...register(
                name as keyof Contact,
                {
-                  required: isRequired
+                  required: isRequired,
+                  pattern: name === InputPropertyValueName.Birthday ?  birthdayPatternRule :
+                  name === InputPropertyValueName.AddressPostalCode ?  postalCodePatternRule :  /^.*$/
                }
             )
          }
@@ -56,3 +75,5 @@ export default function NewContactFormInput(props:IFormInputProps){
       null
    )
 }
+
+export default React.memo(NewContactFormInput)

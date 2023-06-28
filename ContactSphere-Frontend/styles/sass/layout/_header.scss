@@ -84,6 +84,16 @@
       font-weight: $fw_bold;
       font-size: 1.05rem;
       letter-spacing: .05rem;
+      z-index: 2;
+
+      svg + svg:last-of-type{
+         position: absolute;
+         right: .4em;
+         top: 0;
+         bottom: 0;
+         margin-block: auto;
+         z-index: -1;
+      }
 
       // links
       a{
@@ -93,6 +103,8 @@
          gap: 1em;
          position: relative;
          z-index: 1;
+
+
 
          &::before{
             content: "";
@@ -109,7 +121,8 @@
             z-index: -1;
          }
    
-         &:hover{
+
+         &:hover:not(.active){
             color: $accent_color_2;
          }
       }
@@ -118,6 +131,10 @@
          color: $text-color1;
          &::before{
             display: block;
+         }
+
+         &:hover{
+            color: $text-color1;
          }
       }
    }

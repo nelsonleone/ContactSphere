@@ -71,6 +71,10 @@ h1{
    font-size: clamp(1.406rem, 0.545vw + 1.28rem, 1.65rem);
 }
 
+svg{
+   pointer-events: none;
+}
+
 .AT_only {
    font-size: 1px;
    width:0;
@@ -83,4 +87,56 @@ h1{
 
 .popup-prompt {
    font-family: $ff_prompts !important;
+}
+
+
+// overwrite Add label MUI dialog  styling
+
+.add_label_dialog_input{
+   border-color: $accent_color_2 !important;
+   label{
+     font-family: $ff_primary;
+     font-size: 1rem !important;
+   }
+
+   input{
+      font-family: $ff_primary;
+      font-weight: $fw_bold;
+   }
+}
+
+.add_label_dialog_btn{
+   font-family: $ff_secondary !important;
+   background-color: transparent !important;
+   color: hsl(219, 48%, 50%) !important;
+}
+
+
+
+// Overriding MUI  Border Properties
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+   border-color: $accent_color_2 !important;
+}
+
+.custom_select:hover{
+   .MuiOutlinedInput-notchedOutline {
+      border-color: $accent_color_2 !important;
+   }
+}
+
+
+
+.textField{
+   & .MuiOutlinedInput-root {
+      &.Mui-focused fieldset {
+         border-color: $accent_color_2 !important;
+      }
+   }
+   
+   &:hover .MuiOutlinedInput-root {
+      & fieldset{
+         border-color: $accent_color_2 !important;
+      }
+   }
 }

@@ -13,11 +13,13 @@ const errorHandler = (error,request,response,next) => {
    let message = error.message;
 
    if (error.name === 'CastError' && error.kind === 'ObjectId') {
-      return response.status(400).json({ message: 'Invalid ID format' })
+    response.status(400).json({ message: 'Invalid ID format' })
+    return;
    }
 
-   else if (error instanceof CastError) {
-      return response.status(400).json({ message: 'Invalid data type' })
+   if (error instanceof CastError) {
+     response.status(400).json({ message: 'Invalid data type' })
+     return;
    }
 
    response.status(statusCode).json({

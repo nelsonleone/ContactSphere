@@ -1,7 +1,6 @@
 import { useFieldArray, Control, UseFormSetValue } from "react-hook-form"
 import { Contact } from "../../../vite-env"
 import { InputPropertyValueName } from "../../../enums"
-import { MdLabelOutline } from "react-icons/md"
 import { nanoid } from "@reduxjs/toolkit"
 import { memo } from 'react'
 
@@ -22,7 +21,6 @@ function AddedLabels({ control, labelsArray, setValue }: { setValue:UseFormSetVa
             labelsArray.map((value,index) => (
                <div key={nanoid()}>
                   <button onClick={() => handleClick(index)}>
-                     <MdLabelOutline />
                      <span>{value.label}</span>
                   </button>
                </div>

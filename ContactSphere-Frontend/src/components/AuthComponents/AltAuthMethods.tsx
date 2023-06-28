@@ -10,19 +10,16 @@ import { setShowAlert } from '../../RTK/features/alertSlice';
 import { AlertSeverity, AuthMethod } from '../../enums';
 import handlePostCredentials from '../../utils/helperFns/handlePostCredentials';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
 function AltAuthMethods() {
 
    const dispatch = useAppDispatch()
    const [authorizeUser, {isLoading}] = useAuthorizeUserMutation()
    const navigate = useNavigate()
-   const [idToken,setIdToken] = useState("")
 
   const handleClick = async(authType:string) => {
      try{
          const userDetails = authType === "google" ? await googleAuthHandler() : "";
-         handlePostCredentials(idToken,authorizeUser)
          
          if(!userDetails){
             //  precaution
@@ -33,9 +30,13 @@ function AltAuthMethods() {
             authMethod: AuthMethod.Google
          }))
          const token = await auth?.currentUser?.getIdToken() || '';
-         handlePostCredentials(token,authorizeUser)
-         setIdToken(token)
-         navigate("/")
+         if(token){
+            handlePostCredentials(token,authorizeUser)
+            navigate("/")
+         }
+         else{
+            throw new Error("Error Occured While Signing In")
+         }
 
 
          dispatch(setShowAlert(

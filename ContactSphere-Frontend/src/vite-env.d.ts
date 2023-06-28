@@ -31,22 +31,6 @@ type UserCredentials = {
 }
 
 
-
-// Componentss Thats Uses The OutsideClick HOC
-type ComponentStateName = keyof IHeaderState;
-
-type UsedHOC = {
-  setState: Dispatch<SetStateAction<IHeaderState>> | Dispatch<SetStateAction<boolean>>,
-  componentStateName?: ComponentStateName,
-  togglerRef: RefObject<HTMLButtonElement>,
-  openNav?: boolean,
-  openUserMenu?: boolean,
-  stop?: boolean
-}
-
-
-
-
 // Contact
 
 interface IAddressProperties {
@@ -59,15 +43,12 @@ interface IAddressProperties {
 
 type Contact = {
   address: IAddressProperties,
-  birthday: string,
+  birthday:  Date | string,
   email: string;
   chat: string;
   companyName: string;
   department: string;
   firstName: string;
-  inTrash: boolean;
-  isActive: boolean;
-  isHidden: boolean;
   jobTitle: string;
   lastName: string;
   labelledBy: {
@@ -75,7 +56,6 @@ type Contact = {
     label: string
   }[] | [];
   middleName: string;
-  name: string;
   nickname: string;
   phoneNumber: string;
   prefix: string;
@@ -92,7 +72,11 @@ interface IContactsFromDB extends Contact {
   _id: string,
   createdAt: string,
   updatedAt: string,
-  deletedAt: string
+  deletedAt: string,
+  inTrash: boolean,
+  isHidden: boolean,
+  name: string
+  inFavourites: boolean
 }
 
 
@@ -102,7 +86,7 @@ type UserLabels = {
 }[]
 
 type UserData = {
-  contacts: Contact[],
+  contacts: IContactsFromDB[],
   labels: {
     _id: string,
     label: string

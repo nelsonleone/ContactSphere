@@ -15,7 +15,7 @@ interface IProps {
 
 export default function NameInputSection(props:IProps){
 
-   const {register, showMore, error } = props;
+   const { register, showMore, error } = props;
    const id = useId()
 
    return(

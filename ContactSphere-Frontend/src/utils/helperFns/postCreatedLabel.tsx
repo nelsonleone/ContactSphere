@@ -13,5 +13,9 @@ export default async function postCreatedLabel(
 
 
    const labels: UserLabels = await addLabel({ authUserUid: uid,label }).unwrap()
-   dispatch(updateLabels(labels))
+   
+   if(labels?.length){
+      // A No Content Response Is Sent When The Label Already Exist, Therefore No Response Data
+      dispatch(updateLabels(labels))
+   }
 }

@@ -115,7 +115,8 @@
          button{
             @include flexObj($justify:center);
             gap: .2em;
-            background-color: $text-color1;
+            background-color: transparent;
+            border: 1px solid $text_color1;
             border-radius: 10px;
             padding:.2em .4em;
 
@@ -126,12 +127,7 @@
             
             span{
                font-family: $ff_primary;
-               color: $generic_color_1;
-            }
-      
-            svg{
-               color: $generic_color_1;
-               font-size: 1.1rem;
+               color: $generic_color_2;
             }
          }
       }
@@ -329,56 +325,6 @@
 
 
 
-// overwrite Add label MUI dialog  styling
-
-.add_label_dialog_input{
-   border-color: $accent_color_2 !important;
-   label{
-     font-family: $ff_primary;
-     font-size: 1rem !important;
-   }
-
-   input{
-      font-family: $ff_primary;
-      font-weight: $fw_bold;
-   }
-}
-
-.add_label_dialog_btn{
-   font-family: $ff_secondary !important;
-}
-
-
-
-// Overriding MUI  Border Properties
-
-.Mui-focused .MuiOutlinedInput-notchedOutline {
-   border-color: $accent_color_2 !important;
-}
-
-.custom_select:hover{
-   .MuiOutlinedInput-notchedOutline {
-      border-color: $accent_color_2 !important;
-   }
-}
-
-
-
-.textField{
-   & .MuiOutlinedInput-root {
-      &.Mui-focused fieldset {
-         border-color: $accent_color_2 !important;
-      }
-   }
-   
-   &:hover .MuiOutlinedInput-root {
-      & fieldset{
-         border-color: $accent_color_2 !important;
-      }
-   }
-}
-
-
 
 .creating_contact_loader{
    position: fixed;
@@ -396,8 +342,8 @@
 // Media queries
 @include useMediaQuery_LS {
    .image_upload_input{
-      width: 9.5em;
-      margin-inline: 3em;
+      width: 10.5em;
+      margin-inline: 2em;
    }
 
    .creating_contact_loader{
@@ -441,7 +387,7 @@
             .added_labels_container{
                position: absolute;
                top: 5.2em;
-               left: 20em;
+               left: 19.7em;
                display: grid;
                grid-template-columns: auto;
                grid-template-rows: 1fr 1fr;
@@ -481,6 +427,10 @@
          .custom_label_select{
             width: 100%;
             margin-inline: 0;
+         }
+
+         svg{
+            top: 1.1em;
          }
       }
 

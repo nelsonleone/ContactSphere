@@ -12,12 +12,13 @@ import { InputPropertyValueName } from "../../../enums";
 interface IProps {
    register:UseFormRegister<Contact>,
    showMore: boolean,
-   setValue: UseFormSetValue<Contact>
+   setValue: UseFormSetValue<Contact>,
+   error:  string | undefined
 }
 
 export default function AddressInputSection(props:IProps){
 
-   const { register, showMore , setValue} = props;
+   const { register, showMore , error, setValue} = props;
    const id = useId()
 
    return(
@@ -47,6 +48,7 @@ export default function AddressInputSection(props:IProps){
                      id={`${id}-${propValues.id}`}
                      type={propValues.type}
                      show={showMore}
+                     error={error}
                   />
                )
             })

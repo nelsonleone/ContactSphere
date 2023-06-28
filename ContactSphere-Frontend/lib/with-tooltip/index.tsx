@@ -5,7 +5,10 @@ import { AiFillSetting } from 'react-icons/ai'
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import {  FaUser } from 'react-icons/fa'
+import {  FiStar } from 'react-icons/fi'
 import { BiPlus } from 'react-icons/bi';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import { GoPencil } from 'react-icons/go';
 import { MdNewLabel } from 'react-icons/md';
 import { useAppSelector } from '../../src/customHooks/reduxCustomHooks'
 
@@ -80,6 +83,43 @@ export function ManageLabelButton({ className, penMode, handleClick }:{ penMode:
       </Tooltip>
    )
 }
+
+
+
+
+// Contact Item Action Buttons With ToolTip
+
+export function StarIconButton({starred,handleStarring}: { starred:boolean,handleStarring:() => void }){
+   return(
+      <Tooltip title="Star Contact">
+         <button className="contact_star_button" type="button" onClick={handleStarring}>
+            <FiStar color={starred ? "#d4c006" : " hsl(0, 3%, 16%)"}  />
+         </button>
+      </Tooltip>
+   )
+}
+
+
+export function EditIconButton({navigateToEditPage}:{ navigateToEditPage:() => void}){
+   return(
+      <Tooltip title="Edit Contact">
+         <button className="contact_edit_button" type="button" onClick={navigateToEditPage}>
+            <GoPencil color=" hsl(0, 3%, 16%)"  />
+         </button>
+      </Tooltip>
+   )
+}
+
+export function ContactMenuButton({openContactMenu}:{ openContactMenu:() => void}){
+   return(
+      <Tooltip title="Contact Menu">
+         <button className="contact_menu_button" type="button" onClick={openContactMenu}>
+            <BsThreeDotsVertical color=" hsl(0, 3%, 16%)"  />
+         </button>
+      </Tooltip>
+   )
+}
+//
 
 
 

@@ -47,8 +47,20 @@ function ContactForm(){
             throw new Error("Unauthourized Request, Please Login")
          }
 
+         // Clean Up Inputs
+         const formFields = {...data,
+            address: {
+               ...data.address
+            },
+            birthday: data.birthday ? new Date(data.birthday) : '',
+            firstName: data.firstName.trim(),
+            lastName: data.firstName.trim(),
+            MiddleName: data.firstName.trim(),
+            Nickname: data.firstName.trim(),
+         }
+
          await createContact({
-            contactDetails: data,
+            contactDetails: formFields,
             authUserUid: uid
          })
 
@@ -71,7 +83,7 @@ function ContactForm(){
       errors.firstName?.message || 
       errors.phoneNumber?.message ||
       isLoading ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
-   },[errors.firstName?.message,errors.phoneNumber?.message,isLoading])
+   },[errors.firstName?.message,errors.phoneNumber?.message,errors.birthday?.message,isLoading])
 
    return(
       <>
@@ -105,11 +117,11 @@ function ContactForm(){
             </div>
 
             <div className="fields_area">
-               <NameInputSection error={errors.firstName?.message} showMore={showMore} register={register} />
+               <NameInputSection error={errors?.firstName?.message} showMore={showMore} register={register} />
                <FormalInputSection showMore={showMore} register={register} />
                <ContactInputSection setValue={setValue} register={register} />
-               <AddressInputSection showMore={showMore} register={register} setValue={setValue}  />
-               <AdditionalFields control={control} setValue={setValue} register={register} showMore={showMore} />
+               <AddressInputSection error={errors?.address?.postalCode?.message} showMore={showMore} register={register} setValue={setValue}  />
+               <AdditionalFields error={errors?.birthday?.message} control={control} setValue={setValue} register={register} showMore={showMore} />
             </div>
 
             <button type="button"  className="show_more_btn" onClick={() => setShowMore(!showMore)}>Show {showMore ? "Less" : "More"}</button>
@@ -118,7 +130,7 @@ function ContactForm(){
          <AddLabelDialog labelsArray={labelsArray} control={control} setOpen={setOpenAddLabelModal} open={openAddLabelModal} />
          {
             isLoading &&
-            <div className="creating_contact_loader" style={{color:"#f57e0f" }}>
+            <div className="creating_contact_loader" style={{color:"#f87407" }}>
                <LinearProgress color="inherit" />
             </div>
          }

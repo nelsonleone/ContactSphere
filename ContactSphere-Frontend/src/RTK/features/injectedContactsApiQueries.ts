@@ -1,4 +1,4 @@
-import { Contact, UserData } from "../../vite-env";
+import { Contact, IContactsFromDB, UserData } from "../../vite-env";
 import { contactsQuerySlice } from "./contactsQuerySlice";
 
 const CONTACTS_API_URL = '/contacts';
@@ -14,7 +14,6 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/setNewContact?uid=${args.authUserUid}`,
             method: 'POST',
-            'Content-Type': 'multipart/form-data',
             body: args.contactDetails
          }),
          invalidatesTags: ['Contact']
@@ -27,11 +26,21 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
             body: { label: args.label }
          })
       }),
+
+      // Didn't Invalidate Tags For Auto Refetch Due To Large Data Fetching For Small Request
+      addToFavourites: builder.mutation<IContactsFromDB,{contactID:string,authUserUid:string}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/addToFavourites?uid=${args.authUserUid}`,
+            method: 'POST',
+            body: { contactId:args.contactID }
+         })
+      })
    })
 })
 
 export const {
    useCreateContactMutation,
    useGetUserDataQuery,
-   useAddLabelMutation
+   useAddLabelMutation,
+   useAddToFavouritesMutation
 } = extendedContactsQuerySlice;

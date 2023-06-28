@@ -16,8 +16,8 @@ import postCreatedLabel from '../../src/utils/helperFns/postCreatedLabel';
 interface IDialogProps {
    setOpen: Dispatch<SetStateAction<boolean>>,
    open: boolean,
-   control: Control<Contact,any>,
-   labelsArray: Contact['labelledBy']
+   control?: Control<Contact,any>,
+   labelsArray?: Contact['labelledBy']
 }
 
 export default function AddLabelDialog(props:IDialogProps) {
@@ -30,11 +30,13 @@ export default function AddLabelDialog(props:IDialogProps) {
    const dispatch = useAppDispatch()
 
    const handleAddLabel = () => {
-
-      const labelArrayExists = labelsArray.some(val => val.label === label)
+      if (labelsArray && control){
+         // Dialog Being Used In Contact Form
+         const labelArrayExists = labelsArray?.some(val => val.label === label)
       
-      if (!labelArrayExists){
-         append({label})
+         if (!labelArrayExists){
+            append({label})
+         }
       }
                
       // Add the Label to the user's data in database 

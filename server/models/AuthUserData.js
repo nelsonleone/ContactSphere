@@ -5,12 +5,12 @@ const {
 } = mongoose;
 
 const Contact = new Schema({
-   Address: {
+   address: {
       country: String,
       state: String,
       city: String,
       street: String,
-      postalCode: String
+      postalCode: Number
    },
    birthday:  String,
    chat: String,
@@ -19,18 +19,20 @@ const Contact = new Schema({
    email: String,
    firstName: String,
    inTrash: Boolean,
-   isActive: Boolean,
+   isHidden: Boolean,
+   inFavourites: Boolean,
+   deletedAt: Date,
    isHidden: Boolean,
    jobTitle: String,
    lastName: String,
-   labelledBy: [String],
+   labelledBy: [
+      {
+         label: String
+      }
+   ],
    middleName: String,
-   name: {
-      type: String,
-      required: true
-   },
    nickname: String,
-   phoneNumber: Number,
+   phoneNumber: String,
    notes: String,
    prefix: String,
    repPhoto: String,
@@ -59,10 +61,21 @@ const authUserSchema = new Schema({
 })
 
 
-Contact.pre('save', function(next) {
-   this.name = `${this.firstName} ${this.lastName} ${this.middleName}`;
+authUserSchema.pre('save', function (next) {
+   const contacts = this.contacts;
+ 
+   for (let i = 0; i < contacts.length; i++) {
+     const contact = contacts[i]
+ 
+      if (contact) {
+         const { firstName, lastName, prefix, suffix } = contact;
+   
+         contact.name = `${prefix} ${firstName} ${lastName} ${suffix}`;
+      }
+   }
    next()
-}) 
+})
+ 
 
 
 const AuthUserData = model('AuthUserData',authUserSchema,'authuserdata')

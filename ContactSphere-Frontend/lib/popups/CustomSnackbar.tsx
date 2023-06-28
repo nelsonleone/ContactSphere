@@ -32,12 +32,12 @@ export default function CustomSnackbar() {
 
    const action = (
       <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={handleClose}
-      >
-      <CloseIcon fontSize="small" />
+         size="small"
+         aria-label="close"
+         color="inherit"
+         onClick={handleClose}
+       >
+       <CloseIcon fontSize="small" />
       </IconButton>
    )
 
@@ -54,6 +54,7 @@ export default function CustomSnackbar() {
             position: "fixed",
             bottom: "2em",
             zIndex:"100",
+            backgroundColor: "#ff6600d5e4 !important" 
          }}
          sx={{
             bgColor: "#ff6600d5e4"

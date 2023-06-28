@@ -4,7 +4,7 @@ import { useGetAuthStateQuery, useGetCsrfTokenQuery } from "./RTK/features/injec
 import { setLoad } from './RTK/features/loadingSlice'
 import Layout from './pages/Layout'
 import RouteHandler from './routes'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './customHooks/reduxCustomHooks';
 import { useGetUserDataQuery } from './RTK/features/injectedContactsApiQueries';
 import { setUserData } from './RTK/features/userDataSlice';
@@ -15,6 +15,7 @@ import { AlertSeverity, AuthMethod } from './enums';
 export default function App(){
 
   const navigate = useNavigate()
+  const location = useLocation()
   const { data:UserDetails, isError:getAuthStateError, isLoading:authenticating } = useGetAuthStateQuery()
   const { } = useGetCsrfTokenQuery()
 
@@ -57,8 +58,8 @@ export default function App(){
       dispatch(setLoad(true))
     }
 
-    
-    else if(getAuthStateError){
+    // Navigate User To Auth Page
+    else if(getAuthStateError && location.pathname !== "auth/create_account" && location.pathname !== "auth/signin"){
       navigate('/auth/signin')
       dispatch(setLoad(false))
     }
@@ -68,11 +69,15 @@ export default function App(){
       dispatch(setLoad(false))
     }
 
+    else{
+      setLoad(false)
+    }
+
   },[UserDetails,authenticating,getAuthStateError])
 
   return(
     <Layout>
-      <RouteHandler />
+      <RouteHandler fetchingContacts={gettingData} />
     </Layout>
   )
 }
