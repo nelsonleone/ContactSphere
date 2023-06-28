@@ -4,7 +4,8 @@ const AuthUserData = require('../models/AuthUserData')
 
 // Create Contact 
 const createContact = asyncHandler(async(request,response) => {
-   const authUserUid = req.query.uid;
+   const authUserUid = request.query.uid;
+   const newContact = { ...request.body, inTrash: false,inFavourites: false,isHidden: false }
 
    if(!authUserUid){
       response.status(400)
@@ -12,13 +13,13 @@ const createContact = asyncHandler(async(request,response) => {
    }
 
    try{
-      const newUserContact = await AuthUserData.findOneAndUpdate(
+      const newAuthUserData = await AuthUserData.findOneAndUpdate(
          { uid: authUserUid },
          { $push: { contacts: newContact } },
          { new: true }
       )
 
-      console.log(newUserContact)
+      response.status(201).end()
    }
 
    catch(error){
@@ -92,6 +93,35 @@ const setNewLabel = asyncHandler(async(request,response) => {
    }
 })
 
+
+
+// Add Selected Contact To  Favourites
+const setFavourited = asyncHandler(async(request,response)=> {
+   const { uid } = request.query;
+   const { contactId } = request.body;
+
+   if(!contactId || !authUserUid){
+      response.status(400)
+      throw new Error("USER UID OR CONTACT ID WAS NOT PROVIDED")
+   }
+
+   try{
+      const authUserDataDoc = await AuthUserData.findOne({uid})
+      const interactedContact = authUserDataDoc.contacts.find(contact => contact._id === contactId)
+
+      if(!interactedContact){
+         response.status(400)
+         throw new Error("NO CONTACT OF SUCH ID FOUND")
+      }
+
+      console.log(updatedDocument)
+   }
+
+   catch(error){
+      response.status(500)
+      throw new Error(error.message)
+   }
+})
 
 // // Handle Auth User Update Request
 // const setUpdate = asyncHandler(async(request,response) => {
