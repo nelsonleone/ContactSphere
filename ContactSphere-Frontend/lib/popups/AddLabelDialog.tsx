@@ -16,7 +16,6 @@ import postCreatedLabel from '../../src/utils/helperFns/postCreatedLabel';
 interface IDialogProps {
    setOpen: Dispatch<SetStateAction<boolean>>,
    open: boolean,
-   control?: Control<Contact,any> | undefined,
    labelsArray?: Contact['labelledBy'],
    append?: 
 }

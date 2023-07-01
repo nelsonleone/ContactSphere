@@ -29,6 +29,7 @@
       font-family: $ff_primary;
       font-weight: $fw_bold;
       color: $text_color2;
+      opacity: .9;
       display: none;
    }
 
@@ -37,7 +38,7 @@
    }
 }
 
-.homepage .contacts_view_top_section + p{
+.homepage >  p{
    font-family: $ff_primary;
    text-transform: uppercase;
    font-size: .86rem;
@@ -48,13 +49,17 @@
    padding-left: .4em;
 }
 
+
+
+
+// Contact Wrapper And Contact Styling
 .contacts_container{
    margin-top: .4em;
    .contact{
       @include flexObj($justify:flex-start);
       gap: 1em;
       width: 100%;
-      padding-block: 1.2em;
+      padding-block: 1.1em;
       cursor: pointer;
       border-radius: 5px;
       padding-inline: .4em;
@@ -116,7 +121,20 @@
          margin-block: auto;
       }
 
-      &:hover{
+      &::after{
+         content:  "";
+         width: 3px;
+         height: 100%;
+         background-color: $accent_color_1;
+         left:0;
+         top: 0;
+         visibility: hidden;
+         position: absolute;
+         display: block;
+      }
+
+      &:hover,
+      &:focus{
          background-color: $bg_color2;
          .custom-checkbox{
             visibility: visible;
@@ -129,10 +147,15 @@
          .contact_action_icons{
             visibility: visible;
          }
+
+         &::after{
+            visibility: visible;
+         }
       }
    }
 
 
+   // When A Contact Is Selected [multi-select]
    .selected_contact{
       background-color: $bg_color2;
       .avatar{
@@ -144,25 +167,77 @@
       }
 
       &::after{
-         content:  "";
-         width: 3px;
-         height: 100%;
-         background-color: $accent_color_1;
-         left:0;
-         top: 0;
-         position: absolute;
+         visibility: visible;
       }
    }
 }
 
 
-.homepage {
-   .contact .contact_menu{
-      position: absolute !important;
-      right: 1em;
+
+// Individual Contact Menus
+.contact_menu{
+   span{
+      font-family: $ff_prompts;
+      font-weight: $fw_bold;
+      color: $text-color2;
+      opacity: .9;
+      font-size: .93rem;
+   }
+
+   svg{
+      font-size: 1.15rem;
+   }
+
+   .menu-item-label{
+      font-size: .85rem;
+      color: $text-color1;
+      margin-block: .5em;
+      display: block;
+      margin-left: 1em;
+      font-family: $ff_primary;
    }
 }
 
+
+.multi_select_actions{
+   @include flexObj;
+   border-bottom: 1px solid $util_color1;
+   padding-bottom: .3em;
+
+   &>div{
+      @include flexObj($justify:flex-start);
+      gap: .3em;
+   }
+
+   &>div:first-child{
+      color: $accent_color_1;
+      svg{
+         font-size: 1.3rem;
+         color: $radiant_color2;
+      }
+      span{
+         color: $radiant_color2;
+         font-family: $ff_prompts;
+      }
+   }
+
+   &>div:last-child{
+      gap: .5em;
+      svg{
+         font-size: 1.15rem;
+         color: $radiant_color2;
+      }
+   }
+}
+
+.simple-menu{
+   *{
+      font-family: $ff_prompts !important;
+   }
+}
+
+
+// No Saved Contact Prompt
 .homepage .nsc_content{
    @include flexObj($justify:center,$direction:column);
    gap: 1em;

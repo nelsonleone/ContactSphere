@@ -84,7 +84,7 @@ function ContactItem(props:IContactItemProps){
          <div className="contact_action_icons">
             <StarIconButton starred={starred} handleStarring={() => handleStarring()} />
             <EditIconButton navigateToEditPage={() => navigate(`/c/${_id}`)} />
-            <ContactMenu contactId={_id} contactLabels={labelledBy} />
+            <ContactMenu method="single" contactId={_id} contactLabels={labelledBy} />
          </div>
       </div>
    )

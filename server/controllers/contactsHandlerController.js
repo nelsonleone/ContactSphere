@@ -165,15 +165,130 @@ const manageUserContactsLabels = asyncHandler(async(request,response) => {
       response.status(200).end()
    }
 
-   catch(err){
+   catch(error){
       response.status(500)
-      throw new Error(err.message)
+      throw new Error(error.message)
    }
 })
+
+
+
+// Handle Single Contact Delete
+const setDeleteContactHandler = asyncHandler(async(request,response) => {
+   const { contactId } = request.body;
+   const { uid } = request.query;    
+   try {
+      const authUser = await AuthUser.findOne({ uid })
+   
+      if (!authUser) {
+         response.status(404)
+         throw new Error("NO USER WITH PROVIDED ID WAS FOUND")
+         return;
+      }
+   
+      // Find the index of the contact with the specified contactId
+      const contactIndex = authUser.contacts.findIndex(
+         (contact) => contact._id.toString() === contactId
+      )
+   
+      if (contactIndex === -1) {
+         response.status(404)
+         throw new Error("NO CONTACT WITH SUCH ID WAS FOUND")
+         return;
+      }
+      authUser.contacts.splice(contactIndex, 1)
+   
+      await authUser.save()
+   
+      response.status(200).json({ message: 'Contact deleted successfully' });
+   } 
+   
+   catch (error) {
+      response.status(500).json({ message: 'Server error' });
+   }
+    
+})
+
+
+// Handle Multi Contact Delete
+const setDeleteMultiSelectedContacts = asyncHandler(async(request,response) => {
+   const { uid, contactIds } = request.query;
+   
+   try {
+      if (!contactId || !uid ) {
+         response.status(400)
+         throw new Error('USER UID OR CONTACT ID WAS NOT PROVIDED')
+      }
+
+      const authUser = await AuthUser.findOne({ uid })
+   
+      if (!authUser) {
+         throw new Error('NO USER WITH PROVIDED ID FOUND')
+         return;
+      }
+   
+      authUser.contacts = authUser.contacts.filter(
+         (contact) => !contactIds.includes(contact._id.toString())
+      )
+   
+      await authUser.save()
+   
+      response.status(200).json({ message: 'Contacts deleted successfully' })
+   } 
+   catch (error) {
+      response.status(500)
+      throw new Error(error.message)
+   }
+})
+
+
+
+// Handle Multi Manage Label
+const setManageMultiContactLabels = async (request, response) => {
+   const { contactIds, label } = request.body;
+   const { uid } = request.query;
+
+   try {
+      const authUser = await AuthUser.findOne({ uid })
+
+      if (!authUser) {
+         response.status(404)
+         throw new Error("No USER WITH PROVIDED ID WAS FOUND")
+         return;
+      }
+
+      // Find contacts with matching _ids
+      const matchedContacts = authUser.contacts.filter((contact) =>
+         contactIds.includes(contact._id.toString())
+      )
+
+      // Update the labelledBy array for each matched contact
+      matchedContacts.forEach((contact) => {
+         const existingLabel = contact.labelledBy.find(
+         (labelObj) => labelObj.label === label
+         )
+
+         // Add the label if it doesn't exist in the labelledBy array
+         if (!existingLabel) {
+            contact.labelledBy.push({ label })
+         }
+      })
+      await authUser.save()
+
+      response.status(200).json({ message: 'Contacts Labels updated successfully' })
+   } catch (error) {
+      response.status(500)
+      throw new Error(error.message)
+   }
+} 
 
 
 module.exports = {
    getAuthUserData,
    createContact,
-   setNewLabel
+   setNewLabel,
+   setManageMultiContactLabels,
+   setDeleteMultiSelectedContacts,
+   setDeleteContactHandler,
+   setFavourited,
 }

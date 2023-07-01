@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { nanoid } from '@reduxjs/toolkit';
 
 interface IProps {
    id: string,
@@ -16,23 +17,22 @@ function SimpleMenu(props:IProps) {
    const { handleClose, anchorEl, open, id, simpleMenuItems, ariaLabelledBy } = props;
 
    return (
-      <div>
          <Menu
             id={id}
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
+            className="simple-menu"
             MenuListProps={{
             'aria-labelledby': ariaLabelledBy || '',
          }}
          >
          {
             simpleMenuItems.map(item => (
-               <MenuItem onClick={handleClose}>{item}</MenuItem>
+               <MenuItem key={nanoid()} onClick={handleClose}>{item}</MenuItem>
             ))
          }
          </Menu>
-      </div>
    )
 }
 
