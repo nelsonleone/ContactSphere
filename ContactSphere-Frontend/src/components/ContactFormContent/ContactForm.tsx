@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from "react-hook-form"
+import { SubmitHandler, useForm, useFieldArray } from "react-hook-form"
 import { defaultValues } from "./newContactDefaultValues"
 import { Contact } from "../../vite-env"
 import { memo, useEffect, useState } from "react"
@@ -27,6 +27,7 @@ function ContactForm(){
 
    const { register, handleSubmit, setValue, watch, formState: {errors}, control} = useForm<Contact>({defaultValues})
    const [showMore,setShowMore] = useState(false)
+   const { append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
    const [showLabelMenu,setShowLabelMenu] = useState(false)
    const [openAddLabelModal,setOpenAddLabelModal] = useState(false)
    const navigate = useNavigate()
@@ -127,7 +128,7 @@ function ContactForm(){
             <button type="button"  className="show_more_btn" onClick={() => setShowMore(!showMore)}>Show {showMore ? "Less" : "More"}</button>
          </form>
 
-         <AddLabelDialog labelsArray={labelsArray} control={control} setOpen={setOpenAddLabelModal} open={openAddLabelModal} />
+         <AddLabelDialog labelsArray={labelsArray} append={append} control={control} setOpen={setOpenAddLabelModal} open={openAddLabelModal} />
          {
             isLoading &&
             <div className="creating_contact_loader" style={{color:"#f87407" }}>

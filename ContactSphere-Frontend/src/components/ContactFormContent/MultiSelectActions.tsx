@@ -5,6 +5,8 @@ import { GoTriangleDown } from 'react-icons/go'
 import { useAppSelector } from "../../customHooks/reduxCustomHooks";
 import { MouseEvent, useState } from 'react'
 import SimpleMenu from '../../../lib/popups/SimpleMenu'
+import ContactMenu from "./ContactMenu";
+import AddLabelDialog from "../../../lib/popups/AddLabelDialog";
 
 export default function MultiSelectActions(){
 
@@ -12,12 +14,14 @@ export default function MultiSelectActions(){
 
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
    const open = Boolean(anchorEl)
+   const [openDialog,setOpenDialog] = useState(false)
    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget)
    }
 
    return(
       <div className="multi_select_actions">
+         <AddLabelDialog open={openDialog} setOpen={setOpenDialog} />
          <div>
             <IconButton aria-label="remove">
                <MdOutlineRemoveCircle />
@@ -33,7 +37,7 @@ export default function MultiSelectActions(){
                id="multi-select-simple-menu" 
                simpleMenuItems={[
                   "Select All",
-                  "Remove All"
+                  "None"
                ]}
             />
             <span className="AT_only" id="simple-menu-desc">Show Options On Selected Contacts</span>
@@ -42,7 +46,7 @@ export default function MultiSelectActions(){
 
          <div>
             <ContactManageLabelsButton handleClick={() => console.log("h")} />
-            <ContactMenuButton ariaControls="contact-mts-menu" ariaExpanded={true} tooltipText="More actions" />
+            <ContactMenu method="multi" id="contact-mts-menu" />
          </div>
       </div>
    )
