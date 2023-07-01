@@ -12,18 +12,21 @@
    @include useMediaQuery_LS {
       .page{
          padding-top: 5em;
-            width: 78%;
-            background-color: $generic_color_1;
-            margin-inline: 20% 2%;
+         width: auto;
+         background-color: $generic_color_1;
+         @include alignPage;
+      }
+
+      .cnc_btn{
+         left: 1em;
       }
    
       .create_contact_page{
          form {
             .top_section{
-               width:  78%;
+               @include alignPage;
                left: 0;
                right: 0;
-               margin-inline:  20% 2%;
             }
 
             .fields_area{
@@ -31,6 +34,26 @@
             }
          }
       }
+   }
+}
+
+.custom_working_snackbar{
+   position: fixed;
+   transition: .2s linear;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   margin-inline: auto;
+   width: 100%;
+   @include flexObj($justify:center);
+   p{
+      font-family: $ff_prompts;
+      text-align: center;
+      background-color: $text-color1;
+      width: 13em;
+      color: #FAFAFA;
+      padding-block:.8em .3em;
+      border-radius: 5px;
    }
 }
 
@@ -47,7 +70,7 @@
    right: 1em;
    font-family: $ff_prompts;
    font-weight: $fw_bold;
-   transition: .2s ease-in;
+   transition: .25s linear;
 
    svg{
       color: $accent_color_1;
@@ -62,9 +85,9 @@
 
    @include useMediaQuery_LS{
       bottom: unset;
-      top: 7.5em;
+      top: 6.5em;
       background-color: transparent;
-      left: 1em;
+      left: -500px;
       width: 12em;
       height: unset;
       aspect-ratio: 1/.3;

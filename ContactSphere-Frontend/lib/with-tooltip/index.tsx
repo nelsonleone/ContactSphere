@@ -1,4 +1,4 @@
-import { Dispatch, Ref, SetStateAction, forwardRef } from 'react'
+import { Dispatch, MouseEvent, Ref, SetStateAction, forwardRef } from 'react'
 import { BiHelpCircle } from 'react-icons/bi'
 import { IHeaderState } from '../../src/components/Header'
 import { AiFillSetting } from 'react-icons/ai'
@@ -11,6 +11,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
 import { MdNewLabel } from 'react-icons/md';
 import { useAppSelector } from '../../src/customHooks/reduxCustomHooks'
+import { MdLabelOutline } from 'react-icons/md'
 
 
 interface IProps {
@@ -110,11 +111,45 @@ export function EditIconButton({navigateToEditPage}:{ navigateToEditPage:() => v
    )
 }
 
-export function ContactMenuButton({openContactMenu}:{ openContactMenu:() => void}){
+
+interface IContactMenuProps {
+   openContactMenu?:(e:MouseEvent<HTMLButtonElement>) => void,
+   tooltipText: string,
+   color?: string,
+   ariaControls: string,
+   ariaExpanded: boolean
+}
+
+export function ContactMenuButton(props:IContactMenuProps){
+
+   const {
+      openContactMenu,
+      tooltipText,
+      color,
+      ariaControls,
+      ariaExpanded
+   } = props;
+
    return(
-      <Tooltip title="Contact Menu">
-         <button className="contact_menu_button" type="button" onClick={openContactMenu}>
-            <BsThreeDotsVertical color=" hsl(0, 3%, 16%)"  />
+      <Tooltip title={tooltipText || "Contact Menu"}>
+         <button 
+            aria-controls={ariaControls || ''} 
+            aria-expanded={ariaExpanded ? "true" : "false"} 
+            aria-haspopup="menu" 
+            className="contact_menu_button" 
+            type="button" 
+            onClick={openContactMenu}>
+            <BsThreeDotsVertical color={color || " hsl(0, 3%, 16%)"}  />
+         </button>
+      </Tooltip>
+   )
+}
+
+export function ContactManageLabelsButton({handleClick}:{handleClick: () => void}){
+   return(
+      <Tooltip title="Manage Labels">
+         <button className="contact_mulitselect_manage_labels_button" type="button" onClick={handleClick}>
+            <MdLabelOutline  />
          </button>
       </Tooltip>
    )

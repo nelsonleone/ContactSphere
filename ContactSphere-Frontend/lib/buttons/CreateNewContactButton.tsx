@@ -1,15 +1,16 @@
 import { FaPlus } from 'react-icons/fa'
 import * as React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { Breakpoints } from '../../src/enums'
 
 export default function CreateNewContactButton(){
 
    const navigate = useNavigate()
    const location = useLocation()
-   const [showText,setShowText] = React.useState(window.innerWidth > 960)
+   const [showText,setShowText] = React.useState(window.innerWidth >= Breakpoints.Large)
 
    const resizeHandler = () => {
-      window.innerWidth > 960 ? setShowText(true) : setShowText(false)
+      window.innerWidth >= Breakpoints.Large ? setShowText(true) : setShowText(false)
    }
 
    React.useEffect(() => {

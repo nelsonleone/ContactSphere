@@ -96,60 +96,80 @@ const setNewLabel = asyncHandler(async(request,response) => {
 
 
 // Add Selected Contact To  Favourites
-const setFavourited = asyncHandler(async(request,response)=> {
-   const { uid } = request.query;
-   const { contactId } = request.body;
-
-   if(!contactId || !authUserUid){
-      response.status(400)
-      throw new Error("USER UID OR CONTACT ID WAS NOT PROVIDED")
+const setFavourited = asyncHandler(async (request, response) => {
+   const { uid, contactId } = request.query;
+   const { status } = request.body;
+ 
+   if (!contactId || !uid) {
+     response.status(400)
+     throw new Error('USER UID OR CONTACT ID WAS NOT PROVIDED')
    }
-
-   try{
-      const authUserDataDoc = await AuthUserData.findOne({uid})
-      const interactedContact = authUserDataDoc.contacts.find(contact => contact._id === contactId)
-
-      if(!interactedContact){
+ 
+   try {
+      const updatedAuthUserData = await AuthUserData.findOneAndUpdate(
+         { uid, 'contacts._id': contactId },
+         { $set: { 'contacts.$.isFavourited': status } },
+         { new: true }
+      )
+ 
+      if (!updatedAuthUserData) {
          response.status(400)
-         throw new Error("NO CONTACT OF SUCH ID FOUND")
+         throw new Error('NO CONTACT OF SUCH ID FOUND')
       }
 
-      console.log(updatedDocument)
-   }
-
-   catch(error){
-      response.status(500)
-      throw new Error(error.message)
+      const interactedContact = updatedAuthUserData.contacts.find(contact => contact._id === contactId)
+ 
+     response.status(200).json(interactedContact)
+   } 
+   catch (error) {
+     response.status(500)
+     throw new Error(error.message)
    }
 })
 
-// // Handle Auth User Update Request
-// const setUpdate = asyncHandler(async(request,response) => {
 
-//    const authUserUid = request.query.uid;
-//    const { contactId } = request.query;
-//    const { updatedContactsData } = request.body;
 
-//    if(!updatedContactsData){
-//       response.status(400)
-//       throw new Error("BAD REQUEST, INVALID UPDATE FIELDS")
-//    }
+// Manage Contacts Labels 
+const manageUserContactsLabels = asyncHandler(async(request,response) => {
+   const {
+      actionType,
+      uid,
+      contactId
+   } = request.query;
 
-//    try{
-//       const updatedDocument = await AuthUserData.findOneAndUpdate(
-//          { uid, "contacts._id": contactId },
-//          { $set: { "contacts.$": updatedContactsData } },
-//          { new: true }
-//       )
+   const label = request.body;
 
-//       response.status(201).json(updatedDocument)
-//    }
+   if (!contactId || !uid ) {
+      response.status(400)
+      throw new Error('USER UID OR CONTACT ID WAS NOT PROVIDED')
+   }
 
-//    catch(error){
-//       response.status(500)
-//       throw new Error(`Error Updating Data,... ${err.message}`)
-//    }
-// })
+   let queryObj  = {}
+   if (actionType === "add"){
+      queryObj =  { $push: { 'contacts.$.labelledBy': label } }
+   }
+
+   else if( actionType === "remove"){
+      queryObj = { $pull: { 'contacts.$.labelledBy': label } }
+   }
+
+   // ActionType Was Not Provided or Invalid
+   else{
+      queryObj =  { $push: { 'contacts.$.labelledBy': label } }
+   }
+
+   try{
+      const updatedAuthUserData = await AuthUserData.findOneAndUpdate(
+         { uid, 'contacts._id': contactId },queryObj,{ new: true }
+      )
+      response.status(200).end()
+   }
+
+   catch(err){
+      response.status(500)
+      throw new Error(err.message)
+   }
+})
 
 
 module.exports = {

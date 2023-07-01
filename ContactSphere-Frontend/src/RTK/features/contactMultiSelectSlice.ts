@@ -13,7 +13,14 @@ const contactsMultiSelectSlice = createSlice({
    initialState,
    reducers: {
       setSelected: (state,{ payload }:PayloadAction<string>) => {
-         state.selectedContacts = [...state.selectedContacts,payload]
+         const selected = state.selectedContacts.some(contactId => contactId === payload)
+
+         if(selected){
+            state.selectedContacts = state.selectedContacts.filter(contactId => contactId !== payload)
+         }
+         else{
+            state.selectedContacts = [...state.selectedContacts,payload]
+         }
       }
    }
 })

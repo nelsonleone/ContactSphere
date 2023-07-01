@@ -39,7 +39,7 @@ function LabelMenu(props:ILabelMenuProps) {
       setShowLabelMenu(false)
    }
    
-   const handleAddLabel = (e:React.MouseEvent<HTMLButtonElement>,label:string) => {
+   const handleAddLabel = (e:React.MouseEvent<HTMLLIElement>,label:string) => {
       e.stopPropagation()
       const labelAlreadyAdded = labelsArray.some(field => field.label === label)
       if (labelAlreadyAdded){
@@ -62,25 +62,23 @@ function LabelMenu(props:ILabelMenuProps) {
             <MenuList>
 
                {
-                     labels.length ? labels.map(value => (
-                        <MenuItem className="label flex-row" key={value._id}>
-                           <ListItemIcon>
-                              <MdLabelOutline  />
-                           </ListItemIcon>
-                           <button type="button" onClick={(e) => handleAddLabel(e,value.label)}>{value.label}</button>
-                        </MenuItem>
-                     ))
-                     :
-                     <p>You have no saved <i>Label</i></p>
-                  }
+                  labels.length ? labels.map(value => (
+                     <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label)}>
+                        <ListItemIcon>
+                           <MdLabelOutline  />
+                        </ListItemIcon>
+                        <span>{value.label}</span>
+                     </MenuItem>
+                  ))
+                  :
+                  <p>You have no saved <i>Label</i></p>
+               }
                <Divider />
-               <MenuItem>
+               <MenuItem onClick={()  => setOpenAddLabelModal(prevState => prevState = !prevState)}>
                  <ListItemIcon>
                    <BiPlus />
                  </ListItemIcon>
-                 <button type="button" onClick={()  => setOpenAddLabelModal(prevState => prevState = !prevState)}>
-                   <ListItemText style={{fontSize:'.9rem'}}>Create Label</ListItemText>
-                  </button>
+                  <ListItemText style={{fontSize:'.9rem'}}>Create Label</ListItemText>
                </MenuItem>
             </MenuList>
          </Paper>

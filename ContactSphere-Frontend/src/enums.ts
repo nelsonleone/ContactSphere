@@ -16,6 +16,10 @@ export enum AuthMethod {
    AuthSession = "AuthSessionToken"
 }
 
+export enum Breakpoints {
+   Large = 1027
+}
+
 
 export enum InputPropertyValueName {
    Name = 'name',

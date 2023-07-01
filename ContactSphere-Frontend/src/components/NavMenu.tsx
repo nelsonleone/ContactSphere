@@ -9,6 +9,7 @@ import { useAppSelector } from '../customHooks/reduxCustomHooks'
 import ClickAwayListener from '@mui/base/ClickAwayListener';
 import { IHeaderState } from "./Header";
 import { MdLabel } from 'react-icons/md'
+import { Breakpoints } from "../enums";
 
 interface IProps{
    setState: Dispatch<SetStateAction<IHeaderState>>,
@@ -22,7 +23,7 @@ function NavMenu(props:IProps){
    
    const handleClickAway = () => {
       // don't close navMenu automatically on larger screens
-      if (window.innerWidth > 960 )return;
+      if (window.innerWidth >= Breakpoints.Large )return;
       props.setState(prevState => (
          {
             ...prevState, openNav: false
@@ -41,7 +42,7 @@ function NavMenu(props:IProps){
                beenAuthenticated ?
                <ul>
                   <li>
-                     <NavLink to="/">
+                     <NavLink to="/" className="contact_page_link">
                         <BiUser title="User icon"  />
                         Contacts
                         {

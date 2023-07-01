@@ -7,6 +7,7 @@ import NavMenu from './NavMenu'
 import { UserIcon } from '../../lib/with-tooltip/index'
 import UserMenu from './UserMenu'
 import ClickAwayListener from '@mui/base/ClickAwayListener';
+import { Breakpoints } from '../enums'
 
 export interface IHeaderState {
    openUserMenu: boolean,
@@ -29,11 +30,11 @@ export default function Header(props:IHeaderProps){
       openUserMenu: false,
       toggleSettingSection: false,
       openHelpArea: false,
-      openNav: window.innerWidth > 960 
+      openNav: window.innerWidth >= Breakpoints.Large 
    })
 
    const handleResize = () => {
-      window.innerWidth < 960 ?
+      window.innerWidth < Breakpoints.Large ?
       setState(prevState => ({ ...prevState, openNav: false })) :
       setState(prevState => ({ ...prevState, openNav: true }))
    }
@@ -44,7 +45,7 @@ export default function Header(props:IHeaderProps){
 
    useEffect(() =>{
       // close nav menu onRouteChange
-      if (window.innerWidth < 960){
+      if (window.innerWidth < Breakpoints.Large){
          setState(prevState => ({ ...prevState, openNav: false }))
       }
    },[location.pathname])

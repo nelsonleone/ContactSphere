@@ -54,9 +54,9 @@ function ContactForm(){
             },
             birthday: data.birthday ? new Date(data.birthday) : '',
             firstName: data.firstName.trim(),
-            lastName: data.firstName.trim(),
-            MiddleName: data.firstName.trim(),
-            Nickname: data.firstName.trim(),
+            lastName: data.lastName.trim(),
+            MiddleName: data.middleName.trim(),
+            Nickname: data.nickname.trim(),
          }
 
          await createContact({

@@ -27,12 +27,21 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
          })
       }),
 
-      // Didn't Invalidate Tags For Auto Refetch Due To Large Data Fetching For Small Request
-      addToFavourites: builder.mutation<IContactsFromDB,{contactID:string,authUserUid:string}>({
+      // Updated Contact Labels Update
+      manageLabels: builder.mutation<void,{label:string,authUserUid:string,contactId:string,actionType:string}>({
          query: (args) => ({
-            url: `${CONTACTS_API_URL}/addToFavourites?uid=${args.authUserUid}`,
+            url: `${CONTACTS_API_URL}/manageLabels?uid=${args.authUserUid}&contactId=${args.contactId}&actionType=${args.actionType}`,
             method: 'POST',
-            body: { contactId:args.contactID }
+            body: { label: args.label }
+         })
+      }),
+
+      // Didn't Invalidate Tags For Auto Refetch Due To Large Data Fetching For Small Request
+      addToFavourites: builder.mutation<IContactsFromDB,{contactID:string,authUserUid:string,status:boolean}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/addToFavourites?uid=${args.authUserUid}&contactId=${args.contactID}`,
+            method: 'POST',
+            body: { status: args.status }
          })
       })
    })
@@ -42,5 +51,6 @@ export const {
    useCreateContactMutation,
    useGetUserDataQuery,
    useAddLabelMutation,
-   useAddToFavouritesMutation
+   useAddToFavouritesMutation,
+   useManageLabelsMutation
 } = extendedContactsQuerySlice;

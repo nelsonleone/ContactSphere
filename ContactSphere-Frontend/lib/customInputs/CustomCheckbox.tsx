@@ -14,10 +14,11 @@ export default function CustomCheckbox(props:ICheckboxProps){
          {...label}
          checked={props.checked}
          onChange={props.handleCheck}
+         className='custom-checkbox'
          sx={{
             color:  'hsl(0, 3%, 16%)',
             '&.Mui-checked': {
-               color:  'hsl(24, 100%, 50%)',
+               color:  '#ff5100',
             },
          }}
       />
