@@ -70,9 +70,9 @@ type Contact = {
 
 interface IContactsFromDB extends Contact {
   _id: string,
-  createdAt: string,
-  updatedAt: string,
-  deletedAt: string,
+  createdAt: Date,
+  updatedAt: Date,
+  deletedAt: Date,
   inTrash: boolean,
   isHidden: boolean,
   name: string
@@ -87,10 +87,7 @@ type UserLabels = {
 
 type UserData = {
   contacts: IContactsFromDB[],
-  labels: {
-    _id: string,
-    label: string
-  }[] | []
+  labels: UserLabels | []
 }
 
 

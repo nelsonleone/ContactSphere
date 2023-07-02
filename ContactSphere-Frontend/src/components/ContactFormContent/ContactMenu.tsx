@@ -4,13 +4,14 @@ import { MdLabelOutline } from 'react-icons/md'
 import { useAppSelector, useAppDispatch } from '../../customHooks/reduxCustomHooks';
 import { ContactMenuButton } from '../../../lib/with-tooltip';
 import { MouseEvent, SetStateAction, Dispatch, useEffect, useState } from 'react';
-import { useManageLabelsMutation, useManageMultiContactLabelsMutation } from '../../RTK/features/injectedContactsApiQueries';
+import { useDeleteContactMutation, useDeleteMultipleContactsMutation, useHideContactMutation, useHideMultipleContactsMutation, useManageLabelsMutation, useManageMultiContactLabelsMutation } from '../../RTK/features/injectedContactsApiQueries';
 import { AlertSeverity } from '../../enums';
 import { setShowAlert } from '../../RTK/features/alertSlice';
 import { setHideWrkSnackbar, setShowWrkSnackbar } from '../../RTK/features/wrkSnackbarSlice';
 import { setShowSnackbar } from '../../RTK/features/snackbarDisplaySlice';
 import { Divider, Menu, MenuItem } from '@mui/material';
 import { ListItemIcon, ListItemText, MenuList } from '@mui/material';
+import { setEdittedContact } from '../../RTK/features/userDataSlice';
 
 interface IProps {
    contactLabels?: {
@@ -31,6 +32,10 @@ export default function ContactMenu(props:IProps){
    const dispatch = useAppDispatch()
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
    const [manageMultiContactsLabels] = useManageMultiContactLabelsMutation()
+   const [deleteContact] = useDeleteContactMutation()
+   const [deleteMultiple] = useDeleteMultipleContactsMutation()
+   const [hideContact] = useHideContactMutation()
+   const [hideMultipleContacts] = useHideMultipleContactsMutation()
 
    const handleAddLabel = async(e:React.MouseEvent<{}>,label:string) => {
       e.stopPropagation()
@@ -44,12 +49,15 @@ export default function ContactMenu(props:IProps){
          }
    
          if(props.contactId && props.method === "single"){
-            await manageLabels({
+            const updatedContact = await manageLabels({
                authUserUid: uid,
                label,
                contactId:props.contactId,
                actionType: "add"
-            })
+            }).unwrap()
+
+            // Update Specific Contact In State
+            dispatch(setEdittedContact(updatedContact))
          }
          else if(props.method === "multi"){
             await manageMultiContactsLabels({
@@ -85,6 +93,88 @@ export default function ContactMenu(props:IProps){
    const handleClose = () => {
      setAnchorEl(null)
    }
+
+   const handleMenuHideContact = async() => {
+      try{
+         if(!uid){
+            throw new Error("Unauthourized Request, Please Login")
+         }
+
+         dispatch(setShowWrkSnackbar())
+
+         if(props.method === "single"){
+            await hideContact({
+               authUserUid: uid,
+               contactId: props.contactId || '',
+               status: true
+            })
+         }
+
+         else if(props.method === "multi"){
+            await hideMultipleContacts({
+               selectedContacts,
+               authUserUid: uid,
+               status: true
+            })
+         }
+
+         dispatch(setShowSnackbar({
+            snackbarMessage:"Succefully Deleted"
+         }))
+      }
+
+      catch(err){
+         dispatch(setShowAlert({
+            alertMessage: "Error Occured During Deletion",
+            severity: AlertSeverity.ERROR
+         }))
+      }
+
+      finally{
+         dispatch(setHideWrkSnackbar())
+      }
+   }
+
+
+
+
+   const handleMenuDeleteContact = async () => {      
+      try{
+         if(!uid){
+            throw new Error("Unauthourized Request, Please Login")
+         }
+
+         dispatch(setShowWrkSnackbar())
+         if(props.method === "single"){
+            await deleteContact({
+               authUserUid: uid,
+               contactId: props.contactId || ''
+            })
+         }
+
+         else if(props.method === "multi"){
+            await deleteMultiple({
+               selectedContacts,
+               authUserUid: uid
+            })
+         }
+         dispatch(setShowSnackbar({
+            snackbarMessage:"Succefully Deleted"
+         }))
+      }
+
+      catch(err){
+         dispatch(setShowAlert({
+            alertMessage: "Error Occured During Deletion",
+            severity: AlertSeverity.ERROR
+         }))
+      }
+
+      finally{
+         dispatch(setHideWrkSnackbar())
+      }
+   }
+
    useEffect(() => {
       setUnregisteredLabels(userSavedLabels.filter(item => props.contactLabels?.some(obj => obj.label !== item.label)))
    },[props.contactLabels?.length,userSavedLabels?.length])
@@ -103,22 +193,23 @@ export default function ContactMenu(props:IProps){
               }}
               >
                <MenuList>
-                  <MenuItem>
+                  <MenuItem onClick={handleMenuHideContact}>
                      <ListItemIcon>
                         <BiArchiveIn />
                      </ListItemIcon>
-                     <ListItemText>Hide Contact</ListItemText>
+                     <ListItemText>{props.method === "single" ? "Hide Contact" : "Hide From Contacts"}</ListItemText>
                   </MenuItem>
-                  <MenuItem>
+                  <MenuItem onClick={handleMenuDeleteContact}>
                      <ListItemIcon>
                         <BsTrash3Fill />
                      </ListItemIcon>
-                  <ListItemText>Delete Contact</ListItemText>
+                  <ListItemText>Delete</ListItemText>
                   </MenuItem>
                   <Divider />
                   <span className="menu-item-label">{ props.method === "multi" ? "Manage" : "Change"} Labels</span>
+                  
                   {
-                     unregisteredLabels.length ? unregisteredLabels.map(value => (
+                     props.method === "single" && unregisteredLabels.length ? unregisteredLabels.map(value => (
                         <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label)}>
                            <ListItemIcon>
                               <MdLabelOutline  />
@@ -127,8 +218,24 @@ export default function ContactMenu(props:IProps){
                         </MenuItem>
                      ))
                      :
+                     props.method === "multi" && userSavedLabels?.length ? userSavedLabels.map(value => (
+                        <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label)}>
+                           <ListItemIcon>
+                              <MdLabelOutline  />
+                           </ListItemIcon>
+                           <span>{value.label}</span>
+                        </MenuItem>
+                     ))
+                     :
+                     null
+                  }
+
+                  {
+                     !unregisteredLabels.length || !userSavedLabels.length &&
                      <p>You have no saved <i>Label</i></p>
                   }
+
+
                   {
                      props.method === "multi" &&
                      <>

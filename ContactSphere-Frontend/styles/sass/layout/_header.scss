@@ -56,7 +56,7 @@
    top: 0;
    z-index: 100;
    transition: all .25s linear;
-   padding: 4.2em 1.8em;
+   padding: 5.2em 1.8em 4em;
    background: $generic_color_1;
    width: 74%;
    height: 100vh;
@@ -160,10 +160,19 @@
          width: 100%;
          color: $text-color2;
          padding-right: .4em;
+         padding: .4em;
+         border-radius: 4px;
+
+         &:hover{
+            background-color: $bg_color1;
+            svg{
+               color: $accent_color_1;
+            }
+         }
       }
 
       ul li{
-         font-size: .95rem;
+         font-size: .93rem;
          margin-block: .7em;
          font-family: $ff_primary;
          font-weight: $fw_bold;
@@ -215,7 +224,7 @@ button[aria-controls=user-menu]{
   font-family: $ff_primary;
   font-weight: 500;
   color: $text-color1;
-  z-index: 99;
+  z-index: 98;
   background-color: $generic_color_1;
   border-radius: 6px;
   border: 1px solid rgb(192, 186, 186);
@@ -284,6 +293,8 @@ button[aria-controls=user-menu]{
       color: $accent_color_1;
       text-decoration: underline $accent_color_1;
       max-width: 98%;
+      display: block;
+      text-align: center;
       word-break: break-all;
       font-weight: $fw_xBold;
    }
@@ -307,7 +318,13 @@ button[aria-controls=user-menu]{
       }
 
       svg{
-         color: $accent_color_2;
+         color: $generic_color_1
+      }
+
+      &:hover{
+         svg{
+            color: $accent_color_1;
+         }
       }
    }
 }
@@ -336,19 +353,26 @@ button[aria-controls=user-menu]{
    .header_main {
       .searchbar{
          flex-basis:60%;
-
          position: relative;
          @include flexObj;
-   
-         svg{
-            display: none;
+
+         button{
+            z-index: 99;
+            position: absolute;
+            margin-block: auto;
+            left: 1em;
+
+            svg{
+               opacity: .6;
+            }
          }
 
          .searchbar-input{
             position: relative;
             bottom: unset;
+            padding-left: 2em;
             left: .5em;
-            right: 2em;
+            right: 2.4em;
             height: 3em;
             padding-block: 1.6em;
             width: 100%;
@@ -457,6 +481,7 @@ button[aria-controls=user-menu]{
          margin-block: auto;
          height: 2em;
          padding: 1.4em 1em;
+         padding-left: 2.4em;
          font-size: 1rem;
          width: 90%;
 

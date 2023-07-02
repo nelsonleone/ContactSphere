@@ -12,7 +12,7 @@ const Contact = new Schema({
       street: String,
       postalCode: Number
    },
-   birthday:  String,
+   birthday:  Date,
    chat: String,
    companyName: String,
    department: String,
@@ -44,7 +44,7 @@ const Contact = new Schema({
    ],
    suffix: String,
    website: String,
-})
+},{ timestamps: true })
 
 const labelsSchema = new Schema({
    label: String

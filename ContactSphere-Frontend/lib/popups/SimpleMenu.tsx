@@ -9,12 +9,17 @@ interface IProps {
    handleClose: () => void,
    anchorEl: Element | null | undefined,
    simpleMenuItems: string[],
-   ariaLabelledBy: string
+   ariaLabelledBy: string,
+   handleClick: (index:number) => void
 }
 
 function SimpleMenu(props:IProps) {
 
    const { handleClose, anchorEl, open, id, simpleMenuItems, ariaLabelledBy } = props;
+   const handleLocalOnclick = (index:number) => {
+      props.handleClick(index)
+      handleClose()
+   }
 
    return (
          <Menu
@@ -28,8 +33,8 @@ function SimpleMenu(props:IProps) {
          }}
          >
          {
-            simpleMenuItems.map(item => (
-               <MenuItem key={nanoid()} onClick={handleClose}>{item}</MenuItem>
+            simpleMenuItems.map((item,index) => (
+               <MenuItem key={nanoid()} onClick={() => handleLocalOnclick(index)}>{item}</MenuItem>
             ))
          }
          </Menu>

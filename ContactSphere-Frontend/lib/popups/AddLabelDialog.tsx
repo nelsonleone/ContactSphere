@@ -9,7 +9,7 @@ import { useAddLabelMutation } from '../../src/RTK/features/injectedContactsApiQ
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
 import { InputPropertyValueName } from '../../src/enums';
 import LoadingButton from '../buttons/LoadingButton';
-import {  Control , useFieldArray} from "react-hook-form";
+import { UseFieldArrayAppend } from "react-hook-form";
 import { Contact } from "../../src/vite-env";
 import postCreatedLabel from '../../src/utils/helperFns/postCreatedLabel';
 
@@ -17,19 +17,19 @@ interface IDialogProps {
    setOpen: Dispatch<SetStateAction<boolean>>,
    open: boolean,
    labelsArray?: Contact['labelledBy'],
-   append?: 
+   append?: UseFieldArrayAppend<Contact, "labelledBy" | "relatedPeople">
 }
 
 export default function AddLabelDialog(props:IDialogProps) {
 
-   const {  open, setOpen, control, labelsArray } = props;
+   const {  open, setOpen, labelsArray, append } = props;
    const [addLabel,{ isLoading }] = useAddLabelMutation()
    const { uid } = useAppSelector(store => store.authUser.userDetails)
    const [label,setLabel] = useState("")
    const dispatch = useAppDispatch()
 
    const handleAddLabel = () => {
-      if (labelsArray && control){
+      if (labelsArray && append){
          // Dialog Being Used In Contact Form
          const labelArrayExists = labelsArray?.some(val => val.label === label)
       

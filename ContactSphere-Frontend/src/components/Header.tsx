@@ -2,9 +2,9 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import HamburgerIcon from '../../lib/HamburgerIcon'
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import SearchBar from './SearchBar'
-import {  MemoizedHelp as  Help, MemoizedSetting as  Setting } from './UserUtils'
+import {  MemoizedSetting as  Setting } from './UserUtils'
 import NavMenu from './NavMenu'
-import { UserIcon } from '../../lib/with-tooltip/index'
+import { HelpIcon, UserIcon } from '../../lib/with-tooltip/index'
 import UserMenu from './UserMenu'
 import ClickAwayListener from '@mui/base/ClickAwayListener';
 import { Breakpoints } from '../enums'
@@ -72,7 +72,7 @@ export default function Header(props:IHeaderProps){
             <SearchBar />
 
             <div className="user_utils">
-               <Help setState={setState} state={state} />
+               <HelpIcon />
                <Setting setState={setState} state={state} />
             </div>
 

@@ -20,7 +20,7 @@
 
 .homepage .contacts_view_top_section{
    padding-inline: .4em;
-   padding-top: 1.5em;
+   padding-top: .5em;
    border-bottom: 1px solid $util_color1;
    padding-bottom: .6em;
    padding-right: 3em;
@@ -29,7 +29,7 @@
       font-family: $ff_primary;
       font-weight: $fw_bold;
       color: $text_color2;
-      opacity: .9;
+      opacity: .88;
       display: none;
    }
 
@@ -196,20 +196,26 @@
       margin-left: 1em;
       font-family: $ff_primary;
    }
+
+   p{
+      font-family: $ff_primary;
+      font-size: .9rem;
+      color: $text-color2;
+      font-weight: $fw_bold;
+      margin-inline:.3em;
+      margin-block: 1.4em;
+   }
 }
 
 
-.multi_select_actions{
+.homepage .multi_select_actions{
    @include flexObj;
    border-bottom: 1px solid $util_color1;
    padding-bottom: .3em;
 
-   &>div{
+   &>div:first-child{
       @include flexObj($justify:flex-start);
       gap: .3em;
-   }
-
-   &>div:first-child{
       color: $accent_color_1;
       svg{
          font-size: 1.3rem;
@@ -222,10 +228,12 @@
    }
 
    &>div:last-child{
-      gap: .5em;
-      svg{
-         font-size: 1.15rem;
-         color: $radiant_color2;
+      .contact_menu_button{
+         font-size: 1.2rem;
+         
+         svg{
+            color: $radiant_color2 !important;
+         }
       }
    }
 }
@@ -293,8 +301,8 @@
       }
    }
 
-   .homepage .contacts_view_top_section + p{
-      font-size: .87rem;
+   .homepage .contacts_view_top_section > p{
+      font-size: .85rem;
       letter-spacing: .06em;
    }
 }
@@ -305,6 +313,12 @@
 @include useMediaQuery_LS{
    .homepage{
       padding-top: 4em;
+
+      .multi_select_actions{
+         &>div:last-child{
+            margin-inline: 5em;
+         }
+      }
    }
    .homepage .contacts_view_top_section{
 

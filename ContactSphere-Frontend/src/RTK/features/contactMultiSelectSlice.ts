@@ -21,9 +21,15 @@ const contactsMultiSelectSlice = createSlice({
          else{
             state.selectedContacts = [...state.selectedContacts,payload]
          }
+      },
+      setSelectAll: (state,{ payload }:PayloadAction<string[]>) => {
+         state.selectedContacts = payload;
+      },
+      setSelectNone: state => {
+         state.selectedContacts = []
       }
    }
 })
 
-export const { setSelected } = contactsMultiSelectSlice.actions;
+export const { setSelected, setSelectAll, setSelectNone } = contactsMultiSelectSlice.actions;
 export default contactsMultiSelectSlice.reducer;

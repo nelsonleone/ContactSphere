@@ -106,9 +106,13 @@ svg{
 }
 
 .add_label_dialog_btn{
-   font-family: $ff_secondary !important;
+   font-family: $ff_primary !important;
    background-color: transparent !important;
    color: hsl(219, 48%, 50%) !important;
+
+   &:hover{
+      background-color: rgba(179, 179, 221, 0.466) !important;
+   }
 }
 
 

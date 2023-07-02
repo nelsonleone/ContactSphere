@@ -11,7 +11,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
 import { MdNewLabel } from 'react-icons/md';
 import { useAppSelector } from '../../src/customHooks/reduxCustomHooks'
-import { MdLabelOutline } from 'react-icons/md'
+import { useNavigate } from 'react-router-dom';
 
 
 interface IProps {
@@ -19,15 +19,17 @@ interface IProps {
    state: IHeaderState
 }
 
-export function HelpIcon(props:IProps){
+export function HelpIcon(){
+
+   const navigate = useNavigate()
+
    return(
       <div>
-         <Tooltip title="Help Menu">
+         <Tooltip title="See Help">
             <IconButton  
                type="button"                 
-               onClick={() => props.setState((prevState) => ({ ...prevState, openHelpArea: !prevState.openHelpArea }))} 
+               onClick={() => navigate("/help")} 
                aria-controls="help-area"
-               aria-expanded={props.state.openHelpArea}
                >
                <BiHelpCircle />
             </IconButton>
@@ -143,17 +145,7 @@ export function ContactMenuButton(props:IContactMenuProps){
          </button>
       </Tooltip>
    )
-}
-
-export function ContactManageLabelsButton({handleClick}:{handleClick: () => void}){
-   return(
-      <Tooltip title="Manage Labels">
-         <button className="contact_mulitselect_manage_labels_button" type="button" onClick={handleClick}>
-            <MdLabelOutline  />
-         </button>
-      </Tooltip>
-   )
-}
+} 
 //
 
 

@@ -9,6 +9,12 @@ export enum AlertSeverity {
 }
 
 
+export enum SortBy {
+   FirstName = "firstName",
+   LastName = "lastName",
+   Newest = "newest"
+}
+
 export enum AuthMethod {
    Google = "googleAuthMethod",
    Email = "EmailAndPasswordAuthMethod",

@@ -8,6 +8,7 @@ import loadingReducer from './features/loadingSlice';
 import userDataReducer from './features/userDataSlice';
 import contactsMultiSelectReducer from './features/contactMultiSelectSlice';
 import wrkSnackbarReducer from './features/wrkSnackbarSlice';
+import userLocalSettingReducer from './features/userLocalSettingSlice';
 
 const appStore = configureStore({
    reducer: {
@@ -18,6 +19,7 @@ const appStore = configureStore({
       userData: userDataReducer,
       wrkSnackbar: wrkSnackbarReducer,
       multiSelect: contactsMultiSelectReducer,
+      userLocalSetting: userLocalSettingReducer,
       [authQuerySlice.reducerPath]: authQuerySlice.reducer,
       [contactsQuerySlice.reducerPath]: contactsQuerySlice.reducer,
    },

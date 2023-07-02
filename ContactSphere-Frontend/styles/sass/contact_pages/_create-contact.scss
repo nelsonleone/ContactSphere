@@ -31,7 +31,7 @@
    img{
       width: 100%;
       height: 100%;
-      border: 1px solid green;
+      border: 1px solid $radiant_color2;
       border-radius: 50%;
       @include centerContentObj;
    }
@@ -141,6 +141,7 @@
    .fields_area>div{
       margin-block: 1.5em;
    }
+
 
    .dx_container{
       position: relative;
@@ -265,6 +266,7 @@
          svg{
             font-size: 1.3rem;
             color: $accent_color_1;
+            pointer-events: all !important;
          }
       }
 
@@ -289,6 +291,9 @@
       font-family: $ff_primary;
       font-weight: $fw_bold;
       font-size: 1rem;
+      position: fixed;
+      bottom: 2em;
+      right: 20%;
       text-decoration: underline $accent_color_1
    }
 }
@@ -304,7 +309,11 @@
 
    span{
       font-family: $ff_primary;
+   }
+
+   p{
       font-weight: $fw_bold;
+      font-family: $ff_prompts;
    }
 
    svg{

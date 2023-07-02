@@ -7,6 +7,7 @@ import Homepage from '../pages/Homepage'
 import CreateContact from '../pages/CreateContact'
 import LabelPage from '../pages/LabelPage'
 import ContactViewPage from '../pages/ContactViewPage'
+import HelpPage from '../pages/HelpPage'
 
 export default function RouteHandler({fetchingContacts}:{ fetchingContacts:boolean }){
 
@@ -39,7 +40,8 @@ export default function RouteHandler({fetchingContacts}:{ fetchingContacts:boole
       />
       <Route path="/labels/:id" element={<LabelPage />} />
       <Route path="/c/:id" element={<ContactViewPage />} />
-      <Route path="new" element={<CreateContact />} />
+      <Route path="/new" element={<CreateContact />} />
+      <Route path="/new" element={<HelpPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )

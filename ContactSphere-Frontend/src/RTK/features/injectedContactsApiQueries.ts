@@ -1,4 +1,4 @@
-import { Contact, IContactsFromDB, UserData } from "../../vite-env";
+import { Contact, IContactsFromDB, UserData, UserLabels } from "../../vite-env";
 import { contactsQuerySlice } from "./contactsQuerySlice";
 
 const CONTACTS_API_URL = '/contacts';
@@ -19,7 +19,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
          invalidatesTags: ['Contact']
       }),
 
-      addLabel: builder.mutation<void,{label:string,authUserUid:string}>({
+      addLabel: builder.mutation<UserLabels,{label:string,authUserUid:string}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/addLabel?uid=${args.authUserUid}`,
             method: 'POST',
@@ -28,9 +28,9 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       }),
 
       // Updated Contact Labels Update
-      manageLabels: builder.mutation<void,{label:string,authUserUid:string,contactId:string,actionType:string}>({
+      manageLabels: builder.mutation<IContactsFromDB,{label:string,authUserUid:string,contactId:string,actionType:string}>({
          query: (args) => ({
-            url: `${CONTACTS_API_URL}/manageLabels?uid=${args.authUserUid}&contactId=${args.contactId}&actionType=${args.actionType}`,
+            url: `${CONTACTS_API_URL}/manageUserContactLabels?uid=${args.authUserUid}&contactId=${args.contactId}&actionType=${args.actionType}`,
             method: 'POST',
             body: { label: args.label }
          })
@@ -47,9 +47,18 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
 
       deleteContact: builder.mutation<void,{authUserUid:string,contactId:string}>({
          query: (args) => ({
-            url: `${CONTACTS_API_URL}/deleteContact?uid=${args.authUserUid}`,
+            url: `${CONTACTS_API_URL}/deleteContact?uid=${args.authUserUid}&contactId=${args.contactId}`,
             method: 'DELETE',
-            body: { contactId: args.contactId }
+         }),
+         invalidatesTags: ['Contact']
+      }),
+
+
+      hideContact: builder.mutation<void,{authUserUid:string,contactId:string,status:boolean}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/deleteContact?uid=${args.authUserUid}&contactId=${args.contactId}`,
+            method: 'PUT',
+            body: { status:args.status }
          }),
          invalidatesTags: ['Contact']
       }),
@@ -58,7 +67,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       manageMultiContactLabels: builder.mutation<void,{authUserUid:string,label:string,selectedContacts:string[]}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/manageMultipleContactsLabels?uid=${args.authUserUid}`,
-            method: 'PUT',
+            method: 'POST',
             body: { label: args.label, selectedContacts: args.selectedContacts }
          }),
          invalidatesTags: ['Label']
@@ -73,6 +82,17 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
          }),
          invalidatesTags: ['Contact']
       }),
+
+
+      // Multi Contacts Hide
+      hideMultipleContacts: builder.mutation<void,{authUserUid:string,selectedContacts:string[],status:boolean}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/hideMultipleContacts?uid=${args.authUserUid}`,
+            method: 'PUT',
+            body: { selectedContacts: args.selectedContacts, status:args.status }
+         }),
+         invalidatesTags: ['Contact']
+      }),
    })
 })
 
@@ -82,5 +102,9 @@ export const {
    useAddLabelMutation,
    useAddToFavouritesMutation,
    useManageLabelsMutation,
-   useManageMultiContactLabelsMutation
+   useManageMultiContactLabelsMutation,
+   useDeleteContactMutation,
+   useDeleteMultipleContactsMutation,
+   useHideContactMutation,
+   useHideMultipleContactsMutation
 } = extendedContactsQuerySlice;

@@ -37,26 +37,6 @@
    }
 }
 
-.custom_working_snackbar{
-   position: fixed;
-   transition: .2s linear;
-   bottom: 0;
-   left: 0;
-   right: 0;
-   margin-inline: auto;
-   width: 100%;
-   @include flexObj($justify:center);
-   p{
-      font-family: $ff_prompts;
-      text-align: center;
-      background-color: $text-color1;
-      width: 13em;
-      color: #FAFAFA;
-      padding-block:.8em .3em;
-      border-radius: 5px;
-   }
-}
-
 .cnc_btn{
    background-color: $util_color1;
    border-radius: 50%;

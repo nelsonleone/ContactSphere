@@ -3,6 +3,9 @@ import { useAppSelector } from "../customHooks/reduxCustomHooks"
 import InPageLoader from '../../lib/loaders/InPageLoader'
 import { FcContacts } from 'react-icons/fc'
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions"
+import { useEffect, useState } from "react"
+import { SortBy } from "../enums"
+import SortContacts from "../utils/helperFns/SortContacts"
 
 interface IHomepageProps {
    fetchingContacts: boolean
@@ -12,6 +15,14 @@ export default function Homepage(props:IHomepageProps){
 
    const { contacts } = useAppSelector(store => store.userData)
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
+   const { sortBy } = useAppSelector(store => store.userLocalSetting)
+   const [sort,setSort] = useState<SortBy>(sortBy)
+
+   useEffect(() => {
+      if(localStorage.getItem('sortBy')){
+         setSort(localStorage.getItem('sortBy') as SortBy)
+      }
+   },[])
 
    return(
       !props.fetchingContacts ?
@@ -33,9 +44,8 @@ export default function Homepage(props:IHomepageProps){
 
          <div className="contacts_container">
             {
-               contacts.length ?
-               contacts.map(contactProps => (
-                  <ContactItem {...contactProps} />
+               contacts.length ? SortContacts(sort,contacts).map(contactProps => (
+                  <ContactItem key={contactProps._id} {...contactProps} />
                ))
                :
                <div className="nsc_content">
