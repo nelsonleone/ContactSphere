@@ -7,15 +7,27 @@ import SimpleMenu from '../../../lib/popups/SimpleMenu'
 import ContactMenu from "./ContactMenu";
 import AddLabelDialog from "../../../lib/popups/AddLabelDialog";
 import { setSelectAll, setSelectNone } from "../../RTK/features/contactMultiSelectSlice";
+import { useLocation } from "react-router-dom";
+import { useHideContactMutation, useHideMultipleContactsMutation, useRestoreFromTrashMutation, useRestoreMultipleFromTrashMutation } from "../../RTK/features/injectedContactsApiQueries";
+import clientAsyncHandler from "../../utils/helperFns/clientAsyncHandler";
+import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions";
+import handleAsyncHideContact from "../../utils/helperFns/handleAsyncHideContact";
+import handleAsyncRestore from "../../utils/helperFns/handleAsyncRestoreContacts";
 
 export default function MultiSelectActions(){
 
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
+   const { uid } = useAppSelector(store => store.authUser.userDetails)
    const { contacts } = useAppSelector(store => store.userData)
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
    const open = Boolean(anchorEl)
+   const location = useLocation()
    const dispatch = useAppDispatch()
+   const [hideMultipleContact] = useHideMultipleContactsMutation()
+   const [hideContacts] = useHideContactMutation()
    const [openDialog,setOpenDialog] = useState(false)
+   const [restoreContactFromTrash]= useRestoreFromTrashMutation()
+   const [restoreMultiple] = useRestoreMultipleFromTrashMutation()
    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget)
    }
@@ -29,6 +41,36 @@ export default function MultiSelectActions(){
          dispatch(setSelectNone())
       }
    }
+
+   const handleRestoreToActive = (from:'hidden'|'trash') => clientAsyncHandler(
+      async() => {
+         await stopUnauthourizedActions(uid)
+
+         if(from === 'hidden'){
+            await handleAsyncHideContact(
+               dispatch,
+               'multi',
+               '',
+               false,
+               uid!,
+               selectedContacts,
+               hideContacts,
+               hideMultipleContact
+            )
+         }else if(from === 'trash'){
+            await handleAsyncRestore(
+               restoreContactFromTrash,
+               restoreMultiple,
+               'multi',
+               uid!,
+               '',
+               selectedContacts,
+               dispatch
+            )
+         }
+      },
+      dispatch
+   )
 
    return(
       <div className="multi_select_actions">
@@ -59,7 +101,18 @@ export default function MultiSelectActions(){
             <span aria-label="selected Contact Count">{selectedContacts.length} selected</span>
          </div>
          <div>
-           <ContactMenu method="multi" id="contact-mts-menu" />
+            {
+               location.pathname !== "/hidden" && location.pathname !== "/trash" ?
+               <ContactMenu method="multi" id="contact-mts-menu" />
+               :
+               location.pathname === "/hidden" ? 
+               <button onClick={() => handleRestoreToActive('hidden')}>Restore to active</button>
+               :
+               location.pathname === "/trash" ? 
+               <button onClick={() => handleRestoreToActive('trash')}>Remove From Trash</button>
+               :
+               null
+            }
          </div>
       </div>
    )

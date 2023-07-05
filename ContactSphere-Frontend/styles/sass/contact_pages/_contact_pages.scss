@@ -18,7 +18,7 @@
 }
 
 
-.homepage .contacts_view_top_section{
+.contacts_view_top_section{
    padding-inline: .4em;
    padding-top: .5em;
    border-bottom: 1px solid $util_color1;
@@ -38,7 +38,7 @@
    }
 }
 
-.homepage >  p{
+.contact_count_para{
    font-family: $ff_primary;
    text-transform: uppercase;
    font-size: .86rem;
@@ -208,7 +208,7 @@
 }
 
 
-.homepage .multi_select_actions{
+.multi_select_actions{
    @include flexObj;
    border-bottom: 1px solid $util_color1;
    padding-bottom: .3em;
@@ -246,7 +246,7 @@
 
 
 // No Saved Contact Prompt
-.homepage .nsc_content{
+.nsc_content{
    @include flexObj($justify:center,$direction:column);
    gap: 1em;
    margin-block: 50%;
@@ -270,7 +270,7 @@
 
 
 @include useMediaQuery_MD{
-   .homepage .contacts_view_top_section{
+   .contacts_view_top_section{
 
       ul{
          display: grid;
@@ -283,7 +283,7 @@
       }
    }
 
-   .homepage .contacts_container{
+   .contacts_container{
       .contact{
          display: grid;
          gap: 0;
@@ -301,7 +301,7 @@
       }
    }
 
-   .homepage .contacts_view_top_section > p{
+   .contact_count_para{
       font-size: .85rem;
       letter-spacing: .06em;
    }
@@ -313,14 +313,15 @@
 @include useMediaQuery_LS{
    .homepage{
       padding-top: 4em;
+   }
 
-      .multi_select_actions{
-         &>div:last-child{
-            margin-inline: 5em;
-         }
+   .multi_select_actions{
+      &>div:last-child{
+         margin-inline: 5em;
       }
    }
-   .homepage .contacts_view_top_section{
+
+   .contacts_view_top_section{
 
       ul{
          grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
@@ -335,7 +336,7 @@
       }
    }
 
-   .homepage .contacts_container{
+   .contacts_container{
       .contact{
          grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
 
@@ -351,7 +352,7 @@
 
 
 @media (min-width: 1040px) {
-   .homepage .contacts_view_top_section{
+   .contacts_view_top_section{
 
       ul{
          grid-template-columns: repeat(auto-fit, minmax(23%, 1fr));
@@ -361,7 +362,7 @@
       }
    }
 
-   .homepage .contacts_container{
+   .contacts_container{
       .contact{
          grid-template-columns: repeat(auto-fit, minmax(23%, 1fr));
          &>p:nth-child(6){

@@ -6,7 +6,7 @@ import NameInputSection from "./input_sections/NameSection"
 import FormalInputSection from "./input_sections/FormalInputSection"
 import ContactInputSection from "./input_sections/ContactInputSection"
 import AddressInputSection from "./input_sections/AddressInputSection"
-import { AlertSeverity, InputPropertyValueName } from "../../enums"
+import { AlertSeverity, ContactFormAction, InputPropertyValueName } from "../../enums"
 import AdditionalFields from "./input_sections/AdditionalFields"
 import ImageUploadInput from '../../../lib/customInputs/ImageUploadInput'
 import LabelMenu from '../../../lib/popups/LabelMenu'
@@ -16,14 +16,14 @@ import { ManageLabelButton } from "../../../lib/with-tooltip"
 import AddLabelDialog from "../../../lib/popups/AddLabelDialog"
 import { useNavigate } from "react-router-dom"
 import AddedLabels from "./input_sections/AddedLabels"
-import { useCreateContactMutation } from '../../RTK/features/injectedContactsApiQueries'
+import { useCreateContactMutation, useEditContactMutation } from '../../RTK/features/injectedContactsApiQueries'
 import { useAppDispatch, useAppSelector } from "../../customHooks/reduxCustomHooks"
 import { setShowAlert } from "../../RTK/features/alertSlice"
 import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice"
 
 
 
-function ContactForm(){
+function ContactForm({ action, contactId }: { action:ContactFormAction, contactId?:string }){
 
    const { register, handleSubmit, setValue, watch, formState: {errors}, control} = useForm<Contact>({defaultValues})
    const [showMore,setShowMore] = useState(false)
@@ -33,6 +33,7 @@ function ContactForm(){
    const navigate = useNavigate()
    const labelsArray = watch('labelledBy')
    const [createContact, { isLoading }] = useCreateContactMutation()
+   const [editContact, { isLoading:editting }] = useEditContactMutation()
    const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(
       errors.firstName?.message || 
       errors.phoneNumber?.message ||
@@ -60,13 +61,22 @@ function ContactForm(){
             Nickname: data.nickname.trim(),
          }
 
-         await createContact({
-            contactDetails: formFields,
-            authUserUid: uid
-         })
+         if(action === ContactFormAction.Create){
+            await createContact({
+               contactDetails: formFields,
+               authUserUid: uid
+            })
+         }
+         else{
+            await editContact({
+               contactDetails: formFields,
+               authUserUid: uid,
+               contactId: contactId || ''
+            }) 
+         }
 
          dispatch(setShowSnackbar({
-            snackbarMessage: "Contact Created",
+            snackbarMessage: `Contact ${action === ContactFormAction.Create ? "Created" : "Editted"}`,
          }))
 
          navigate("/")
@@ -74,7 +84,7 @@ function ContactForm(){
 
       catch(err:any|unknown){
          dispatch(setShowAlert({
-            alertMessage: err?.message || "Error Occured Creating Contact",
+            alertMessage: err?.message || `Error Occured ${ContactFormAction.Create ? "Creating" : "Editting"} Contact`,
             severity: AlertSeverity.ERROR
          }))
       }
@@ -130,10 +140,12 @@ function ContactForm(){
 
          <AddLabelDialog labelsArray={labelsArray} append={append} setOpen={setOpenAddLabelModal} open={openAddLabelModal} />
          {
-            isLoading &&
+            isLoading || editting ?
             <div className="creating_contact_loader" style={{color:"#f87407" }}>
                <LinearProgress color="inherit" />
             </div>
+            :
+            null
          }
       </>
    )

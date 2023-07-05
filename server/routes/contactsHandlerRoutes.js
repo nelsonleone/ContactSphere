@@ -10,7 +10,10 @@ const {
    setManageMultiContactLabels,
    setHideMultipleContacts,
    manageUserContactsLabels,
-   getAuthUserData
+   getAuthUserData,
+   setEdittedContact,
+   setRestoreFromTrash,
+   setRestoreMultipleContactsFromTrash
 } = require('../controllers/contactRequestHandlers/index')
 
 router.get('/getAuthUserData',getAuthUserData)
@@ -23,6 +26,9 @@ router.post('/manageMultipleContactsLabels',setManageMultiContactLabels)
 router.put('/interact',setFavourited)
 router.put('/hideContact',setHideContactHandler)
 router.put('/hideMultipleContacts',setHideMultipleContacts)
+router.put('/setEdittedContact',setEdittedContact)
+router.put('/restoreFromTrash',setRestoreFromTrash)
+router.put('/restoreMultipleFromTrash',setRestoreMultipleContactsFromTrash)
 
 
 module.exports = router;

@@ -91,6 +91,13 @@ type UserData = {
 }
 
 
+interface IDuplicates extends IContactsFromDB {
+  refId: string
+}
+
+type Duplicates = IDuplicates[]
+
+
 
 // country list for dropdown
 type countryDataObj = {

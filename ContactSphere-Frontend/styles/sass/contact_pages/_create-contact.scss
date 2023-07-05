@@ -118,7 +118,7 @@
             background-color: transparent;
             border: 1px solid $text_color1;
             border-radius: 10px;
-            padding:.2em .4em;
+            padding:.2em .5em;
 
             &:hover{
                opacity: .9;
@@ -127,7 +127,7 @@
             
             span{
                font-family: $ff_primary;
-               color: $generic_color_2;
+               color: $radiant_color2;
             }
          }
       }

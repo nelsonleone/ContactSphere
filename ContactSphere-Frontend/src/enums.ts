@@ -9,6 +9,18 @@ export enum AlertSeverity {
 }
 
 
+export enum ContactItemLocation {
+   Homepage = "homepage",
+   HiddenContacts = "hiddenContacts",
+   Trash = "trash"
+}
+
+export enum ContactFormAction {
+   Create = "create",
+   Edit = "edit"
+}
+
+
 export enum SortBy {
    FirstName = "firstName",
    LastName = "lastName",

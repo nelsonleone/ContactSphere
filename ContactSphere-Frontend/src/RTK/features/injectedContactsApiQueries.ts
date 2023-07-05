@@ -19,6 +19,17 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
          invalidatesTags: ['Contact']
       }),
 
+
+      editContact: builder.mutation<void,{contactDetails:Contact,authUserUid:string,contactId:string}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/setNewContact?uid=${args.authUserUid}`,
+            method: 'POST',
+            body: args.contactDetails
+         }),
+         invalidatesTags: ['Contact']
+      }),
+
+
       addLabel: builder.mutation<UserLabels,{label:string,authUserUid:string}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/addLabel?uid=${args.authUserUid}`,
@@ -37,9 +48,9 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       }),
 
       // Didn't Invalidate Tags For Auto Refetch Due To Large Data Fetching For Small Request
-      addToFavourites: builder.mutation<IContactsFromDB,{contactID:string,authUserUid:string,status:boolean}>({
+      addToFavourites: builder.mutation<IContactsFromDB,{contactId:string,authUserUid:string,status:boolean}>({
          query: (args) => ({
-            url: `${CONTACTS_API_URL}/interact?uid=${args.authUserUid}&contactId=${args.contactID}`,
+            url: `${CONTACTS_API_URL}/interact?uid=${args.authUserUid}&contactId=${args.contactId}`,
             method: 'PUT',
             body: { status: args.status }
          })
@@ -49,6 +60,15 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/deleteContact?uid=${args.authUserUid}&contactId=${args.contactId}`,
             method: 'DELETE',
+         }),
+         invalidatesTags: ['Contact']
+      }),
+
+
+      restoreFromTrash: builder.mutation<void,{authUserUid:string,contactId:string}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/restoreFromTrash?uid=${args.authUserUid}`,
+            method: 'PUT',
          }),
          invalidatesTags: ['Contact']
       }),
@@ -84,6 +104,17 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       }),
 
 
+      // Multi Contacts Restore From Trash
+      restoreMultipleFromTrash: builder.mutation<void,{authUserUid:string,selectedContacts:string[]}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/restoreMultipleFromTrash?uid=${args.authUserUid}`,
+            method: 'PUT',
+            body: { selectedContacts: args.selectedContacts }
+         }),
+         invalidatesTags: ['Contact']
+      }),
+
+
       // Multi Contacts Hide
       hideMultipleContacts: builder.mutation<void,{authUserUid:string,selectedContacts:string[],status:boolean}>({
          query: (args) => ({
@@ -98,6 +129,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
 
 export const {
    useCreateContactMutation,
+   useEditContactMutation,
    useGetUserDataQuery,
    useAddLabelMutation,
    useAddToFavouritesMutation,
@@ -106,5 +138,7 @@ export const {
    useDeleteContactMutation,
    useDeleteMultipleContactsMutation,
    useHideContactMutation,
-   useHideMultipleContactsMutation
+   useHideMultipleContactsMutation,
+   useRestoreFromTrashMutation,
+   useRestoreMultipleFromTrashMutation
 } = extendedContactsQuerySlice;

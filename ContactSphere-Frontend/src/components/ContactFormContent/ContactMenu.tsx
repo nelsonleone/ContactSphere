@@ -5,19 +5,20 @@ import { useAppSelector, useAppDispatch } from '../../customHooks/reduxCustomHoo
 import { ContactMenuButton } from '../../../lib/with-tooltip';
 import { MouseEvent, SetStateAction, Dispatch, useEffect, useState } from 'react';
 import { useDeleteContactMutation, useDeleteMultipleContactsMutation, useHideContactMutation, useHideMultipleContactsMutation, useManageLabelsMutation, useManageMultiContactLabelsMutation } from '../../RTK/features/injectedContactsApiQueries';
-import { AlertSeverity } from '../../enums';
-import { setShowAlert } from '../../RTK/features/alertSlice';
-import { setHideWrkSnackbar, setShowWrkSnackbar } from '../../RTK/features/wrkSnackbarSlice';
-import { setShowSnackbar } from '../../RTK/features/snackbarDisplaySlice';
 import { Divider, Menu, MenuItem } from '@mui/material';
 import { ListItemIcon, ListItemText, MenuList } from '@mui/material';
-import { setEdittedContact } from '../../RTK/features/userDataSlice';
+import stopUnauthourizedActions from '../../utils/helperFns/stopUnauthourizedActions';
+import handleAsyncHideContact from '../../utils/helperFns/handleAsyncHideContact';
+import handleAsyncDelete from '../../utils/helperFns/handleAsyncDelete';
+import clientAsyncHandler from '../../utils/helperFns/clientAsyncHandler';
+import handleAsyncAddLabel from '../../utils/helperFns/handleAsyncAddLabel';
 
 interface IProps {
    contactLabels?: {
       label: string
    }[],
    contactId?: string,
+   phoneNumber?: string
    method: "single" | "multi",
    id?: string,
    ariaLabelledBy?: string,
@@ -36,54 +37,7 @@ export default function ContactMenu(props:IProps){
    const [deleteMultiple] = useDeleteMultipleContactsMutation()
    const [hideContact] = useHideContactMutation()
    const [hideMultipleContacts] = useHideMultipleContactsMutation()
-
-   const handleAddLabel = async(e:React.MouseEvent<{}>,label:string) => {
-      e.stopPropagation()
-      setAnchorEl(null)
-      dispatch(setShowWrkSnackbar())
-
-      // Contact Menu Used In Individual Contacts
-      try{
-         if(!uid){
-            throw new Error("Unauthourized request, please login")
-         }
    
-         if(props.contactId && props.method === "single"){
-            const updatedContact = await manageLabels({
-               authUserUid: uid,
-               label,
-               contactId:props.contactId,
-               actionType: "add"
-            }).unwrap()
-
-            // Update Specific Contact In State
-            dispatch(setEdittedContact(updatedContact))
-         }
-         else if(props.method === "multi"){
-            await manageMultiContactsLabels({
-               authUserUid: uid,
-               label,
-               selectedContacts
-            })
-         }
-
-         dispatch(setShowSnackbar({
-            snackbarMessage: `${label} Label Has Been Set`
-         }))
-      }
-
-      catch(err:any|unknown){
-         dispatch(setShowAlert({
-            alertMessage: err.message,
-            severity: AlertSeverity.ERROR
-         }))
-      }
-
-      finally{
-         dispatch(setHideWrkSnackbar())
-      }
-   }
-
    const [unregisteredLabels,setUnregisteredLabels] = useState(userSavedLabels?.filter(item => props.contactLabels?.some(obj => obj.label === item.label)))
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
    const open = Boolean(anchorEl)
@@ -94,86 +48,62 @@ export default function ContactMenu(props:IProps){
      setAnchorEl(null)
    }
 
-   const handleMenuHideContact = async() => {
-      try{
-         if(!uid){
-            throw new Error("Unauthourized Request, Please Login")
-         }
+   const handleAddLabel = async(e:React.MouseEvent<{}>,label:string) => {
+      e.stopPropagation()
+      setAnchorEl(null)
 
-         dispatch(setShowWrkSnackbar())
-
-         if(props.method === "single"){
-            await hideContact({
-               authUserUid: uid,
-               contactId: props.contactId || '',
-               status: true
-            })
-         }
-
-         else if(props.method === "multi"){
-            await hideMultipleContacts({
-               selectedContacts,
-               authUserUid: uid,
-               status: true
-            })
-         }
-
-         dispatch(setShowSnackbar({
-            snackbarMessage:"Succefully Deleted"
-         }))
-      }
-
-      catch(err){
-         dispatch(setShowAlert({
-            alertMessage: "Error Occured During Deletion",
-            severity: AlertSeverity.ERROR
-         }))
-      }
-
-      finally{
-         dispatch(setHideWrkSnackbar())
-      }
+      clientAsyncHandler(async() => {
+         await stopUnauthourizedActions(uid)
+         await handleAsyncAddLabel(
+            dispatch,
+            "add",
+            props.contactId || '',
+            uid!,
+            props.method,
+            selectedContacts,
+            label,
+            props.phoneNumber || '',
+            manageLabels,
+            manageMultiContactsLabels,
+         )
+      },dispatch)
    }
 
+   const handleMenuHideContact = () => clientAsyncHandler(
+      async() => {
+         await stopUnauthourizedActions(uid)
+         await handleAsyncHideContact(
+            dispatch,
+            props.method,
+            props.contactId || '',
+            true,
+            uid!,
+            selectedContacts,
+            hideContact,
+            hideMultipleContacts
+         )
+      },
+      dispatch
+   )
 
 
 
-   const handleMenuDeleteContact = async () => {      
-      try{
-         if(!uid){
-            throw new Error("Unauthourized Request, Please Login")
-         }
 
-         dispatch(setShowWrkSnackbar())
-         if(props.method === "single"){
-            await deleteContact({
-               authUserUid: uid,
-               contactId: props.contactId || ''
-            })
-         }
-
-         else if(props.method === "multi"){
-            await deleteMultiple({
-               selectedContacts,
-               authUserUid: uid
-            })
-         }
-         dispatch(setShowSnackbar({
-            snackbarMessage:"Succefully Deleted"
-         }))
-      }
-
-      catch(err){
-         dispatch(setShowAlert({
-            alertMessage: "Error Occured During Deletion",
-            severity: AlertSeverity.ERROR
-         }))
-      }
-
-      finally{
-         dispatch(setHideWrkSnackbar())
-      }
-   }
+   const handleMenuDeleteContact = () => clientAsyncHandler(
+      async () => {      
+         await stopUnauthourizedActions(uid)
+         await handleAsyncDelete(
+            deleteContact,
+            deleteMultiple,
+            props.method,
+            uid!,
+            props.contactId || '',
+            selectedContacts,
+            dispatch
+         )
+      },
+      dispatch
+   )
 
    useEffect(() => {
       setUnregisteredLabels(userSavedLabels.filter(item => props.contactLabels?.some(obj => obj.label !== item.label)))

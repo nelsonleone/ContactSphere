@@ -4,12 +4,12 @@ import { IHeaderState } from '../../src/components/Header'
 import { AiFillSetting } from 'react-icons/ai'
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import {  FaUser } from 'react-icons/fa'
+import {  FaTrashRestore, FaUser } from 'react-icons/fa'
 import {  FiStar } from 'react-icons/fi'
 import { BiPlus } from 'react-icons/bi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
-import { MdNewLabel } from 'react-icons/md';
+import { MdNewLabel, MdUnarchive } from 'react-icons/md';
 import { useAppSelector } from '../../src/customHooks/reduxCustomHooks'
 import { useNavigate } from 'react-router-dom';
 
@@ -96,7 +96,7 @@ export function StarIconButton({starred,handleStarring}: { starred:boolean,handl
    return(
       <Tooltip title="Star Contact">
          <button className="contact_star_button" type="button" onClick={handleStarring}>
-            <FiStar color={starred ? "#d4c006" : " hsl(0, 3%, 16%)"}  />
+            <FiStar fill={starred ? "#09c9e2" : "white"} color={starred ? "#09c9e2" : "hsl(0, 3%, 16%) " } />
          </button>
       </Tooltip>
    )
@@ -108,6 +108,28 @@ export function EditIconButton({navigateToEditPage}:{ navigateToEditPage:() => v
       <Tooltip title="Edit Contact">
          <button className="contact_edit_button" type="button" onClick={navigateToEditPage}>
             <GoPencil color=" hsl(0, 3%, 16%)"  />
+         </button>
+      </Tooltip>
+   )
+}
+
+
+export function RestoreToActiveButton({handleRestore}:{ handleRestore:() => void}){
+   return(
+      <Tooltip title="Unarchive">
+         <button className="contact_unarchive_button" type="button" onClick={handleRestore}>
+            <MdUnarchive />
+         </button>
+      </Tooltip>
+   )
+}
+
+
+export function RestoreFromTrashButton({handleRestore}:{ handleRestore:() => void}){
+   return(
+      <Tooltip title="Restore contact">
+         <button className="contact_unarchive_button" type="button" onClick={handleRestore}>
+            <FaTrashRestore />
          </button>
       </Tooltip>
    )

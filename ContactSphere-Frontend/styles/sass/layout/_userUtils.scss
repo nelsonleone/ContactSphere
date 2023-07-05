@@ -1,3 +1,6 @@
+@use '../utils/' as *;
+@use '../global/' as *;
+
 .help-faq{
    position: fixed;
    right: 1em;
@@ -15,11 +18,10 @@
    @include flexObj($justify:center);
    p{
       font-family: $ff_prompts;
-      text-align: center;
       background-color: $text-color1;
-      width: 13em;
+      width: 15em;
       color: #FAFAFA;
-      padding-block:.8em .3em;
+      padding:.8em 1em;
       border-radius: 5px;
    }
 }

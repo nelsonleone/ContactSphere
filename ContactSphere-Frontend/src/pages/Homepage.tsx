@@ -3,30 +3,29 @@ import { useAppSelector } from "../customHooks/reduxCustomHooks"
 import InPageLoader from '../../lib/loaders/InPageLoader'
 import { FcContacts } from 'react-icons/fc'
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions"
-import { useEffect, useState } from "react"
-import { SortBy } from "../enums"
+import { memo, useEffect, useState } from "react"
+import { ContactItemLocation, SortBy } from "../enums"
 import SortContacts from "../utils/helperFns/SortContacts"
+import PageWrapper from "../components/PageWrapper"
 
 interface IHomepageProps {
    fetchingContacts: boolean
 }
 
-export default function Homepage(props:IHomepageProps){
+function Homepage(props:IHomepageProps){
 
    const { contacts } = useAppSelector(store => store.userData)
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
-   const [sort,setSort] = useState<SortBy>(sortBy)
+   const [sortType,setSortType] = useState<SortBy>(sortBy)
 
    useEffect(() => {
-      if(localStorage.getItem('sortBy')){
-         setSort(localStorage.getItem('sortBy') as SortBy)
-      }
-   },[])
+      setSortType(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
+   },[sortBy])
 
    return(
       !props.fetchingContacts ?
-      <main className="page homepage">
+      <PageWrapper className="page homepage">
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions />
@@ -40,12 +39,15 @@ export default function Homepage(props:IHomepageProps){
                </ul>
             </div>
          }
-         <p aria-label="Contacts Count">Contacts ({contacts.length})</p>
+         <p aria-label="Contacts Count" className="contact_count_para">Contacts ({contacts.length})</p>
 
-         <div className="contacts_container">
+         <main className="contacts_container">
             {
-               contacts.length ? SortContacts(sort,contacts).map(contactProps => (
-                  <ContactItem key={contactProps._id} {...contactProps} />
+               contacts.length ? SortContacts(sortType,contacts).map(contactProps => (
+                  !contactProps.inTrash && !contactProps.isHidden ?
+                  <ContactItem key={contactProps._id} location={ContactItemLocation.Homepage} {...contactProps} />
+                  :
+                  null
                ))
                :
                <div className="nsc_content">
@@ -53,9 +55,11 @@ export default function Homepage(props:IHomepageProps){
                   <p role="alert">You Have No Saved Contact</p>
                </div>
             }
-         </div>
-      </main>
+         </main>
+      </PageWrapper>
       :
       <InPageLoader />
    )
 }
+
+export default memo(Homepage)

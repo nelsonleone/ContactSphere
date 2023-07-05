@@ -36,6 +36,7 @@
     "express-async-handler": "^1.2.0",
     "firebase-admin": "^11.9.0",
     "mongoose": "^7.2.1",
+    "react-head": "^3.4.2",
     "validator": "^13.9.0"
   },
   "devDependencies": {
