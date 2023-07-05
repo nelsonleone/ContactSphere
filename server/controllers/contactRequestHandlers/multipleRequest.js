@@ -21,7 +21,7 @@ const setDeleteMultiSelectedContacts = asyncHandler(async (request, response) =>
 
          authUserDataDoc.contacts[contactIndex] = {
             ...authUserDataDoc.contacts[contactIndex],
-            inTrash: true
+            inTrash: true,
             deletedAt: new Date()
          }
       })
