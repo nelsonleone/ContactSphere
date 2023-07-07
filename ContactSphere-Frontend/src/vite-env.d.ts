@@ -80,10 +80,12 @@ interface IContactsFromDB extends Contact {
 }
 
 
-type UserLabels = {
-  _id: string,
-  label: string
-}[]
+interface ILabelObj {
+  label: string,
+  _id: string
+}
+
+type UserLabels = ILabelObj[]
 
 type UserData = {
   contacts: IContactsFromDB[],

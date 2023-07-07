@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { ContactItemLocation, SortBy } from "../enums";
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions";
 import ContactsPageColumnOrder from "../components/ContactFormContent/ContactsPageColumnOrder";
+import PageWrapper from "../components/PageWrapper";
 
 function HiddenContacts() {
 
@@ -24,7 +25,7 @@ function HiddenContacts() {
    },[contacts.length])
 
    return (
-      <div className="page hidden_contacts_page">
+      <PageWrapper className="hidden_contacts_page" desc="hidden contacts" title="ContactSphere | Hidden Contacts">
          <h2>Hidden Contacts</h2>
          {
             selectedContacts.length > 0 ?
@@ -45,7 +46,7 @@ function HiddenContacts() {
                </div>
             }
          </main>
-      </div>
+      </PageWrapper>
    )
 }
 

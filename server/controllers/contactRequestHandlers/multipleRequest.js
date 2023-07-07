@@ -57,7 +57,7 @@ const setRestoreMultipleContactsFromTrash = asyncHandler(async(request,response)
 
          authUserDataDoc.contacts[contactIndex] = {
             ...authUserDataDoc.contacts[contactIndex],
-            inTrash: false
+            inTrash: false,
             deletedAt: null
          }
       })

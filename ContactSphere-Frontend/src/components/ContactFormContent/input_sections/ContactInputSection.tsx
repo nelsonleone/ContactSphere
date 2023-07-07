@@ -9,14 +9,16 @@ import PhoneInput from '../../../../lib/customInputs/PhoneInput'
 
 interface IProps {
    register:UseFormRegister<Contact>,
-   setValue: UseFormSetValue<Contact>
+   setValue: UseFormSetValue<Contact>,
+   phoneNumber: string
 }
 
 export default function ContactInputSection(props:IProps){
 
    const {
       register,
-      setValue
+      setValue,
+      phoneNumber
    } = props;
 
    const id = useId()
@@ -37,7 +39,7 @@ export default function ContactInputSection(props:IProps){
 
          <div className="dx_container phone_input_container">
             <BsTelephone />
-            <PhoneInput setValue={setValue} register={register} />
+            <PhoneInput phoneNumber={phoneNumber} setValue={setValue} register={register} />
          </div>
       </div>
    )

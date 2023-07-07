@@ -1,19 +1,23 @@
 import { IContactsFromDB } from "../../vite-env";
 
 export default function findDuplicates(contacts:IContactsFromDB[]){
-   const helperArr: IContactsFromDB[] = []
-   const sortedArray = contacts.sort((a,b) => {
-     return a._id.toString().localeCompare(b._id.toString())
-   })
+  const helperArr: IContactsFromDB[] = []
+  const localContacts = contacts.map(c => {
+    return {...c,name: c.name || `${c.firstName} ${c.lastName}`}
+  })
 
-   sortedArray.forEach((c,i) => {
-     const arr1 = c;
-     const arr2 = sortedArray[i + 1]
+  const sortedArray = localContacts.sort((a,b) =>  a.name.toString().localeCompare(b.name.toString()))
 
-     if(arr1._id.toString() === arr2._id.toString()){
-       helperArr.push(arr1,arr2)
-     }
-   })
+  sortedArray.forEach((c,i) => {
+    if(sortedArray.length > 1 && i !== sortedArray.length - 1){
+      const obj1 = c;
+      const obj2 = sortedArray[i + 1]
+      
+      if(obj1.name.toString() === obj2.name.toString() && obj1.phoneNumber === obj2.phoneNumber){
+        helperArr.push(obj1,obj2)
+      }
+    }
+  })
 
-   return helperArr;
+  return helperArr;
 }

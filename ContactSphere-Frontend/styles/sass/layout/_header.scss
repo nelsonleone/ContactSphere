@@ -151,7 +151,7 @@
    // User Saved Labels section
    .label-area{
       margin-top: 2em;
-      button{
+      &>button{
          margin-block: 1em;
          font-family:  inherit;
          font-weight: $fw_bold;
@@ -172,22 +172,58 @@
       }
 
       ul li{
-         font-size: .93rem;
-         margin-block: .7em;
+         font-size: .92rem;
+         margin-block: 1em;
          font-family: $ff_primary;
          font-weight: $fw_bold;
 
-         &:hover{
-            svg{
-               path{
-                  color: $accent_color_2;
+         a{
+            @include flexObj($justify:flex-start);
+            color: $text-color2;
+         }
+
+         .label_link_btns{
+            margin-block:0;
+            position: absolute;
+            right: .5em;
+            @include flexObj;
+            gap: .4em;
+            button{
+               background-color: transparent;
+               margin: 0;
+               padding: 0;
+               z-index: 1;
+
+               svg{
+                  color: $text-color1 !important ;
+                  opacity: 0;
+                  font-size: 1.1rem;
+                  pointer-events: all;
+               }
+
+               &:hover svg{
+                  color: $radiant_color2 !important;
+                  scale: 1.03;
                }
             }
          }
 
-         a{
-            &:hover{
-               color: $text-color2;
+
+         // Active State
+         &:hover,
+         &:focus{
+            a > svg{
+               path{
+                  color: $accent_color_2;
+               }
+            }
+
+            .label_link_btns {
+              button{
+                  svg{
+                     opacity: 1;
+                  }
+              }
             }
          }
       }
@@ -424,10 +460,10 @@ button[aria-controls=user-menu]{
 
   .main_nav{
       box-shadow: none;
-      top: 7em;
-      padding-top: 1em;
+      top: 8em;
       background: transparent;
       width: 17.2em;
+      padding-top:  0;
       z-index: 1;
       position: fixed;
       left: 0;

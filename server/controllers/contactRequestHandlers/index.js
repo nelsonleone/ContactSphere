@@ -6,6 +6,7 @@ const {
 } = require('./multipleRequest')
 const {
    setDeleteContactHandler,
+   editUserLabel,
    setFavourited,
    getAuthUserData,
    createContact,
@@ -13,13 +14,16 @@ const {
    setNewLabel,
    manageUserContactsLabels,
    setEdittedContact,
-   setRestoreFromTrash
+   setRestoreFromTrash,
+   removeUserLabel
 } = require('./singleRequest')
 
 module.exports = {
    setDeleteContactHandler,
    setHideContactHandler,
    setFavourited,
+   editUserLabel,
+   removeUserLabel,
    setNewLabel,
    getAuthUserData,
    createContact,

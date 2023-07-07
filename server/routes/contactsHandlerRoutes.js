@@ -11,14 +11,18 @@ const {
    setHideMultipleContacts,
    manageUserContactsLabels,
    getAuthUserData,
+   editUserLabel,
    setEdittedContact,
    setRestoreFromTrash,
+   removeUserLabel,
    setRestoreMultipleContactsFromTrash
 } = require('../controllers/contactRequestHandlers/index')
 
 router.get('/getAuthUserData',getAuthUserData)
 router.post('/setNewContact',createContact)
 router.post('/addLabel',setNewLabel)
+router.put('/editLabel',editUserLabel)
+router.delete('/removeLabel',removeUserLabel)
 router.post('/manageUserContactLabels',manageUserContactsLabels)
 router.delete('/deleteContact',setDeleteContactHandler)
 router.delete('/deleteMultiple',setDeleteMultiSelectedContacts)

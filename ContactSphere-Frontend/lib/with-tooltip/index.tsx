@@ -1,5 +1,5 @@
 import { Dispatch, MouseEvent, Ref, SetStateAction, forwardRef } from 'react'
-import { BiHelpCircle } from 'react-icons/bi'
+import { BiHelpCircle, BiTrashAlt } from 'react-icons/bi'
 import { IHeaderState } from '../../src/components/Header'
 import { AiFillSetting } from 'react-icons/ai'
 import IconButton from '@mui/material/IconButton';
@@ -103,12 +103,23 @@ export function StarIconButton({starred,handleStarring}: { starred:boolean,handl
 }
 
 
-export function EditIconButton({navigateToEditPage}:{ navigateToEditPage:() => void}){
+export function EditIconButton({navigateToEditPage,toolTipText}:{ toolTipText?:string, navigateToEditPage:() => void}){
    return(
-      <Tooltip title="Edit Contact">
+      <Tooltip title={toolTipText || "Edit Contact"}>
          <button className="contact_edit_button" type="button" onClick={navigateToEditPage}>
             <GoPencil color=" hsl(0, 3%, 16%)"  />
          </button>
+      </Tooltip>
+   )
+}
+
+
+export function DeleteIconButton({handleDelete,toolTipText}:{ toolTipText?:string, handleDelete:() => void}){
+   return(
+      <Tooltip title={toolTipText || "Delete"}>
+         <IconButton onClick={handleDelete}>
+            <BiTrashAlt aria-label="Delete"  />
+         </IconButton>
       </Tooltip>
    )
 }

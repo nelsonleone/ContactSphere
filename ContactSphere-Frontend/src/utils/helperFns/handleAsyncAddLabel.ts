@@ -72,7 +72,7 @@ export default async function handleAsyncAddLabel(
 
    catch(err:any|unknown){
       dispatch(setShowAlert({
-         alertMessage: err.message,
+         alertMessage: err.message || "Error While Adding Label, Try Again" ,
          severity: AlertSeverity.ERROR
       }))
    }

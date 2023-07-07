@@ -67,7 +67,7 @@ function ContactItem(props:IContactItemProps){
 
       catch(err:any|unknown){
          dispatch(setShowAlert({
-            alertMessage: `${err.message} ${err.code}`,
+            alertMessage: err.message || "Error Interacting With Contact, Try Again" ,
             severity: AlertSeverity.ERROR
          }))
 
@@ -118,7 +118,7 @@ function ContactItem(props:IContactItemProps){
                props.location === ContactItemLocation.Homepage ?
                <>
                   <StarIconButton starred={starred} handleStarring={() => handleStarring()} />
-                  <EditIconButton navigateToEditPage={() => navigate(`/c/${_id}`)} />
+                  <EditIconButton navigateToEditPage={() => navigate(`c/edit/${_id}`)} />
                   <ContactMenu method="single" phoneNumber={phoneNumber} contactId={_id} contactLabels={labelledBy} />
                </>
                :

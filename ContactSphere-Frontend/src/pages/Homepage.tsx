@@ -25,7 +25,7 @@ function Homepage(props:IHomepageProps){
 
    return(
       !props.fetchingContacts ?
-      <PageWrapper className="page homepage">
+      <PageWrapper className="page homepage" desc="check out your saved contacts" title="ContactSphere">
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions />

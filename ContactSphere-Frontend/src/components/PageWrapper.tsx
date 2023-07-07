@@ -1,10 +1,14 @@
 import { ReactNode } from "react";
-import Head, { Title } from 'react-head'
+import  { HeadProvider, Title, Meta } from 'react-head'
 
-export default function PageWrapper({className,children}:{ className:string, children:ReactNode }){
+export default function PageWrapper({className,children,desc,title}:{ desc:string,title:string,className:string, children:ReactNode }){
    return(
-      <div className={`page ${className}`}>
-         {children}
-      </div>
+      <HeadProvider>
+         <div className={`page ${className}`}>
+           <Title>{`${title}`}</Title>
+           <Meta name="decription" content={desc} />
+            {children}
+         </div>
+      </HeadProvider>
    )
 }

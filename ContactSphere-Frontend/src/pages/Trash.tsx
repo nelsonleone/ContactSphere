@@ -5,6 +5,7 @@ import MultiSelectActions from "../components/ContactFormContent/MultiSelectActi
 import { useAppSelector } from "../customHooks/reduxCustomHooks";
 import { ContactItemLocation, SortBy } from "../enums";
 import SortContacts from "../utils/helperFns/SortContacts";
+import PageWrapper from "../components/PageWrapper";
 
 function Trash() {
 
@@ -23,7 +24,7 @@ function Trash() {
    },[contacts.length])
 
    return (
-      <div className="page trash">
+      <PageWrapper className="page trash" desc="contacts in trash" title="Trash">
          <p role="alert">Contacts Remain In Trash For 30days, after which they are automatically deleted permanently</p>
          {
             selectedContacts.length > 0 ?
@@ -43,7 +44,7 @@ function Trash() {
                </div>
             }
          </main>
-      </div>
+      </PageWrapper>
    )
 }
 

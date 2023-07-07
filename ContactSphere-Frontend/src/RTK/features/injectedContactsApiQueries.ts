@@ -38,6 +38,24 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
          })
       }),
 
+
+      removeUserLabel: builder.mutation<UserLabels,{label:string,authUserUid:string}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/removeLabel?uid=${args.authUserUid}`,
+            method: 'POST',
+            body: { label: args.label }
+         })
+      }),
+
+
+      editUserLabel: builder.mutation<UserLabels,{label:string,authUserUid:string,labelId:string}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/editUserLabel?uid=${args.authUserUid}`,
+            method: 'PUT',
+            body: { label: args.label, _id: args.labelId }
+         })
+      }),
+
       // Updated Contact Labels Update
       manageLabels: builder.mutation<IContactsFromDB,{label:string,authUserUid:string,contactId:string,actionType:string}>({
          query: (args) => ({
@@ -76,7 +94,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
 
       hideContact: builder.mutation<void,{authUserUid:string,contactId:string,status:boolean}>({
          query: (args) => ({
-            url: `${CONTACTS_API_URL}/deleteContact?uid=${args.authUserUid}&contactId=${args.contactId}`,
+            url: `${CONTACTS_API_URL}/hideContact?uid=${args.authUserUid}&contactId=${args.contactId}`,
             method: 'PUT',
             body: { status:args.status }
          }),
@@ -140,5 +158,7 @@ export const {
    useHideContactMutation,
    useHideMultipleContactsMutation,
    useRestoreFromTrashMutation,
-   useRestoreMultipleFromTrashMutation
+   useRestoreMultipleFromTrashMutation,
+   useRemoveUserLabelMutation,
+   useEditUserLabelMutation
 } = extendedContactsQuerySlice;

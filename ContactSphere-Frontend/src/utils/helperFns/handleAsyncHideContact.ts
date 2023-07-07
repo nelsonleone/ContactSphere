@@ -52,13 +52,13 @@ export default async function handleAsyncHideContact(
       }
 
       dispatch(setShowSnackbar({
-         snackbarMessage:"Succefully Deleted"
+         snackbarMessage:"Succefully Hidden"
       }))
    }
 
    catch(err){
       dispatch(setShowAlert({
-         alertMessage: "Error Occured During Deletion",
+         alertMessage: "Error Occured, Check Internet Connection and Try Again",
          severity: AlertSeverity.ERROR
       }))
    }

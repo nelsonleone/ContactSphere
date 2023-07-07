@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form"
-import { defaultValues } from "./newContactDefaultValues"
+import { staticDefaultValue } from "./newContactDefaultValues"
 import { Contact } from "../../vite-env"
 import { memo, useEffect, useState } from "react"
 import NameInputSection from "./input_sections/NameSection"
@@ -23,15 +23,17 @@ import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice"
 
 
 
-function ContactForm({ action, contactId }: { action:ContactFormAction, contactId?:string }){
+function ContactForm({ action, contactId, defaultValue }: { defaultValue:Contact, action:ContactFormAction, contactId?:string }){
 
-   const { register, handleSubmit, setValue, watch, formState: {errors}, control} = useForm<Contact>({defaultValues})
+   const { register, handleSubmit, setValue, watch, formState: {errors}, control} = useForm<Contact>({defaultValues: defaultValue || staticDefaultValue})
    const [showMore,setShowMore] = useState(false)
    const { append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
    const [showLabelMenu,setShowLabelMenu] = useState(false)
    const [openAddLabelModal,setOpenAddLabelModal] = useState(false)
    const navigate = useNavigate()
    const labelsArray = watch('labelledBy')
+   const repPhoto = watch('repPhoto')
+   const phoneNumber = watch('phoneNumber')
    const [createContact, { isLoading }] = useCreateContactMutation()
    const [editContact, { isLoading:editting }] = useEditContactMutation()
    const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(
@@ -100,7 +102,7 @@ function ContactForm({ action, contactId }: { action:ContactFormAction, contactI
       <>
          <form onSubmit={handleSubmit(handleOnSubmit)}>
             <div className="top_section">
-               <ImageUploadInput name={InputPropertyValueName.RepPhoto} register={register} setValue={setValue} />
+               <ImageUploadInput repPhoto={repPhoto} name={InputPropertyValueName.RepPhoto} register={register} setValue={setValue} />
                {
                   labelsArray?.length ?
                   <AddedLabels setValue={setValue} labelsArray={labelsArray} control={control} />
@@ -130,7 +132,7 @@ function ContactForm({ action, contactId }: { action:ContactFormAction, contactI
             <div className="fields_area">
                <NameInputSection error={errors?.firstName?.message} showMore={showMore} register={register} />
                <FormalInputSection showMore={showMore} register={register} />
-               <ContactInputSection setValue={setValue} register={register} />
+               <ContactInputSection phoneNumber={phoneNumber} setValue={setValue} register={register} />
                <AddressInputSection error={errors?.address?.postalCode?.message} showMore={showMore} register={register} setValue={setValue}  />
                <AdditionalFields error={errors?.birthday?.message} control={control} setValue={setValue} register={register} showMore={showMore} />
             </div>

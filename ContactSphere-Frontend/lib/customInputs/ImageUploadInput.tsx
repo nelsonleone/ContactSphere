@@ -7,12 +7,11 @@ import { InputPropertyValueName } from '../../src/enums';
 interface IProps {
    name: string,
    setValue: UseFormSetValue<Contact> ,
-   register: UseFormRegister<Contact>
+   register: UseFormRegister<Contact>,
+   repPhoto: string
 }
 
 export default function ImageUploadInput(props:IProps){
-
-   const [photo, setPhoto] = React.useState<string>('')
 
    const handleImageFileOutput = (e:React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files![0]
@@ -23,7 +22,6 @@ export default function ImageUploadInput(props:IProps){
          const result = e.target?.result;
          if(result){
             // refactoring soon [REASON: Large Image  Data String]
-            setPhoto(result as string)
             props.setValue(InputPropertyValueName.RepPhoto,result as string)
          }
       }
@@ -39,8 +37,8 @@ export default function ImageUploadInput(props:IProps){
          <input type="file" name={props.name} accept=".jpg, .jpeg, .png, .gif, .pdf" onChange={handleImageFileOutput} />
          <output>
             {
-               photo &&
-               <img src={photo} alt="Uploaded Image" />
+               props.repPhoto &&
+               <img src={props.repPhoto} alt="Uploaded Image" />
             }
          </output>
       </div>

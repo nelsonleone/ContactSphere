@@ -1,6 +1,6 @@
 import { Contact } from "../../vite-env";
 
-export const defaultValues: Contact = {
+export const staticDefaultValue: Contact = {
    address: {
      country: 'United States',
      state: '',

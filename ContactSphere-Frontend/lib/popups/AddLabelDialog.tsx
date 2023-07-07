@@ -1,4 +1,4 @@
-import React , {  Dispatch, SetStateAction, useState}  from 'react';
+import React , {  Dispatch, SetStateAction, useEffect, useState}  from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -7,16 +7,18 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAddLabelMutation } from '../../src/RTK/features/injectedContactsApiQueries';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
-import { InputPropertyValueName } from '../../src/enums';
 import LoadingButton from '../buttons/LoadingButton';
 import { UseFieldArrayAppend } from "react-hook-form";
-import { Contact } from "../../src/vite-env";
+import { Contact, ILabelObj } from "../../src/vite-env";
 import postCreatedLabel from '../../src/utils/helperFns/postCreatedLabel';
 
 interface IDialogProps {
    setOpen: Dispatch<SetStateAction<boolean>>,
    open: boolean,
    labelsArray?: Contact['labelledBy'],
+   setLabelForEdit?: Dispatch<SetStateAction<ILabelObj>>,
+   handleLabelEdit?: ()  => void,
+   labelForEdit?: string,
    append?: UseFieldArrayAppend<Contact, "labelledBy" | "relatedPeople">
 }
 
@@ -28,7 +30,22 @@ export default function AddLabelDialog(props:IDialogProps) {
    const [label,setLabel] = useState("")
    const dispatch = useAppDispatch()
 
+   useEffect(() => {
+      if(props.setLabelForEdit){
+         props.setLabelForEdit(prevState => ( { ...prevState, label } ))
+      }
+   },[label])
+
    const handleAddLabel = () => {
+      if(!uid)return;
+
+      // Set Editted Label Value And Close Modal
+      if(props.handleLabelEdit){
+         props.handleLabelEdit()
+         setOpen(false)
+         return;
+      }
+
       if (labelsArray && append){
          // Dialog Being Used In Contact Form
          const labelArrayExists = labelsArray?.some(val => val.label === label)
@@ -57,6 +74,8 @@ export default function AddLabelDialog(props:IDialogProps) {
                variant="standard"
                className="textField add_label_dialog_input"
                onChange={(e) => setLabel(e.target.value)}
+               // Use Edit Value In Edit Mode
+               value={props.labelForEdit ? props.labelForEdit : label}
             />
          </DialogContent>
          <DialogActions>

@@ -8,7 +8,8 @@ import 'react-phone-number-input/style.css'
 
 interface IPhoneInputProps {
    register: UseFormRegister<Contact>,
-   setValue: UseFormSetValue<Contact>
+   setValue: UseFormSetValue<Contact>,
+   phoneNumber: string
 }
 
 export default function CustomPhoneInput(props:IPhoneInputProps){
@@ -26,10 +27,7 @@ export default function CustomPhoneInput(props:IPhoneInputProps){
       )
    },[])
 
-   const [value,setValue] = React.useState<undefined | string>()
-
    const handlePhoneInputChange = (value:undefined) => {
-      setValue(value)
       props.setValue(InputPropertyValueName.PhoneNumber,value ?  value : '')
    }
 
@@ -39,7 +37,7 @@ export default function CustomPhoneInput(props:IPhoneInputProps){
          defaultCountry="US"
          onChange={handlePhoneInputChange}
          className="phone_number_input"
-         value={value}
+         value={props.phoneNumber}
       />
    )
 }

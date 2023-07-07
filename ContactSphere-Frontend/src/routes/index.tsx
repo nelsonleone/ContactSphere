@@ -9,6 +9,7 @@ import LabelPage from '../pages/LabelPage'
 import ContactViewPage from '../pages/ContactViewPage'
 import HelpPage from '../pages/HelpPage'
 import HiddenContacts from '../pages/HiddenContacts'
+import EditContactPage from '../pages/EditContactPage'
 import Trash from '../pages/Trash'
 
 export default function RouteHandler({fetchingContacts}:{ fetchingContacts:boolean }){
@@ -43,7 +44,7 @@ export default function RouteHandler({fetchingContacts}:{ fetchingContacts:boole
       {/* Dynamic Routes */}
       <Route path="/labels/:id" element={<LabelPage />} />
       <Route path="/c/:id" element={<ContactViewPage />} />
-      <Route path="/c/edit/:id" element={<ContactViewPage />} />
+      <Route path="/c/edit/:id" element={<EditContactPage />} />
 
       <Route path="/new" element={<CreateContact />} />
       <Route path="/hidden" element={<HiddenContacts />} />

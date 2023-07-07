@@ -21,7 +21,6 @@ export default function App(){
   const location = useLocation()
   const { data:UserDetails, isError:getAuthStateError, isLoading:authenticating } = useGetAuthStateQuery()
   const { } = useGetCsrfTokenQuery()
-
   const { beenAuthenticated, userDetails: {
       uid
     }
@@ -30,8 +29,9 @@ export default function App(){
   const { data, isError:fetchDataError, isLoading:gettingData } = useGetUserDataQuery(uid || '')
   const { contacts } = useAppSelector(store => store.userData)
 
+
   useEffect(() => {
-    // Don't Try Fetch User Data When There Is An Unauthourized User
+    // Don't Try Set User Data When There Is An Unauthourized User
     if(!beenAuthenticated)return;
 
     // Fetch User Data
@@ -54,38 +54,42 @@ export default function App(){
         )
       }
     }
-  },[uid,data])
+  },[uid,data,fetchDataError])
   
-  useEffect(() => {
 
+
+
+  useEffect(() => {
     if(authenticating){
       dispatch(setLoad(true))
     }
 
     // Navigate User To Auth Page
-    else if(getAuthStateError && location.pathname !== "auth/create_account" && location.pathname !== "auth/signin"){
+    if(!authenticating && getAuthStateError && location.pathname !== "auth/create_account" && location.pathname !== "auth/signin"){
       navigate('/auth/signin')
-      dispatch(setLoad(false))
     }
 
-    else if(UserDetails && !getAuthStateError && !gettingData){
+      
+    if(UserDetails && !getAuthStateError){
       dispatch(setUserDetails({...UserDetails,authMethod:AuthMethod.AuthSession}))
-      dispatch(setLoad(false))
     }
 
-    else{
-      setLoad(false)
-    }
-
+    dispatch(setLoad(false))
   },[UserDetails,authenticating,getAuthStateError])
 
+
+  // Empty Multi Select Array
   useEffect(()  => {
     dispatch(setSelectNone())
   },[location.pathname])
 
+
+  // Find Duplicates In Contacts
   useEffect(() => {
-    const duplicates = findDuplicates(contacts)
-    dispatch(setDuplicates(duplicates))
+    if(contacts.length){
+      const duplicates = findDuplicates(contacts)
+      dispatch(setDuplicates(duplicates))
+    }
   },[contacts.length])
 
   return(

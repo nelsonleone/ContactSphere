@@ -115,6 +115,67 @@ const setNewLabel = asyncHandler(async(request,response) => {
 })
 
 
+// Remove Auth User Saved Label
+const removeUserLabel = asyncHandler(async(request,response) => {
+   const authUserUid = request.query.uid;
+   const labelForDelete = request.body;
+
+   try{
+      if(!uid || !labelForDelete){
+         response.status(400)
+         throw new Error("INVALID QUERY PARAMETERS PASSED")
+      }
+
+      const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
+
+      if(!authUserDataDoc){
+         response.status(404)
+         throw new Error("USER WITH SPECIDED UID WAS NOT FOUND")
+      }  
+
+      authUserDataDoc.labels.filter(v => v.label !== labelForDelete.label)
+      authUserDataDoc.save()
+      response.status(201).json(authUserDataDoc.labels)
+   }
+
+   catch(error){
+      response.status(500)
+      throw new Error(error.message)
+   }
+})
+
+
+// Edit User Saved Labels
+const editUserLabel = asyncHandler(async(request,response) => {
+   const authUserUid = request.query.uid;
+   const labelForEdit = request.body;
+
+   try{
+      if(!uid || !labelForDelete){
+         response.status(400)
+         throw new Error("INVALID QUERY PARAMETERS PASSED")
+      }
+
+      const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
+
+      if(!authUserDataDoc){
+         response.status(404)
+         throw new Error("USER WITH SPECIDED UID WAS NOT FOUND")
+      }  
+
+      const labelIndex = authUserDataDoc.labels.findIndex(v => v._d !== labelForDelete._id)
+      authUserDataDoc.labels[labelIndex] = {...authUserDataDoc.labels[labelIndex],label:labelForEdit.label}
+      authUserDataDoc.save()
+      response.status(201).json(authUserDataDoc.labels)
+   }
+
+   catch(error){
+      response.status(500)
+      throw new Error(error.message)
+   }
+})
+
+
 
 // Add Selected Contact To  Favourites
 const setFavourited = asyncHandler(async (request, response) => {
@@ -160,7 +221,7 @@ const manageUserContactsLabels = asyncHandler(async(request,response) => {
       contactId
    } = request.query;
 
-   const label = request.body;
+   const value = request.body;
 
    if (!contactId || !uid ) {
       response.status(400)
@@ -180,26 +241,21 @@ const manageUserContactsLabels = asyncHandler(async(request,response) => {
       }
 
       const labelAlreadyExists = contact.labelledBy.find(
-         (labelObj) => labelObj.label === label
+         (labelObj) => labelObj.label === value.label
       )
       if (!labelAlreadyExists && actionType === "add") {
-         await AuthUser.findOneAndUpdate(
+         await AuthUserData.findOneAndUpdate(
             { uid, 'contacts._id': contact._id },
-            { $push: { 'contacts.$.labelledBy': { label } } }
+            { $push: { 'contacts.$.labelledBy': value } }
          )
       }
       else if(labelAlreadyExists && actionType === "remove"){
-         await AuthUser.findOneAndUpdate(
+         await AuthUserData.findOneAndUpdate(
             { uid, 'contacts._id': contact._id },
-            { $pull: { 'contacts.$.labelledBy': { label } } }
+            { $pull: { 'contacts.$.labelledBy': value } }
          )
       }
-
-      const contactIndex = authUserDataDoc.findIndex(c => c._id.toString() === contactId)
-      authUserDataDoc.contacts[contactIndex] = {
-         ...authUserDataDoc.contacts[contactIndex],
-
-      }
+      const updatedContact = authUserDataDoc.contacts.find(contact => contact._id.toString() === contactId.toString())
       response.status(200).json(updatedContact)
    }
 
@@ -272,7 +328,7 @@ const setDeleteContactHandler = asyncHandler(async (request, response) => {
    
       authUserDataDoc.contacts[contactIndex] = {
          ...authUserDataDoc.contacts[contactIndex],
-         inTrash: true
+         inTrash: true,
          deletedAt: new Date()
       }
    
@@ -312,7 +368,7 @@ const setRestoreFromTrash = asyncHandler(async(request,response) => {
    
       authUserDataDoc.contacts[contactIndex] = {
          ...authUserDataDoc.contacts[contactIndex],
-         inTrash: false
+         inTrash: false,
          deletedAt: null
       }
    
@@ -376,5 +432,7 @@ module.exports = {
    setNewLabel,
    manageUserContactsLabels,
    setEdittedContact,
-   setRestoreFromTrash
+   setRestoreFromTrash,
+   removeUserLabel,
+   editUserLabel
 }

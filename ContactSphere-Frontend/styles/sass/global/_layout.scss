@@ -15,6 +15,7 @@
          width: auto;
          background-color: $generic_color_1;
          @include alignPage;
+         transition: margin 3s linear,width 3s linear ;
       }
 
       .cnc_btn{
@@ -50,7 +51,12 @@
    right: 1em;
    font-family: $ff_prompts;
    font-weight: $fw_bold;
-   transition: .25s linear;
+   transition: left .24s linear, scale .23s ease-in-out;
+
+   &:disabled{
+      opacity: .5;
+      cursor: not-allowed;
+   }
 
    svg{
       color: $accent_color_1;
@@ -66,7 +72,7 @@
    @include useMediaQuery_LS{
       bottom: unset;
       top: 6.5em;
-      background-color: transparent;
+      background-color: $generic_color_1;
       left: -500px;
       width: 12em;
       height: unset;
