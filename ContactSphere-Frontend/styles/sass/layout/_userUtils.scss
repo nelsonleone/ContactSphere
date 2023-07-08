@@ -18,11 +18,11 @@
    @include flexObj($justify:center);
    p{
       font-family: $ff_prompts;
-      background-color: $text-color1;
+      background-color: $text-color2;
       width: 14em;
       color: #FAFAFA;
-      font-size:1.1rem;
-      padding:.8em 1em;
+      font-size:1.05rem;
+      padding:.7em 1em;
       border-radius: 4px;
    }
 }

@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { BiUser , BiErrorCircle, BiStar , BiTrashAlt, BiPlus } from 'react-icons/bi'
 import { FiEyeOff } from 'react-icons/fi'
 import { GrClone } from 'react-icons/gr'
-import { Dispatch, SetStateAction, memo, useState } from "react";
+import { Dispatch, SetStateAction, memo, useCallback, useState } from "react";
 import { FiLogIn } from 'react-icons/fi';
 import { FaUserPlus } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../customHooks/reduxCustomHooks'
@@ -27,12 +27,13 @@ interface IProps{
 function NavMenu(props:IProps){
 
    const { beenAuthenticated , userDetails: { uid }} = useAppSelector(store => store.authUser)
-   const { labels, contacts } = useAppSelector(store => store.userData)
+   const { labels, contacts } = useAppSelector(store => store.userData)   
    const [labelForEdit,setLabelForEdit] = useState<ILabelObj>({
       label: "",
       _id: ""
    })
    const [openDialog,setOpenDialog] = useState(false)
+   const [oldLabel,setOldLabel] = useState("")
    const  [removeLabel] = useRemoveUserLabelMutation()
    const [editLabel] = useEditUserLabelMutation()
    const dispatch = useAppDispatch()
@@ -47,6 +48,11 @@ function NavMenu(props:IProps){
       ))
    }
 
+   const checkContactsWithLabel = useCallback((label:string) => {
+      const withLabel = contacts.filter(c => c.labelledBy.some(obj => obj.label === label)).length;
+      return withLabel
+   },[contacts.length])
+
    const handleLabelDelete = (label:string) => clientAsyncHandler(
       async() => {
          await stopUnauthourizedActions(uid)
@@ -59,9 +65,10 @@ function NavMenu(props:IProps){
       },
       dispatch
    )
-
+   
    const handleOpenDialog = (labelObj:ILabelObj) => {
       setLabelForEdit(labelObj)
+      setOldLabel(labelObj.label)
       setOpenDialog(true)
    }
 
@@ -73,7 +80,8 @@ function NavMenu(props:IProps){
             dispatch,
             labelForEdit.label,
             uid!,
-            labelForEdit._id
+            labelForEdit._id,
+            oldLabel
          )
       },
       dispatch
@@ -146,11 +154,12 @@ function NavMenu(props:IProps){
                                        <NavLink to={`/labels/${value._id}`}>
                                           <MdLabel aria-label="Label Icon" />
                                           <span>{value.label}</span>
+                                          <p aria-label={`contacts-with-${value.label}-label`}>{checkContactsWithLabel(value.label)}</p>
+                                          <div className="label_link_btns">
+                                             <EditIconButton toolTipText="Rename Label" navigateToEditPage={() => handleOpenDialog(value)} aria-label="Edit" />
+                                             <DeleteIconButton toolTipText="Delete Label" handleDelete={() => handleLabelDelete(value.label)} />
+                                          </div>
                                        </NavLink>
-                                       <div className="label_link_btns">
-                                          <EditIconButton toolTipText="Rename Label" navigateToEditPage={() => handleOpenDialog(value)} aria-label="Edit" />
-                                          <DeleteIconButton toolTipText="Delete Label" handleDelete={() => handleLabelDelete(value.label)} />
-                                       </div>
                                     </li>
                                  )
                               })

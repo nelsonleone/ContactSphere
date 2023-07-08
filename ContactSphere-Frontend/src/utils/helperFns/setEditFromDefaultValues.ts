@@ -15,7 +15,7 @@ export default function setEditFormDefaultValues(contactDetails:IContactsFromDB|
          street: contactDetails.address.street,
          postalCode: contactDetails.address.postalCode
       },
-      birthday:  new Date(contactDetails.birthday).toDateString(),
+      birthday:  new Date(contactDetails.birthday).toLocaleDateString('en-US'),
       chat: contactDetails.chat,
       companyName: contactDetails.companyName,
       department: contactDetails.department,

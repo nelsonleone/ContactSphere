@@ -148,7 +148,7 @@ const removeUserLabel = asyncHandler(async(request,response) => {
 // Edit User Saved Labels
 const editUserLabel = asyncHandler(async(request,response) => {
    const authUserUid = request.query.uid;
-   const labelForEdit = request.body;
+   const { labelForEditObj, oldLabel } = request.body;
 
    try{
       if(!uid || !labelForDelete){
@@ -163,10 +163,21 @@ const editUserLabel = asyncHandler(async(request,response) => {
          throw new Error("USER WITH SPECIDED UID WAS NOT FOUND")
       }  
 
-      const labelIndex = authUserDataDoc.labels.findIndex(v => v._d !== labelForDelete._id)
-      authUserDataDoc.labels[labelIndex] = {...authUserDataDoc.labels[labelIndex],label:labelForEdit.label}
+      const labelIndex = authUserDataDoc.labels.findIndex(v => v._id !== labelForEditObj._id)
+      authUserDataDoc.labels[labelIndex] = {...authUserDataDoc.labels[labelIndex],label:labelForEditObj.label}
+
+      // UPDATE CONTACTS WITH LABEL IN LABELLEDBY ARRAY
+      authUserDataDoc.contacts = authUserDataDoc.contacts.map(c => {
+         return {
+            ...c,
+            labelledBy: c.labelledBy.map(v => {
+               return v.label === oldLabel ? {...v,label:labelForEditObj.label} : v
+            })
+         }
+      })
+
       authUserDataDoc.save()
-      response.status(201).json(authUserDataDoc.labels)
+      response.status(201).end()
    }
 
    catch(error){

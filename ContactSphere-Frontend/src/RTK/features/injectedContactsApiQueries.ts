@@ -48,12 +48,16 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       }),
 
 
-      editUserLabel: builder.mutation<UserLabels,{label:string,authUserUid:string,labelId:string}>({
+      editUserLabel: builder.mutation<void,{oldLabel:string,label:string,authUserUid:string,labelId:string}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/editUserLabel?uid=${args.authUserUid}`,
             method: 'PUT',
-            body: { label: args.label, _id: args.labelId }
-         })
+            body: {
+               labelForEditObj: { label: args.label, _id: args.labelId },
+               oldLabel: args.oldLabel
+            }
+         }),
+         invalidatesTags: ['Label']
       }),
 
       // Updated Contact Labels Update

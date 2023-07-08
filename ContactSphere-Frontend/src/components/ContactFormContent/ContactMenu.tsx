@@ -38,7 +38,7 @@ export default function ContactMenu(props:IProps){
    const [hideContact] = useHideContactMutation()
    const [hideMultipleContacts] = useHideMultipleContactsMutation()
    
-   const [unregisteredLabels,setUnregisteredLabels] = useState(userSavedLabels?.filter(item => props.contactLabels?.some(obj => obj.label !== item.label)))
+   const [unregisteredLabels,setUnregisteredLabels] = useState(userSavedLabels?.filter(item => props.contactLabels?.some(obj => obj.label === item.label)))
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
    const open = Boolean(anchorEl)
    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -90,7 +90,6 @@ export default function ContactMenu(props:IProps){
 
 
 
-
    const handleMenuDeleteContact = () => clientAsyncHandler(
       async () => {      
          handleClose()
@@ -139,7 +138,13 @@ export default function ContactMenu(props:IProps){
                   <ListItemText>Delete</ListItemText>
                   </MenuItem>
                   <Divider />
-                  <span className="menu-item-label">{ props.method === "multi" ? "Manage" : "Change"} Labels</span>
+                  {
+                     props.method === "single" && unregisteredLabels.length || 
+                     props.method === "multi" && userSavedLabels?.length ?
+                     <span className="menu-item-label">{ props.method === "multi" ? "Manage" : "Change"} Labels</span>
+                     : 
+                     null
+                  }
                   
                   {
                      props.method === "single" && unregisteredLabels.length ? unregisteredLabels.map(value => (

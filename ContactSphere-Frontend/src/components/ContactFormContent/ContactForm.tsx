@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form"
 import { staticDefaultValue } from "./newContactDefaultValues"
 import { Contact } from "../../vite-env"
-import { memo, useEffect, useState } from "react"
+import { memo, useEffect, useState, useMemo } from "react"
 import NameInputSection from "./input_sections/NameSection"
 import FormalInputSection from "./input_sections/FormalInputSection"
 import ContactInputSection from "./input_sections/ContactInputSection"
@@ -20,6 +20,7 @@ import { useCreateContactMutation, useEditContactMutation } from '../../RTK/feat
 import { useAppDispatch, useAppSelector } from "../../customHooks/reduxCustomHooks"
 import { setShowAlert } from "../../RTK/features/alertSlice"
 import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice"
+import hasObjectChanged from "../../utils/helperFns/compareObjFieldsChange"
 
 
 
@@ -43,6 +44,8 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue:Contact
    )
    const uid = useAppSelector(store => store.authUser.userDetails.uid)
    const dispatch = useAppDispatch()
+   const formValues = useMemo(() => watch(), [watch])
+
 
    const handleOnSubmit: SubmitHandler<Contact> = async(data) => {
       try{
@@ -93,10 +96,19 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue:Contact
    }
 
    useEffect(() => {
+      // Disabled Save Button 
       errors.firstName?.message || 
       errors.phoneNumber?.message ||
-      isLoading ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
+      isLoading  ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
    },[errors.firstName?.message,errors.phoneNumber?.message,errors.birthday?.message,isLoading])
+
+
+   // Dsiable Save Button In Edit Mode If Fields Remains The Same
+   useEffect(() => {
+      if(action === ContactFormAction.Edit) {
+         setDisableSaveBtn(hasObjectChanged(formValues,defaultValue))
+      }
+   },[formValues])
 
    return(
       <>
@@ -119,7 +131,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue:Contact
                   className="fx-button" 
                   variant="contained"  
                   disabled={disabledSaveBtn}
-                  sx={{ bgcolor: '#f57e0fd0' }} >
+                  sx={{ bgcolor: '#f57e0fd0',borderRadius:action === ContactFormAction.Edit ? "30px" : "4px" }} >
                   Save
                </Button>
                <button type="button" className="fx-button" onClick={() => navigate(-1)}>

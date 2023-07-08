@@ -173,12 +173,21 @@
 
       ul li{
          font-size: .92rem;
-         margin-block: 1em;
+         margin-block: 1.2em;
          font-family: $ff_primary;
          font-weight: $fw_bold;
+         padding-left: 1em;
 
          a{
             @include flexObj($justify:flex-start);
+            color: $text-color2;
+         }
+
+         p{
+            position: absolute;
+            right: .6em;
+            font-weight: $fw_bold;
+            font-size: .9rem;
             color: $text-color2;
          }
 
@@ -216,6 +225,14 @@
                path{
                   color: $accent_color_2;
                }
+            }
+
+            a{
+               color: $text-color2;
+            }
+
+            p{
+               visibility: hidden;
             }
 
             .label_link_btns {
