@@ -65,8 +65,11 @@ export default function App(){
     }
 
     // Navigate User To Auth Page
-    if(!authenticating && getAuthStateError && location.pathname !== "auth/create_account" && location.pathname !== "auth/signin"){
-      navigate('/auth/signin')
+    if(!authenticating && getAuthStateError){
+      
+      if(location.pathname !== "auth/create_account" && location.pathname !== "auth/signin"){
+        navigate('/auth/signin')
+      }
       dispatch(setLoad(false))
     }
 

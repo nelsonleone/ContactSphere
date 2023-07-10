@@ -22,7 +22,7 @@ function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
 
    return (
       fetchingContacts ? 
-      <PageWrapper className="trash" desc="starred contacts" title="Favourites">
+      <PageWrapper className="trash"  title="Favourites">
          <p role="alert">If They Are Starred, Yes They Are Special.</p>
          {
             selectedContacts.length > 0 ?

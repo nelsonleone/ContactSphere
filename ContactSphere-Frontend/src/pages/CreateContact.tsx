@@ -4,7 +4,7 @@ import { ContactFormAction } from '../enums'
 
 function CreateContact() {
    return (
-      <PageWrapper className="create_contact_page" desc="create a contact" title="ContactSphere | New">
+      <PageWrapper className="create_contact_page" title="ContactSphere | Create Contact">
         <main>
             <ContactForm action={ContactFormAction.Create} />
          </main>

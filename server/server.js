@@ -10,7 +10,7 @@ const contactsHandlerRoutes = require('./routes/contactsHandlerRoutes')
 const { noContentFound, errorHandler } = require('./middlewares/errorMiddlewares')
 const corsOptions = {
   origin: process.env.FRONTEND_APP_URL ,
-  optionsSuccessStatus: 200, // Some legacy browsers (IE11) choke on 204
+  optionsSuccessStatus: 200, 
   credentials: true
 }
 

@@ -137,11 +137,13 @@ export default function ContactMenu(props:IProps){
                      </ListItemIcon>
                   <ListItemText>Delete</ListItemText>
                   </MenuItem>
-                  <Divider />
                   {
                      props.method === "single" && unregisteredLabels.length || 
                      props.method === "multi" && userSavedLabels?.length ?
-                     <span className="menu-item-label">{ props.method === "multi" ? "Manage" : "Change"} Labels</span>
+                     <>
+                       <Divider />
+                       <span className="menu-item-label">Manage Labels</span>
+                     </>
                      : 
                      null
                   }

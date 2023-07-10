@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
-import { Contact, countryDataObj } from '../../src/vite-env.d'
+import { Contact } from '../../src/vite-env.d'
 import { nanoid } from '@reduxjs/toolkit';
 import { relatedPeopleArray } from './relatedPeopleArray'
 
@@ -17,29 +17,16 @@ interface IProps {
    setValue: UseFormSetValue<Contact>,
    index: number,
    show: boolean,
-   labelFor: string
 }
 
 export default function CustomLabelSelect(props:IProps) {
 
-   const { register, show, label, name , setValue, labelFor} = props;
-   const [countriesNameListData,setCountriesNameListData] = React.useState<countryDataObj[]>()
-   const [localValue,setLocalValue] = React.useState<string>(labelFor === "country_select" ? "United States" : "")
-
-   const fetchCountriesNameListData = async() => {
-      const res = await fetch("https://restcountries.com/v3.1/all?fields=name")
-      const resData: countryDataObj[] = await res.json()
-      const sortedData = resData.sort((a,b) => (
-         a.name.common.localeCompare(b.name.common)
-      ))
-      setCountriesNameListData(sortedData)
-   }
+   const { register, show, label, name , setValue } = props;  
+   const [localValue,setLocalValue] = React.useState<string>("")
 
    React.useEffect(() => {
       register(name as keyof Contact)
-      fetchCountriesNameListData()
    },[])
-   
 
    const handleChange = (e:SelectChangeEvent<string>) => {
       const value = e.target.value;
@@ -51,7 +38,7 @@ export default function CustomLabelSelect(props:IProps) {
 
    return (
       show ?
-      <FormControl className={`${labelFor} custom_label_select`}>
+      <FormControl className='custom_label_select'>
          <InputLabel id="demo-simple-select-label">{label}</InputLabel>
          <Select
             labelId="demo-simple-select-label"
@@ -60,20 +47,13 @@ export default function CustomLabelSelect(props:IProps) {
             label={label}
             size="small"
             value={localValue}
-            className={`${labelFor}-select custom_select`}
+            className="select custom_select"
          >
-            {
-               labelFor === "country_select" && countriesNameListData?.length ?
-               countriesNameListData?.map(value => (
-                  <MenuItem onClick={() => setLocalValue(value.name.common)} key={nanoid()} value={value.name.common}>{value.name.common}</MenuItem>
-               ))
-
-               :
-
-               relatedPeopleArray.map(value => (
-                  <MenuItem onClick={() => setLocalValue(value.value)} key={nanoid()} value={value.value.toLowerCase()}>{value.text}</MenuItem>
-               ))
-            }
+         {
+            relatedPeopleArray.map(value => (
+               <MenuItem onClick={() => setLocalValue(value.value)} key={nanoid()} value={value.value.toLowerCase()}>{value.text}</MenuItem>
+            ))
+         }
          </Select>
       </FormControl>
       :

@@ -23,7 +23,7 @@ function Duplicates() {
    },[duplicates.length])
 
    return (
-      <PageWrapper className="page trash_page" desc="find and resolve duplicates" title="Duplicates">
+      <PageWrapper className="page trash_page" title="Duplicates">
          <p role="alert">Ensure to resolve the duplicates in your saved contacts, to enhance quality user experience</p>
          {
             selectedContacts.length > 0 ?

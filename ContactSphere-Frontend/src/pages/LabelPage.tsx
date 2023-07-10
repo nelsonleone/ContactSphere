@@ -26,7 +26,7 @@ export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean
 
    return(
       fetchingContacts ?
-      <PageWrapper className="homepage" desc={`Check out your contacts with the ${labelBeingPreviewed} label`} title={`Labels - ${labelBeingPreviewed}`}>
+      <PageWrapper className="labels_page" title={`Labels - ${labelBeingPreviewed}`}>
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions />
@@ -45,7 +45,7 @@ export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean
                ))
                :
                <div className="nsc_content">
-                  <p role="alert">No Contact With Label</p>
+                  <p role="alert">No Contact With {labelBeingPreviewed && labelBeingPreviewed.toUpperCase()} label</p>
                </div>
             }
          </main>

@@ -244,7 +244,6 @@
    }
 }
 
-
 // No Saved Contact Prompt
 .nsc_content{
    @include flexObj($justify:center,$direction:column);
@@ -261,6 +260,13 @@
       font-family: $ff_prompts;
       font-size: 1.3rem;
       color: $text-color1;
+   }
+}
+
+
+.labels_page{
+   .nsc_content{
+      background-image: url('')
    }
 }
 

@@ -44,6 +44,12 @@ export const nameSectionInputPropsArray = [
 
 export const addressSectionInputPropsArray = [
    {
+      label: "Country",
+      name: InputPropertyValueName.AddressCountry,
+      type: "text",
+      id: 'country'
+   },
+   {
       label: "State",
       name: InputPropertyValueName.AddressState,
       type: "text",

@@ -98,23 +98,3 @@ interface IDuplicates extends IContactsFromDB {
 }
 
 type Duplicates = IDuplicates[]
-
-
-
-// country list for dropdown
-type countryDataObj = {
-  name:{
-    common:string,
-    official:string,
-    nativeName:{
-      dan:{
-        official:string,
-        common:string
-      },
-      fao:{
-        official: string,
-        common:string
-      }
-    }
-  }
-}

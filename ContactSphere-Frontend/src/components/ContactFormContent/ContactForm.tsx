@@ -24,7 +24,7 @@ import hasObjectChanged from "../../utils/helperFns/compareObjFieldsChange"
 
 
 
-function ContactForm({ action, contactId, defaultValue }: { defaultValue:Contact, action:ContactFormAction, contactId?:string }){
+function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contact, action:ContactFormAction, contactId?:string }){
 
    const { register, handleSubmit, setValue, watch, formState: {errors}, control} = useForm<Contact>({defaultValues: defaultValue || staticDefaultValue})
    const [showMore,setShowMore] = useState(false)

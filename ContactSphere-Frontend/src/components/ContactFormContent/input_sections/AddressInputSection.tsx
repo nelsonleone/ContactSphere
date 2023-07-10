@@ -1,12 +1,10 @@
 import { useId } from "react";
 import NewContactFormInput from "../../../../lib/customInputs/NewContactFormInput";
-import CustomLabelSelect from "../../../../lib/customInputs/CustomLabelSelect";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { Contact } from "../../../vite-env";
 import { MdLocationOn } from 'react-icons/md'
 import { addressSectionInputPropsArray } from "./inputPropsArray";
 import { nanoid } from "@reduxjs/toolkit";
-import { InputPropertyValueName } from "../../../enums";
 
 
 interface IProps {
@@ -18,7 +16,7 @@ interface IProps {
 
 export default function AddressInputSection(props:IProps){
 
-   const { register, showMore , error, setValue} = props;
+   const { register, showMore , error } = props;
    const id = useId()
 
    return(
@@ -27,16 +25,6 @@ export default function AddressInputSection(props:IProps){
             showMore &&
             <MdLocationOn />
          }
-         <CustomLabelSelect
-            index={0}
-            labelFor="country_select" 
-            register={register} 
-            show={showMore} 
-            label="Country" 
-            name={InputPropertyValueName.AddressCountry} 
-            setValue={setValue}
-         />
-
          {
             addressSectionInputPropsArray.map(propValues => {
                return(

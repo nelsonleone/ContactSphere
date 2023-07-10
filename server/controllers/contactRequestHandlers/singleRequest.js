@@ -354,9 +354,8 @@ const setHideContactHandler = asyncHandler(async(request,response) => {
          throw new Error('NO USER WHICH SUCH ID')
          return;
       }
-      
-      const updatedContact = authUserDataDoc.contacts.find(contact => contact._id.toString() === contactId.toString())
-      response.status(200).json(updatedContact)
+   
+      response.status(200).end()
    } 
    catch (error) {
       response.status(500)
@@ -393,10 +392,9 @@ const setDeleteContactHandler = asyncHandler(async (request, response) => {
          deletedAt: new Date()
       }
    
-      const updatedContact = authUserDataDoc.contacts.find(contact => contact._id.toString() === contactId.toString())
       await authUserDataDoc.save()
    
-      response.status(200).json(updatedContact)
+      response.status(200).end()
    } 
    catch (error) {
      response.status(500)

@@ -26,7 +26,7 @@ function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
 
    return (
       fetchingContacts ? 
-      <PageWrapper className="trash" desc="contacts in trash" title="Trash">
+      <PageWrapper className="trash" title="Trash">
          <p role="alert">Contacts Remain In Trash For 30days, after which they are automatically deleted permanently</p>
          {
             selectedContacts.length > 0 ?
