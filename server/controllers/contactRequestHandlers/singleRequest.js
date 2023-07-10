@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const AuthUserData = require('../../models/AuthUserData')
+const formatLabel = require('../../utils/formatLabel')
 
 
 // Create Contact 
@@ -87,11 +88,14 @@ const getAuthUserData = asyncHandler(async(request,response) => {
 // Set New Contact Label
 const setNewLabel = asyncHandler(async(request,response) => {
    const authUserUid = request.query.uid;
-   const newLabel = request.body;
+   const labelToAdd = request.body;
+   const newLabelObj = {...labelToAdd,label: formatLabel(labelToAdd.label)}
+
+
 
    try{
       const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
-      const labelAlreadyExists = authUserDataDoc.labels.some(val => val.label === newLabel.label)
+      const labelAlreadyExists = authUserDataDoc.labels.some(val => val.label === formatLabel(newLabelObj.label))
 
       // Don't Add Label If It Already Exist
       if (labelAlreadyExists){
@@ -101,7 +105,7 @@ const setNewLabel = asyncHandler(async(request,response) => {
 
       const updatedAuthUserData = await AuthUserData.findOneAndUpdate(
          { uid: authUserUid },
-         { $push: { labels: newLabel } },
+         { $push: { labels: newLabelObj } },
          { new: true }
       )
 
@@ -118,12 +122,17 @@ const setNewLabel = asyncHandler(async(request,response) => {
 // Remove Auth User Saved Label
 const removeUserLabel = asyncHandler(async(request,response) => {
    const authUserUid = request.query.uid;
-   const labelForDelete = request.body;
+   const labelForDelete = {...request.body,label: formatLabel(request.body.label)}
 
    try{
-      if(!uid || !labelForDelete){
+      if(!uid){
          response.status(400)
          throw new Error("INVALID QUERY PARAMETERS PASSED")
+      }
+
+      if(!labelForDelete){
+         response.status(400)
+         throw new Error(`REQUEST BODY HAS INCOMPLETE PROPERTIE 'LabelForDelete was not specified'`)
       }
 
       const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
@@ -134,6 +143,15 @@ const removeUserLabel = asyncHandler(async(request,response) => {
       }  
 
       authUserDataDoc.labels.filter(v => v.label !== labelForDelete.label)
+      // UPDATE CONTACTS WITH LABEL IN LABELLEDBY ARRAY
+      authUserDataDoc.contacts = authUserDataDoc.contacts.map(c => {
+         return {
+            ...c,
+            labelledBy: c.labelledBy.filter(v => {
+               return v.label !== labelForDelete.label
+            })
+         }
+      })
       authUserDataDoc.save()
       response.status(201).json(authUserDataDoc.labels)
    }
@@ -151,9 +169,14 @@ const editUserLabel = asyncHandler(async(request,response) => {
    const { labelForEditObj, oldLabel } = request.body;
 
    try{
-      if(!uid || !labelForDelete){
+      if(!uid){
          response.status(400)
          throw new Error("INVALID QUERY PARAMETERS PASSED")
+      }
+
+      if(!labelForEditObj || !oldLabel){
+         response.status(400)
+         throw new Error(`REQUEST BODY HAS INCOMPLETE PROPERTIES 'oldLabel Property Or LabelForEditObj Property was not provided`)
       }
 
       const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
@@ -161,17 +184,18 @@ const editUserLabel = asyncHandler(async(request,response) => {
       if(!authUserDataDoc){
          response.status(404)
          throw new Error("USER WITH SPECIDED UID WAS NOT FOUND")
+         return;
       }  
 
-      const labelIndex = authUserDataDoc.labels.findIndex(v => v._id !== labelForEditObj._id)
-      authUserDataDoc.labels[labelIndex] = {...authUserDataDoc.labels[labelIndex],label:labelForEditObj.label}
+      const labelIndex = authUserDataDoc.labels.findIndex(v => v._id === labelForEditObj._id)
+      authUserDataDoc.labels[labelIndex] = {...authUserDataDoc.labels[labelIndex],label: formatLabel(labelForEditObj.label)}
 
       // UPDATE CONTACTS WITH LABEL IN LABELLEDBY ARRAY
       authUserDataDoc.contacts = authUserDataDoc.contacts.map(c => {
          return {
             ...c,
             labelledBy: c.labelledBy.map(v => {
-               return v.label === oldLabel ? {...v,label:labelForEditObj.label} : v
+               return v.label === oldLabel ? {...v,label:formatLabel(labelForEditObj.label)} : v
             })
          }
       })
@@ -198,6 +222,7 @@ const setFavourited = asyncHandler(async (request, response) => {
       if (!contactId || !uid) {
          response.status(400)
          throw new Error('USER UID OR CONTACT ID WAS NOT PROVIDED')
+         return;
       }
 
       const updatedAuthUserData = await AuthUserData.findOneAndUpdate(
@@ -242,6 +267,12 @@ const manageUserContactsLabels = asyncHandler(async(request,response) => {
 
    try{
       const authUserDataDoc = await AuthUserData.findOne({ uid, })
+
+      if(!authUserDataDoc){
+         response.status(404)
+         throw new Error("")
+         return;
+      }
 
       const contact = authUserDataDoc.contacts.find(c => c._id.toString() === contactId)
 
@@ -293,11 +324,30 @@ const setHideContactHandler = asyncHandler(async(request,response) => {
          throw new Error("INVALID OR INCOMPLETE QUERY PARAMETERS PASSED")
          return;
       }
-      const updatedAuthUserData = await AuthUserData.findOneAndUpdate(
-         { uid, 'contacts._id': contactId },
-         { $set: { 'contacts.$.isHidden': status } },
-         { new: true }
-      )
+
+      const updatedAuthUserData = await AuthUserData.find({uid})
+
+      if (!authUserDataDoc) {
+         response.status(404)
+         throw new Error("NO USER WITH PROVIDED ID WAS FOUND")
+         return;
+      }
+ 
+      const contactIndex = user.contacts.findIndex((contact) => contact._id.toString() === contactId)
+   
+      if (contactIndex === -1) {
+         return res.status(404)
+         throw new Error("CONTACT WITH PROVIDED ID WAS NOT FOUND")
+         return;
+      }
+   
+      authUserDataDoc.contacts[contactIndex] = {
+         ...authUserDataDoc.contacts[contactIndex],
+         isHidden: status,
+         // Once A contact Is Hidden , It's No Longer Starred
+         inFavourites: status === true ? false : authUserDataDoc.contacts[contactIndex].inFavourites
+      }
+
 
       if (!updatedAuthUserData) {
          response.status(404)

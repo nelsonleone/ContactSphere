@@ -7,8 +7,9 @@ import { ContactItemLocation, SortBy } from "../enums";
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions";
 import ContactsPageColumnOrder from "../components/ContactFormContent/ContactsPageColumnOrder";
 import PageWrapper from "../components/PageWrapper";
+import InPageLoader from "../../lib/loaders/InPageLoader";
 
-function HiddenContacts() {
+function HiddenContacts({fetchingContacts}: { fetchingContacts:boolean }){
 
    const { contacts } = useAppSelector(store => store.userData)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
@@ -25,6 +26,7 @@ function HiddenContacts() {
    },[contacts.length])
 
    return (
+      fetchingContacts ? 
       <PageWrapper className="hidden_contacts_page" desc="hidden contacts" title="ContactSphere | Hidden Contacts">
          <h2>Hidden Contacts</h2>
          {
@@ -47,6 +49,8 @@ function HiddenContacts() {
             }
          </main>
       </PageWrapper>
+      :
+      <InPageLoader />
    )
 }
 

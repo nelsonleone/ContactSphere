@@ -8,41 +8,37 @@ import SortContacts from "../utils/helperFns/SortContacts";
 import PageWrapper from "../components/PageWrapper";
 import InPageLoader from "../../lib/loaders/InPageLoader";
 
-function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
+function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
 
    const { contacts } = useAppSelector(store => store.userData)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
    const [sortType,setSortType] = useState(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
-   const [trashedContacts,setTrashedContacts] = useState(contacts.filter(contact => contact.isHidden === true))
+   const starredContacts = contacts.filter(contact => contact.inFavourites === true)
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
 
    useEffect(() => {
       setSortType(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
    },[sortBy])
 
-   useEffect(() => {
-      setTrashedContacts(contacts.filter(contact => contact.inTrash === true))
-   },[contacts.length])
-
    return (
       fetchingContacts ? 
-      <PageWrapper className="trash" desc="contacts in trash" title="Trash">
-         <p role="alert">Contacts Remain In Trash For 30days, after which they are automatically deleted permanently</p>
+      <PageWrapper className="trash" desc="starred contacts" title="Favourites">
+         <p role="alert">If They Are Starred, Yes They Are Special.</p>
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions />
             :
             <ContactsPageColumnOrder />
          }
-         <p aria-label="Hidden Contacts Count" className="contact_count_para">Contacts ({contacts.length})</p>
+         <p aria-label="Hidden Contacts Count" className="contact_count_para">Favourites ({contacts.length})</p>
          <main>
             {
-               trashedContacts.length ? SortContacts(sortType,trashedContacts).map(contactProps => (
-                  <ContactItem key={contactProps._id} location={ContactItemLocation.Trash} {...contactProps} />
+               starredContacts.length ? SortContacts(sortType,starredContacts).map(contactProps => (
+                  <ContactItem key={contactProps._id} location={ContactItemLocation.Favourites} {...contactProps} />
                ))
                :
                <div className="nsc_content">
-                  <p role="alert">You Have No Contact In Trash</p>
+                  <p role="alert">You Have No Starred Contacts</p>
                </div>
             }
          </main>
@@ -52,4 +48,4 @@ function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
    )
 }
 
-export default Trash;
+export default StarredContactsPage;

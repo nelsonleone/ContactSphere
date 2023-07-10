@@ -23,7 +23,14 @@ export default function CreateNewContactButton(){
       !location.pathname.match("/auth") ? 
       <button
          className="cnc_btn" 
-         title="Add New Contact" 
+         title={
+            !location.pathname.match("/auth") ||
+            location.pathname === "/new" ||
+            location.pathname.match('/edit') ?
+            "Create New Contact"
+            :
+            undefined
+         } 
          onClick={() => navigate('/new')}
          disabled={location.pathname === "/new" || location.pathname.match('/edit') ? true : false}
          >

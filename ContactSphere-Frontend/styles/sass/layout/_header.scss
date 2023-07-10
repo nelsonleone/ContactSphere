@@ -55,9 +55,9 @@
    left: -2%;
    top: 0;
    z-index: 100;
-   transition: all .25s linear;
    padding: 5.2em 1.8em 4em;
    background: $generic_color_1;
+   transition: all .2s linear;
    width: 74%;
    height: 100vh;
    overflow-y: auto;
@@ -155,7 +155,7 @@
          margin-block: 1em;
          font-family:  inherit;
          font-weight: $fw_bold;
-         font-size: 1rem;
+         font-size: .9rem;
          @include flexObj;
          width: 100%;
          color: $text-color2;
@@ -172,29 +172,47 @@
       }
 
       ul li{
-         font-size: .92rem;
+         font-size: .9rem;
          margin-block: 1.2em;
          font-family: $ff_primary;
          font-weight: $fw_bold;
          padding-left: 1em;
+         @include flexObj;
+
+
+         & > .active .label_link_btns {
+            button{
+               opacity: 1;
+            }
+
+            p{
+               visibility: hidden;
+            }
+         }
 
          a{
-            @include flexObj($justify:flex-start);
             color: $text-color2;
+            width: 100%;
+         }
+
+         .active{
+            svg{
+               color: $bg_color2;
+            }
          }
 
          p{
             position: absolute;
-            right: .6em;
+            right: 1.4em;
             font-weight: $fw_bold;
-            font-size: .9rem;
+            font-size: .85rem;
             color: $text-color2;
          }
 
          .label_link_btns{
             margin-block:0;
             position: absolute;
-            right: .5em;
+            right: 2.6em;
             @include flexObj;
             gap: .4em;
             button{
@@ -202,10 +220,10 @@
                margin: 0;
                padding: 0;
                z-index: 1;
+               opacity: 0;
 
                svg{
                   color: $text-color1 !important ;
-                  opacity: 0;
                   font-size: 1.1rem;
                   pointer-events: all;
                }
@@ -227,6 +245,12 @@
                }
             }
 
+            .active{
+               svg path {
+                  color: $bg_color2;
+               }
+            }
+
             a{
                color: $text-color2;
             }
@@ -237,9 +261,7 @@
 
             .label_link_btns {
               button{
-                  svg{
-                     opacity: 1;
-                  }
+                 opacity: 1;
               }
             }
          }
@@ -279,12 +301,12 @@ button[aria-controls=user-menu]{
   color: $text-color1;
   z-index: 98;
   background-color: $generic_color_1;
-  border-radius: 6px;
-  border: 1px solid rgb(192, 186, 186);
+  border-radius: 7px;
+  border: 1px solid rgb(218, 215, 215);
   background: $bg_color2;
   
   &:focus{
-     border: 1px solid rgb(192, 186, 186);
+     border: 1px solid $accent_color_2;
   }
 
   &::placeholder{

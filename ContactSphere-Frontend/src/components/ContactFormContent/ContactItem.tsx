@@ -61,7 +61,7 @@ function ContactItem(props:IContactItemProps){
 
          dispatch(setShowSnackbar({
             // Starred Is Still In Previous State Due to Function Still Running
-            snackbarMessage: `${phoneNumber} has been ${!starred ? 'favourited' : 'unfavourited'}`,
+            snackbarMessage: !starred ? `Star removed from ${phoneNumber}` : `${phoneNumber} has been  Starred`,
          }))
       }
 
@@ -115,7 +115,8 @@ function ContactItem(props:IContactItemProps){
 
          <div className="contact_action_icons">
             {
-               props.location === ContactItemLocation.Homepage ?
+               props.location === ContactItemLocation.Homepage ||
+               props.location === ContactItemLocation.LabelsPage ?
                <>
                   <StarIconButton starred={starred} handleStarring={() => handleStarring()} />
                   <EditIconButton navigateToEditPage={() => navigate(`c/edit/${_id}`)} />

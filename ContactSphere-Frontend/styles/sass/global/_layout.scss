@@ -13,13 +13,18 @@
       .page{
          padding-top: 5em;
          width: auto;
+         transition: width .2s linear, margin .2s linear;
          background-color: $generic_color_1;
          @include alignPage;
-         transition: margin 3s linear,width 3s linear ;
       }
 
       .cnc_btn{
          left: 1em;
+      }
+
+      .inpage_loader{
+         width: auto;
+         @include alignPage;
       }
    
       .create_contact_page{
@@ -51,11 +56,15 @@
    right: 1em;
    font-family: $ff_prompts;
    font-weight: $fw_bold;
-   transition: left .24s linear, scale .23s ease-in-out;
+   transition: all .23s linear;
 
    &:disabled{
       opacity: .5;
       cursor: not-allowed;
+
+      &:hover{
+         scale: unset;
+      }
    }
 
    svg{

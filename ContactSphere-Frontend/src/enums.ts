@@ -12,7 +12,9 @@ export enum AlertSeverity {
 export enum ContactItemLocation {
    Homepage = "homepage",
    HiddenContacts = "hiddenContacts",
-   Trash = "trash"
+   Trash = "trash",
+   LabelsPage =  "labelsPage",
+   Favourites = "favourites"
 }
 
 export enum ContactFormAction {

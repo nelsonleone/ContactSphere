@@ -42,13 +42,13 @@ export default function RouteHandler({fetchingContacts}:{ fetchingContacts:boole
         }
       />
       {/* Dynamic Routes */}
-      <Route path="/labels/:id" element={<LabelPage />} />
+      <Route path="/labels/:id" element={<LabelPage fetchingContacts={fetchingContacts} />} />
       <Route path="/c/:id" element={<ContactViewPage />} />
       <Route path="/c/edit/:id" element={<EditContactPage />} />
 
       <Route path="/new" element={<CreateContact />} />
-      <Route path="/hidden" element={<HiddenContacts />} />
-      <Route path="/trash" element={<Trash />} />
+      <Route path="/hidden" element={<HiddenContacts fetchingContacts={fetchingContacts} />} />
+      <Route path="/trash" element={<Trash fetchingContacts={fetchingContacts} />} />
       <Route path="/help" element={<HelpPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

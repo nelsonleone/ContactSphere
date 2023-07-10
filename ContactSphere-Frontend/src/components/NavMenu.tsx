@@ -50,7 +50,7 @@ function NavMenu(props:IProps){
 
    const checkContactsWithLabel = useCallback((label:string) => {
       const withLabel = contacts.filter(c => c.labelledBy.some(obj => obj.label === label)).length;
-      return withLabel
+      return withLabel >  0 ? withLabel : "";
    },[contacts.length])
 
    const handleLabelDelete = (label:string) => clientAsyncHandler(
@@ -65,7 +65,7 @@ function NavMenu(props:IProps){
       },
       dispatch
    )
-   
+
    const handleOpenDialog = (labelObj:ILabelObj) => {
       setLabelForEdit(labelObj)
       setOldLabel(labelObj.label)
@@ -155,11 +155,11 @@ function NavMenu(props:IProps){
                                           <MdLabel aria-label="Label Icon" />
                                           <span>{value.label}</span>
                                           <p aria-label={`contacts-with-${value.label}-label`}>{checkContactsWithLabel(value.label)}</p>
-                                          <div className="label_link_btns">
-                                             <EditIconButton toolTipText="Rename Label" navigateToEditPage={() => handleOpenDialog(value)} aria-label="Edit" />
-                                             <DeleteIconButton toolTipText="Delete Label" handleDelete={() => handleLabelDelete(value.label)} />
-                                          </div>
                                        </NavLink>
+                                       <div className="label_link_btns">
+                                          <EditIconButton toolTipText="Rename Label" navigateToEditPage={() => handleOpenDialog(value)} aria-label="Edit" />
+                                          <DeleteIconButton toolTipText="Delete Label" handleDelete={() => handleLabelDelete(value.label)} />
+                                       </div>
                                     </li>
                                  )
                               })

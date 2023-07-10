@@ -38,7 +38,7 @@ export default function ContactMenu(props:IProps){
    const [hideContact] = useHideContactMutation()
    const [hideMultipleContacts] = useHideMultipleContactsMutation()
    
-   const [unregisteredLabels,setUnregisteredLabels] = useState(userSavedLabels?.filter(item => props.contactLabels?.some(obj => obj.label === item.label)))
+   const [unregisteredLabels,setUnregisteredLabels] = useState(userSavedLabels?.filter(item => !props.contactLabels?.some(obj => obj.label === item.label)))
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
    const open = Boolean(anchorEl)
    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -108,7 +108,7 @@ export default function ContactMenu(props:IProps){
    )
 
    useEffect(() => {
-      setUnregisteredLabels(userSavedLabels.filter(item => props.contactLabels?.some(obj => obj.label !== item.label)))
+      setUnregisteredLabels(userSavedLabels.filter(item => !props.contactLabels?.some(obj => obj.label === item.label)))
    },[props.contactLabels?.length,userSavedLabels?.length])
 
    return(

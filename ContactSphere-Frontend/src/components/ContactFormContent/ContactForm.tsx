@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form"
 import { staticDefaultValue } from "./newContactDefaultValues"
 import { Contact } from "../../vite-env"
-import { memo, useEffect, useState, useMemo } from "react"
+import { memo, useEffect, useState, useCallback } from "react"
 import NameInputSection from "./input_sections/NameSection"
 import FormalInputSection from "./input_sections/FormalInputSection"
 import ContactInputSection from "./input_sections/ContactInputSection"
@@ -44,7 +44,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue:Contact
    )
    const uid = useAppSelector(store => store.authUser.userDetails.uid)
    const dispatch = useAppDispatch()
-   const formValues = useMemo(() => watch(), [watch])
+   const formValues = useCallback(() => watch(), [watch])
 
 
    const handleOnSubmit: SubmitHandler<Contact> = async(data) => {

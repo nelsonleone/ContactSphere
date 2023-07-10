@@ -67,14 +67,15 @@ export default function App(){
     // Navigate User To Auth Page
     if(!authenticating && getAuthStateError && location.pathname !== "auth/create_account" && location.pathname !== "auth/signin"){
       navigate('/auth/signin')
+      dispatch(setLoad(false))
     }
 
       
     if(UserDetails && !getAuthStateError){
       dispatch(setUserDetails({...UserDetails,authMethod:AuthMethod.AuthSession}))
+      dispatch(setLoad(false))
     }
 
-    dispatch(setLoad(false))
   },[UserDetails,authenticating,getAuthStateError])
 
 
