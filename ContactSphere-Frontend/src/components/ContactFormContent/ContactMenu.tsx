@@ -140,10 +140,10 @@ export default function ContactMenu(props:IProps){
                   {
                      props.method === "single" && unregisteredLabels.length || 
                      props.method === "multi" && userSavedLabels?.length ?
-                     <>
+                     <div>
                        <Divider />
                        <span className="menu-item-label">Manage Labels</span>
-                     </>
+                     </div>
                      : 
                      null
                   }

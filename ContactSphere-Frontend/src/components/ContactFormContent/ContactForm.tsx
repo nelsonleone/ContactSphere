@@ -21,6 +21,7 @@ import { useAppDispatch, useAppSelector } from "../../customHooks/reduxCustomHoo
 import { setShowAlert } from "../../RTK/features/alertSlice"
 import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice"
 import hasObjectChanged from "../../utils/helperFns/compareObjFieldsChange"
+import cleanContactFormFields from "../../utils/helperFns/cleanContactFields"
 
 
 
@@ -55,29 +56,38 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
          }
 
          // Clean Up Inputs
-         const formFields = {...data,
-            address: {
-               ...data.address
-            },
+         const formFields : Contact = {
+            ...data,
             birthday: data.birthday ? new Date(data.birthday) : '',
-            firstName: data.firstName.trim(),
-            lastName: data.lastName.trim(),
-            MiddleName: data.middleName.trim(),
-            Nickname: data.nickname.trim(),
+            firstName: cleanContactFormFields(data.firstName),
+            lastName: cleanContactFormFields(data.lastName),
+            middleName: cleanContactFormFields(data.middleName),
+            nickname: cleanContactFormFields(data.nickname)
          }
 
          if(action === ContactFormAction.Create){
-            await createContact({
+            const successRes = await createContact({
                contactDetails: formFields,
                authUserUid: uid
-            })
+            }).unwrap()
+
+            // Internal Server Error Occured [Catch Block Can't Catch Some Of Them ]
+            if(!successRes){
+               throw new Error("An Error Occured Creating Contact")
+            }
+
          }
          else{
-            await editContact({
+            const successRes =  await editContact({
                contactDetails: formFields,
                authUserUid: uid,
                contactId: contactId || ''
-            }) 
+            }) .unwrap()
+
+            // Internal Server Error Occured [Catch Block Can't Catch Some Of Them ]
+            if(!successRes){
+               throw new Error("An Error Occured Creating Contact")
+            }
          }
 
          dispatch(setShowSnackbar({
@@ -106,9 +116,18 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    // Dsiable Save Button In Edit Mode If Fields Remains The Same
    useEffect(() => {
       if(action === ContactFormAction.Edit) {
-         setDisableSaveBtn(hasObjectChanged(formValues,defaultValue))
+         setDisableSaveBtn(hasObjectChanged(formValues,defaultValue || staticDefaultValue))
       }
    },[formValues])
+
+   useEffect(() => {
+      if(action === ContactFormAction.Edit) {
+         dispatch(setShowSimpleModal({
+            text1: "Please Note",
+            text2: "Only Modified Fields Will Be Editted"
+         }))
+      }
+   },[])
 
    return(
       <>
@@ -134,7 +153,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
                   sx={{ bgcolor: '#f57e0fd0',borderRadius:action === ContactFormAction.Edit ? "30px" : "4px" }} >
                   Save
                </Button>
-               <button type="button" className="fx-button" onClick={() => navigate(-1)}>
+               <button type="button" disabled={isLoading || editting ? true : false} className="fx-button" onClick={() => navigate(-1)}>
                   <RxCross1 />
                </button>
 
@@ -148,7 +167,6 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
                <AddressInputSection error={errors?.address?.postalCode?.message} showMore={showMore} register={register} setValue={setValue}  />
                <AdditionalFields error={errors?.birthday?.message} control={control} setValue={setValue} register={register} showMore={showMore} />
             </div>
-
             <button type="button"  className="show_more_btn" onClick={() => setShowMore(!showMore)}>Show {showMore ? "Less" : "More"}</button>
          </form>
 

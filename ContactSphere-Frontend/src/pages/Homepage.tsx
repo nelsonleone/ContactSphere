@@ -1,12 +1,12 @@
 import ContactItem from "../components/ContactFormContent/ContactItem"
 import { useAppSelector } from "../customHooks/reduxCustomHooks"
 import InPageLoader from '../../lib/loaders/InPageLoader'
-import { FcContacts } from 'react-icons/fc'
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions"
 import { memo, useEffect, useState } from "react"
 import { ContactItemLocation, SortBy } from "../enums"
 import SortContacts from "../utils/helperFns/SortContacts"
 import PageWrapper from "../components/PageWrapper"
+import ContactPageTopColumn from "../components/ContactFormContent/ContactPageTopColumn"
 
 interface IHomepageProps {
    fetchingContacts: boolean
@@ -28,16 +28,9 @@ function Homepage(props:IHomepageProps){
       <PageWrapper className="homepage" title="ContactSphere">
          {
             selectedContacts.length > 0 ?
-            <MultiSelectActions />
+            <MultiSelectActions contactsForMultiSelect={contacts} />
             :
-            <div className="contacts_view_top_section">
-               <ul>
-                  <li id="name-col">Name</li>
-                  <li id="email-col">Email</li>
-                  <li id="phone-col">Phone Number</li>
-                  <li id="jobTitle-col">Job Title</li>
-               </ul>
-            </div>
+            <ContactPageTopColumn />
          }
          <p aria-label="Contacts Count" className="contact_count_para">Contacts ({contacts.length})</p>
 
@@ -51,7 +44,6 @@ function Homepage(props:IHomepageProps){
                ))
                :
                <div className="nsc_content">
-                  <FcContacts />
                   <p role="alert">You Have No Saved Contact</p>
                </div>
             }

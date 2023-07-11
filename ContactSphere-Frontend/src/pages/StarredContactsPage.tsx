@@ -7,31 +7,36 @@ import { ContactItemLocation, SortBy } from "../enums";
 import SortContacts from "../utils/helperFns/SortContacts";
 import PageWrapper from "../components/PageWrapper";
 import InPageLoader from "../../lib/loaders/InPageLoader";
+import { IContactsFromDB } from "../vite-env";
 
 function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
 
    const { contacts } = useAppSelector(store => store.userData)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
    const [sortType,setSortType] = useState(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
-   const starredContacts = contacts.filter(contact => contact.inFavourites === true)
+   const [starredContacts,setStarredContacts] = useState<IContactsFromDB[]>(contacts.filter(contact => contact.inFavourites === true))
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
+
+   useEffect(() => {
+      setStarredContacts(contacts.filter(contact => contact.inFavourites === true))
+   },[contacts.length])
 
    useEffect(() => {
       setSortType(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
    },[sortBy])
 
    return (
-      fetchingContacts ? 
+      !fetchingContacts ? 
       <PageWrapper className="trash"  title="Favourites">
          <p role="alert">If They Are Starred, Yes They Are Special.</p>
          {
             selectedContacts.length > 0 ?
-            <MultiSelectActions />
+            <MultiSelectActions contactsForMultiSelect={starredContacts} />
             :
             <ContactsPageColumnOrder />
          }
          <p aria-label="Hidden Contacts Count" className="contact_count_para">Favourites ({contacts.length})</p>
-         <main>
+         <main className="contacts_container">
             {
                starredContacts.length ? SortContacts(sortType,starredContacts).map(contactProps => (
                   <ContactItem key={contactProps._id} location={ContactItemLocation.Favourites} {...contactProps} />

@@ -154,11 +154,11 @@
       &>button{
          margin-block: 1em;
          font-family:  inherit;
-         font-weight: $fw_bold;
          font-size: .9rem;
          @include flexObj;
          width: 100%;
-         color: $text-color2;
+         font-family: $ff_secondary;
+         color: $text-color1;
          padding-right: .4em;
          padding: .4em;
          border-radius: 4px;
@@ -205,7 +205,7 @@
             position: absolute;
             right: 1.4em;
             font-weight: $fw_bold;
-            font-size: .85rem;
+            font-size: .88rem;
             color: $text-color2;
          }
 

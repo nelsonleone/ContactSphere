@@ -54,6 +54,10 @@
       button {
          font-family: $ff_primary;
          font-weight: $fw_xBold;
+
+         &:disabled{
+            cursor: not-allowed;
+         }
       }
 
       .fx-button{
@@ -292,9 +296,9 @@
       font-weight: $fw_bold;
       font-size: 1rem;
       position: fixed;
-      bottom: 2em;
+      bottom: 3em;
       right: 20%;
-      text-decoration: underline $accent_color_1
+      text-decoration: underline $accent_color_1;
    }
 }
 
@@ -385,7 +389,7 @@
             width: 95%;
             margin-inline: auto;
             z-index: 2;
-            top: 4.7em;
+            top: 4.3em;
             background-color: $generic_color_1;
 
             .add_label_btn{

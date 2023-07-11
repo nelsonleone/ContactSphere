@@ -30,7 +30,7 @@ function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
          <p role="alert">Contacts Remain In Trash For 30days, after which they are automatically deleted permanently</p>
          {
             selectedContacts.length > 0 ?
-            <MultiSelectActions />
+            <MultiSelectActions contactsForMultiSelect={trashedContacts} />
             :
             <ContactsPageColumnOrder />
          }

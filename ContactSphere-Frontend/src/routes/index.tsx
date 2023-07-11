@@ -11,6 +11,8 @@ import HelpPage from '../pages/HelpPage'
 import HiddenContacts from '../pages/HiddenContacts'
 import EditContactPage from '../pages/EditContactPage'
 import Trash from '../pages/Trash'
+import StarredContactsPage from '../pages/StarredContactsPage'
+import Duplicates from '../pages/Duplicates'
 
 export default function RouteHandler({fetchingContacts}:{ fetchingContacts:boolean }){
 
@@ -49,6 +51,8 @@ export default function RouteHandler({fetchingContacts}:{ fetchingContacts:boole
       <Route path="/new" element={<CreateContact />} />
       <Route path="/hidden" element={<HiddenContacts fetchingContacts={fetchingContacts} />} />
       <Route path="/trash" element={<Trash fetchingContacts={fetchingContacts} />} />
+      <Route path="/favourites" element={<StarredContactsPage fetchingContacts={fetchingContacts} />} />
+      <Route path="/duplicates" element={<Duplicates fetchingContacts={fetchingContacts} />} />
       <Route path="/help" element={<HelpPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

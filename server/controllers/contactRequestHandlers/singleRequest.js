@@ -1,12 +1,20 @@
 const asyncHandler = require('express-async-handler')
 const AuthUserData = require('../../models/AuthUserData')
-const formatLabel = require('../../utils/formatLabel')
+const capitalizeString = require('../../utils/capitalizeString')
 
 
 // Create Contact 
 const createContact = asyncHandler(async(request,response) => {
    const authUserUid = request.query.uid;
-   const newContact = { ...request.body, inTrash: false,inFavourites: false,isHidden: false }
+   const newContact = { 
+      ...request.body, 
+      inTrash: false,
+      inFavourites: false,
+      isHidden: false, 
+      firstName: capitalizeString(request.body.firstName),
+      lastName: capitalizeString(request.body.lastName),
+      middleName: capitalizeString(request.body.middleName)
+   }
 
    if(!authUserUid){
       response.status(400)
@@ -16,24 +24,22 @@ const createContact = asyncHandler(async(request,response) => {
    try{
       const authUserDataDoc = await AuthUserData.find({ uid: authUserUid })
 
-      // User Doc Has Already Been Initialized
       if(authUserDataDoc){
-         const newAuthUserData = await AuthUserData.findOneAndUpdate(
-            { uid: authUserUid },
-            { $push: { contacts: newContact } },
-            { new: true }
-         )
+         response.status(400)
+         throw new Error("NO USER WITH SPECIFIED UID WAS FOUND")
+         returnl
       }
 
-      else{
-         await AuthUserData.create({
-            uid: authUserUid,
-            contacts: [],
-            labels: []
-         })
-      }
+      // User Doc Has Already Been Initialized
+      const newAuthUserData = await AuthUserData.findOneAndUpdate(
+         { uid: authUserUid },
+         { $push: { contacts: newContact } },
+         { new: true }
+      )
 
-      response.status(201).end()
+      response.status(201).json({
+         message: "Contact Created Successfully"
+      })
    }
 
    catch(error){
@@ -55,14 +61,20 @@ const getAuthUserData = asyncHandler(async(request,response) => {
       let authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
 
       if (!authUserDataDoc){
-         // Initialize User In Database
-         authUserDataDoc = await AuthUserData.create({
-            uid: authUserUid,
-            contacts: [],
-            labels: []
-         })
-
-         response.status(201).json(authUserDataDoc)
+         if(authUserUid){
+            // Initialize User In Database
+            authUserDataDoc = await AuthUserData.create({
+               uid: authUserUid,
+               contacts: [],
+               labels: []
+            })
+               
+            response.status(201).json(authUserDataDoc)
+         }
+         else{
+            response.status(400)
+            throw new Error("INVALID QUERY PARAMTER PASSED")
+         }
          return;
       }
 
@@ -89,13 +101,20 @@ const getAuthUserData = asyncHandler(async(request,response) => {
 const setNewLabel = asyncHandler(async(request,response) => {
    const authUserUid = request.query.uid;
    const labelToAdd = request.body;
-   const newLabelObj = {...labelToAdd,label: formatLabel(labelToAdd.label)}
+   const newLabelObj = {...labelToAdd,label: capitalizeString(labelToAdd.label)}
 
 
 
    try{
       const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
-      const labelAlreadyExists = authUserDataDoc.labels.some(val => val.label === formatLabel(newLabelObj.label))
+
+      if(authUserDataDoc){
+         response.status(400)
+         throw new Error("NO USER WITH SPECIFIED UID WAS FOUND")
+         return;
+      }
+
+      const labelAlreadyExists = authUserDataDoc.labels.some(val => val.label === capitalizeString(newLabelObj.label))
 
       // Don't Add Label If It Already Exist
       if (labelAlreadyExists){
@@ -122,7 +141,7 @@ const setNewLabel = asyncHandler(async(request,response) => {
 // Remove Auth User Saved Label
 const removeUserLabel = asyncHandler(async(request,response) => {
    const authUserUid = request.query.uid;
-   const labelForDelete = {...request.body,label: formatLabel(request.body.label)}
+   const labelForDelete = {...request.body,label: capitalizeString(request.body.label)}
 
    try{
       if(!uid){
@@ -188,14 +207,14 @@ const editUserLabel = asyncHandler(async(request,response) => {
       }  
 
       const labelIndex = authUserDataDoc.labels.findIndex(v => v._id === labelForEditObj._id)
-      authUserDataDoc.labels[labelIndex] = {...authUserDataDoc.labels[labelIndex],label: formatLabel(labelForEditObj.label)}
+      authUserDataDoc.labels[labelIndex] = {...authUserDataDoc.labels[labelIndex],label: capitalizeString(labelForEditObj.label)}
 
       // UPDATE CONTACTS WITH LABEL IN LABELLEDBY ARRAY
       authUserDataDoc.contacts = authUserDataDoc.contacts.map(c => {
          return {
             ...c,
             labelledBy: c.labelledBy.map(v => {
-               return v.label === oldLabel ? {...v,label:formatLabel(labelForEditObj.label)} : v
+               return v.label === oldLabel ? {...v,label:capitalizeString(labelForEditObj.label)} : v
             })
          }
       })
@@ -285,10 +304,11 @@ const manageUserContactsLabels = asyncHandler(async(request,response) => {
       const labelAlreadyExists = contact.labelledBy.find(
          (labelObj) => labelObj.label === value.label
       )
+
       if (!labelAlreadyExists && actionType === "add") {
          await AuthUserData.findOneAndUpdate(
             { uid, 'contacts._id': contact._id },
-            { $push: { 'contacts.$.labelledBy': value } }
+            { $push: { 'contacts.$.labelledBy': value }}
          )
       }
       else if(labelAlreadyExists && actionType === "remove"){
@@ -297,7 +317,10 @@ const manageUserContactsLabels = asyncHandler(async(request,response) => {
             { $pull: { 'contacts.$.labelledBy': value } }
          )
       }
-      const updatedContact = authUserDataDoc.contacts.find(contact => contact._id.toString() === contactId.toString())
+
+      const updatedContactUserDataDoc = await AuthUserData.findOne({ uid })
+      const updatedContact = updatedContactUserDataDoc.contacts.find(c => c._id.toString() === contact._id.toString())
+
       response.status(200).json(updatedContact)
    }
 
@@ -446,7 +469,15 @@ const setRestoreFromTrash = asyncHandler(async(request,response) => {
 
 const setEdittedContact = async (req, res) => {
    const { uid, contactId } = req.query;
-   const edittedContactDetails = req.body;
+   const edittedContactDetails = { 
+      ...request.body, 
+      inTrash: false,
+      inFavourites: false,
+      isHidden: false, 
+      firstName: capitalizeString(request.body.firstName),
+      lastName: capitalizeString(request.body.lastName),
+      middleName: capitalizeString(request.body.middleName)
+   }
  
    try {
       const user = await AuthUserData.findOne({ uid })

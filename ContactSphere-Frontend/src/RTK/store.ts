@@ -10,6 +10,7 @@ import contactsMultiSelectReducer from './features/contactMultiSelectSlice';
 import wrkSnackbarReducer from './features/wrkSnackbarSlice';
 import userLocalSettingReducer from './features/userLocalSettingSlice';
 import resolveDuplicatesReducer from './features/resolveDuplicatesSlice';
+import simpleModalReducer from './features/simpleModalSlice';
 
 const appStore = configureStore({
    reducer: {
@@ -22,6 +23,7 @@ const appStore = configureStore({
       multiSelect: contactsMultiSelectReducer,
       userLocalSetting: userLocalSettingReducer,
       resolveDuplicates: resolveDuplicatesReducer,
+      simpleModal: simpleModalReducer,
       [authQuerySlice.reducerPath]: authQuerySlice.reducer,
       [contactsQuerySlice.reducerPath]: contactsQuerySlice.reducer,
    },

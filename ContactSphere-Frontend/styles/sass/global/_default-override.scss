@@ -93,22 +93,24 @@ svg{
 // overwrite Add label MUI dialog  styling
 
 .add_label_dialog_input{
-   border-color: $accent_color_2 !important;
+   border-color: $radiant_color2 !important;
    label{
      font-family: $ff_primary;
      font-size: 1rem !important;
+     color: $radiant_color2 !important;
    }
 
    input{
       font-family: $ff_primary;
       font-weight: $fw_bold;
+      border-color: $radiant_color2 !important;
    }
 }
 
 .add_label_dialog_btn{
    font-family: $ff_primary !important;
-   background-color: transparent !important;
-   color: hsl(219, 48%, 50%) !important;
+   background-color: $radiant_color2 !important;
+   color: $generic_color_1 !important;
    font-size: 1rem !important;
 
    &:hover{

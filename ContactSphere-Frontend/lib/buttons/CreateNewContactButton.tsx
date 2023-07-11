@@ -20,19 +20,13 @@ export default function CreateNewContactButton(){
    },[])
 
    return(
-      !location.pathname.match("/auth") ? 
+      !location.pathname.match("/auth") &&
+      location.pathname !== "/new" && 
+      !location.pathname.match('/edit') ? 
       <button
          className="cnc_btn" 
-         title={
-            !location.pathname.match("/auth") ||
-            location.pathname === "/new" ||
-            location.pathname.match('/edit') ?
-            "Create New Contact"
-            :
-            undefined
-         } 
+         title="Create New Contact"
          onClick={() => navigate('/new')}
-         disabled={location.pathname === "/new" || location.pathname.match('/edit') ? true : false}
          >
          <FaPlus />
          {

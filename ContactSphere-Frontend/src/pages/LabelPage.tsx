@@ -29,7 +29,7 @@ export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean
       <PageWrapper className="labels_page" title={`Labels - ${labelBeingPreviewed}`}>
          {
             selectedContacts.length > 0 ?
-            <MultiSelectActions />
+            <MultiSelectActions contactsForMultiSelect={contactsWithLabel}  />
             :
             <ContactPageTopColumn />
          }

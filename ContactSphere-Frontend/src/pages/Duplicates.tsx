@@ -5,36 +5,34 @@ import MultiSelectActions from "../components/ContactFormContent/MultiSelectActi
 import { useAppSelector } from "../customHooks/reduxCustomHooks";
 import { ContactItemLocation, SortBy } from "../enums";
 import SortContacts from "../utils/helperFns/SortContacts";
+import InPageLoader from "../../lib/loaders/InPageLoader";
+import PageWrapper from "../components/PageWrapper";
 
-function Duplicates() {
+function Duplicates({fetchingContacts}: {fetchingContacts:boolean}) {
 
    const duplicates = useAppSelector(store => store.resolveDuplicates)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
    const [sortType,setSortType] = useState(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
-   const [localDuplicates,setLocalDuplicates] = useState(duplicates.filter(contact => contact.isHidden === true))
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
 
    useEffect(() => {
       setSortType(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
    },[sortBy])
 
-   useEffect(() => {
-      setLocalDuplicates(duplicates.filter(contact => contact.inTrash === true))
-   },[duplicates.length])
-
    return (
+      !fetchingContacts ?
       <PageWrapper className="page trash_page" title="Duplicates">
          <p role="alert">Ensure to resolve the duplicates in your saved contacts, to enhance quality user experience</p>
          {
             selectedContacts.length > 0 ?
-            <MultiSelectActions />
+            <MultiSelectActions contactsForMultiSelect={duplicates}/>
             :
             <ContactsPageColumnOrder />
          }
-         <p aria-label="Hidden Contacts Count" className="contact_count_para">Duplicates ({localDuplicates.length})</p>
+         <p aria-label="Hidden Contacts Count" className="contact_count_para">Duplicates ({duplicates.length})</p>
          <main>
             {
-               localDuplicates.length ? SortContacts(sortType,duplicates).map(contactProps => (
+               duplicates.length ? SortContacts(sortType,duplicates).map(contactProps => (
                   <ContactItem key={contactProps._id} location={ContactItemLocation.Trash} {...contactProps} />
                ))
                :
@@ -44,6 +42,8 @@ function Duplicates() {
             }
          </main>
       </PageWrapper>
+      :
+      <InPageLoader />
    )
 }
 

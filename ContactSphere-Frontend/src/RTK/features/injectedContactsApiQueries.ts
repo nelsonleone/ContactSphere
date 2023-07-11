@@ -10,7 +10,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
          providesTags: ['Contact','Label']
       }),
 
-      createContact: builder.mutation<void,{contactDetails:Contact,authUserUid:string}>({
+      createContact: builder.mutation<string,{contactDetails:Contact,authUserUid:string}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/setNewContact?uid=${args.authUserUid}`,
             method: 'POST',
@@ -20,7 +20,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       }),
 
 
-      editContact: builder.mutation<void,{contactDetails:Contact,authUserUid:string,contactId:string}>({
+      editContact: builder.mutation<string,{contactDetails:Contact,authUserUid:string,contactId:string}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/setNewContact?uid=${args.authUserUid}`,
             method: 'POST',
@@ -61,7 +61,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       }),
 
       // Updated Contact Labels Update
-      manageLabels: builder.mutation<IContactsFromDB,{label:string,authUserUid:string,contactId:string,actionType:string}>({
+      manageLabels: builder.mutation<IContactsFromDB,{label:string,authUserUid:string,contactId:string,actionType:"add"|"remove"}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/manageUserContactLabels?uid=${args.authUserUid}&contactId=${args.contactId}&actionType=${args.actionType}`,
             method: 'POST',

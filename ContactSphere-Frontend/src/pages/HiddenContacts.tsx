@@ -1,4 +1,3 @@
-import { FcContacts } from "react-icons/fc";
 import ContactItem from "../components/ContactFormContent/ContactItem";
 import { useAppSelector } from "../customHooks/reduxCustomHooks";
 import SortContacts from "../utils/helperFns/SortContacts";
@@ -26,12 +25,12 @@ function HiddenContacts({fetchingContacts}: { fetchingContacts:boolean }){
    },[contacts.length])
 
    return (
-      fetchingContacts ? 
-      <PageWrapper className="hidden_contacts_page" desc="hidden contacts" title="ContactSphere | Hidden Contacts">
+      !fetchingContacts ? 
+      <PageWrapper className="hidden_contacts_page" title="ContactSphere | Hidden Contacts">
          <h2>Hidden Contacts</h2>
          {
             selectedContacts.length > 0 ?
-            <MultiSelectActions />
+            <MultiSelectActions contactsForMultiSelect={hiddenContacts} />
             :
             <ContactsPageColumnOrder />
          }
@@ -43,7 +42,6 @@ function HiddenContacts({fetchingContacts}: { fetchingContacts:boolean }){
                ))
                :
                <div className="nsc_content">
-                  <FcContacts />
                   <p role="alert">You Have No Hidden Contact</p>
                </div>
             }

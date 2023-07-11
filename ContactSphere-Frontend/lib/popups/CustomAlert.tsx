@@ -15,7 +15,7 @@ export default function CustomAlert() {
   React.useEffect(() => {
       const hideTimer = setTimeout(() => {
          dispatch(setHideAlert())
-      }, 4000)
+      }, 6000)
 
       return () => clearTimeout(hideTimer)
    },[showAlert,location.pathname])

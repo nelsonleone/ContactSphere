@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { BiUser , BiErrorCircle, BiStar , BiTrashAlt, BiPlus } from 'react-icons/bi'
 import { FiEyeOff } from 'react-icons/fi'
 import { GrClone } from 'react-icons/gr'
-import { Dispatch, SetStateAction, memo, useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { FiLogIn } from 'react-icons/fi';
 import { FaUserPlus } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../customHooks/reduxCustomHooks'
@@ -48,10 +48,10 @@ function NavMenu(props:IProps){
       ))
    }
 
-   const checkContactsWithLabel = useCallback((label:string) => {
+   const checkContactsWithLabel = (label:string) => {
       const withLabel = contacts.filter(c => c.labelledBy.some(obj => obj.label === label)).length;
       return withLabel >  0 ? withLabel : "";
-   },[contacts.length])
+   }
 
    const handleLabelDelete = (label:string) => clientAsyncHandler(
       async() => {
@@ -195,4 +195,4 @@ function NavMenu(props:IProps){
    )
 }
 
-export default memo(NavMenu)
+export default NavMenu;

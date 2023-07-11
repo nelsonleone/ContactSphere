@@ -12,7 +12,7 @@ type ManageLabel = MutationTrigger<MutationDefinition<{
    label: string;
    authUserUid: string;
    contactId: string;
-   actionType: string;
+   actionType: "add" | "remove";
 }, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", IContactsFromDB, "contactsQueryApi">>
 
 type ManageMultiContactsLabels= MutationTrigger<MutationDefinition<{
@@ -54,6 +54,10 @@ export default async function handleAsyncAddLabel(
             actionType
          }).unwrap()
 
+
+         if(!updatedContact){
+            throw new Error("An Error Occured, Try Again")
+         }
          // Update Specific Contact In State
          dispatch(setEdittedContact(updatedContact))
       }
@@ -66,7 +70,7 @@ export default async function handleAsyncAddLabel(
       }
 
       dispatch(setShowSnackbar({
-         snackbarMessage: `${label} Label Has Been Set ${method === "single" ? "on" + phoneNumber :""}`
+         snackbarMessage: `${label} Label Has Been Set ${method === "single" ? `on ${phoneNumber}` :""}`
       }))
    }
 

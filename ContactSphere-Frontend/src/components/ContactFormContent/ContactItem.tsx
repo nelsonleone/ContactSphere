@@ -38,7 +38,6 @@ function ContactItem(props:IContactItemProps){
       labelledBy
    } = props;
 
-   const [starred,setStarred] = useState(inFavourites)
    const navigate = useNavigate()
    const uid = useAppSelector(store => store.authUser.userDetails.uid)
    const [addToFavourites,{}] = useAddToFavouritesMutation()
@@ -49,19 +48,24 @@ function ContactItem(props:IContactItemProps){
    const dispatch = useAppDispatch()
 
    const handleStarring = async() => {
-      setStarred(!starred)
 
+      
       try{
          dispatch(setShowWrkSnackbar())
          await stopUnauthourizedActions(uid)
          // Status Is Used To Update The Interacted Contact [updates "inFavourites" to false if true and vice-versa]
          const status = inFavourites ? false : true;
          const interactedContact = await addToFavourites({contactId:_id,authUserUid:uid!,status}).unwrap()
-         dispatch(setEdittedContact(interactedContact))
 
+         if(!interactedContact){
+            throw new Error("An Error Occured Starring Contact, Try Again")
+         }
+
+         dispatch(setEdittedContact(interactedContact))
+         
          dispatch(setShowSnackbar({
-            // Starred Is Still In Previous State Due to Function Still Running
-            snackbarMessage: !starred ? `Star removed from ${phoneNumber}` : `${phoneNumber} has been  Starred`,
+            // inFavourites Is Still In Previous State Due to Function Still Running
+            snackbarMessage: inFavourites  ? `Star removed from ${phoneNumber}` : `${phoneNumber} have been  Starred`,
          }))
       }
 
@@ -70,9 +74,6 @@ function ContactItem(props:IContactItemProps){
             alertMessage: err.message || "Error Interacting With Contact, Try Again" ,
             severity: AlertSeverity.ERROR
          }))
-
-         // Set Starred State Back to previous state before request
-         setStarred(!starred)
       }
 
       finally{
@@ -116,9 +117,10 @@ function ContactItem(props:IContactItemProps){
          <div className="contact_action_icons">
             {
                props.location === ContactItemLocation.Homepage ||
-               props.location === ContactItemLocation.LabelsPage ?
+               props.location === ContactItemLocation.LabelsPage ||
+               props.location === ContactItemLocation.Favourites ?
                <>
-                  <StarIconButton starred={starred} handleStarring={() => handleStarring()} />
+                  <StarIconButton starred={inFavourites} handleStarring={() => handleStarring()} />
                   <EditIconButton navigateToEditPage={() => navigate(`c/edit/${_id}`)} />
                   <ContactMenu method="single" phoneNumber={phoneNumber} contactId={_id} contactLabels={labelledBy} />
                </>
@@ -129,7 +131,10 @@ function ContactItem(props:IContactItemProps){
                props.location === ContactItemLocation.Trash ?
                <RestoreFromTrashButton handleRestore={() => {}} />
                :
-               <Button variant="contained" sx={{color:"#FAFAFA", bgColor:"hsl(182, 87%, 27%)"}}>Resolve</Button>
+               props.location === ContactItemLocation.Duplicates ? 
+               <Button variant="contained" sx={{color:"#FAFAFA", bgColor:"hsl(182, 87%, 27%)"}}>Resolve</Button> 
+               :
+               null
             }  
          </div>         
       </div>

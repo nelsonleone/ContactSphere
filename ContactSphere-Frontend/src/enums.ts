@@ -5,7 +5,8 @@ export enum AuthFormLocation {
 
 export enum AlertSeverity {
    ERROR = "error",
-   SUCCESS = "success"
+   SUCCESS = "success",
+   WARNING = "warning"
 }
 
 
@@ -14,7 +15,8 @@ export enum ContactItemLocation {
    HiddenContacts = "hiddenContacts",
    Trash = "trash",
    LabelsPage =  "labelsPage",
-   Favourites = "favourites"
+   Favourites = "favourites",
+   Duplicates = "duplicates"
 }
 
 export enum ContactFormAction {

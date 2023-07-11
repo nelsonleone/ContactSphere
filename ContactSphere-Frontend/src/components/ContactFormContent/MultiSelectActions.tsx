@@ -13,12 +13,12 @@ import clientAsyncHandler from "../../utils/helperFns/clientAsyncHandler";
 import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions";
 import handleAsyncHideContact from "../../utils/helperFns/handleAsyncHideContact";
 import handleAsyncRestore from "../../utils/helperFns/handleAsyncRestoreContacts";
+import { Duplicates, IContactsFromDB } from "../../vite-env";
 
-export default function MultiSelectActions(){
+export default function MultiSelectActions({contactsForMultiSelect}:{contactsForMultiSelect:IContactsFromDB[] | Duplicates}){
 
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
    const { uid } = useAppSelector(store => store.authUser.userDetails)
-   const { contacts } = useAppSelector(store => store.userData)
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
    const open = Boolean(anchorEl)
    const location = useLocation()
@@ -34,7 +34,7 @@ export default function MultiSelectActions(){
 
    const handleSimpleMenuItemClick = (index:number) => {
       if(index === 0){
-         const contactsIds = contacts.map(contact => contact._id)
+         const contactsIds = contactsForMultiSelect.map(contact => contact._id)
          dispatch(setSelectAll(contactsIds))
       }
       else if(index === 1){
