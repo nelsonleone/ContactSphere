@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const {
-   setDeleteContactHandler,
+   setTrashContactHandler,
    setHideContactHandler,
    setFavourited,
    setNewLabel,
@@ -24,7 +24,7 @@ router.post('/addLabel',setNewLabel)
 router.put('/editLabel',editUserLabel)
 router.delete('/removeLabel',removeUserLabel)
 router.post('/manageUserContactLabels',manageUserContactsLabels)
-router.delete('/deleteContact',setDeleteContactHandler)
+router.delete('/deleteContact',setTrashContactHandler)
 router.delete('/deleteMultiple',setDeleteMultiSelectedContacts)
 router.post('/manageMultipleContactsLabels',setManageMultiContactLabels)
 router.put('/interact',setFavourited)

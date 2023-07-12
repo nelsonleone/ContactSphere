@@ -5,7 +5,7 @@ import { setShowAlert } from "../../RTK/features/alertSlice";
 import { AlertSeverity } from "../../enums";
 import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta, MutationDefinition } from "@reduxjs/toolkit/dist/query";
-import { IContactsFromDB } from "../../vite-env";
+import { IContactsFromDB, IServerResponseObj } from "../../vite-env";
 import { setEdittedContact } from "../../RTK/features/userDataSlice";
 
 type ManageLabel = MutationTrigger<MutationDefinition<{
@@ -15,11 +15,11 @@ type ManageLabel = MutationTrigger<MutationDefinition<{
    actionType: "add" | "remove";
 }, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", IContactsFromDB, "contactsQueryApi">>
 
-type ManageMultiContactsLabels= MutationTrigger<MutationDefinition<{
+type ManageMultiContactsLabels = MutationTrigger<MutationDefinition<{
    authUserUid: string;
    label: string;
    selectedContacts: string[];
-}, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", void, "contactsQueryApi">>
+}, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", IServerResponseObj, "contactsQueryApi">>
 
 
 
@@ -60,18 +60,34 @@ export default async function handleAsyncAddLabel(
          }
          // Update Specific Contact In State
          dispatch(setEdittedContact(updatedContact))
+         
+         dispatch(setShowSnackbar({
+            snackbarMessage: actionType === "add" ?
+            `${label} Label Have Been Set on ${phoneNumber}`
+            :
+            `${label} Label Have Been Removed ${method === "single" ? `from ${phoneNumber}` :""}`
+         }))
       }
+
       else if(method === "multi"){
-         await manageMultiContactsLabels({
+         const res = await manageMultiContactsLabels({
             authUserUid: uid,
             label,
             selectedContacts
-         })
+         }).unwrap()
+
+         if(!res){
+            throw new Error("Internal Error Occured While Adding Label To Contacts")
+         }
+
+         dispatch(setShowSnackbar({
+            snackbarMessage: actionType === "add" ?
+            `${label} Label Have Been Set On Selected Contacts`
+            :
+            `${label} Label Have Been Removed From Selected Contacts`
+         }))
       }
 
-      dispatch(setShowSnackbar({
-         snackbarMessage: `${label} Label Has Been Set ${method === "single" ? `on ${phoneNumber}` :""}`
-      }))
    }
 
    catch(err:any|unknown){

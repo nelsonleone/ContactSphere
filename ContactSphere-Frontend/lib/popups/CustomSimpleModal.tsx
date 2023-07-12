@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useAppSelector, useAppDispatch } from '../../src/customHooks/reduxCustomHooks'
 import { setHideSimpleModal } from '../../src/RTK/features/simpleModalSlice'
@@ -15,6 +14,7 @@ const style = {
   border: '2px solid hsl(182, 87%, 27%)',
   boxShadow: 24,
   p: 4,
+  borderRadius: "8px"
 }
 
 export default function BasicModal() {
@@ -26,14 +26,12 @@ export default function BasicModal() {
       dispatch(setHideSimpleModal())
    }
 
-   const watchForClose = setTimeout(() => {
-      dispatch(setHideSimpleModal())
-   }, 4000)
-
-   useEffect(() => {
+   React.useEffect(() => {
      if(!showSimpleModal)return;
 
-     watchForClose()
+     const watchForClose = setTimeout(() => {
+         dispatch(setHideSimpleModal())
+      }, 6000)
    
       return () => {
          clearTimeout(watchForClose)
@@ -47,14 +45,15 @@ export default function BasicModal() {
          onClose={handleClose}
          aria-labelledby="modal-modal-title"
          aria-describedby="modal-modal-description"
+         className="custom_simple_modal"
       >
       <Box sx={style}>
-         <Typography id="modal-modal-title" variant="h6" component="h2">
+         <h3 id="modal-modal-title">
             {text1}
-         </Typography>
-         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+         </h3>
+         <p id="modal-modal-description">
             {text2}
-         </Typography>
+         </p>
       </Box>
       </Modal>
    )

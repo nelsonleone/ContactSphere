@@ -65,7 +65,7 @@ export default function AddLabelDialog(props:IDialogProps) {
 
   return (
       <Dialog open={open} onClose={()=> setOpen(false)}>
-         <DialogTitle>Create Label</DialogTitle>
+         <DialogTitle>{props.labelForEdit ? "Edit Label" : "Create Label"}</DialogTitle>
          <DialogContent sx={{width:"20em"}}>
             <TextField
                autoFocus

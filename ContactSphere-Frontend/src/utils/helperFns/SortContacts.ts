@@ -9,7 +9,7 @@ export default function SortContacts(sortType: SortBy, contacts: IContactsFromDB
        ? a.firstName.localeCompare(b.firstName)
        : sortType === SortBy.LastName
        ? a.lastName.localeCompare(b.lastName)
-       : b.createdAt.getTime() - a.createdAt.getTime()
+       : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
    )
  
    return sortedContacts;

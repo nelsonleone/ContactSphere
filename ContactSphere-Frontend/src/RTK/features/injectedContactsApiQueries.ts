@@ -1,4 +1,4 @@
-import { Contact, IContactsFromDB, UserData, UserLabels } from "../../vite-env";
+import { Contact, IContactsFromDB, UserData, UserLabels, IServerResponseObj } from "../../vite-env";
 import { contactsQuerySlice } from "./contactsQuerySlice";
 
 const CONTACTS_API_URL = '/contacts';
@@ -10,7 +10,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
          providesTags: ['Contact','Label']
       }),
 
-      createContact: builder.mutation<string,{contactDetails:Contact,authUserUid:string}>({
+      createContact: builder.mutation<IServerResponseObj,{contactDetails:Contact,authUserUid:string}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/setNewContact?uid=${args.authUserUid}`,
             method: 'POST',
@@ -20,7 +20,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       }),
 
 
-      editContact: builder.mutation<string,{contactDetails:Contact,authUserUid:string,contactId:string}>({
+      editContact: builder.mutation<IServerResponseObj,{contactDetails:Contact,authUserUid:string,contactId:string}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/setNewContact?uid=${args.authUserUid}`,
             method: 'POST',
@@ -78,7 +78,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
          })
       }),
 
-      deleteContact: builder.mutation<void,{authUserUid:string,contactId:string}>({
+      deleteContact: builder.mutation<IServerResponseObj,{authUserUid:string,contactId:string}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/deleteContact?uid=${args.authUserUid}&contactId=${args.contactId}`,
             method: 'DELETE',
@@ -87,7 +87,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       }),
 
 
-      restoreFromTrash: builder.mutation<void,{authUserUid:string,contactId:string}>({
+      restoreFromTrash: builder.mutation<IServerResponseObj,{authUserUid:string,contactId:string}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/restoreFromTrash?uid=${args.authUserUid}`,
             method: 'PUT',
@@ -96,7 +96,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       }),
 
 
-      hideContact: builder.mutation<void,{authUserUid:string,contactId:string,status:boolean}>({
+      hideContact: builder.mutation<IServerResponseObj,{authUserUid:string,contactId:string,status:boolean}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/hideContact?uid=${args.authUserUid}&contactId=${args.contactId}`,
             method: 'PUT',
@@ -106,7 +106,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       }),
 
       // Multi Select Queries
-      manageMultiContactLabels: builder.mutation<void,{authUserUid:string,label:string,selectedContacts:string[]}>({
+      manageMultiContactLabels: builder.mutation<IServerResponseObj,{authUserUid:string,label:string,selectedContacts:string[]}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/manageMultipleContactsLabels?uid=${args.authUserUid}`,
             method: 'POST',
@@ -116,7 +116,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       }),
 
       // Multi Contacts Delete
-      deleteMultipleContacts: builder.mutation<void,{authUserUid:string,selectedContacts:string[]}>({
+      deleteMultipleContacts: builder.mutation<IServerResponseObj,{authUserUid:string,selectedContacts:string[]}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/deleteMultiple?uid=${args.authUserUid}`,
             method: 'DELETE',
@@ -127,7 +127,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
 
 
       // Multi Contacts Restore From Trash
-      restoreMultipleFromTrash: builder.mutation<void,{authUserUid:string,selectedContacts:string[]}>({
+      restoreMultipleFromTrash: builder.mutation<IServerResponseObj,{authUserUid:string,selectedContacts:string[]}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/restoreMultipleFromTrash?uid=${args.authUserUid}`,
             method: 'PUT',
@@ -138,7 +138,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
 
 
       // Multi Contacts Hide
-      hideMultipleContacts: builder.mutation<void,{authUserUid:string,selectedContacts:string[],status:boolean}>({
+      hideMultipleContacts: builder.mutation<IServerResponseObj,{authUserUid:string,selectedContacts:string[],status:boolean}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/hideMultipleContacts?uid=${args.authUserUid}`,
             method: 'PUT',

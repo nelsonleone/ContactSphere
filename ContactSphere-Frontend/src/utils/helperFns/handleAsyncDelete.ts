@@ -5,17 +5,18 @@ import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice";
 import { setShowAlert } from "../../RTK/features/alertSlice";
 import { AlertSeverity } from "../../enums";
 import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
+import { IServerResponseObj } from "../../vite-env";
 
 type DeleteContact = MutationTrigger<MutationDefinition<{
    authUserUid: string;
    contactId: string;
-}, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", void, "contactsQueryApi">>
+}, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", IServerResponseObj, "contactsQueryApi">>
 
 
 type DeleteMultiple = MutationTrigger<MutationDefinition<{
    authUserUid: string;
    selectedContacts: string[];
-}, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", void, "contactsQueryApi">>
+}, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", IServerResponseObj, "contactsQueryApi">>
 
 
 
@@ -32,18 +33,25 @@ export default async function handleAsyncDelete(
 ){
    try{
       dispatch(setShowWrkSnackbar())
+
+      let res;
+
       if(method === "single"){
-         await deleteContact({
+         res = await deleteContact({
             authUserUid: uid,
             contactId
-         })
+         }).unwrap()
       }
 
       else if(method === "multi"){
-         await deleteMultiple({
+         res = await deleteMultiple({
             selectedContacts,
             authUserUid: uid
          })
+      }
+
+      if(!res){
+         throw new Error("An Error Occured Completing Request")
       }
       
       dispatch(setShowSnackbar({

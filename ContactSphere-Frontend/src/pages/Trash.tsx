@@ -25,17 +25,29 @@ function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
    },[contacts.length])
 
    return (
-      fetchingContacts ? 
+      !fetchingContacts ? 
       <PageWrapper className="trash" title="Trash">
-         <p role="alert">Contacts Remain In Trash For 30days, after which they are automatically deleted permanently</p>
+         <div className="trash_page_prompt">
+            <p role="alert">
+               Contacts Remain In Trash For 30days, after which they are automatically deleted permanently.
+            </p>
+            <button>Empty Trash</button>
+         </div>
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions contactsForMultiSelect={trashedContacts} />
             :
-            <ContactsPageColumnOrder />
+            <div className="contacts_view_top_section">
+               <ul>
+                  <li id="name-col">Name</li>
+                  <li id="email-col">Email</li>
+                  <li id="phone-col">Phone Number</li>
+                  <li id="deletedDate-col">Date Deleted</li>
+               </ul>
+            </div>
          }
          <p aria-label="Hidden Contacts Count" className="contact_count_para">Contacts ({contacts.length})</p>
-         <main>
+         <main className="contacts_container">
             {
                trashedContacts.length ? SortContacts(sortType,trashedContacts).map(contactProps => (
                   <ContactItem key={contactProps._id} location={ContactItemLocation.Trash} {...contactProps} />

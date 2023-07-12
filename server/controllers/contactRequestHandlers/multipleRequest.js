@@ -86,7 +86,7 @@ const setManageMultiContactLabels = async (request, response) => {
 
       if (!authUser) {
          response.status(404)
-         throw new Error("No USER WITH PROVIDED ID WAS FOUND")
+         throw new Error("NO USER WITH PROVIDED ID WAS FOUND")
          return;
       }
 

@@ -26,3 +26,32 @@
       border-radius: 4px;
    }
 }
+
+.setting-section{
+   padding: 3em 4em 1em;
+
+   h4{
+      font-size:1.5rem;
+      position:absolute;
+      left: .5em;
+      top:.5em;
+   }
+
+   .st-label{
+      color: $radiant_color2 !important;
+      font-family: $ff_prompts;
+      font-weight: $fw_bold;
+      margin-top: 1em;
+   }
+}
+
+
+.custom_simple_modal{
+   p{
+      font-family: $ff_primary;
+      font-weight: $fw_bold;
+      font-size: 1rem;
+      color: $text-color2;
+      margin-top:1em;
+   }
+}

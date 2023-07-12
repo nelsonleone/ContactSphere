@@ -27,14 +27,13 @@ function HiddenContacts({fetchingContacts}: { fetchingContacts:boolean }){
    return (
       !fetchingContacts ? 
       <PageWrapper className="hidden_contacts_page" title="ContactSphere | Hidden Contacts">
-         <h2>Hidden Contacts</h2>
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions contactsForMultiSelect={hiddenContacts} />
             :
             <ContactsPageColumnOrder />
          }
-         <p aria-label="Hidden Contacts Count" className="contact_count_para">Contacts ({contacts.length})</p>
+         <p aria-label="Hidden Contacts Count" className="contact_count_para">Hidden ({contacts.length})</p>
          <main>
             {
                hiddenContacts.length ? SortContacts(sortType,hiddenContacts).map(contactProps => (

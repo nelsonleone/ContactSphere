@@ -35,7 +35,8 @@ function ContactItem(props:IContactItemProps){
       phoneNumber,
       _id,
       inFavourites,
-      labelledBy
+      labelledBy,
+      deletedAt
    } = props;
 
    const navigate = useNavigate()
@@ -112,7 +113,13 @@ function ContactItem(props:IContactItemProps){
          <p id={`${_id}-description`} aria-label="Contact Name" aria-labelledby="name-col">{handleContactDetailsDisplay(`${firstName} ${lastName}`)}</p>
          <Link to={`mailto:${email}`} aria-label="Email" aria-labelledby="email-col">{handleContactDetailsDisplay(email)}</Link>
          <p aria-label="Contact Phone Number" aria-labelledby="phone-col">{handleContactDetailsDisplay(phoneNumber)}</p>
-         <p aria-label="Contact Job Title" aria-describedby="jobTitle-col">{handleContactDetailsDisplay(jobTitle)}</p>
+
+         {
+            props.location === ContactItemLocation.Trash ?
+            <p aria-label="Contact Delete Date" aria-describedby="deletedDate-col">{new Date(deletedAt).toLocaleDateString('en-US')}</p>
+            :
+            <p aria-label="Contact Job Title" aria-describedby="jobTitle-col">{handleContactDetailsDisplay(jobTitle)}</p>
+         }
 
          <div className="contact_action_icons">
             {

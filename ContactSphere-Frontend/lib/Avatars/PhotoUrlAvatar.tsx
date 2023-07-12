@@ -16,9 +16,7 @@ function PhotoUrlAvatar(props:IChipProps) {
         className='avatar'
         src={props.photoURL}
         tabIndex={0}
-      >
-        {props.nameForAlt.slice(0,1)}
-      </Avatar>
+      />
   )
 }
 

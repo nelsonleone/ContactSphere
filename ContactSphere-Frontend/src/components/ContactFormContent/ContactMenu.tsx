@@ -12,6 +12,7 @@ import handleAsyncHideContact from '../../utils/helperFns/handleAsyncHideContact
 import handleAsyncDelete from '../../utils/helperFns/handleAsyncDelete';
 import clientAsyncHandler from '../../utils/helperFns/clientAsyncHandler';
 import handleAsyncAddLabel from '../../utils/helperFns/handleAsyncAddLabel';
+import CustomCheckbox from '../../../lib/customInputs/CustomCheckbox';
 
 interface IProps {
    contactLabels?: {
@@ -48,7 +49,7 @@ export default function ContactMenu(props:IProps){
      setAnchorEl(null)
    }
 
-   const handleAddLabel = async(e:React.MouseEvent<{}>,label:string) => {
+   const handleAddLabel = async(e:React.MouseEvent<{}>,label:string,action:"add"|"remove") => {
       e.stopPropagation()
       setAnchorEl(null)
       handleClose()
@@ -57,7 +58,7 @@ export default function ContactMenu(props:IProps){
          await stopUnauthourizedActions(uid)
          await handleAsyncAddLabel(
             dispatch,
-            "add",
+            action,
             props.contactId || '',
             uid!,
             props.method,
@@ -149,17 +150,42 @@ export default function ContactMenu(props:IProps){
                   }
                   
                   {
-                     props.method === "single" && unregisteredLabels.length ? unregisteredLabels.map(value => (
-                        <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label)}>
-                           <ListItemIcon>
-                              <MdLabelOutline  />
-                           </ListItemIcon>
-                           <span>{value.label}</span>
-                        </MenuItem>
-                     ))
+                     props.method === "single" && userSavedLabels.length ? userSavedLabels.map(value =>  {
+                        return(
+                           !props.contactLabels?.some(obj => obj.label === value.label) ?
+                           <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label,"add")}>
+                              <ListItemIcon>
+                                 <MdLabelOutline  />
+                              </ListItemIcon>
+                              <span>{value.label}</span>
+                              <CustomCheckbox 
+                                 color="hsl(182, 87%, 27%)" 
+                                 checked={false} 
+                                 handleCheck={() => {}}
+                                 disabled={true}
+                                 size="small" 
+                              />
+                           </MenuItem>
+                           :
+                           <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label,"remove")}>
+                              <ListItemIcon>
+                                 <MdLabelOutline  />
+                              </ListItemIcon>
+                              <span>{value.label}</span>
+                              <CustomCheckbox 
+                                 color="hsl(182, 87%, 27%)" 
+                                 checked={true} 
+                                 handleCheck={() => {}}
+                                 disabled={true}
+                                 size="small" 
+                              />
+                           </MenuItem>
+                        )
+                     })
                      :
+                     // Regardless of the ActionType Parametrr, If Label Already exists In A Contacts LabelledBy, It won't Be Added Again
                      props.method === "multi" && userSavedLabels?.length ? userSavedLabels.map(value => (
-                        <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label)}>
+                        <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label,"add")}>
                            <ListItemIcon>
                               <MdLabelOutline  />
                            </ListItemIcon>

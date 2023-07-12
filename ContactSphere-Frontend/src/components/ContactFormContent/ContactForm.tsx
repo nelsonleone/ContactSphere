@@ -120,15 +120,6 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
       }
    },[formValues])
 
-   useEffect(() => {
-      if(action === ContactFormAction.Edit) {
-         dispatch(setShowSimpleModal({
-            text1: "Please Note",
-            text2: "Only Modified Fields Will Be Editted"
-         }))
-      }
-   },[])
-
    return(
       <>
          <form onSubmit={handleSubmit(handleOnSubmit)}>

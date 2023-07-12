@@ -25,7 +25,7 @@ export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean
    },[sortBy])
 
    return(
-      fetchingContacts ?
+      !fetchingContacts ?
       <PageWrapper className="labels_page" title={`Labels - ${labelBeingPreviewed}`}>
          {
             selectedContacts.length > 0 ?
@@ -33,11 +33,11 @@ export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean
             :
             <ContactPageTopColumn />
          }
-         <p aria-label="Contacts Count" className="contact_count_para">{labelBeingPreviewed} ({contacts.length})</p>
+         <p aria-label="Contacts Count" className="contact_count_para">{labelBeingPreviewed} ({contactsWithLabel.length})</p>
 
          <main className="contacts_container">
             {
-               contactsWithLabel.length ? SortContacts(sortType,contacts).map(contactProps => (
+               contactsWithLabel.length ? SortContacts(sortType,contactsWithLabel).map(contactProps => (
                   !contactProps.inTrash && !contactProps.isHidden ?
                   <ContactItem key={contactProps._id} location={ContactItemLocation.LabelsPage} {...contactProps} />
                   :
@@ -45,7 +45,7 @@ export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean
                ))
                :
                <div className="nsc_content">
-                  <p role="alert">No Contact With {labelBeingPreviewed && labelBeingPreviewed.toUpperCase()} label</p>
+                  <p role="alert">No Contact With  {labelBeingPreviewed && <span style={{color:'hsl(182, 87%, 27%)'}}>{labelBeingPreviewed.toUpperCase()}</span>}  label</p>
                </div>
             }
          </main>

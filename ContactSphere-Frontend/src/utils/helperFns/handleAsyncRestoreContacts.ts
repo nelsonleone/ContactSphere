@@ -5,17 +5,18 @@ import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice";
 import { setShowAlert } from "../../RTK/features/alertSlice";
 import { AlertSeverity } from "../../enums";
 import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
+import { IServerResponseObj } from "../../vite-env";
 
 type RestoreContact = MutationTrigger<MutationDefinition<{
    authUserUid: string;
    contactId: string;
-}, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", void, "contactsQueryApi">>
+}, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", IServerResponseObj, "contactsQueryApi">>
 
 
 type RestoreMultipleContacts = MutationTrigger<MutationDefinition<{
    authUserUid: string;
    selectedContacts: string[];
-}, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", void, "contactsQueryApi">>
+}, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", IServerResponseObj, "contactsQueryApi">>
 
 
 
@@ -32,18 +33,24 @@ export default async function handleAsyncRestore(
 ){
    try{
       dispatch(setShowWrkSnackbar())
+      let res;
+
       if(method === "single"){
-         await restoreContactFromTrash({
+         res = await restoreContactFromTrash({
             authUserUid: uid,
             contactId
-         })
+         }).unwrap()
       }
 
       else if(method === "multi"){
-         await restoreMultipleContacts({
+         res = await restoreMultipleContacts({
             selectedContacts,
             authUserUid: uid
-         })
+         }).unwrap()
+      }
+
+      if(!res){
+         throw new Error("An Error Occured While During Restore")
       }
       
       dispatch(setShowSnackbar({

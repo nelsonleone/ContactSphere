@@ -98,3 +98,9 @@ interface IDuplicates extends IContactsFromDB {
 }
 
 type Duplicates = IDuplicates[]
+
+
+
+interface IServerResponseObj {
+  message: string
+}

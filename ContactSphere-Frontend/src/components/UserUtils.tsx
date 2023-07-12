@@ -3,11 +3,14 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import { orange } from '@mui/material/colors';
 import Radio from '@mui/material/Radio';
-import { Dispatch, SetStateAction, useState, memo, useCallback } from 'react';
+import { Dispatch, SetStateAction, useState, memo, useCallback, useEffect } from 'react';
 import { BsColumnsGap } from 'react-icons/bs'
 import { SettingsIcon } from '../../lib/with-tooltip/index'
 import { IHeaderState } from '../../src/components/Header'
-import { Divider, Paper } from '@mui/material';
+import { Divider, Paper, Dialog } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../customHooks/reduxCustomHooks';
+import { setSortBy } from '../RTK/features/userLocalSettingSlice';
+import { SortBy } from '../enums';
 
 interface IProps {
    setState: Dispatch<SetStateAction<IHeaderState>>,
@@ -16,13 +19,19 @@ interface IProps {
 
 function Setting(props:IProps){
    const { setState, state } = props;
-   const [selectedValue,setSelectedValue] = useState<string>("")
+   const dispatch = useAppDispatch()
+   const { sortBy } = useAppSelector(store => store.userLocalSetting)
+   const [selectedValue,setSelectedValue] = useState<SortBy>(sortBy)
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(event.target.value)
+    setSelectedValue(event.target.value as SortBy)
   }
 
-  const controlProps = useCallback((item:string) => ({
+  useEffect(() => {
+    dispatch(setSortBy(selectedValue))
+  },[selectedValue])
+
+   const controlProps = useCallback((item:string) => ({
       checked: selectedValue === item,
       onChange: handleChange,
       value: item,
@@ -33,71 +42,68 @@ function Setting(props:IProps){
    return(
       <>
          <SettingsIcon setState={setState} state={state} />
-         {
-            state.toggleSettingSection &&
+         <Dialog 
+            open={props.state.toggleSettingSection} 
+            onClose={() => props.setState(prevState => ( {...prevState,toggleSettingSection:false }))}
+            >
             <Paper aria-hidden={state.toggleSettingSection} id="setting-section" className="setting-section">
                <h4>Settings</h4>
                <FormControl>
-                  <FormLabel id="demo-radio-buttons-group-label">Sort by</FormLabel>
+                  <FormLabel id="localSetting-radio-buttons-group-label" className="st-label">Sort by</FormLabel>
                   <RadioGroup
-                     aria-labelledby="demo-radio-buttons-group-label"
-                     defaultValue="female"
-                     name="radio-buttons-group"
+                     aria-labelledby="localSetting-radio-buttons-group-label"
+                     defaultValue={sortBy}
+                     name="localSetting-buttons-group"
                      >
                      <FormControlLabel 
-                     value="male" 
+                     value={SortBy.FirstName}
                      control={
                         <Radio 
                            {...controlProps("firstName")}
                            sx={{
                            color: orange[600],
                            '&.Mui-checked': {
-                              color: orange[800],
+                              color: "hsl(182, 87%, 27%)",
                            },
                            }} 
                         />
                         } 
-                        label="Firstname" 
+                        label="First name" 
                      />
                      <FormControlLabel 
-                     value="male" 
-                     control={
-                        <Radio 
-                           {...controlProps("lastName")}
-                           sx={{
-                              color: orange[600],
-                              '&.Mui-checked': {
-                                 color: orange[800],
-                              },
-                           }} 
-                        />
+                     value={SortBy.LastName}
+                        control={
+                           <Radio 
+                              {...controlProps("lastName")}
+                              sx={{
+                                 color: orange[600],
+                                 '&.Mui-checked': {
+                                    color: "hsl(182, 87%, 27%)",
+                                 },
+                              }} 
+                           />
                         } 
-                        label="Lastname" 
+                        label="Last name" 
                      />
-                     <FormControlLabel 
-                     value="male" 
-                     control={
-                        <Radio 
-                           {...controlProps("newest")}
-                           sx={{
-                              color: orange[600],
-                              '&.Mui-checked': {
-                                 color: orange[800],
-                              },
-                           }} 
-                        />
-                        } 
+                     <FormControlLabel                     
+                        value={SortBy.Newest}
+                        control={
+                           <Radio 
+                              {...controlProps("newest")}
+                              sx={{
+                                 color: orange[600],
+                                 '&.Mui-checked': {
+                                    color: "hsl(182, 87%, 27%)",
+                                 },
+                              }} 
+                           />
+                           } 
                         label="Newest" 
                      />
                   </RadioGroup>
                </FormControl>
-               <Divider />
-               <h4>
-                  <BsColumnsGap />
-                  Change Column Order
-               </h4>
             </Paper>
-         }
+         </Dialog>
       </>
    )
 }

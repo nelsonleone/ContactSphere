@@ -5,7 +5,10 @@ const label = { inputProps: { 'aria-label': 'Select Contact Checkbox' } }
 
 interface ICheckboxProps {
  checked: boolean,
- handleCheck: () => void
+ handleCheck: () => void,
+ color?: string,
+ disabled?: boolean,
+ size?: "small"|"medium"
 }
 
 export default function CustomCheckbox(props:ICheckboxProps){
@@ -15,10 +18,12 @@ export default function CustomCheckbox(props:ICheckboxProps){
          checked={props.checked}
          onChange={props.handleCheck}
          className='custom-checkbox'
+         size={props.size || undefined}
+         disabled={props.disabled ? true : false}
          sx={{
             color:  'hsl(0, 3%, 16%)',
             '&.Mui-checked': {
-               color:  '#ff5100',
+               color: props.color || '#ff5100',
             },
          }}
       />

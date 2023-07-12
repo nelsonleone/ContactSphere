@@ -189,6 +189,7 @@ function NavMenu(props:IProps){
             open={openDialog} 
             handleLabelEdit={handleLabelEdit} 
             setLabelForEdit={setLabelForEdit}  
+            labelForEdit={labelForEdit.label}
             setOpen={setOpenDialog} 
          />
       </>

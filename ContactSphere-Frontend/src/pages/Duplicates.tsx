@@ -21,8 +21,10 @@ function Duplicates({fetchingContacts}: {fetchingContacts:boolean}) {
 
    return (
       !fetchingContacts ?
-      <PageWrapper className="page trash_page" title="Duplicates">
-         <p role="alert">Ensure to resolve the duplicates in your saved contacts, to enhance quality user experience</p>
+      <PageWrapper className="duplicates" title="Duplicates">
+         <div className="duplicates_page_prompt">
+          <p role="alert">Ensure to resolve the duplicates in your saved contacts, to enhance quality user experience</p>
+         </div>
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions contactsForMultiSelect={duplicates}/>

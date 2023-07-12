@@ -112,9 +112,11 @@ svg{
    background-color: $radiant_color2 !important;
    color: $generic_color_1 !important;
    font-size: 1rem !important;
+   height: 2em;
 
    &:hover{
-      background-color: rgba(179, 179, 221, 0.466) !important;
+      background-color: $radiant_color2 !important;
+      opacity: .8;
    }
 }
 

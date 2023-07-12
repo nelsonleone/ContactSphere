@@ -188,6 +188,14 @@
       font-size: 1.15rem;
    }
 
+   .label{
+      padding-right: 1em;
+      .custom-checkbox{
+         position: absolute;
+         right: .5em;
+      }
+   }
+
    .menu-item-label{
       font-size: .85rem;
       color: $text-color1;
@@ -257,7 +265,7 @@
    
    p{
       font-family: $ff_prompts;
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       color: $text-color1;
       position: relative;
       top: 2em;
@@ -271,7 +279,43 @@
 
 .labels_page{
    .nsc_content{
-      background-image: url('')
+      background-image: url('/images/no-label.png');
+   }
+}
+
+.trash_page_prompt,
+.duplicates_page_prompt{
+   background: $bg_color2;
+   border-radius: 7px;
+   min-height: 3.2em;
+   width: 100%;
+   padding: .3em;
+   text-align: center;
+   @include flexObj($justify:center,$direction:column);
+   gap: 1em;
+   border: 1px solid rgb(218, 215, 215);
+
+   button{
+      color: $radiant_color2;
+      text-transform: capitalize;
+      font-size: 1.1rem;
+      font-family: $ff_prompts;
+   }
+   p{
+      font-family: $ff_primary;
+      font-weight: $fw_bold;
+      font-size: .9rem;
+      color: $text-color1;
+      word-spacing: 2px;
+   }
+}
+
+.favourites_page_prompt{
+   margin-bottom: .3em;
+   h2{
+      font-size: .9rem;
+      color: $radiant_color2;
+      text-decoration: underline;
    }
 }
 
@@ -280,6 +324,9 @@
 
 
 
+
+
+// MEDIA QUERIES
 @include useMediaQuery_MD{
    .contacts_view_top_section{
 
@@ -322,8 +369,16 @@
 
 
 @include useMediaQuery_LS{
-   .homepage{
+   .homepage,
+   .hidden_contacts_page,
+   .labels_page{
       padding-top: 4em;
+   }
+
+   .favourites,
+   .duplicates,
+   .trash{
+      padding-top: 5em;
    }
 
    .multi_select_actions{
@@ -358,6 +413,11 @@
             display:none;
          }
       }
+   }
+
+   .trash_page_prompt{
+      @include flexObj($justify:center,$direction:row); 
+      height: 3.2em;
    }
 }
 

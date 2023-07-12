@@ -27,7 +27,7 @@ const createContact = asyncHandler(async(request,response) => {
       if(authUserDataDoc){
          response.status(400)
          throw new Error("NO USER WITH SPECIFIED UID WAS FOUND")
-         returnl
+         return;
       }
 
       // User Doc Has Already Been Initialized
@@ -378,7 +378,9 @@ const setHideContactHandler = asyncHandler(async(request,response) => {
          return;
       }
    
-      response.status(200).end()
+      response.status(200).json({
+         message: status === true ? "Contact Hidden Successfully" : "Contact Unhidden"
+      })
    } 
    catch (error) {
       response.status(500)
@@ -389,7 +391,7 @@ const setHideContactHandler = asyncHandler(async(request,response) => {
 
 
 // Handle Single Contact Delete
-const setDeleteContactHandler = asyncHandler(async (request, response) => {
+const setTrashContactHandler = asyncHandler(async (request, response) => {
    const { uid, contactId } = request.query;
  
    try {
@@ -417,7 +419,9 @@ const setDeleteContactHandler = asyncHandler(async (request, response) => {
    
       await authUserDataDoc.save()
    
-      response.status(200).end()
+      response.status(200).json({
+         message: "Contact Sent To Trash"
+      })
    } 
    catch (error) {
      response.status(500)
@@ -456,7 +460,9 @@ const setRestoreFromTrash = asyncHandler(async(request,response) => {
    
       await authUserDataDoc.save()
    
-      response.status(200).end()
+      response.status(200).json({
+         message: "Contact Restored From Trash"
+      })
    } 
    catch (error) {
      response.status(500)
@@ -514,7 +520,7 @@ const setEdittedContact = async (req, res) => {
  
 
 module.exports = {
-   setDeleteContactHandler,
+   setTrashContactHandler,
    setFavourited,
    getAuthUserData,
    createContact,

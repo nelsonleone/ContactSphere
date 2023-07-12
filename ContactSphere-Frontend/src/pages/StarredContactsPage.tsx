@@ -27,15 +27,17 @@ function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
 
    return (
       !fetchingContacts ? 
-      <PageWrapper className="trash"  title="Favourites">
-         <p role="alert">If They Are Starred, Yes They Are Special.</p>
+      <PageWrapper className="favourites"  title="Favourites">
+         <div className="favourites_page_prompt">
+            <h2 role="alert">If They Are Starred, Yes They Are Special.</h2>
+         </div>
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions contactsForMultiSelect={starredContacts} />
             :
             <ContactsPageColumnOrder />
          }
-         <p aria-label="Hidden Contacts Count" className="contact_count_para">Favourites ({contacts.length})</p>
+         <p aria-label="Hidden Contacts Count" className="contact_count_para">Favourites ({starredContacts.length})</p>
          <main className="contacts_container">
             {
                starredContacts.length ? SortContacts(sortType,starredContacts).map(contactProps => (
