@@ -3,7 +3,7 @@ import ContactItem from "../components/ContactFormContent/ContactItem";
 import ContactsPageColumnOrder from "../components/ContactFormContent/ContactsPageColumnOrder";
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions";
 import { useAppSelector } from "../customHooks/reduxCustomHooks";
-import { ContactItemLocation, SortBy } from "../enums";
+import { ContactItemLocation } from "../enums";
 import SortContacts from "../utils/helperFns/SortContacts";
 import PageWrapper from "../components/PageWrapper";
 import InPageLoader from "../../lib/loaders/InPageLoader";
@@ -13,7 +13,6 @@ function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
 
    const { contacts } = useAppSelector(store => store.userData)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
-   const [sortType,setSortType] = useState(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
    const [starredContacts,setStarredContacts] = useState<IContactsFromDB[]>(contacts.filter(contact => contact.inFavourites === true))
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
 
@@ -21,9 +20,6 @@ function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
       setStarredContacts(contacts.filter(contact => contact.inFavourites === true))
    },[contacts.length])
 
-   useEffect(() => {
-      setSortType(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
-   },[sortBy])
 
    return (
       !fetchingContacts ? 
@@ -40,7 +36,7 @@ function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
          <p aria-label="Hidden Contacts Count" className="contact_count_para">Favourites ({starredContacts.length})</p>
          <main className="contacts_container">
             {
-               starredContacts.length ? SortContacts(sortType,starredContacts).map(contactProps => (
+               starredContacts.length ? SortContacts(sortBy,starredContacts).map(contactProps => (
                   <ContactItem key={contactProps._id} location={ContactItemLocation.Favourites} {...contactProps} />
                ))
                :

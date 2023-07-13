@@ -83,6 +83,7 @@
                font-size: 1.5rem;
                cursor: pointer;
                transition: .3s ease-in;
+               pointer-events: all;
 
                &:hover{
                   color: $accent_color_2;

@@ -1,13 +1,11 @@
 import { AccordionDetails, AccordionSummary, FormControl, FormControlLabel, FormLabel, RadioGroup, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
-import { orange } from '@mui/material/colors';
 import Radio from '@mui/material/Radio';
-import { Dispatch, SetStateAction, useState, memo, useCallback, useEffect } from 'react';
-import { BsColumnsGap } from 'react-icons/bs'
+import { Dispatch, SetStateAction, useState, memo, useCallback } from 'react';
 import { SettingsIcon } from '../../lib/with-tooltip/index'
 import { IHeaderState } from '../../src/components/Header'
-import { Divider, Paper, Dialog } from '@mui/material';
+import { Paper, Dialog } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../customHooks/reduxCustomHooks';
 import { setSortBy } from '../RTK/features/userLocalSettingSlice';
 import { SortBy } from '../enums';
@@ -21,15 +19,11 @@ function Setting(props:IProps){
    const { setState, state } = props;
    const dispatch = useAppDispatch()
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
-   const [selectedValue,setSelectedValue] = useState<SortBy>(sortBy)
+   const [selectedValue,setSelectedValue] = useState<SortBy>(sortBy as SortBy)
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value as SortBy)
   }
-
-  useEffect(() => {
-    dispatch(setSortBy(selectedValue))
-  },[selectedValue])
 
    const controlProps = useCallback((item:string) => ({
       checked: selectedValue === item,
@@ -39,12 +33,17 @@ function Setting(props:IProps){
       inputProps: { 'aria-label': item },
    }), [selectedValue])
 
+   const handleClose = () => {
+      dispatch(setSortBy(selectedValue))
+      props.setState(prevState => ( {...prevState,toggleSettingSection:false }))
+   }
+
    return(
       <>
          <SettingsIcon setState={setState} state={state} />
          <Dialog 
             open={props.state.toggleSettingSection} 
-            onClose={() => props.setState(prevState => ( {...prevState,toggleSettingSection:false }))}
+            onClose={handleClose}
             >
             <Paper aria-hidden={state.toggleSettingSection} id="setting-section" className="setting-section">
                <h4>Settings</h4>
@@ -61,7 +60,7 @@ function Setting(props:IProps){
                         <Radio 
                            {...controlProps("firstName")}
                            sx={{
-                           color: orange[600],
+                           color: "#085e61",
                            '&.Mui-checked': {
                               color: "hsl(182, 87%, 27%)",
                            },
@@ -76,7 +75,7 @@ function Setting(props:IProps){
                            <Radio 
                               {...controlProps("lastName")}
                               sx={{
-                                 color: orange[600],
+                                 color: "#085e61",
                                  '&.Mui-checked': {
                                     color: "hsl(182, 87%, 27%)",
                                  },
@@ -91,7 +90,7 @@ function Setting(props:IProps){
                            <Radio 
                               {...controlProps("newest")}
                               sx={{
-                                 color: orange[600],
+                                 color:  "#085e61",
                                  '&.Mui-checked': {
                                     color: "hsl(182, 87%, 27%)",
                                  },

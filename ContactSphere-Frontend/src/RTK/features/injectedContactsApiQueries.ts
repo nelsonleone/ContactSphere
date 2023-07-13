@@ -22,8 +22,8 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
 
       editContact: builder.mutation<IServerResponseObj,{contactDetails:Contact,authUserUid:string,contactId:string}>({
          query: (args) => ({
-            url: `${CONTACTS_API_URL}/setNewContact?uid=${args.authUserUid}`,
-            method: 'POST',
+            url: `${CONTACTS_API_URL}/setEdittedContact?uid=${args.authUserUid}&contactId=${args.contactId}`,
+            method: 'PUT',
             body: args.contactDetails
          }),
          invalidatesTags: ['Contact']

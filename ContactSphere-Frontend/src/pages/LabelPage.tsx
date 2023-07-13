@@ -5,8 +5,8 @@ import MultiSelectActions from '../components/ContactFormContent/MultiSelectActi
 import ContactPageTopColumn from '../components/ContactFormContent/ContactPageTopColumn'
 import SortContacts from '../utils/helperFns/SortContacts'
 import ContactItem from '../components/ContactFormContent/ContactItem'
-import { ContactItemLocation, SortBy } from '../enums'
-import { useState, useEffect} from 'react'
+import { ContactItemLocation } from '../enums'
+import { useEffect} from 'react'
 import InPageLoader from '../../lib/loaders/InPageLoader'
 
 export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean }){
@@ -18,11 +18,6 @@ export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean
    const labelBeingPreviewed = labels.find(label => label._id.toString() === labelId)?.label;
    const contactsWithLabel = contacts.filter(contact => contact.labelledBy.some(val => val.label === labelBeingPreviewed))
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
-   const [sortType,setSortType] = useState<SortBy>(sortBy)
-
-   useEffect(() => {
-      setSortType(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
-   },[sortBy])
 
    return(
       !fetchingContacts ?
@@ -37,7 +32,7 @@ export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean
 
          <main className="contacts_container">
             {
-               contactsWithLabel.length ? SortContacts(sortType,contactsWithLabel).map(contactProps => (
+               contactsWithLabel.length ? SortContacts(sortBy,contactsWithLabel).map(contactProps => (
                   !contactProps.inTrash && !contactProps.isHidden ?
                   <ContactItem key={contactProps._id} location={ContactItemLocation.LabelsPage} {...contactProps} />
                   :

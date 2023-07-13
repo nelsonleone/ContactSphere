@@ -2,8 +2,8 @@ import ContactItem from "../components/ContactFormContent/ContactItem"
 import { useAppSelector } from "../customHooks/reduxCustomHooks"
 import InPageLoader from '../../lib/loaders/InPageLoader'
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions"
-import { memo, useEffect, useState } from "react"
-import { ContactItemLocation, SortBy } from "../enums"
+import { memo } from "react"
+import { ContactItemLocation } from "../enums"
 import SortContacts from "../utils/helperFns/SortContacts"
 import PageWrapper from "../components/PageWrapper"
 import ContactPageTopColumn from "../components/ContactFormContent/ContactPageTopColumn"
@@ -17,11 +17,6 @@ function Homepage(props:IHomepageProps){
    const { contacts } = useAppSelector(store => store.userData)
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
-   const [sortType,setSortType] = useState<SortBy>(sortBy)
-
-   useEffect(() => {
-      setSortType(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
-   },[sortBy])
 
    return(
       !props.fetchingContacts ?
@@ -36,7 +31,7 @@ function Homepage(props:IHomepageProps){
 
          <main className="contacts_container">
             {
-               contacts.length ? SortContacts(sortType,contacts).map(contactProps => (
+               contacts.length ? SortContacts(sortBy,contacts).map(contactProps => (
                   !contactProps.inTrash && !contactProps.isHidden ?
                   <ContactItem key={contactProps._id} location={ContactItemLocation.Homepage} {...contactProps} />
                   :

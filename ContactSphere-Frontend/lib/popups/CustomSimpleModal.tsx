@@ -7,9 +7,9 @@ import { setHideSimpleModal } from '../../src/RTK/features/simpleModalSlice'
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
-  left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 300,
+  left: '50%',
   bgcolor: 'background.paper',
   border: '2px solid hsl(182, 87%, 27%)',
   boxShadow: 24,
@@ -26,17 +26,7 @@ export default function BasicModal() {
       dispatch(setHideSimpleModal())
    }
 
-   React.useEffect(() => {
-     if(!showSimpleModal)return;
 
-     const watchForClose = setTimeout(() => {
-         dispatch(setHideSimpleModal())
-      }, 6000)
-   
-      return () => {
-         clearTimeout(watchForClose)
-      }
-   }, [showSimpleModal])
    
 
    return (

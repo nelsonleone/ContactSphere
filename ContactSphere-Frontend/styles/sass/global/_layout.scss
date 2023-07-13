@@ -6,6 +6,7 @@
    width: 95%;
    margin:  auto;
    transition: all .3s ease-in-out;
+   background-color: $generic_color_1;
 }
 
 .resize-page{
@@ -14,7 +15,6 @@
          padding-top: 5em;
          width: auto;
          transition: width .2s linear, margin .2s linear;
-         background-color: $generic_color_1;
          @include alignPage;
       }
 

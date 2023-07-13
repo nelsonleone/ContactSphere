@@ -12,12 +12,8 @@ function Duplicates({fetchingContacts}: {fetchingContacts:boolean}) {
 
    const duplicates = useAppSelector(store => store.resolveDuplicates)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
-   const [sortType,setSortType] = useState(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
 
-   useEffect(() => {
-      setSortType(localStorage.getItem('sortBy') ? localStorage.getItem('sortBy') as SortBy : sortBy)
-   },[sortBy])
 
    return (
       !fetchingContacts ?
@@ -34,7 +30,7 @@ function Duplicates({fetchingContacts}: {fetchingContacts:boolean}) {
          <p aria-label="Hidden Contacts Count" className="contact_count_para">Duplicates ({duplicates.length})</p>
          <main>
             {
-               duplicates.length ? SortContacts(sortType,duplicates).map(contactProps => (
+               duplicates.length ? SortContacts(sortBy,duplicates).map(contactProps => (
                   <ContactItem key={contactProps._id} location={ContactItemLocation.Trash} {...contactProps} />
                ))
                :

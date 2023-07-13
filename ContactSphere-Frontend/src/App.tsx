@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from './customHooks/reduxCustomHooks';
 import { useGetUserDataQuery } from './RTK/features/injectedContactsApiQueries';
 import { setUserData } from './RTK/features/userDataSlice';
 import { setShowAlert } from './RTK/features/alertSlice';
-import { AlertSeverity, AuthMethod } from './enums';
+import { AlertSeverity, AuthMethod, SortBy } from './enums';
 import { setSelectNone } from './RTK/features/contactMultiSelectSlice';
 import { setDuplicates } from './RTK/features/resolveDuplicatesSlice';
 import findDuplicates from './utils/helperFns/findDuplicates';
@@ -95,6 +95,7 @@ export default function App(){
       dispatch(setDuplicates(duplicates))
     }
   },[contacts.length])
+
 
   return(
     <Layout>

@@ -1,11 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { SortBy } from "../../enums";
 
+const initialState: { sortBy:SortBy } = {
+   sortBy: localStorage.getItem('sortBy') as SortBy || SortBy.FirstName
+}
+
 const userLocalSettingSlice = createSlice({
    name: 'userLocalSettings',
-   initialState: {
-      sortBy: SortBy.FirstName
-   },
+   initialState,
    reducers: {
       setSortBy: (state,{ payload }:PayloadAction<SortBy>) => {
          state.sortBy = payload;

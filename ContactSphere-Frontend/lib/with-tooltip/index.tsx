@@ -69,10 +69,10 @@ export function SettingsIcon(props:IProps){
 
 
 
-export function ManageLabelButton({ className, penMode, handleClick }:{ penMode:boolean, className:string, handleClick: () => void}){
+export function ManageLabelButton({ className, penMode, handleClick, disabled }:{ disabled:boolean,penMode:boolean, className:string, handleClick: () => void}){
    return(
       <Tooltip title="Manage Labels">
-         <button className={className} type="button" aria-label="Choose Label For This Contact" onClick={handleClick}>
+         <button className={className} type="button" disabled={disabled} aria-label="Choose Label For This Contact" onClick={handleClick}>
             {
                !penMode ?
                <>

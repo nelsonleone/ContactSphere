@@ -22,9 +22,9 @@ const createContact = asyncHandler(async(request,response) => {
    }
 
    try{
-      const authUserDataDoc = await AuthUserData.find({ uid: authUserUid })
+      const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
 
-      if(authUserDataDoc){
+      if(!authUserDataDoc){
          response.status(400)
          throw new Error("NO USER WITH SPECIFIED UID WAS FOUND")
          return;
@@ -348,7 +348,7 @@ const setHideContactHandler = asyncHandler(async(request,response) => {
          return;
       }
 
-      const updatedAuthUserData = await AuthUserData.find({uid})
+      const authUserDataDoc = await AuthUserData.findOne({uid})
 
       if (!authUserDataDoc) {
          response.status(404)
@@ -356,7 +356,7 @@ const setHideContactHandler = asyncHandler(async(request,response) => {
          return;
       }
  
-      const contactIndex = user.contacts.findIndex((contact) => contact._id.toString() === contactId)
+      const contactIndex = authUserDataDoc.contacts.findIndex((contact) => contact._id.toString() === contactId.toString())
    
       if (contactIndex === -1) {
          return res.status(404)
@@ -371,12 +371,7 @@ const setHideContactHandler = asyncHandler(async(request,response) => {
          inFavourites: status === true ? false : authUserDataDoc.contacts[contactIndex].inFavourites
       }
 
-
-      if (!updatedAuthUserData) {
-         response.status(404)
-         throw new Error('NO USER WHICH SUCH ID')
-         return;
-      }
+      await authUserDataDoc.save()
    
       response.status(200).json({
          message: status === true ? "Contact Hidden Successfully" : "Contact Unhidden"
@@ -473,8 +468,8 @@ const setRestoreFromTrash = asyncHandler(async(request,response) => {
 
 
 
-const setEdittedContact = async (req, res) => {
-   const { uid, contactId } = req.query;
+const setEdittedContact = async (request, response) => {
+   const { uid, contactId } = request.query;
    const edittedContactDetails = { 
       ...request.body, 
       inTrash: false,
@@ -486,33 +481,36 @@ const setEdittedContact = async (req, res) => {
    }
  
    try {
-      const user = await AuthUserData.findOne({ uid })
+      const AuthUserDataDoc = await AuthUserData.findOne({ uid })
    
-      if (!user) {
-         return res.status(404)
+      if (!AuthUserDataDoc) {
+         return response.status(404)
          throw new Error("USER WITH SPECIFIED UID DOES NOT EXIST")
       }
  
-      const contactIndex = user.contacts.findIndex((contact) => contact._id.toString() === contactId);
+      const contactIndex = AuthUserDataDoc.contacts.findIndex((contact) => contact._id.toString() === contactId.toString())
    
       if (contactIndex === -1) {
-         return res.status(404)
+         response.status(404)
          throw new Error("CONTACT WITH PROVIDED ID WAS NOT FOUND")
+         return;
       }
    
       // Update the contact with the new data
-      user.contacts[contactIndex] = {
+      const { createdAt } = AuthUserDataDoc.contacts[contactIndex]
+      AuthUserDataDoc.contacts[contactIndex] = {
          ...user.contacts[contactIndex],
          ...edittedContactDetails,
+         createdAt
       }
  
-     await user.save()
+     await AuthUserDataDoc.save()
  
-     return res.status(200).json({ message: 'Contact updated successfully' })
+     response.status(200).json({ message: 'Contact updated successfully' })
    } 
    
    catch (error) {
-     return res.status(500)
+     response.status(500)
      throw new Error(err.message)
    }
 }

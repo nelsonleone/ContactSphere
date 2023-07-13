@@ -295,7 +295,7 @@
       font-family: $ff_primary;
       font-weight: $fw_bold;
       font-size: 1rem;
-      position: fixed;
+      position: absolute;
       bottom: 3em;
       right: 20%;
       text-decoration: underline $accent_color_1;
@@ -348,12 +348,20 @@
 .creating_contact_loader{
    position: fixed;
    z-index: 4;
-   top: 6.2em;
    width: 100%;
-   height:1em;
    left: 0;
    right: 0;
+   top: -5em;
+   bottom: 0;
    margin-inline: auto;
+   background-color: #fafafa1e;
+   backdrop-filter: brightness(95%);
+   height: 100vh;
+   overflow: hidden;
+
+   &>*{
+      top: 0;
+   }
 }
 
 
@@ -429,6 +437,10 @@
                top: 5em;
             }
          }
+      }
+
+      .show_more_btn{
+         position: absolute;
       }
    }
 

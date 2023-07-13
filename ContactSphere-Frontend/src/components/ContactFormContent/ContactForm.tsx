@@ -22,6 +22,7 @@ import { setShowAlert } from "../../RTK/features/alertSlice"
 import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice"
 import hasObjectChanged from "../../utils/helperFns/compareObjFieldsChange"
 import cleanContactFormFields from "../../utils/helperFns/cleanContactFields"
+import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions"
 
 
 
@@ -41,7 +42,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(
       errors.firstName?.message || 
       errors.phoneNumber?.message ||
-      isLoading  ? true : false
+      isLoading || editting ? true : false
    )
    const uid = useAppSelector(store => store.authUser.userDetails.uid)
    const dispatch = useAppDispatch()
@@ -50,10 +51,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
 
    const handleOnSubmit: SubmitHandler<Contact> = async(data) => {
       try{
-         if(!uid){
-            // precaution
-            throw new Error("Unauthourized Request, Please Login")
-         }
+         await stopUnauthourizedActions(uid)
 
          // Clean Up Inputs
          const formFields : Contact = {
@@ -68,7 +66,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
          if(action === ContactFormAction.Create){
             const successRes = await createContact({
                contactDetails: formFields,
-               authUserUid: uid
+               authUserUid: uid!
             }).unwrap()
 
             // Internal Server Error Occured [Catch Block Can't Catch Some Of Them ]
@@ -77,11 +75,16 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
             }
 
          }
+
          else{
+            if(!contactId){
+               throw new Error("Contact ID is invalid")
+            }
+            
             const successRes =  await editContact({
                contactDetails: formFields,
-               authUserUid: uid,
-               contactId: contactId || ''
+               authUserUid: uid!,
+               contactId: contactId
             }) .unwrap()
 
             // Internal Server Error Occured [Catch Block Can't Catch Some Of Them ]
@@ -135,6 +138,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
                   penMode={labelsArray?.length ? true : false} 
                   className={!labelsArray?.length ? "add_label_btn" : "add_label_btn penMode"}
                   handleClick={() => setShowLabelMenu(!showLabelMenu)} 
+                  disabled={isLoading || editting ? true : false}
                />
                <Button 
                   type="submit" 
