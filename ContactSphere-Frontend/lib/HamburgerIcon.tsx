@@ -5,12 +5,13 @@ import { IHeaderState } from '../src/components/Header'
 
 interface IProps{
    setState: Dispatch<SetStateAction<IHeaderState>>,
-   openNav: boolean
+   openNav: boolean,
+   setHamburgerButtonClicked: Dispatch<SetStateAction<boolean>>
 }
 
 function HamburgerIcon(props:IProps){
 
-   const { openNav, setState } = props;
+   const { openNav, setState, setHamburgerButtonClicked } = props;
    const [isOpen, setIsOpen] = useState<boolean>(false)
 
    const handleClick = (e:MouseEvent<HTMLButtonElement>) => {
@@ -18,13 +19,11 @@ function HamburgerIcon(props:IProps){
       setIsOpen(!isOpen)
 
       // Prevention Against NavMenu Flashing[Off and On Again] due to the nature of the ClickawayListener
-      if(window.innerWidth < 640 && openNav){
-        () => {}
-      }else{
-         setState(prevState => {
-            return { ...prevState, openNav: !prevState.openNav   }
-         })
-      }
+      setHamburgerButtonClicked(true)
+      
+      setState(prevState => {
+         return { ...prevState, openNav: !prevState.openNav   }
+      })
    }
 
    useEffect(() => {

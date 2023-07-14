@@ -24,8 +24,8 @@ export default function Header(props:IHeaderProps){
 
    const navigate = useNavigate()
    const location = useLocation()
-   const hamburgerRef = useRef<HTMLButtonElement>(null)
    const userIconRef = useRef<HTMLButtonElement>(null)
+   const [hamburgerButtonClicked,setHamburgerButtonClicked] = useState(false)
    const [state,setState] = useState<IHeaderState>({
       openUserMenu: false,
       toggleSettingSection: false,
@@ -65,10 +65,10 @@ export default function Header(props:IHeaderProps){
    return(
       <>
         <header className="header_main">
-            <HamburgerIcon openNav={state.openNav} ref={hamburgerRef} setState={setState}  />
+            <HamburgerIcon openNav={state.openNav} setState={setState} setHamburgerButtonClicked={setHamburgerButtonClicked}  />
             <h1 onClick={() => navigate('/')}>ContactSphere</h1>
 
-            <NavMenu openNav={state.openNav} setState={setState} />
+            <NavMenu openNav={state.openNav} setState={setState} setHamburgerButtonClicked={setHamburgerButtonClicked} hamburgerButtonClicked={hamburgerButtonClicked} />
             <SearchBar />
 
             <div className="user_utils">

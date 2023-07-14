@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { memo, useId } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import NewContactFormInput from "../../../../lib/customInputs/NewContactFormInput";
 import { UseFormRegister } from "react-hook-form";
@@ -13,7 +13,7 @@ interface IProps {
    error: string | undefined;
 }
 
-export default function NameInputSection(props:IProps){
+function NameInputSection(props:IProps){
 
    const { register, showMore, error } = props;
    const id = useId()
@@ -45,3 +45,5 @@ export default function NameInputSection(props:IProps){
       </div>
    )
 }
+
+export default memo(NameInputSection)

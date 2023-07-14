@@ -55,8 +55,11 @@ const setRestoreMultipleContactsFromTrash = asyncHandler(async(request,response)
       contactIds.forEach((contactId) => {
          const contactIndex = user.contacts.findIndex((contact) => contact._id.toString() === contactId)
 
+         const { createdAt, ...rest } = authUserDataDoc.contacts[contactIndex]
+
          authUserDataDoc.contacts[contactIndex] = {
-            ...authUserDataDoc.contacts[contactIndex],
+            createdAt,
+            ...rest,
             inTrash: false,
             deletedAt: null
          }
@@ -128,19 +131,17 @@ const setManageMultiContactLabels = async (request, response) => {
 const setHideMultipleContacts = asyncHandler(async (request, response) => {
    const { uid } = request.query;
    const { selectedContacts: contactIds, status } = request.body;
-
+   
    try {
       const filter = { uid, 'contacts._id': { $in: contactIds } }
       const update = { $set: { 'contacts.$.isHidden': status } }
-
-      const updatedAuthUserData = await AuthUserData.findOneAndUpdate(filter, update, { new: true })
-
-      if (!updatedAuthUserData) {
-         throw new Error('USER WITH PROVIDED UID WAS NOT FOUND')
+      
+      for (const contactId of contactIds) {
+         await AuthUserData.findOneAndUpdate(filter, update, { new: true })
       }
-
+      
       response.status(200).end()
-   } 
+   }
    
    catch (error) {
       response.status(500)

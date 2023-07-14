@@ -21,13 +21,16 @@ import { ILabelObj } from "../vite-env";
 
 interface IProps{
    setState: Dispatch<SetStateAction<IHeaderState>>,
-   openNav: boolean
+   openNav: boolean,
+   hamburgerButtonClicked: boolean,
+   setHamburgerButtonClicked: Dispatch<SetStateAction<boolean>>,
 }
 
 function NavMenu(props:IProps){
 
    const { beenAuthenticated , userDetails: { uid }} = useAppSelector(store => store.authUser)
-   const { labels, contacts } = useAppSelector(store => store.userData)   
+   const { labels, contacts } = useAppSelector(store => store.userData)
+   const [addLabelMode,setAddLabelMode] = useState<"edit"|"create">("edit")
    const [labelForEdit,setLabelForEdit] = useState<ILabelObj>({
       label: "",
       _id: ""
@@ -41,11 +44,16 @@ function NavMenu(props:IProps){
    const handleClickAway = () => {
       // don't close navMenu automatically on larger screens
       if (window.innerWidth >= Breakpoints.Large )return;
-      props.setState(prevState => (
-         {
-            ...prevState, openNav: false
-         }
-      ))
+
+      if(!props.hamburgerButtonClicked){
+         props.setState(prevState => (
+            {
+               ...prevState, openNav: false
+            }
+         ))
+      }
+
+      props.setHamburgerButtonClicked(false)
    }
 
    const checkContactsWithLabel = (label:string) => {
@@ -86,6 +94,13 @@ function NavMenu(props:IProps){
       },
       dispatch
    )
+
+   // Set Edit Contents To Null, So Dialog Opens In Creation Mode
+   const handleCreateLabelBtnClick = () => {
+      setLabelForEdit({_id:"",label:""})
+      setAddLabelMode("create")
+      setOpenDialog(true)
+   }
 
    return(
       <>
@@ -141,7 +156,7 @@ function NavMenu(props:IProps){
                      </div>
 
                      <li className="label-area">
-                        <button>
+                        <button onClick={handleCreateLabelBtnClick}>
                            <span>Labels</span>
                            <BiPlus title="plus icon"  />
                         </button>
@@ -191,6 +206,7 @@ function NavMenu(props:IProps){
             setLabelForEdit={setLabelForEdit}  
             labelForEdit={labelForEdit.label}
             setOpen={setOpenDialog} 
+            mode={addLabelMode}
          />
       </>
    )

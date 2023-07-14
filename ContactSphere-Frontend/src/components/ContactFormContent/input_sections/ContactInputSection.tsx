@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { memo, useId } from "react";
 import { InputPropertyValueName } from "../../../enums";
 import NewContactFormInput from "../../../../lib/customInputs/NewContactFormInput";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
@@ -13,7 +13,7 @@ interface IProps {
    phoneNumber: string
 }
 
-export default function ContactInputSection(props:IProps){
+function ContactInputSection(props:IProps){
 
    const {
       register,
@@ -44,3 +44,5 @@ export default function ContactInputSection(props:IProps){
       </div>
    )
 }
+
+export default memo(ContactInputSection)

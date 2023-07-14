@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { memo, useId } from "react";
 import NewContactFormInput from "../../../../lib/customInputs/NewContactFormInput";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { Contact } from "../../../vite-env";
@@ -14,7 +14,7 @@ interface IProps {
    error:  string | undefined
 }
 
-export default function AddressInputSection(props:IProps){
+function AddressInputSection(props:IProps){
 
    const { register, showMore , error } = props;
    const id = useId()
@@ -44,3 +44,5 @@ export default function AddressInputSection(props:IProps){
       </div>
    )
 }
+
+export default memo(AddressInputSection)

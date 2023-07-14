@@ -21,9 +21,10 @@
       background-color: $text-color2;
       width: 14em;
       color: #FAFAFA;
-      font-size:1.05rem;
+      font-size:1rem;
       padding:.7em 1em;
-      border-radius: 4px;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
    }
 }
 
@@ -55,4 +56,9 @@
       z-index: 4;
       margin-top:1em;
    }
+}
+
+
+.avatar{
+   @include flexObj($justify:center);
 }

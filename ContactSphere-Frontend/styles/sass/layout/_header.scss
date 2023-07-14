@@ -9,6 +9,7 @@
    margin: auto;
    gap: 1em;
    z-index: 3;
+   overflow: hidden;
    position: relative;
    svg{
       font-size: 1.2rem;
@@ -28,8 +29,9 @@
       position: relative;
       z-index: 101;
       margin-right:  .5em;
+      transform: translateX(-.5em);
       cursor: pointer;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
 
       &::before{
          content: "";
@@ -78,7 +80,7 @@
    }
 
   li{
-      margin-block: 1em;
+      margin-block: 1.2em;
       font-family:  inherit;
       font-weight: $fw_bold;
       font-size: 1.05rem;
@@ -151,14 +153,16 @@
    // User Saved Labels section
    .label-area{
       margin-top: 2em;
+      min-height: 10em;
       &>button{
          margin-block: 1em;
          font-family:  inherit;
-         font-size: .9rem;
+         font-size: 1rem;
          @include flexObj;
          width: 100%;
-         font-family: $ff_secondary;
-         color: $text-color1;
+         font-family: $ff_primary;
+         font-weight: $fw_bold;
+         color: $text-color2;
          padding-right: .4em;
          padding: .4em;
          border-radius: 4px;
@@ -170,11 +174,12 @@
             }
          }
       }
+   
 
       ul li{
          font-size: .9rem;
-         margin-block: 1.2em;
-         font-family: $ff_primary;
+         margin-block: 1em;
+         font-family: $ff_secondary;
          font-weight: $fw_bold;
          padding-left: 1em;
          @include flexObj;
@@ -191,7 +196,7 @@
          }
 
          a{
-            color: $text-color2;
+            color: $text-color1;
             width: 100%;
          }
 
@@ -309,9 +314,10 @@ button[aria-controls=user-menu]{
      border: 1px solid $accent_color_2;
   }
 
-  &::placeholder{
-   color: $text-color1 !important;
-  }
+
+   &::placeholder{
+      color: grey !important;
+   }
 }
 
 .hide-searchbar{
@@ -344,7 +350,7 @@ button[aria-controls=user-menu]{
    right: 0;
    font-family: $ff_primary;
    top: 4.7em;
-   box-shadow: 0px 2px 2px 2px $util_color1;
+   box-shadow: 0px 2px 2px 2px #c5c3c3bd !important;
    @include flexObj($justify:center,$direction:column);
 
    .avatar{
@@ -427,7 +433,7 @@ button[aria-controls=user-menu]{
 
    .header_main {
       .searchbar{
-         flex-basis:60%;
+         flex-basis:62%;
          position: relative;
          @include flexObj;
 
@@ -435,7 +441,7 @@ button[aria-controls=user-menu]{
             z-index: 99;
             position: absolute;
             margin-block: auto;
-            left: 1em;
+            left: 1.5em;
 
             svg{
                opacity: .6;
@@ -445,9 +451,10 @@ button[aria-controls=user-menu]{
          .searchbar-input{
             position: relative;
             bottom: unset;
-            padding-left: 2em;
+            padding-left: 3em;
             left: .5em;
             right: 2.4em;
+            font-size: .9rem;
             height: 3em;
             padding-block: 1.6em;
             width: 100%;
@@ -469,7 +476,7 @@ button[aria-controls=user-menu]{
 
 @include  useMediaQuery_LS{
    .header_main{
-      padding-block: 1em;
+      padding-block: .5em 1em;
       position: relative;
       top: 0;
       padding-left: 4em;
@@ -506,16 +513,13 @@ button[aria-controls=user-menu]{
       z-index: 1;
       position: fixed;
       left: 0;
-      overflow: hidden;
       scrollbar-width: thin;
-
+      overflow: hidden;
+      
       &:hover{
          overflow-y: auto;
       }
-         
-      &::-webkit-scrollbar{
-         width: 8px;
-      }
+
       &::-webkit-scrollbar-track{
          width: thin;
       }
@@ -540,13 +544,14 @@ button[aria-controls=user-menu]{
       left: 0;
       
       &>*{
-         transform: translateY(-.36em);
+         transform: translateY(-.72em);
       }
    }
 
    .header_main .searchbar{
       flex-basis: unset;
-      width: 56em;
+      width: 54em;
+      flex-basis: 75%;
       right: unset;
       position: relative;
       .searchbar-input{
@@ -555,14 +560,10 @@ button[aria-controls=user-menu]{
          position: absolute;
          margin-block: auto;
          height: 2em;
-         padding: 1.4em 1em;
-         padding-left: 2.4em;
-         font-size: 1rem;
+         padding: 1.5em 1em;
+         padding-left: 3em;
+         font-size: .9rem;
          width: 90%;
-
-         &::placeholder{
-            color: $text-color2;
-         }
       }
    }
 

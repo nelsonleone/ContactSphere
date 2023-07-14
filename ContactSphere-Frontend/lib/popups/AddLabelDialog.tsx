@@ -19,12 +19,13 @@ interface IDialogProps {
    setLabelForEdit?: Dispatch<SetStateAction<ILabelObj>>,
    handleLabelEdit?: ()  => void,
    labelForEdit?: string,
-   append?: UseFieldArrayAppend<Contact, "labelledBy" | "relatedPeople">
+   append?: UseFieldArrayAppend<Contact, "labelledBy" | "relatedPeople">,
+   mode: "edit" | "create"
 }
 
 export default function AddLabelDialog(props:IDialogProps) {
 
-   const {  open, setOpen, labelsArray, append } = props;
+   const {  open, setOpen, labelsArray, append, mode } = props;
    const [addLabel,{ isLoading }] = useAddLabelMutation()
    const { uid } = useAppSelector(store => store.authUser.userDetails)
    const [label,setLabel] = useState("")
@@ -38,11 +39,11 @@ export default function AddLabelDialog(props:IDialogProps) {
       }
    },[label])
 
-   const handleAddLabel = () => {
+   const handleAddLabel = async() => {
       if(!uid)return;
 
       // Set Editted Label Value And Close Modal
-      if(props.handleLabelEdit){
+      if(props.handleLabelEdit && mode === "edit"){
          props.handleLabelEdit()
          setOpen(false)
          return;
@@ -58,14 +59,20 @@ export default function AddLabelDialog(props:IDialogProps) {
       }
                
       // Add the Label to the user's data in database 
-      postCreatedLabel(addLabel,dispatch,label,uid) 
+      await postCreatedLabel(addLabel,dispatch,label,uid) 
+      setLabel("")
+      setOpen(false)
+   }
+
+   const handleDialogClose = () => {
+      setLabel("")
       setOpen(false)
    }
 
 
   return (
-      <Dialog open={open} onClose={()=> setOpen(false)}>
-         <DialogTitle>{props.labelForEdit ? "Edit Label" : "Create Label"}</DialogTitle>
+      <Dialog open={open} onClose={handleDialogClose}>
+         <DialogTitle>{props.mode === "edit" ? "Edit Label" : "Create Label"}</DialogTitle>
          <DialogContent sx={{width:"20em"}}>
             <TextField
                autoFocus
@@ -77,7 +84,7 @@ export default function AddLabelDialog(props:IDialogProps) {
                className="textField add_label_dialog_input"
                onChange={(e) => setLabel(e.target.value)}
                // Use Edit Value In Edit Mode
-               value={props.labelForEdit ? props.labelForEdit : label}
+               value={props.mode === "edit" ? props.labelForEdit : label}
             />
          </DialogContent>
          <DialogActions>

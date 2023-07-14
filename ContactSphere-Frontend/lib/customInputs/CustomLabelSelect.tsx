@@ -34,11 +34,10 @@ export default function CustomLabelSelect(props:IProps) {
             size="small"
             className="select custom_select"
             {...register(name as keyof Contact)}
-            defaultValue=""
          >
          {
             relatedPeopleArray.map(value => (
-               <MenuItem  key={nanoid()} value={value.value.toLowerCase()}>{value.text}</MenuItem>
+               <MenuItem onClick={() => setValue(name as keyof Contact,value.value)} key={nanoid()} value={value.value.toLowerCase()}>{value.text}</MenuItem>
             ))
          }
          </Select>

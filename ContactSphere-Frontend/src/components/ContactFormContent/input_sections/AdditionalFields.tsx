@@ -73,7 +73,6 @@ function AdditionalFields(props:IProps){
                      show={showMore}
                   />
                   <CustomLabelSelect 
-                     labelFor="related_people_label"
                      register={register} 
                      setValue={setValue}
                      index={index}

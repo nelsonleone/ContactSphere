@@ -58,6 +58,13 @@ const getAuthUserData = asyncHandler(async(request,response) => {
       const currentDate = new Date()
       const diffInDate = new Date()
       diffInDate.setDate(diffInDate.getDate() - 30)
+
+      if(!authUserUid){
+         response.status(400)
+         throw new Error("INVALID UID QUERY PARAMETER PASSED")
+         return;
+      }
+
       let authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
 
       if (!authUserDataDoc){
@@ -80,7 +87,7 @@ const getAuthUserData = asyncHandler(async(request,response) => {
 
       // Remove Contacts In Trash Which Has Exceed The Time Mark
       const contacts = authUserDataDoc.contacts.filter(contact => (
-         !contact.deletedAt || contact.deletedAt.getTime() > diffInDate.getTime()
+         !contact.deletedAt || new Date(contact.deletedAt).getTime() > diffInDate.getTime()
       ))
       
       response.status(200).json({
@@ -97,7 +104,7 @@ const getAuthUserData = asyncHandler(async(request,response) => {
 
 
 
-// Set New Contact Label
+// Set New  Label
 const setNewLabel = asyncHandler(async(request,response) => {
    const authUserUid = request.query.uid;
    const labelToAdd = request.body;
@@ -108,7 +115,7 @@ const setNewLabel = asyncHandler(async(request,response) => {
    try{
       const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
 
-      if(authUserDataDoc){
+      if(!authUserDataDoc){
          response.status(400)
          throw new Error("NO USER WITH SPECIFIED UID WAS FOUND")
          return;
@@ -359,17 +366,14 @@ const setHideContactHandler = asyncHandler(async(request,response) => {
       const contactIndex = authUserDataDoc.contacts.findIndex((contact) => contact._id.toString() === contactId.toString())
    
       if (contactIndex === -1) {
-         return res.status(404)
+         response.status(404)
          throw new Error("CONTACT WITH PROVIDED ID WAS NOT FOUND")
          return;
       }
-   
-      authUserDataDoc.contacts[contactIndex] = {
-         ...authUserDataDoc.contacts[contactIndex],
-         isHidden: status,
-         // Once A contact Is Hidden , It's No Longer Starred
-         inFavourites: status === true ? false : authUserDataDoc.contacts[contactIndex].inFavourites
-      }
+
+      // Once A contact Is Hidden , It's No Longer Starred
+      authUserDataDoc.contacts[contactIndex].isHidden = status;
+      authUserDataDoc.contacts[contactIndex].inFavourites = status === true ? false : authUserDataDoc.contacts[contactIndex].inFavourites;
 
       await authUserDataDoc.save()
    
@@ -401,16 +405,15 @@ const setTrashContactHandler = asyncHandler(async (request, response) => {
       const contactIndex = user.contacts.findIndex((contact) => contact._id.toString() === contactId)
    
       if (contactIndex === -1) {
-         return res.status(404)
+         response.status(404)
          throw new Error("CONTACT WITH PROVIDED ID WAS NOT FOUND")
          return;
       }
+
+      const oldData = {...authUserDataDoc.contacts[contactIndex]}
    
-      authUserDataDoc.contacts[contactIndex] = {
-         ...authUserDataDoc.contacts[contactIndex],
-         inTrash: true,
-         deletedAt: new Date()
-      }
+      authUserDataDoc.contacts[contactIndex].inTrash = true;
+      authUserDataDoc.contacts[contactIndex].deletedAt = new Date()
    
       await authUserDataDoc.save()
    
@@ -447,11 +450,9 @@ const setRestoreFromTrash = asyncHandler(async(request,response) => {
          return;
       }
    
-      authUserDataDoc.contacts[contactIndex] = {
-         ...authUserDataDoc.contacts[contactIndex],
-         inTrash: false,
-         deletedAt: null
-      }
+      authUserDataDoc.contacts[contactIndex].inTrash = false;
+      authUserDataDoc.contacts[contactIndex].deletedAt = null;
+
    
       await authUserDataDoc.save()
    
@@ -497,12 +498,7 @@ const setEdittedContact = async (request, response) => {
       }
    
       // Update the contact with the new data
-      const { createdAt } = AuthUserDataDoc.contacts[contactIndex]
-      AuthUserDataDoc.contacts[contactIndex] = {
-         ...user.contacts[contactIndex],
-         ...edittedContactDetails,
-         createdAt
-      }
+      AuthUserDataDoc.contacts[contactIndex] = Object.assign({}, authUser.contacts[contactIndex], edittedContactDetails)
  
      await AuthUserDataDoc.save()
  
@@ -511,7 +507,7 @@ const setEdittedContact = async (request, response) => {
    
    catch (error) {
      response.status(500)
-     throw new Error(err.message)
+     throw new Error(error.message)
    }
 }
  

@@ -362,6 +362,7 @@
    .contact_count_para{
       font-size: .85rem;
       letter-spacing: .06em;
+      font-weight: $fw_bold;
    }
 }
 
@@ -418,6 +419,10 @@
    .trash_page_prompt{
       @include flexObj($justify:center,$direction:row); 
       height: 3.2em;
+   }
+
+   .contact_count_para{
+      font-size: .8rem;
    }
 }
 

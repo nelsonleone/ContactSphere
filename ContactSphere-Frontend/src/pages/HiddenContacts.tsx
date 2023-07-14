@@ -28,8 +28,8 @@ function HiddenContacts({fetchingContacts}: { fetchingContacts:boolean }){
             :
             <ContactsPageColumnOrder />
          }
-         <p aria-label="Hidden Contacts Count" className="contact_count_para">Hidden ({contacts.length})</p>
-         <main>
+         <p aria-label="Hidden Contacts Count" className="contact_count_para">Hidden ({hiddenContacts.length})</p>
+         <main className="contacts_container">
             {
                hiddenContacts.length ? SortContacts(sortBy,hiddenContacts).map(contactProps => (
                   <ContactItem key={contactProps._id} location={ContactItemLocation.HiddenContacts} {...contactProps} />
