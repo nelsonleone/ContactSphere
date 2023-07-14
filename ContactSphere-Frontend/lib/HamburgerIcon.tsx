@@ -1,5 +1,5 @@
 import { Divide as Hamburger } from 'hamburger-react'
-import React, { Dispatch, Ref, SetStateAction, forwardRef, useEffect } from 'react'
+import React, { Dispatch, MouseEvent, SetStateAction, useEffect } from 'react'
 import { useState } from 'react'
 import { IHeaderState } from '../src/components/Header'
 
@@ -8,16 +8,23 @@ interface IProps{
    openNav: boolean
 }
 
-function HamburgerIcon(props:IProps,ref:Ref<HTMLButtonElement>){
+function HamburgerIcon(props:IProps){
 
    const { openNav, setState } = props;
    const [isOpen, setIsOpen] = useState<boolean>(false)
 
-   const handleClick = () => {
+   const handleClick = (e:MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
       setIsOpen(!isOpen)
-      setState(prevState => {
-         return { ...prevState, openNav: !prevState.openNav  }
-      })
+
+      // Prevention Against NavMenu Flashing[Off and On Again] due to the nature of the ClickawayListener
+      if(window.innerWidth < 640 && openNav){
+        () => {}
+      }else{
+         setState(prevState => {
+            return { ...prevState, openNav: !prevState.openNav   }
+         })
+      }
    }
 
    useEffect(() => {
@@ -30,7 +37,6 @@ function HamburgerIcon(props:IProps,ref:Ref<HTMLButtonElement>){
          aria-controls='main-nav' 
          aria-expanded={isOpen ? "true" : "false"}
          aria-haspopup="true"
-         ref={ref}
          type="button"
          aria-label='Open Navigation Menu'
          className="hamburger-icon"
@@ -41,4 +47,4 @@ function HamburgerIcon(props:IProps,ref:Ref<HTMLButtonElement>){
    )
 }
 
-export default forwardRef(HamburgerIcon)
+export default HamburgerIcon;
