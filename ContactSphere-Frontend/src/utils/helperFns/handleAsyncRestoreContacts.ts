@@ -5,7 +5,8 @@ import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice";
 import { setShowAlert } from "../../RTK/features/alertSlice";
 import { AlertSeverity } from "../../enums";
 import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
-import { IServerResponseObj } from "../../vite-env";
+import { IContactsFromDB, IServerResponseObj } from "../../vite-env";
+import { setUpdatedLocalContacts } from "../../RTK/features/userDataSlice";
 
 type RestoreContact = MutationTrigger<MutationDefinition<{
    authUserUid: string;
@@ -28,7 +29,8 @@ export default async function handleAsyncRestore(
    uid: string,
    contactId: string,
    selectedContacts: string[],
-   dispatch: Dispatch<any>
+   dispatch: Dispatch<any>,
+   contacts: IContactsFromDB[]
 
 ){
    try{
@@ -40,6 +42,13 @@ export default async function handleAsyncRestore(
             authUserUid: uid,
             contactId
          }).unwrap()
+
+         // Update Contacts Data Locally Before Data Refetch
+         const updatedLocalContactsData : IContactsFromDB[] = contacts.map(c => {
+            return c._id === contactId ? { ...c,inTrash:false } : c
+         })
+
+         dispatch(setUpdatedLocalContacts(updatedLocalContactsData))
       }
 
       else if(method === "multi"){
@@ -47,6 +56,15 @@ export default async function handleAsyncRestore(
             selectedContacts,
             authUserUid: uid
          }).unwrap()
+
+         // Update Contacts Data Locally Before Data Refetch
+         contacts.forEach(val => {
+            const updatedLocalContactsData : IContactsFromDB[] = contacts.map(c => {
+               return selectedContacts.includes(c._id) ? { ...c,inTrash:true } : c
+            })
+
+            dispatch(setUpdatedLocalContacts(updatedLocalContactsData))
+         })
       }
 
       if(!res){

@@ -466,6 +466,11 @@ button[aria-controls=user-menu]{
 @include  useMediaQuery_MD{
    .header_main{
       gap: .5em;
+
+      h1{
+         font-size: 1.8rem;
+         transform: translateX(0);
+      }
    }
 
 
@@ -495,8 +500,8 @@ button[aria-controls=user-menu]{
             right: 2.4em;
             font-size: .9rem;
             height: 3em;
-            padding-block: 1.6em;
-            width: 100%;
+            padding-block: 1.5em;
+            width: 90%;
          }
       }
 
@@ -589,7 +594,7 @@ button[aria-controls=user-menu]{
    .hamburger-icon{
       position: absolute;
       left: 0;
-      top: .3em;
+      top: .5em;
    }
 
    .header_main .searchbar{

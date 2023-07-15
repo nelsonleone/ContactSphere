@@ -5,7 +5,9 @@ import { setShowAlert } from "../../RTK/features/alertSlice";
 import { AlertSeverity } from "../../enums";
 import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta, MutationDefinition } from "@reduxjs/toolkit/dist/query";
-import { IServerResponseObj } from "../../vite-env";
+import { IContactsFromDB, IServerResponseObj } from "../../vite-env";
+import { setSelectNone } from "../../RTK/features/contactMultiSelectSlice";
+import { setUpdatedLocalContacts } from "../../RTK/features/userDataSlice";
 
 type HideContact =  MutationTrigger<MutationDefinition<{
    authUserUid: string;
@@ -28,6 +30,7 @@ export default async function handleAsyncHideContact(
  status: boolean,
  uid: string,
  selectedContacts: string[],
+ contacts: IContactsFromDB[],
 
 //  Mutation Hooks Actions
   hideContact: HideContact,
@@ -44,6 +47,13 @@ export default async function handleAsyncHideContact(
             contactId,
             status
          }).unwrap()
+
+         // Update Local State, Before Data Refetch
+         const updatedLocalContacts = contacts.map(c => {
+            return c._id === contactId ? {...c,isHidden:status} : c
+         })
+
+         dispatch(setUpdatedLocalContacts(updatedLocalContacts))
       }
 
       else if(method === "multi"){
@@ -57,6 +67,18 @@ export default async function handleAsyncHideContact(
       if(!res){
          throw new Error("Internal Error")
       }
+
+      
+      dispatch(setSelectNone())
+
+      contacts.forEach(val => {
+         // Update Local State, Before Data Refetch
+         const updatedLocalContacts = contacts.map(c => {
+            return selectedContacts.includes(c._id) ? {...c,isHidden:status} : c
+         })
+
+         dispatch(setUpdatedLocalContacts(updatedLocalContacts))
+      })
 
       dispatch(setShowSnackbar({
          snackbarMessage:"Succefully Hidden"

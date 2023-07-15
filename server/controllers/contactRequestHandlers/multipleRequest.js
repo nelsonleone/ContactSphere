@@ -107,7 +107,7 @@ const setManageMultiContactLabels = async (request, response) => {
 
             // Add the label if it doesn't exist in the labelledBy array
             if (!existingLabel) {
-               await AuthUser.findOneAndUpdate(
+               await AuthUserData.findOneAndUpdate(
                   { uid, 'contacts._id': contact._id },
                   { $push: { 'contacts.$.labelledBy': { label } } }
                )

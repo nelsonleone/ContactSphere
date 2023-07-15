@@ -3,9 +3,11 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/wrkSnackbarSlice";
 import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice";
 import { setShowAlert } from "../../RTK/features/alertSlice";
+import { setSelectNone } from "../../RTK/features/contactMultiSelectSlice";
 import { AlertSeverity } from "../../enums";
 import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
-import { IServerResponseObj } from "../../vite-env";
+import { IContactsFromDB, IServerResponseObj } from "../../vite-env";
+import { setUpdatedLocalContacts } from "../../RTK/features/userDataSlice";
 
 type DeleteContact = MutationTrigger<MutationDefinition<{
    authUserUid: string;
@@ -28,7 +30,8 @@ export default async function handleAsyncDelete(
    uid: string,
    contactId: string,
    selectedContacts: string[],
-   dispatch: Dispatch<any>
+   dispatch: Dispatch<any>,
+   contacts: IContactsFromDB[]
 
 ){
    try{
@@ -41,6 +44,13 @@ export default async function handleAsyncDelete(
             authUserUid: uid,
             contactId
          }).unwrap()
+
+         // Update Contacts Data Locally Before Data Refetch
+         const updatedLocalContactsData : IContactsFromDB[] = contacts.map(c => {
+            return c._id === contactId ? { ...c,inTrash:true } : c
+         })
+
+         dispatch(setUpdatedLocalContacts(updatedLocalContactsData))
       }
 
       else if(method === "multi"){
@@ -48,11 +58,22 @@ export default async function handleAsyncDelete(
             selectedContacts,
             authUserUid: uid
          })
+
+         // Update Contacts Data Locally Before Data Refetch
+         contacts.forEach(val => {
+            const updatedLocalContactsData : IContactsFromDB[] = contacts.map(c => {
+               return selectedContacts.includes(c._id) ? { ...c,inTrash:true } : c
+            })
+
+            dispatch(setUpdatedLocalContacts(updatedLocalContactsData))
+         })
       }
 
       if(!res){
          throw new Error("An Error Occured Completing Request")
       }
+
+      dispatch(setSelectNone())
       
       dispatch(setShowSnackbar({
          snackbarMessage:"Successfully Deleted"

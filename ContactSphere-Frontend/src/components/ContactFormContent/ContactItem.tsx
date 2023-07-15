@@ -47,6 +47,7 @@ function ContactItem(props:IContactItemProps){
    const [hideContact] = useHideContactMutation()
    const [hideMultipleContacts] = useHideMultipleContactsMutation()
    const dispatch = useAppDispatch()
+   const { contacts } = useAppSelector(store => store.userData)
 
    const handleStarring = async() => {
 
@@ -93,6 +94,7 @@ function ContactItem(props:IContactItemProps){
             false,
             uid!,
             selectedContacts,
+            contacts,
             hideContact,
             hideMultipleContacts
          )

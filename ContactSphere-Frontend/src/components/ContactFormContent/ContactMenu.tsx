@@ -28,7 +28,7 @@ interface IProps {
 
 export default function ContactMenu(props:IProps){
 
-   const { labels:userSavedLabels } = useAppSelector(store => store.userData)
+   const { labels:userSavedLabels, contacts } = useAppSelector(store => store.userData)
    const uid = useAppSelector(store =>  store.authUser.userDetails.uid)
    const [manageLabels] = useManageLabelsMutation()
    const dispatch = useAppDispatch()
@@ -82,6 +82,7 @@ export default function ContactMenu(props:IProps){
             true,
             uid!,
             selectedContacts,
+            contacts,
             hideContact,
             hideMultipleContacts
          )
@@ -102,7 +103,8 @@ export default function ContactMenu(props:IProps){
             uid!,
             props.contactId || '',
             selectedContacts,
-            dispatch
+            dispatch,
+            contacts
          )
       },
       dispatch

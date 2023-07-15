@@ -129,7 +129,7 @@ export function RestoreToActiveButton({handleRestore}:{ handleRestore:() => void
    return(
       <Tooltip title="Unarchive">
          <button className="contact_unarchive_button" type="button" onClick={handleRestore}>
-            <MdUnarchive />
+            <MdUnarchive style={{fontSize: '1.4rem'}} />
          </button>
       </Tooltip>
    )

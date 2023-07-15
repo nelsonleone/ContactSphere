@@ -7,6 +7,7 @@ import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta, MutationDefinition } from "@reduxjs/toolkit/dist/query";
 import { IContactsFromDB, IServerResponseObj } from "../../vite-env";
 import { setEdittedContact } from "../../RTK/features/userDataSlice";
+import { setSelectNone } from "../../RTK/features/contactMultiSelectSlice";
 
 type ManageLabel = MutationTrigger<MutationDefinition<{
    label: string;
@@ -79,6 +80,8 @@ export default async function handleAsyncAddLabel(
          if(!res){
             throw new Error("Internal Error Occured While Adding Label To Contacts")
          }
+
+         dispatch(setSelectNone())
 
          dispatch(setShowSnackbar({
             snackbarMessage: actionType === "add" ?

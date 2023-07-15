@@ -25,9 +25,12 @@ const userDataSlice = createSlice({
          ))
 
          state.contacts = [...state.contacts,payload]
+      },
+      setUpdatedLocalContacts: (state, { payload }:PayloadAction<IContactsFromDB[]>) => {
+         state.contacts = payload
       }
    }
 })
 
-export const { setUserData, updateLabels, setEdittedContact } = userDataSlice.actions;
+export const { setUserData, updateLabels, setEdittedContact, setUpdatedLocalContacts } = userDataSlice.actions;
 export default userDataSlice.reducer;
