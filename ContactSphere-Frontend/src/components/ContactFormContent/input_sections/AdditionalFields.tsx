@@ -1,4 +1,4 @@
-import { memo, useId } from "react";
+import { useId } from "react";
 import NewContactFormInput from "../../../../lib/customInputs/NewContactFormInput";
 import CustomLabelSelect from "../../../../lib/customInputs/CustomLabelSelect";
 import { UseFormRegister, useFieldArray } from "react-hook-form"
@@ -16,15 +16,21 @@ interface IProps {
    showMore: boolean,
    setValue: UseFormSetValue<Contact>,
    control:  Control<Contact, any>,
-   error: string | undefined
+   error: string | undefined,
+   relatedPeople: {
+      label: string,
+      name: string
+   }[]
 }
 
 
 function AdditionalFields(props:IProps){
 
-   const { register, showMore, setValue, control, error } = props;
+   const { register, showMore, setValue, control, error, relatedPeople } = props;
    const { fields, append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.RelatedPeople })
    const id = useId()
+
+   console.log(relatedPeople)
 
    return(
       <div className="additional_fields">
@@ -72,16 +78,16 @@ function AdditionalFields(props:IProps){
                      type='text'
                      show={showMore}
                   />
+
                   <CustomLabelSelect 
-                     register={register} 
                      setValue={setValue}
                      index={index}
-                     name={`${InputPropertyValueName.RelatedPeople}[${index}].label`}
                      label="Label"
                      show={showMore}
+                     value={relatedPeople[index].label}
                   />
                   <button type="button" className={`field_append_btn append_btn_${index}`} onClick={() => append({ name: '', label: '' })}>
-                    <HiPlusCircle />
+                     <HiPlusCircle />
                   </button>
                </div>
             ))
@@ -106,4 +112,4 @@ function AdditionalFields(props:IProps){
    )
 }
 
-export default memo(AdditionalFields)
+export default AdditionalFields;

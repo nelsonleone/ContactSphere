@@ -1,4 +1,4 @@
-export default function cleanContactFormFields(val:string){
+export default function capitalizeString(val:string){
    // return value if it's an empty string, undefined or null
    if(!val){
       return val;

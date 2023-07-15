@@ -20,7 +20,7 @@ function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
 
    return (
       !fetchingContacts ? 
-      <PageWrapper className="trash" title="Trash">
+      <PageWrapper className="trash" title="ContactSphere | Trash">
          <div className="trash_page_prompt">
             <p role="alert">
                Contacts Remain In Trash For 30days, after which they are automatically deleted permanently.

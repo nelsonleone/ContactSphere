@@ -367,6 +367,13 @@
 
 
 // Media queries
+
+@include useMediaQuery_MD{
+   .image_upload_input{
+      width: 10em;
+   }
+}
+
 @include useMediaQuery_LS {
    .image_upload_input{
       width: 10.5em;

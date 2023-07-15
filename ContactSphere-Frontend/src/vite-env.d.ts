@@ -104,3 +104,6 @@ type Duplicates = IDuplicates[]
 interface IServerResponseObj {
   message: string
 }
+
+
+type ColumnOrderData = { colName:string,order:number }[]

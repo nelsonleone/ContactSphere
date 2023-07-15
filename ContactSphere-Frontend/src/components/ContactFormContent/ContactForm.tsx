@@ -20,8 +20,8 @@ import { useCreateContactMutation, useEditContactMutation } from '../../RTK/feat
 import { useAppDispatch, useAppSelector } from "../../customHooks/reduxCustomHooks"
 import { setShowAlert } from "../../RTK/features/alertSlice"
 import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice"
-import cleanContactFormFields from "../../utils/helperFns/cleanContactFields"
 import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions"
+import cleanNewContactFormFields from "../../utils/helperFns/cleanNewContactFields"
 
 
 
@@ -49,22 +49,13 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    const uid = useAppSelector(store => store.authUser.userDetails.uid)
    const dispatch = useAppDispatch()
 
-   console.log(relatedPo)
-
 
    const handleOnSubmit: SubmitHandler<Contact> = async(data) => {
       try{
          await stopUnauthourizedActions(uid)
 
          // Clean Up Inputs
-         const formFields : Contact = {
-            ...data,
-            birthday: data.birthday ? new Date(data.birthday) : '',
-            firstName: cleanContactFormFields(data.firstName),
-            lastName: cleanContactFormFields(data.lastName),
-            middleName: cleanContactFormFields(data.middleName),
-            nickname: cleanContactFormFields(data.nickname)
-         }
+         const formFields = cleanNewContactFormFields(data)
 
          if(action === ContactFormAction.Create){
             const successRes = await createContact({

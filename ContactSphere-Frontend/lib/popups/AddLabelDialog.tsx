@@ -48,6 +48,9 @@ export default function AddLabelDialog(props:IDialogProps) {
          setOpen(false)
          return;
       }
+               
+      // Add the Label to the user's data in database 
+      await postCreatedLabel(addLabel,dispatch,label,uid) 
 
       if (labelsArray && append){
          // Dialog Being Used In Contact Form
@@ -57,9 +60,6 @@ export default function AddLabelDialog(props:IDialogProps) {
             append({label})
          }
       }
-               
-      // Add the Label to the user's data in database 
-      await postCreatedLabel(addLabel,dispatch,label,uid) 
       setLabel("")
       setOpen(false)
    }

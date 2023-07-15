@@ -51,7 +51,7 @@ function Setting(props:IProps){
                   <FormLabel id="localSetting-radio-buttons-group-label" className="st-label">Sort by</FormLabel>
                   <RadioGroup
                      aria-labelledby="localSetting-radio-buttons-group-label"
-                     defaultValue={sortBy}
+                     value={selectedValue}
                      name="localSetting-buttons-group"
                      >
                      <FormControlLabel 

@@ -9,7 +9,6 @@
    margin: auto;
    gap: 1em;
    z-index: 3;
-   overflow: hidden;
    position: relative;
    svg{
       font-size: 1.2rem;
@@ -62,10 +61,19 @@
    transition: all .2s linear;
    width: 74%;
    height: 100vh;
-   overflow-y: auto;
    box-shadow: 0 4px 4px 5px hsla(0, 0%, 0%, 0.137);
    font-family:  $ff_primary;
    scroll-behavior: smooth;
+   
+   
+   &:hover{
+      overflow-y: auto;
+   }
+
+   &>ul{
+      position: relative;
+      top: 2em;
+   }
 
 
    div{
@@ -106,8 +114,6 @@
          position: relative;
          z-index: 1;
 
-
-
          &::before{
             content: "";
             width: calc(100% + 4em);
@@ -124,10 +130,16 @@
          }
    
 
-         &:hover:not(.active){
+         &:hover:not(.active),
+         &:focus{
             color: $accent_color_2;
          }
+
+         &:focus{
+            border-color: $accent_color_2;
+         }
       }
+
 
       &>.active{
          color: $text-color1;
@@ -135,7 +147,8 @@
             display: block;
          }
 
-         &:hover{
+         &:hover,
+         &:focus{
             color: $text-color1;
          }
       }
@@ -153,7 +166,7 @@
    // User Saved Labels section
    .label-area{
       margin-top: 2em;
-      min-height: 10em;
+      min-height: auto;
       &>button{
          margin-block: 1em;
          font-family:  inherit;
@@ -167,7 +180,8 @@
          padding: .4em;
          border-radius: 4px;
 
-         &:hover{
+         &:hover,
+         &:focus{
             background-color: $bg_color1;
             svg{
                color: $accent_color_1;
@@ -233,9 +247,14 @@
                   pointer-events: all;
                }
 
-               &:hover svg{
+               &:hover svg,
+               &:focus svg{
                   color: $radiant_color2 !important;
                   scale: 1.03;
+               }
+
+               &:focus{
+                  opacity: 1;
                }
             }
          }
@@ -332,6 +351,26 @@ button[aria-controls=user-menu]{
   position: relative;
   top: 1.2em;
   @include flexObj($justify:center);
+
+   &::before{
+      content:"";
+      width: 3em;
+      border-radius: 50%;
+      aspect-ratio: 1/1;
+      background-color: $util_color1;
+      z-index: -1;
+      position: absolute;
+      @include centerContentObj;
+      top: .3em;
+      transition: .25s ease-in-out;
+      opacity: 0;
+   }
+
+   &:hover::before,
+   &:focus::before,
+   &:focus-within::before{
+      opacity: 1;
+   }
 }
 
 
@@ -508,16 +547,24 @@ button[aria-controls=user-menu]{
       box-shadow: none;
       top: 8em;
       background: transparent;
-      width: 17.2em;
+      width: 16.5em;
       padding-top:  0;
       z-index: 1;
       position: fixed;
       left: 0;
       scrollbar-width: thin;
       overflow: hidden;
-      
+
       &:hover{
          overflow-y: auto;
+      }
+
+      &>ul{
+         position: unset;
+      }
+
+      .label-area{
+         min-height: 8em;
       }
 
       &::-webkit-scrollbar-track{
@@ -542,10 +589,7 @@ button[aria-controls=user-menu]{
    .hamburger-icon{
       position: absolute;
       left: 0;
-      
-      &>*{
-         transform: translateY(-.72em);
-      }
+      top: .3em;
    }
 
    .header_main .searchbar{

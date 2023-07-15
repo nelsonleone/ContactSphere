@@ -11,20 +11,24 @@ import { relatedPeopleArray } from './relatedPeopleArray'
 
 
 interface IProps {
-   register: UseFormRegister<Contact>,
-   name: string,
    label: string,
    setValue: UseFormSetValue<Contact>,
    index: number,
    show: boolean,
+   value: string,
 }
 
 export default function CustomLabelSelect(props:IProps) {
 
-   const { register, show, label, name , setValue } = props;  
+   const { show, label, setValue, value, index} = props; 
+   const [selectValue,setSelectValue] = React.useState(value)
+
+   React.useEffect(() =>  {
+      setValue(`relatedPeople[${index}].label` as keyof Contact,selectValue)
+   },[selectValue])
 
    return (
-      show ?
+      show  ?
       <FormControl className='custom_label_select'>
          <InputLabel id="demo-simple-select-label">{label}</InputLabel>
          <Select
@@ -33,11 +37,12 @@ export default function CustomLabelSelect(props:IProps) {
             label={label}
             size="small"
             className="select custom_select"
-            {...register(name as keyof Contact)}
+            value={selectValue}
+            onChange={(e) => setSelectValue(e.target.value)}
          >
          {
             relatedPeopleArray.map(value => (
-               <MenuItem onClick={() => setValue(name as keyof Contact,value.value)} key={nanoid()} value={value.value.toLowerCase()}>{value.text}</MenuItem>
+               <MenuItem  key={nanoid()} value={value.value.toLowerCase()}>{value.text}</MenuItem>
             ))
          }
          </Select>

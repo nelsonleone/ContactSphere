@@ -179,10 +179,10 @@
    span{
       font-family: $ff_prompts;
       font-weight: $fw_bold;
-      color: $text-color2;
-      opacity: .9;
+      color: $generic_color_2 ;
       font-size: .93rem;
    }
+
 
    svg{
       font-size: 1.15rem;
@@ -191,6 +191,7 @@
    .label{
       padding-right: 1em;
       .custom-checkbox{
+         color: $radiant_color2;
          position: absolute;
          right: .5em;
       }
@@ -379,7 +380,7 @@
    .favourites,
    .duplicates,
    .trash{
-      padding-top: 5em;
+      padding-top: 4.5em !important;
    }
 
    .multi_select_actions{

@@ -23,7 +23,7 @@ function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
 
    return (
       !fetchingContacts ? 
-      <PageWrapper className="favourites"  title="Favourites">
+      <PageWrapper className="favourites"  title="ContactSphere | Favourites">
          <div className="favourites_page_prompt">
             <h2 role="alert">If They Are Starred, Yes They Are Special.</h2>
          </div>

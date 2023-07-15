@@ -204,7 +204,7 @@ export default function ContactMenu(props:IProps){
 
                   {
                      props.method === "multi" &&
-                     <>
+                     <div>
                         <Divider />
                         <MenuItem onClick={()  => props.setOpenDialog && props.setOpenDialog(prevState => prevState = !prevState)}>
                         <ListItemIcon>
@@ -212,7 +212,7 @@ export default function ContactMenu(props:IProps){
                         </ListItemIcon>
                            <ListItemText>Create Label</ListItemText>
                         </MenuItem>
-                     </>
+                     </div>
                   }
                </MenuList>
             </Menu>
