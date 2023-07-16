@@ -228,6 +228,10 @@
          &:focus-within{
             border: 2px solid $accent_color_2;
          }
+
+         .error_phone_input{
+            border-color: $radiant_color1;
+         }
       }
 
 

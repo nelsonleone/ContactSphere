@@ -13,13 +13,8 @@ function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
 
    const { contacts } = useAppSelector(store => store.userData)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
-   const [starredContacts,setStarredContacts] = useState<IContactsFromDB[]>(contacts.filter(contact => contact.inFavourites === true))
+   const starredContacts = contacts.filter(contact => contact.inFavourites === true)
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
-
-   useEffect(() => {
-      setStarredContacts(contacts.filter(contact => contact.inFavourites === true))
-   },[contacts.length])
-
 
    return (
       !fetchingContacts ? 

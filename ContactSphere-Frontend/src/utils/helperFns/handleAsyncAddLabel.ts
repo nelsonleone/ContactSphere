@@ -87,7 +87,7 @@ export default async function handleAsyncAddLabel(
             snackbarMessage: actionType === "add" ?
             `${label} Label Have Been Set On Selected Contacts`
             :
-            `${label} Label Have Been Removed From Selected Contacts`
+            'Selected Contacts Labels Updated'
          }))
       }
 

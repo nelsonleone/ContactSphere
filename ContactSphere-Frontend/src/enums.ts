@@ -39,7 +39,8 @@ export enum AuthMethod {
 }
 
 export enum Breakpoints {
-   Large = 1027
+   Large = 1030,
+   Medium = 560
 }
 
 

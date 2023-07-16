@@ -81,7 +81,7 @@ export default async function handleAsyncHideContact(
       })
 
       dispatch(setShowSnackbar({
-         snackbarMessage:"Succefully Hidden"
+         snackbarMessage: status === true ? "Succefully Hidden" : "Succefully Unarchived"
       }))
    }
 

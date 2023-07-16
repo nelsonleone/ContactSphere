@@ -189,52 +189,60 @@ const removeUserLabel = asyncHandler(async(request,response) => {
 })
 
 
-// Edit User Saved Labels
-const editUserLabel = asyncHandler(async(request,response) => {
-   const authUserUid = request.query.uid;
+const editUserLabel = asyncHandler(async (request, response) => {
+   const { uid } = request.query;
    const { labelForEditObj, oldLabel } = request.body;
-
-   try{
-      if(!uid){
-         response.status(400)
-         throw new Error("INVALID QUERY PARAMETERS PASSED")
+ 
+   try {
+      if (!uid) {
+         response.status(400);
+         throw new Error("INVALID QUERY PARAMETERS PASSED");
       }
-
-      if(!labelForEditObj || !oldLabel){
-         response.status(400)
-         throw new Error(`REQUEST BODY HAS INCOMPLETE PROPERTIES 'oldLabel Property Or LabelForEditObj Property was not provided`)
+   
+      if (!labelForEditObj || !oldLabel) {
+         response.status(400);
+         throw new Error(
+            "REQUEST BODY HAS INCOMPLETE PROPERTIES 'oldLabel Property Or LabelForEditObj Property was not provided"
+         )
       }
-
-      const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
-
-      if(!authUserDataDoc){
-         response.status(404)
-         throw new Error("USER WITH SPECIDED UID WAS NOT FOUND")
-         return;
-      }  
-
-      const labelIndex = authUserDataDoc.labels.findIndex(v => v._id === labelForEditObj._id)
-      authUserDataDoc.labels[labelIndex] = {...authUserDataDoc.labels[labelIndex],label: capitalizeString(labelForEditObj.label)}
-
-      // UPDATE CONTACTS WITH LABEL IN LABELLEDBY ARRAY
-      authUserDataDoc.contacts = authUserDataDoc.contacts.map(c => {
-         return {
-            ...c,
-            labelledBy: c.labelledBy.map(v => {
-               return v.label === oldLabel ? {...v,label:capitalizeString(labelForEditObj.label)} : v
-            })
-         }
-      })
-
-      authUserDataDoc.save()
-      response.status(201).end()
-   }
-
-   catch(error){
-      response.status(500)
-      throw new Error(error.message)
+ 
+     const authUserDataDoc = await AuthUserData.findOne({ uid })
+ 
+      if (!authUserDataDoc) {
+         response.status(404);
+         throw new Error("USER WITH SPECIFIED UID WAS NOT FOUND")
+      }
+   
+      const labelIndex = authUserDataDoc.labels.findIndex(
+         (v) => v._id.toString() === labelForEditObj._id.toString()
+      )
+      authUserDataDoc.labels[labelIndex] = {
+         ...authUserDataDoc.labels[labelIndex],
+         label: capitalizeString(labelForEditObj.label),
+      }
+ 
+     // UPDATE CONTACTS WITH LABEL IN LABELLEDBY ARRAY
+     authUserDataDoc.contacts = authUserDataDoc.contacts.map((c) => {
+       return {
+         ...c,
+         labelledBy: c.labelledBy.map((v) => {
+           return v.label === oldLabel
+             ? { ...v, label: capitalizeString(labelForEditObj.label) }
+             : v
+         }),
+       }
+     })
+ 
+     const updatedDoc = new AuthUserData(authUserDataDoc)
+     await updatedDoc.save()
+ 
+     response.status(201).end()
+   } catch (error) {
+     response.status(500)
+     throw new Error(error.message)
    }
 })
+ 
 
 
 
@@ -272,6 +280,8 @@ const setFavourited = asyncHandler(async (request, response) => {
      throw new Error(error.message)
    }
 })
+
+
 
 
 
@@ -340,6 +350,9 @@ const manageUserContactsLabels = asyncHandler(async(request,response) => {
 
 
 
+
+
+
 // Handle Single Contact Hide
 const setHideContactHandler = asyncHandler(async(request,response) => {
    const {
@@ -389,6 +402,11 @@ const setHideContactHandler = asyncHandler(async(request,response) => {
 
 
 
+
+
+
+
+
 // Handle Single Contact Delete
 const setTrashContactHandler = asyncHandler(async (request, response) => {
    const { uid, contactId } = request.query;
@@ -409,8 +427,6 @@ const setTrashContactHandler = asyncHandler(async (request, response) => {
          throw new Error("CONTACT WITH PROVIDED ID WAS NOT FOUND")
          return;
       }
-
-      const oldData = {...authUserDataDoc.contacts[contactIndex]}
    
       authUserDataDoc.contacts[contactIndex].inTrash = true;
       authUserDataDoc.contacts[contactIndex].deletedAt = new Date()
@@ -430,6 +446,8 @@ const setTrashContactHandler = asyncHandler(async (request, response) => {
 
 
 
+
+// Restore From Trash Handler
 const setRestoreFromTrash = asyncHandler(async(request,response) => {
    const { uid, contactId } = request.query;
  
@@ -469,6 +487,8 @@ const setRestoreFromTrash = asyncHandler(async(request,response) => {
 
 
 
+
+// Edit Contact Handler
 const setEdittedContact = async (request, response) => {
    const { uid, contactId } = request.query;
    const edittedContactDetails = { 
@@ -510,11 +530,35 @@ const setEdittedContact = async (request, response) => {
      throw new Error(error.message)
    }
 }
+
+
+
+// Handle  Contact Permanent Delete
+const setDeleteContact = asyncHandler(async (request, response) => {
+   const { uid } = request.query;
+   const { contactId } = request.body;
+   
+   try {
+      const authUserDataDoc = await AuthUserData.findOne({ uid })
+
+      authUserDataDoc.contacts.filter(c => {
+         return contactId.toString() !== c._id.toString()
+      })
+
+      response.status(200).json({ message: "Contact Is Permanently Deleted" })
+   }
+   
+   catch (error) {
+      response.status(500)
+      throw new Error(error.message)
+   }
+}) 
  
  
 
 module.exports = {
    setTrashContactHandler,
+   setDeleteContact,
    setFavourited,
    getAuthUserData,
    createContact,

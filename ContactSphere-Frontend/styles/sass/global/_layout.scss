@@ -14,7 +14,7 @@
       .page{
          padding-top: 5em;
          width: auto;
-         transition: width .5s linear, margin .5s linear;
+         transition: width .5s linear, margin-inline .5s linear;
          @include alignPage;
       }
 

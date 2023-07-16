@@ -27,7 +27,7 @@ import cleanNewContactFormFields from "../../utils/helperFns/cleanNewContactFiel
 
 function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contact, action:ContactFormAction, contactId?:string }){
 
-   const { register, handleSubmit, setValue, watch, formState: {errors, isDirty}, control} = useForm<Contact>({defaultValues: defaultValue || staticDefaultValue})
+   const { register, handleSubmit, setValue, watch, setError, formState: {errors, isDirty}, control} = useForm<Contact>({defaultValues: defaultValue || staticDefaultValue})
    const [showMore,setShowMore] = useState(false)
    const { append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
    const [showLabelMenu,setShowLabelMenu] = useState(false)
@@ -35,6 +35,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    const navigate = useNavigate()
    const labelsArray = watch('labelledBy')
    const repPhoto = watch('repPhoto')
+   const birthday = watch('birthday')
    const phoneNumber = watch('phoneNumber')
    const relatedPeople = watch('relatedPeople')
    const [createContact, { isLoading }] = useCreateContactMutation()
@@ -51,6 +52,14 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
 
 
    const handleOnSubmit: SubmitHandler<Contact> = async(data) => {
+
+      // Manually Set Phone Number Input Errors Due To Nature Of React-phone-input 
+      if(!phoneNumber){
+         setError(InputPropertyValueName.PhoneNumber,{message: "Invalid Phone Number Input"})
+         setDisableSaveBtn(true)
+         return;
+      }
+
       try{
          await stopUnauthourizedActions(uid)
 
@@ -105,9 +114,16 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    useEffect(() => {
       // Disabled Save Button 
       errors.firstName?.message || 
-      errors.phoneNumber?.message ||
+      errors.birthday?.message ||
+      !phoneNumber ||
       isLoading || !isDirty  ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
-   },[errors.firstName?.message,errors.phoneNumber?.message,errors.birthday?.message,isLoading,isDirty])
+   },[
+      errors.firstName?.message,
+      errors.birthday?.message,
+      isLoading,
+      phoneNumber,
+      isDirty
+   ])
 
 
    return(
@@ -145,7 +161,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
             <div className="fields_area">
                <NameInputSection error={errors?.firstName?.message} showMore={showMore} register={register} />
                <FormalInputSection showMore={showMore} register={register} />
-               <ContactInputSection phoneNumber={phoneNumber} setValue={setValue} register={register} />
+               <ContactInputSection error={errors?.phoneNumber?.message} phoneNumber={phoneNumber} setValue={setValue} register={register} />
                <AddressInputSection error={errors?.address?.postalCode?.message} showMore={showMore} register={register} setValue={setValue}  />
                <AdditionalFields relatedPeople={relatedPeople} error={errors?.birthday?.message} control={control} setValue={setValue} register={register} showMore={showMore} />
             </div>

@@ -3,16 +3,18 @@ import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import * as React from 'react'
 import { Contact } from '../../src/vite-env'
 import { InputPropertyValueName } from "../../src/enums";
-import flags from 'react-phone-number-input/flags'
 import 'react-phone-number-input/style.css'
 
 interface IPhoneInputProps {
    register: UseFormRegister<Contact>,
    setValue: UseFormSetValue<Contact>,
-   phoneNumber: string
+   phoneNumber: string,
+   error: string | undefined
 }
 
 export default function CustomPhoneInput(props:IPhoneInputProps){
+
+   const [autoFocus,setAutoFocus] = React.useState(props.error ? true : false)
 
    React.useEffect(() => {
       props.register(
@@ -27,6 +29,11 @@ export default function CustomPhoneInput(props:IPhoneInputProps){
       )
    },[])
 
+   React.useEffect(() => {
+      setAutoFocus(props.error ? true : false)
+   },[props.error])
+
+
    const handlePhoneInputChange = (value:undefined) => {
       props.setValue(InputPropertyValueName.PhoneNumber,value ?  value : '')
    }
@@ -36,8 +43,9 @@ export default function CustomPhoneInput(props:IPhoneInputProps){
          placeholder="Phone Number"
          defaultCountry="US"
          onChange={handlePhoneInputChange}
-         className="phone_number_input"
+         className={!props.error ? "phone_number_input" : "phone_number_input error_phone_input"}
          value={props.phoneNumber}
+         autoFocus={autoFocus}
       />
    )
 }

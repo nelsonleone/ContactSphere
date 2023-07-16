@@ -21,7 +21,7 @@ export default function CustomCheckbox(props:ICheckboxProps){
          size={props.size || 'medium'}
          disabled={props.disabled ? true : false}
          sx={{
-            color:  '#2a2828e2',
+            color:  '#2a2828a9',
             '&.Mui-checked': {
                color: props.color || '#ff5100',
             },

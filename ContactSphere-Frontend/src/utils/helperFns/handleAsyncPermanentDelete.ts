@@ -9,30 +9,28 @@ import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
 import { IContactsFromDB, IServerResponseObj } from "../../vite-env";
 import { setUpdatedLocalContacts } from "../../RTK/features/userDataSlice";
 
-type SendToTrash = MutationTrigger<MutationDefinition<{
+type DeleteContact = MutationTrigger<MutationDefinition<{
    authUserUid: string;
    contactId: string;
 }, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", IServerResponseObj, "contactsQueryApi">>
 
 
-type SendMultipleToTrash = MutationTrigger<MutationDefinition<{
+type DeleteMultiple = MutationTrigger<MutationDefinition<{
    authUserUid: string;
    selectedContacts: string[];
 }, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", IServerResponseObj, "contactsQueryApi">>
 
 
 
-
-export default async function handleAsyncDelete(
-   sendToTrash: SendToTrash,
-   sendMultipleToTrash: SendMultipleToTrash,
-   method: "single" | "multi",
-   uid: string,
-   contactId: string,
-   selectedContacts: string[],
-   dispatch: Dispatch<any>,
-   contacts: IContactsFromDB[]
-
+export default async function handleAsyncPermanentDelete(
+  deleteContact: DeleteContact,
+  deleteMultiple: DeleteMultiple,
+  contactId: string,
+  uid: string,
+  method: "multi" | "single",
+  dispatch: Dispatch<any>,
+  contacts: IContactsFromDB[],
+  selectedContacts: string[]
 ){
    try{
       dispatch(setShowWrkSnackbar())
@@ -40,7 +38,7 @@ export default async function handleAsyncDelete(
       let res;
 
       if(method === "single"){
-         res = await sendToTrash({
+         res = await deleteContact({
             authUserUid: uid,
             contactId
          }).unwrap()
@@ -54,7 +52,7 @@ export default async function handleAsyncDelete(
       }
 
       else if(method === "multi"){
-         res = await sendMultipleToTrash({
+         res = await deleteMultiple({
             selectedContacts,
             authUserUid: uid
          })

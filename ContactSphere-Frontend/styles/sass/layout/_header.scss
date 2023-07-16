@@ -4,7 +4,7 @@
 
 .header_main{
    @include flexObj($align:baseline);
-   padding-bottom:2.5em;
+   padding-bottom:5.2em;
    width: 96%;
    margin: auto;
    gap: 1em;
@@ -222,7 +222,7 @@
 
          p{
             position: absolute;
-            right: 1.4em;
+            right: 1.3em;
             font-weight: $fw_bold;
             font-size: .88rem;
             color: $text-color2;
@@ -231,7 +231,7 @@
          .label_link_btns{
             margin-block:0;
             position: absolute;
-            right: 2.6em;
+            right: 1em;
             @include flexObj;
             gap: .4em;
             button{
@@ -307,28 +307,46 @@ button[aria-controls=user-menu]{
    margin-inline:.3em;
 
    svg{
-      color: $accent_color_1;
-      transform: translateY(.3em);
+      color: $radiant_color2;
    }
 }
 
 
 // searchbar styling
-.header_main .searchbar-input{
+.header_main .searchbar{
   position: absolute;
   left: .5em;
-  bottom: 0;
+  bottom: 2.1em;
+  width: 18em;
   height: 3em;
-  padding: 1em;
-  font-family: $ff_primary;
-  font-weight: 500;
-  color: $text-color1;
-  z-index: 98;
-  background-color: $generic_color_1;
-  border-radius: 7px;
-  border: 1px solid rgb(218, 215, 215);
-  background: $bg_color2;
+  margin-inline: auto;
+
   
+  .searchbar-input{
+      height: 100%;
+      width: 100%;
+      padding: .9em 1em;
+      padding-left: 3em;
+      font-family: $ff_primary;
+      font-weight: 500;
+      font-size: .9rem;
+      color: $text-color1;
+      background-color: $generic_color_1;
+      border-radius: 7px;
+      border: 1px solid rgb(218, 215, 215);
+      background: $bg_color2;
+   }
+   
+   svg{
+      position: absolute;
+      left: 1em;
+      top: 0;
+      bottom: 0;
+      margin-block: auto;
+      color: $text-color1;
+      opacity: .9;
+   }
+
   &:focus{
      border: 1px solid $accent_color_2;
   }
@@ -337,10 +355,6 @@ button[aria-controls=user-menu]{
    &::placeholder{
       color: grey !important;
    }
-}
-
-.hide-searchbar{
-   display:none;
 }
 
 
@@ -408,7 +422,7 @@ button[aria-controls=user-menu]{
    }
 
    &>span{
-      font-size: .9rem;
+      font-size: .88rem;
       margin-block: 1em;
       color: $accent_color_1;
       text-decoration: underline $accent_color_1;
@@ -434,7 +448,7 @@ button[aria-controls=user-menu]{
       background-color: $accent_color_2;
 
       span{
-         color: $text-color2;
+         color: $generic_color_1;
       }
 
       svg{
@@ -444,6 +458,10 @@ button[aria-controls=user-menu]{
       &:hover{
          svg{
             color: $accent_color_1;
+         }
+
+         span{
+            color: $text-color2;
          }
       }
    }
@@ -466,6 +484,7 @@ button[aria-controls=user-menu]{
 @include  useMediaQuery_MD{
    .header_main{
       gap: .5em;
+      padding-bottom: 2em;
 
       h1{
          font-size: 1.8rem;
@@ -477,32 +496,12 @@ button[aria-controls=user-menu]{
 
    .header_main {
       .searchbar{
-         flex-basis:62%;
+         margin: 0;
          position: relative;
-         @include flexObj;
-
-         button{
-            z-index: 99;
-            position: absolute;
-            margin-block: auto;
-            left: 1.5em;
-
-            svg{
-               opacity: .6;
-            }
-         }
-
-         .searchbar-input{
-            position: relative;
-            bottom: unset;
-            padding-left: 3em;
-            left: .5em;
-            right: 2.4em;
-            font-size: .9rem;
-            height: 3em;
-            padding-block: 1.5em;
-            width: 90%;
-         }
+         bottom: unset;
+         left: unset;
+         height: 2.8em;
+         flex-basis: 70%;
       }
 
    }
@@ -544,20 +543,28 @@ button[aria-controls=user-menu]{
 
       h1{
          margin: 0;
-         transform: translateX(-.6em);
+         font-size: 1.6rem;
+         transform: translateX(-.5em);
       }
    }
 
+   button[aria-controls=user-menu]{
+      transform: translateY(.5em);
+   }
+
+
   .main_nav{
       box-shadow: none;
-      top: 8em;
+      top: 8.6em;
       background: transparent;
-      width: 16.5em;
+      width: 16em;
       padding-top:  0;
       z-index: 1;
+      padding-right: .3em;
       position: fixed;
       left: 0;
       scrollbar-width: thin;
+      scrollbar-color: $util_color2 transparent;
       overflow: hidden;
 
       &:hover{
@@ -569,17 +576,20 @@ button[aria-controls=user-menu]{
       }
 
       .label-area{
-         min-height: 8em;
+         min-height: 9em;
       }
 
       &::-webkit-scrollbar-track{
-         width: thin;
+         background: transparent;
       }
-      &::-webkit-scrollbar-button{
-         display: none;
+
+      &::-webkit-scrollbar{
+         width: 10px;
       }
+
       &::-webkit-scrollbar-thumb{
-         border-radius: 5px;
+         width: 5px;
+         background: $util_color2;
       }
 
       li{
@@ -594,26 +604,12 @@ button[aria-controls=user-menu]{
    .hamburger-icon{
       position: absolute;
       left: 0;
-      top: .5em;
+      top: .4em;
    }
 
    .header_main .searchbar{
-      flex-basis: unset;
       width: 54em;
-      flex-basis: 75%;
-      right: unset;
-      position: relative;
-      .searchbar-input{
-         right: unset;
-         left: unset;
-         position: absolute;
-         margin-block: auto;
-         height: 2em;
-         padding: 1.5em 1em;
-         padding-left: 3em;
-         font-size: .9rem;
-         width: 90%;
-      }
+      flex-basis: 72%;
    }
 
 

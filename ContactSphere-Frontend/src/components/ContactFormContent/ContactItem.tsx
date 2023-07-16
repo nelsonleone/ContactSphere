@@ -110,7 +110,7 @@ function ContactItem(props:IContactItemProps){
 
    return(
       <div tabIndex={0} className={`contact ${isSelected ? "selected_contact" : ""}`} aria-label="Contact" aria-describedby={`${_id}-description`}>
-         <PhotoUrlAvatar nameForAlt={`${firstName} ${lastName} image`} photoURL={repPhoto} size={44} />
+         <PhotoUrlAvatar nameForAlt={`${firstName} ${lastName} image`} photoURL={repPhoto} size={42} />
          <CustomCheckbox handleCheck={() => dispatch(setSelected(_id))} checked={isSelected} />
          <p id={`${_id}-description`} aria-label="Contact Name" aria-labelledby="name-col">{handleContactDetailsDisplay(`${firstName} ${lastName}`)}</p>
          <Link to={`mailto:${email}`} aria-label="Email" aria-labelledby="email-col">{handleContactDetailsDisplay(email)}</Link>
@@ -123,29 +123,33 @@ function ContactItem(props:IContactItemProps){
             <p aria-label="Contact Job Title" aria-describedby="jobTitle-col">{handleContactDetailsDisplay(jobTitle)}</p>
          }
 
-         <div className="contact_action_icons">
-            {
-               props.location === ContactItemLocation.Homepage ||
-               props.location === ContactItemLocation.LabelsPage ||
-               props.location === ContactItemLocation.Favourites ?
-               <>
-                  <StarIconButton starred={inFavourites} handleStarring={() => handleStarring()} />
-                  <EditIconButton navigateToEditPage={() => navigate(`c/edit/${_id}`)} />
-                  <ContactMenu method="single" phoneNumber={phoneNumber} contactId={_id} contactLabels={labelledBy} />
-               </>
-               :
-               props.location === ContactItemLocation.HiddenContacts ?
-               <RestoreToActiveButton handleRestore={handleRestoreToActive} />
-               :
-               props.location === ContactItemLocation.Trash ?
-               <RestoreFromTrashButton handleRestore={() => {}} />
-               :
-               props.location === ContactItemLocation.Duplicates ? 
-               <Button variant="contained" sx={{color:"#FAFAFA", bgColor:"hsl(182, 87%, 27%)"}}>Resolve</Button> 
-               :
-               null
-            }  
-         </div>         
+         {
+            // don't show single contact actions when they are multi-selected
+            !selectedContacts.length &&
+            <div className="contact_action_icons">
+               {
+                  props.location === ContactItemLocation.Homepage ||
+                  props.location === ContactItemLocation.LabelsPage ||
+                  props.location === ContactItemLocation.Favourites ?
+                  <>
+                     <StarIconButton starred={inFavourites} handleStarring={() => handleStarring()} />
+                     <EditIconButton navigateToEditPage={() => navigate(`c/edit/${_id}`)} />
+                     <ContactMenu method="single" phoneNumber={phoneNumber} contactId={_id} contactLabels={labelledBy} />
+                  </>
+                  :
+                  props.location === ContactItemLocation.HiddenContacts ?
+                  <RestoreToActiveButton handleRestore={handleRestoreToActive} />
+                  :
+                  props.location === ContactItemLocation.Trash ?
+                  <RestoreFromTrashButton handleRestore={() => {}} />
+                  :
+                  props.location === ContactItemLocation.Duplicates ? 
+                  <Button variant="contained" sx={{color:"#FAFAFA", bgColor:"hsl(182, 87%, 27%)"}}>Resolve</Button> 
+                  :
+                  null
+               }  
+            </div>         
+         }
       </div>
    )
 }

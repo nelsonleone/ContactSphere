@@ -10,23 +10,19 @@ const setDeleteMultiSelectedContacts = asyncHandler(async (request, response) =>
    try {
       const authUserDataDoc = await AuthUserData.findOne({ uid })
 
-      if (!authUser) {
+      if (!authUserDataDoc) {
          response.status(404);
          throw new Error("NO USER WITH PROVIDED ID WAS FOUND")
          return;
       }
 
-      contactIds.forEach((contactId) => {
-         const contactIndex = user.contacts.findIndex((contact) => contact._id.toString() === contactId)
+      for (const contactId of contactIds ){
+         const contactIndex = authUserDataDoc.contacts.findIndex((contact) => contact._id.toString() === contactId)
+         authUserDataDoc.contacts[contactIndex].inTrash = true;
+         authUserDataDoc.contacts[contactIndex].deletedAt = new Date()
+      }
 
-         authUserDataDoc.contacts[contactIndex] = {
-            ...authUserDataDoc.contacts[contactIndex],
-            inTrash: true,
-            deletedAt: new Date()
-         }
-      })
-
-      await authUser.save()
+      await authUserDataDoc.save()
 
       response.status(200).json({ message: 'Contacts deleted successfully' })
    } 
@@ -46,26 +42,19 @@ const setRestoreMultipleContactsFromTrash = asyncHandler(async(request,response)
    try {
       const authUserDataDoc = await AuthUserData.findOne({ uid })
 
-      if (!authUser) {
+      if (!authUserDataDoc) {
          response.status(404);
          throw new Error("NO USER WITH PROVIDED ID WAS FOUND")
          return;
       }
 
-      contactIds.forEach((contactId) => {
-         const contactIndex = user.contacts.findIndex((contact) => contact._id.toString() === contactId)
+      for (const contactId of contactIds ){
+         const contactIndex = authUserDataDoc.contacts.findIndex((contact) => contact._id.toString() === contactId)
+         authUserDataDoc.contacts[contactIndex].inTrash = false;
+         authUserDataDoc.contacts[contactIndex].deletedAt = null;
+      }
 
-         const { createdAt, ...rest } = authUserDataDoc.contacts[contactIndex]
-
-         authUserDataDoc.contacts[contactIndex] = {
-            createdAt,
-            ...rest,
-            inTrash: false,
-            deletedAt: null
-         }
-      })
-
-      await authUser.save()
+      await authUserDataDoc.save()
 
       response.status(200).json({ message: 'Contacts Restored successfully' })
    } 
@@ -80,7 +69,7 @@ const setRestoreMultipleContactsFromTrash = asyncHandler(async(request,response)
 
 
 // Handle Multi Manage Label
-const setManageMultiContactLabels = async (request, response) => {
+const setManageMultiContactLabels = asyncHandler(async (request, response) => {
    const { selectedContacts:contactIds, label } = request.body;
    const { uid } = request.query;
 
@@ -99,21 +88,26 @@ const setManageMultiContactLabels = async (request, response) => {
       )
 
       // Update the labelledBy array for each matched contact
-      await Promise.all(
-         matchedContacts.map(async (contact) => {
-            const existingLabel = contact.labelledBy.find(
-               (labelObj) => labelObj.label === label
-            )
+      for (const contact of matchedContacts) {
 
-            // Add the label if it doesn't exist in the labelledBy array
-            if (!existingLabel) {
-               await AuthUserData.findOneAndUpdate(
-                  { uid, 'contacts._id': contact._id },
-                  { $push: { 'contacts.$.labelledBy': { label } } }
-               )
-            }
-         })
-      )
+         const labelAlreadyExists = contact.labelledBy.find(
+           (labelObj) => labelObj.label === label
+         )
+
+         if (!labelAlreadyExists) {
+            await AuthUserData.findOneAndUpdate(
+               { uid, 'contacts._id': contact._id },
+               { $push: { 'contacts.$.labelledBy': { label } }}
+            )
+         }
+
+         else if(labelAlreadyExists){
+            await AuthUserData.findOneAndUpdate(
+               { uid, 'contacts._id': contact._id },
+               { $pull: { 'contacts.$.labelledBy': { label } } }
+            )
+         }
+      }
       
       response.status(201).json({ message: 'Contacts Labels updated successfully' })
    } 
@@ -122,7 +116,7 @@ const setManageMultiContactLabels = async (request, response) => {
       response.status(500)
       throw new Error(error.message)
    }
-} 
+}) 
 
 
 
@@ -136,11 +130,34 @@ const setHideMultipleContacts = asyncHandler(async (request, response) => {
       const filter = { uid, 'contacts._id': { $in: contactIds } }
       const update = { $set: { 'contacts.$.isHidden': status } }
       
-      for (const contactId of contactIds) {
-         await AuthUserData.findOneAndUpdate(filter, update, { new: true })
-      }
+      await AuthUserData.updateMany(filter, update)
       
-      response.status(200).end()
+      response.status(200).json({ message: "Request Was Successful" })
+   }
+   
+   catch (error) {
+      response.status(500)
+      throw new Error(error.message)
+   }
+}) 
+
+
+
+
+
+// Handle Multiple Contacts Permanent Delete
+const setDeleteMultipleContacts = asyncHandler(async (request, response) => {
+   const { uid } = request.query;
+   const { selectedContacts: contactIds } = request.body;
+   
+   try {
+      const authUserDataDoc = await AuthUserData.findOne({ uid })
+
+      authUserDataDoc.contacts.filter(c => {
+         return !contactIds.includes(c._id.toString())
+      })
+
+      response.status(200).json({ message: "Selected Contacts Are Now Permanently Deleted" })
    }
    
    catch (error) {
@@ -152,6 +169,7 @@ const setHideMultipleContacts = asyncHandler(async (request, response) => {
 
 module.exports = {
    setDeleteMultiSelectedContacts,
+   setDeleteMultipleContacts,
    setManageMultiContactLabels,
    setHideMultipleContacts,
    setRestoreMultipleContactsFromTrash

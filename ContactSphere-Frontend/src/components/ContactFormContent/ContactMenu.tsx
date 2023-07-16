@@ -4,7 +4,7 @@ import { MdLabelOutline } from 'react-icons/md'
 import { useAppSelector, useAppDispatch } from '../../customHooks/reduxCustomHooks';
 import { ContactMenuButton } from '../../../lib/with-tooltip';
 import { MouseEvent, SetStateAction, Dispatch, useEffect, useState } from 'react';
-import { useDeleteContactMutation, useDeleteMultipleContactsMutation, useHideContactMutation, useHideMultipleContactsMutation, useManageLabelsMutation, useManageMultiContactLabelsMutation } from '../../RTK/features/injectedContactsApiQueries';
+import { useTrashContactMutation, useSendMultipleToTrashMutation, useHideContactMutation, useHideMultipleContactsMutation, useManageLabelsMutation, useManageMultiContactLabelsMutation } from '../../RTK/features/injectedContactsApiQueries';
 import { Divider, Menu, MenuItem } from '@mui/material';
 import { ListItemIcon, ListItemText, MenuList } from '@mui/material';
 import stopUnauthourizedActions from '../../utils/helperFns/stopUnauthourizedActions';
@@ -13,6 +13,8 @@ import handleAsyncDelete from '../../utils/helperFns/handleAsyncDelete';
 import clientAsyncHandler from '../../utils/helperFns/clientAsyncHandler';
 import handleAsyncAddLabel from '../../utils/helperFns/handleAsyncAddLabel';
 import CustomCheckbox from '../../../lib/customInputs/CustomCheckbox';
+import CustomSimpleDialog from '../../../lib/popups/CustomSimpleDialog'
+import { setSelectNone } from '../../RTK/features/contactMultiSelectSlice';
 
 interface IProps {
    contactLabels?: {
@@ -34,10 +36,11 @@ export default function ContactMenu(props:IProps){
    const dispatch = useAppDispatch()
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
    const [manageMultiContactsLabels] = useManageMultiContactLabelsMutation()
-   const [deleteContact] = useDeleteContactMutation()
-   const [deleteMultiple] = useDeleteMultipleContactsMutation()
+   const [sendToTrash] = useTrashContactMutation()
+   const [sendMultipleToTrash] = useSendMultipleToTrashMutation()
    const [hideContact] = useHideContactMutation()
    const [hideMultipleContacts] = useHideMultipleContactsMutation()
+   const [showDialog,setShowDialog] = useState(false)
    
    const [unregisteredLabels,setUnregisteredLabels] = useState(userSavedLabels?.filter(item => !props.contactLabels?.some(obj => obj.label === item.label)))
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -97,8 +100,8 @@ export default function ContactMenu(props:IProps){
          handleClose()
          await stopUnauthourizedActions(uid)
          await handleAsyncDelete(
-            deleteContact,
-            deleteMultiple,
+            sendToTrash,
+            sendMultipleToTrash,
             props.method,
             uid!,
             props.contactId || '',
@@ -110,114 +113,128 @@ export default function ContactMenu(props:IProps){
       dispatch
    )
 
+   const handleCreateBtnClick = () => {
+      props.setOpenDialog && props.setOpenDialog(prevState => prevState = !prevState)
+   }
+
    useEffect(() => {
       setUnregisteredLabels(userSavedLabels.filter(item => !props.contactLabels?.some(obj => obj.label === item.label)))
    },[props.contactLabels?.length,userSavedLabels?.length])
 
    return(
-         <>
-            <ContactMenuButton ariaExpanded={open} ariaControls={props.id || 'contact-menu'} tooltipText='More actions' openContactMenu={(e) => handleClick(e)} />
-            <Menu 
-              className="contact_menu"
-              id={props.id || "contact-menu"}
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': props.ariaLabelledBy || "contact-menu",
-              }}
-              >
-               <MenuList>
-                  <MenuItem onClick={handleMenuHideContact}>
-                     <ListItemIcon>
-                        <BiArchiveIn />
-                     </ListItemIcon>
-                     <ListItemText>{props.method === "single" ? "Hide Contact" : "Hide From Contacts"}</ListItemText>
-                  </MenuItem>
-                  <MenuItem onClick={handleMenuDeleteContact}>
-                     <ListItemIcon>
-                        <BsTrash3Fill />
-                     </ListItemIcon>
-                  <ListItemText>Delete</ListItemText>
-                  </MenuItem>
-                  {
-                     props.method === "single" && unregisteredLabels.length || 
-                     props.method === "multi" && userSavedLabels?.length ?
-                     <div>
-                       <Divider />
-                       <span className="menu-item-label">Manage Labels</span>
-                     </div>
-                     : 
-                     null
-                  }
-                  
-                  {
-                     props.method === "single" && userSavedLabels.length ? userSavedLabels.map(value =>  {
-                        return(
-                           !props.contactLabels?.some(obj => obj.label === value.label) ?
-                           <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label,"add")}>
-                              <ListItemIcon>
-                                 <MdLabelOutline  />
-                              </ListItemIcon>
-                              <span>{value.label}</span>
-                              <CustomCheckbox 
-                                 color="hsl(182, 87%, 27%)" 
-                                 checked={false} 
-                                 handleCheck={() => {}}
-                                 disabled={true}
-                                 size="small" 
-                              />
-                           </MenuItem>
-                           :
-                           <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label,"remove")}>
-                              <ListItemIcon>
-                                 <MdLabelOutline  />
-                              </ListItemIcon>
-                              <span>{value.label}</span>
-                              <CustomCheckbox 
-                                 color="hsl(182, 87%, 27%)" 
-                                 checked={true} 
-                                 handleCheck={() => {}}
-                                 disabled={true}
-                                 size="small" 
-                              />
-                           </MenuItem>
-                        )
-                     })
-                     :
-                     // Regardless of the ActionType Parametrr, If Label Already exists In A Contacts LabelledBy, It won't Be Added Again
-                     props.method === "multi" && userSavedLabels?.length ? userSavedLabels.map(value => (
+      <>
+         <ContactMenuButton ariaExpanded={open} ariaControls={props.id || 'contact-menu'} tooltipText='More actions' openContactMenu={(e) => handleClick(e)} />
+         <Menu 
+            className="contact_menu"
+            id={props.id || "contact-menu"}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+               'aria-labelledby': props.ariaLabelledBy || "contact-menu",
+            }}
+            >
+            <MenuList>
+               <MenuItem onClick={handleMenuHideContact}>
+                  <ListItemIcon>
+                     <BiArchiveIn />
+                  </ListItemIcon>
+                  <ListItemText>{props.method === "single" ? "Hide Contact" : "Hide From Contacts"}</ListItemText>
+               </MenuItem>
+               <MenuItem onClick={() => setShowDialog(prevState => prevState = !prevState)}>
+                  <ListItemIcon>
+                     <BsTrash3Fill />
+                  </ListItemIcon>
+               <ListItemText>Delete</ListItemText>
+               </MenuItem>
+               {
+                  props.method === "single" && userSavedLabels?.length || 
+                  props.method === "multi" && userSavedLabels?.length ?
+                  <div>
+                     <Divider />
+                     <span className="menu-item-label">Manage Labels</span>
+                  </div>
+                  : 
+                  null
+               }
+               
+               {
+                  props.method === "single" && userSavedLabels.length ? userSavedLabels.map(value =>  {
+                     return(
+                        !props.contactLabels?.some(obj => obj.label === value.label) ?
                         <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label,"add")}>
                            <ListItemIcon>
                               <MdLabelOutline  />
                            </ListItemIcon>
                            <span>{value.label}</span>
+                           <CustomCheckbox 
+                              color="hsl(182, 87%, 27%)" 
+                              checked={false} 
+                              handleCheck={() => {}}
+                              disabled={true}
+                              size="small" 
+                           />
                         </MenuItem>
-                     ))
-                     :
-                     null
-                  }
+                        :
+                        <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label,"remove")}>
+                           <ListItemIcon>
+                              <MdLabelOutline  />
+                           </ListItemIcon>
+                           <span>{value.label}</span>
+                           <CustomCheckbox 
+                              color="hsl(182, 87%, 27%)" 
+                              checked={true} 
+                              handleCheck={() => {}}
+                              disabled={true}
+                              size="small" 
+                           />
+                        </MenuItem>
+                     )
+                  })
+                  :
+                  // Regardless of the ActionType Parametrr, If Label Already exists In A Contacts LabelledBy, It won't Be Added Again
+                  props.method === "multi" && userSavedLabels?.length ? userSavedLabels.map(value => (
+                     <MenuItem className="label flex-row" key={value._id} onClick={(e) => handleAddLabel(e,value.label,"add")}>
+                        <ListItemIcon>
+                           <MdLabelOutline  />
+                        </ListItemIcon>
+                        <span>{value.label}</span>
+                     </MenuItem>
+                  ))
+                  :
+                  null
+               }
 
-                  {
-                     !unregisteredLabels.length || !userSavedLabels.length &&
-                     <p>You have no saved <i>Label</i></p>
-                  }
+               {
+                  !unregisteredLabels.length || !userSavedLabels.length &&
+                  <p>You have no saved <i>Label</i></p>
+               }
 
 
-                  {
-                     props.method === "multi" &&
-                     <div>
-                        <Divider />
-                        <MenuItem onClick={()  => props.setOpenDialog && props.setOpenDialog(prevState => prevState = !prevState)}>
+               {
+                  props.method === "multi" &&
+                  <div>
+                     <Divider />
+                     <MenuItem onClick={handleCreateBtnClick}>
                         <ListItemIcon>
                            <BiPlus />
                         </ListItemIcon>
-                           <ListItemText>Create Label</ListItemText>
-                        </MenuItem>
-                     </div>
-                  }
-               </MenuList>
-            </Menu>
-         </>
+                        <ListItemText>Create Label</ListItemText>
+                     </MenuItem>
+                  </div>
+               }
+            </MenuList>
+         </Menu>
+
+         <CustomSimpleDialog 
+            dialogTitle="Delete From Contacts?" 
+            dialogText="This contact will be permanently deleted from this account after 30 days." 
+            open={showDialog} 
+            setOpen={setShowDialog} 
+            action={handleMenuDeleteContact}
+            btnText1="Cancel"
+            btnText2="Move To Trash"
+         />
+      </>
    )
 }

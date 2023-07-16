@@ -59,7 +59,7 @@
       @include flexObj($justify:flex-start);
       gap: 1em;
       width: 100%;
-      padding-block: 1.1em;
+      padding-block: 1em;
       cursor: pointer;
       border-radius: 5px;
       padding-inline: .4em;
@@ -72,6 +72,7 @@
          font-family: $ff_primary;
          color: $text-color1;
          font-weight: $fw_bold;
+         font-size: .96rem;
       }
 
 
@@ -114,11 +115,13 @@
       }
 
       .avatar{
-         position: absolute;
          left: 0;
          top: 0;
+         position: absolute;
          bottom: 0;
          margin-block: auto;
+         @include flexObj($direction:column,$justify:center);
+         color: $generic_color_1;
       }
 
       &::after{

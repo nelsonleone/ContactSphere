@@ -18,6 +18,7 @@ import { Duplicates, IContactsFromDB } from "../../vite-env";
 export default function MultiSelectActions({contactsForMultiSelect}:{contactsForMultiSelect:IContactsFromDB[] | Duplicates}){
 
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
+   const { contacts } = useAppSelector(store => store.userData)
    const { uid } = useAppSelector(store => store.authUser.userDetails)
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
    const open = Boolean(anchorEl)
@@ -54,8 +55,10 @@ export default function MultiSelectActions({contactsForMultiSelect}:{contactsFor
                false,
                uid!,
                selectedContacts,
+               contacts,
                hideContacts,
                hideMultipleContact
+
             )
          }else if(from === 'trash'){
             await handleAsyncRestore(
@@ -65,7 +68,8 @@ export default function MultiSelectActions({contactsForMultiSelect}:{contactsFor
                uid!,
                '',
                selectedContacts,
-               dispatch
+               dispatch,
+               contacts
             )
          }
       },
@@ -74,7 +78,7 @@ export default function MultiSelectActions({contactsForMultiSelect}:{contactsFor
 
    return(
       <div className="multi_select_actions">
-         <AddLabelDialog open={openDialog} setOpen={setOpenDialog} />
+         <AddLabelDialog mode="create" open={openDialog} setOpen={setOpenDialog} />
          <div>
             <IconButton aria-label="remove" onClick={() => dispatch(setSelectNone())}>
                <MdOutlineRemoveCircle />
@@ -103,7 +107,7 @@ export default function MultiSelectActions({contactsForMultiSelect}:{contactsFor
          <div>
             {
                location.pathname !== "/hidden" && location.pathname !== "/trash" ?
-               <ContactMenu method="multi" id="contact-mts-menu" />
+               <ContactMenu method="multi" id="contact-mts-menu" setOpenDialog={setOpenDialog}  />
                :
                location.pathname === "/hidden" ? 
                <button onClick={() => handleRestoreToActive('hidden')}>Restore to active</button>

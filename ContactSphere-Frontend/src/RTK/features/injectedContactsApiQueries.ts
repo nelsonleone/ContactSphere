@@ -42,7 +42,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
       removeUserLabel: builder.mutation<UserLabels,{label:string,authUserUid:string}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/removeLabel?uid=${args.authUserUid}`,
-            method: 'POST',
+            method: 'DELETE',
             body: { label: args.label }
          })
       }),
@@ -86,6 +86,14 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
          invalidatesTags: ['Contact']
       }),
 
+      trashContact: builder.mutation<IServerResponseObj,{authUserUid:string,contactId:string}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/sendToTrash?uid=${args.authUserUid}&contactId=${args.contactId}`,
+            method: 'DELETE',
+         }),
+         invalidatesTags: ['Contact']
+      }),
+
 
       restoreFromTrash: builder.mutation<IServerResponseObj,{authUserUid:string,contactId:string}>({
          query: (args) => ({
@@ -113,6 +121,16 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
             body: { label: args.label, selectedContacts: args.selectedContacts }
          }),
          invalidatesTags: ['Label']
+      }),
+
+      // Trash Multiple Contacts
+      sendMultipleToTrash: builder.mutation<IServerResponseObj,{authUserUid:string,selectedContacts:string[]}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/sendMultipleToTrash?uid=${args.authUserUid}`,
+            method: 'DELETE',
+            body: { selectedContacts: args.selectedContacts }
+         }),
+         invalidatesTags: ['Contact']
       }),
 
       // Multi Contacts Delete
@@ -164,5 +182,7 @@ export const {
    useRestoreFromTrashMutation,
    useRestoreMultipleFromTrashMutation,
    useRemoveUserLabelMutation,
-   useEditUserLabelMutation
+   useEditUserLabelMutation,
+   useSendMultipleToTrashMutation,
+   useTrashContactMutation
 } = extendedContactsQuerySlice;
