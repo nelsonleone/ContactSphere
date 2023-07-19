@@ -247,6 +247,21 @@
             color: $radiant_color2 !important;
          }
       }
+
+      &> .unarchive_btn,
+      &>.rft_btn{
+         font-family: $ff_prompts;
+         background: $radiant_color2;
+         color: $generic_color_1;
+         
+         &:hover{
+            opacity:.8;
+         }
+
+         &:focus{
+            outline: 2px solid $text-color2;
+         }
+      }
    }
 }
 
@@ -376,9 +391,11 @@
 @include useMediaQuery_LS{
    .homepage,
    .hidden_contacts_page,
+   .help_page,
    .labels_page{
-      padding-top: 4em;
+      padding-top: 4em !important;
    }
+
 
    .favourites,
    .duplicates,
