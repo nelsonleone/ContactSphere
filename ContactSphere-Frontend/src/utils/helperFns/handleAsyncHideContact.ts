@@ -53,6 +53,7 @@ export default async function handleAsyncHideContact(
             return c._id === contactId ? {...c,isHidden:status} : c
          })
 
+         console.log(updatedLocalContacts)
          dispatch(setUpdatedLocalContacts(updatedLocalContacts))
       }
 
@@ -60,7 +61,7 @@ export default async function handleAsyncHideContact(
          res = await hideMultipleContacts({
             selectedContacts,
             authUserUid: uid!,
-            status: true
+            status
          }).unwrap()
       }
 

@@ -17,14 +17,14 @@ function Homepage(props:IHomepageProps){
    const { contacts } = useAppSelector(store => store.userData)
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
-   const activeContacts = contacts.filter(c => !c.isHidden || !c.inTrash)
+   const activeContacts = contacts.filter(c => !c.isHidden && !c.inTrash)
 
    return(
       !props.fetchingContacts ?
       <PageWrapper className="homepage" title="ContactSphere">
          {
             selectedContacts.length > 0 ?
-            <MultiSelectActions contactsForMultiSelect={contacts} />
+            <MultiSelectActions contactsForMultiSelect={activeContacts} />
             :
             <ContactPageTopColumn />
          }
@@ -32,7 +32,7 @@ function Homepage(props:IHomepageProps){
 
          <main className="contacts_container">
             {
-               contacts.length ? SortContacts(sortBy,activeContacts).map(contactProps => (
+               activeContacts.length ? SortContacts(sortBy,activeContacts).map(contactProps => (
                   <ContactItem key={contactProps._id} location={ContactItemLocation.Homepage} {...contactProps} />
                ))
                :

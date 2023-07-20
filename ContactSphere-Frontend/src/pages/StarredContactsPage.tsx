@@ -13,7 +13,7 @@ function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
 
    const { contacts } = useAppSelector(store => store.userData)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
-   const starredContacts = contacts.filter(contact => contact.inFavourites === true)
+   const starredContacts = contacts.filter(contact => contact.inFavourites === true && !contact.inTrash && !contact.isHidden)
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
 
    return (

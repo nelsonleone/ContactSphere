@@ -3,7 +3,7 @@ import { BsTrash3Fill } from 'react-icons/bs'
 import { MdLabelOutline } from 'react-icons/md'
 import { useAppSelector, useAppDispatch } from '../../customHooks/reduxCustomHooks';
 import { ContactMenuButton } from '../../../lib/with-tooltip';
-import { MouseEvent, SetStateAction, Dispatch, useEffect, useState } from 'react';
+import { MouseEvent, SetStateAction, Dispatch, memo } from 'react';
 import { useTrashContactMutation, useSendMultipleToTrashMutation, useHideContactMutation, useHideMultipleContactsMutation, useManageLabelsMutation, useManageMultiContactLabelsMutation } from '../../RTK/features/injectedContactsApiQueries';
 import { Divider, Menu, MenuItem } from '@mui/material';
 import { ListItemIcon, ListItemText, MenuList } from '@mui/material';
@@ -14,7 +14,6 @@ import clientAsyncHandler from '../../utils/helperFns/clientAsyncHandler';
 import handleAsyncAddLabel from '../../utils/helperFns/handleAsyncAddLabel';
 import CustomCheckbox from '../../../lib/customInputs/CustomCheckbox';
 import CustomSimpleDialog from '../../../lib/popups/CustomSimpleDialog'
-import { setSelectNone } from '../../RTK/features/contactMultiSelectSlice';
 
 interface IProps {
    contactLabels?: {
@@ -28,7 +27,7 @@ interface IProps {
    setOpenDialog?: Dispatch<SetStateAction<boolean>>
 }
 
-export default function ContactMenu(props:IProps){
+function ContactMenu(props:IProps){
 
    const { labels:userSavedLabels, contacts } = useAppSelector(store => store.userData)
    const uid = useAppSelector(store =>  store.authUser.userDetails.uid)
@@ -41,8 +40,8 @@ export default function ContactMenu(props:IProps){
    const [hideContact] = useHideContactMutation()
    const [hideMultipleContacts] = useHideMultipleContactsMutation()
    const [showDialog,setShowDialog] = useState(false)
-   
-   const [unregisteredLabels,setUnregisteredLabels] = useState(userSavedLabels?.filter(item => !props.contactLabels?.some(obj => obj.label === item.label)))
+   const unregisteredLabels = userSavedLabels?.filter(item => !props.contactLabels?.some(obj => obj.label === item.label))
+
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
    const open = Boolean(anchorEl)
    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -98,6 +97,7 @@ export default function ContactMenu(props:IProps){
    const handleMenuDeleteContact = () => clientAsyncHandler(
       async () => {      
          handleClose()
+         setShowDialog(false)
          await stopUnauthourizedActions(uid)
          await handleAsyncDelete(
             sendToTrash,
@@ -116,10 +116,6 @@ export default function ContactMenu(props:IProps){
    const handleCreateBtnClick = () => {
       props.setOpenDialog && props.setOpenDialog(prevState => prevState = !prevState)
    }
-
-   useEffect(() => {
-      setUnregisteredLabels(userSavedLabels.filter(item => !props.contactLabels?.some(obj => obj.label === item.label)))
-   },[props.contactLabels?.length,userSavedLabels?.length])
 
    return(
       <>
@@ -238,3 +234,5 @@ export default function ContactMenu(props:IProps){
       </>
    )
 }
+
+export default memo(ContactMenu)

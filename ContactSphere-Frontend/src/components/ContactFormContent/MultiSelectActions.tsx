@@ -1,4 +1,4 @@
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton, Tooltip, Button } from "@mui/material";
 import { MdOutlineRemoveCircle } from 'react-icons/md'
 import { GoTriangleDown } from 'react-icons/go'
 import { useAppSelector, useAppDispatch } from "../../customHooks/reduxCustomHooks";
@@ -110,10 +110,10 @@ export default function MultiSelectActions({contactsForMultiSelect}:{contactsFor
                <ContactMenu method="multi" id="contact-mts-menu" setOpenDialog={setOpenDialog}  />
                :
                location.pathname === "/hidden" ? 
-               <button onClick={() => handleRestoreToActive('hidden')}>Restore to active</button>
+               <Button className="unarchive_btn" onClick={() => handleRestoreToActive('hidden')}>Unarchive Contacts</Button>
                :
                location.pathname === "/trash" ? 
-               <button onClick={() => handleRestoreToActive('trash')}>Remove From Trash</button>
+               <Button className="rft_btn" onClick={() => handleRestoreToActive('trash')}>Remove From Trash</Button>
                :
                null
             }

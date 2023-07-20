@@ -28,9 +28,10 @@ html{
 }
 
 body{
-   overflow-x: hidden;
    scroll-behavior: smooth;
    height: 100%;
+   width: 100%;
+   overflow-x: hidden;
 }
 
 img{
@@ -68,7 +69,7 @@ h5{
 }
 
 h1{
-   font-size: clamp(1.406rem, 0.545vw + 1.28rem, 1.65rem);
+   font-size: clamp(1.506rem, 0.545vw + 1.28rem, 1.65rem);
 }
 
 svg{

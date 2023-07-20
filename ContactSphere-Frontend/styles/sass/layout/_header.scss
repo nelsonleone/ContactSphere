@@ -5,9 +5,9 @@
 .header_main{
    @include flexObj($align:baseline);
    padding-bottom:5.2em;
-   width: 96%;
    margin: auto;
    gap: 1em;
+   width: 100%;
    z-index: 3;
    position: relative;
    svg{
@@ -26,11 +26,8 @@
 
    h1{
       position: relative;
-      z-index: 101;
       margin-right:  .5em;
-      transform: translateX(-.5em);
       cursor: pointer;
-      font-size: 1.5rem;
 
       &::before{
          content: "";
@@ -549,7 +546,7 @@ button[aria-controls=user-menu]{
    }
 
    button[aria-controls=user-menu]{
-      transform: translateY(.5em);
+      transform: translateY(.4em);
    }
 
 
@@ -609,7 +606,7 @@ button[aria-controls=user-menu]{
 
    .header_main .searchbar{
       width: 54em;
-      flex-basis: 72%;
+      flex-basis: 80%;
    }
 
 

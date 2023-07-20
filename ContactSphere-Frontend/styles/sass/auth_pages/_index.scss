@@ -2,7 +2,7 @@
 @use '../global/typography' as *;
 @use '../global/colors' as *;
 
-.auth-page{
+.auth_page{
    margin-top: 1em;
    height: 100%;
    padding-bottom: 3em;
@@ -11,11 +11,13 @@
    h2{
       font-size: 1.4rem;
       text-align: center;
+      margin-inline: auto;
    }
 }
 
 .auth-contents{
-   @include flexObj($justify:center,$direction:column);
+  width:95%;
+  margin-inline: auto;
 
    // form styling
    form {
@@ -153,7 +155,7 @@
 
    // alternative auth options
    .alt_auth_methods{
-      margin-top: 2.5em;
+      margin-top: .5em;
       h3{
          text-align: center;
          font-size: 1.1rem;
@@ -235,7 +237,7 @@
 @include useMediaQuery_LS{
  
    // overriding default layout styling in the [_layout] for auth_pages
-   .auth-page{
+   .auth_page{
       padding-top: 7em !important;
    }
 
@@ -260,6 +262,7 @@
 
       .alt_auth_methods{
          width: 20em;
+         margin-top: 1.5em;
          margin-inline: auto;
          @include flexObj($direction:column,$justify:center);
          h3{

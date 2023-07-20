@@ -7,11 +7,11 @@ import ContactsPageColumnOrder from "../components/ContactFormContent/ContactsPa
 import PageWrapper from "../components/PageWrapper";
 import InPageLoader from "../../lib/loaders/InPageLoader";
 
-function HiddenContacts({fetchingContacts}: { fetchingContacts:boolean })
+function HiddenContacts({fetchingContacts}: { fetchingContacts:boolean }){
 
    const { contacts } = useAppSelector(store => store.userData)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
-   const hiddenContact = contacts.filter(contact => contact.isHidden === true)
+   const hiddenContacts = contacts.filter(contact => contact.isHidden === true)
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
 
    return (

@@ -429,6 +429,7 @@ const setTrashContactHandler = asyncHandler(async (request, response) => {
       }
    
       authUserDataDoc.contacts[contactIndex].inTrash = true;
+      authUserDataDoc.contacts[contactIndex].inFavourites = false;
       authUserDataDoc.contacts[contactIndex].deletedAt = new Date()
    
       await authUserDataDoc.save()

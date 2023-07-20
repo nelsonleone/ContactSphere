@@ -57,3 +57,32 @@
       margin-top:1em;
    }
 }
+
+
+.custom_simple_dialog{
+
+   &>*{
+      color: $text-color2;
+   }
+
+   button{
+      font-family: $ff_secondary;
+      color: $radiant_color2;
+   }
+}
+
+.custom_alert{
+   width:20em;
+   position: fixed;
+   top: 5em;
+   z-index:1000;
+   left: 2em;
+
+   *{
+      font-family: $ff_prompts;
+   }
+
+   @include useMediaQuery_LS{
+      @include alignPage;
+   }
+}

@@ -127,10 +127,12 @@ const setHideMultipleContacts = asyncHandler(async (request, response) => {
    const { selectedContacts: contactIds, status } = request.body;
    
    try {
-      const filter = { uid, 'contacts._id': { $in: contactIds } }
-      const update = { $set: { 'contacts.$.isHidden': status } }
-      
-      await AuthUserData.updateMany(filter, update)
+      for (const contactId of contactIds){
+         const query = { uid, 'contacts._id': contactId }
+         const update = { $set: { 'contacts.$.isHidden': status } }
+
+         await AuthUserData.findOneAndUpdate(query, update)
+      }
       
       response.status(200).json({ message: "Request Was Successful" })
    }
@@ -140,6 +142,7 @@ const setHideMultipleContacts = asyncHandler(async (request, response) => {
       throw new Error(error.message)
    }
 }) 
+
 
 
 

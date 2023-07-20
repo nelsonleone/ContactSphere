@@ -30,6 +30,7 @@ function NavMenu(props:IProps){
 
    const { beenAuthenticated , userDetails: { uid }} = useAppSelector(store => store.authUser)
    const { labels, contacts } = useAppSelector(store => store.userData)
+   const activeContacts = contacts.filter(c => !c.isHidden && !c.inTrash)
    const [addLabelMode,setAddLabelMode] = useState<"edit"|"create">("edit")
    const [labelForEdit,setLabelForEdit] = useState<ILabelObj>({
       label: "",
@@ -57,7 +58,7 @@ function NavMenu(props:IProps){
    }
 
    const checkContactsWithLabel = (label:string) => {
-      const withLabel = contacts.filter(c => c.labelledBy.some(obj => obj.label === label)).length;
+      const withLabel = activeContacts.filter(c => c.labelledBy.some(obj => obj.label === label)).length;
       return withLabel >  0 ? withLabel : "";
    }
 
@@ -119,7 +120,7 @@ function NavMenu(props:IProps){
                            Contacts
                            {
                               contacts.length ?
-                              <span aria-label="Saved Contacts Count">{contacts.length}</span>
+                              <span aria-label="Saved Contacts Count">{activeContacts.length > 0 ? activeContacts.length : ""}</span>
                               :
                               null
                            }

@@ -5,7 +5,7 @@ import { AuthFormLocation } from "../enums";
 export default function SignInPage(){
 
    return(
-      <PageWrapper className="auth-page signin" desc="sign into your contactsphere account" title="ContactSphere | Login">
+      <PageWrapper className="auth_page signin" desc="sign into your contactsphere account" title="ContactSphere | Login">
          <main>
             <h2>Welcome Back</h2>
             <AuthFormHandler location={AuthFormLocation.SIGN_IN} />

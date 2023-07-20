@@ -1,31 +1,36 @@
 import { nanoid } from "@reduxjs/toolkit";
 import { useAppSelector } from "../../customHooks/reduxCustomHooks";
-
-const columnLabels = [
-   {
-      label: 'name',
-      id: 'name-col',
-      innerText: 'Name'
-   },
-   {
-      label: 'email',
-      id: 'email-col',
-      innerText: 'Email',
-   },
-   {
-      label: 'phone-number',
-      id: 'phone-col',
-      innerText: 'Phone Number',
-   },
-   {
-      label: 'job-title',
-      id: 'jobTitle-col',
-      innerText: 'Job Title',
-   }
-]
+import { useLocation } from "react-router-dom";
+import { useMemo } from "react";
 
 function ContactPageTopColumn() {
    const { columnOrder } = useAppSelector((store) => store.userLocalSetting)
+   const location = useLocation()
+
+   const columnLabels = useMemo(() => {
+      return [
+         {
+            label: 'name',
+            id: 'name-col',
+            innerText: 'Name'
+         },
+         {
+            label: 'email',
+            id: 'email-col',
+            innerText: 'Email',
+         },
+         {
+            label: 'phone-number',
+            id: 'phone-col',
+            innerText: 'Phone Number',
+         },
+         {
+            label: 'job-title',
+            id: 'jobTitle-col',
+            innerText: 'Job Title',
+         }
+      ]
+   },[location])
  
    return (
      <div className="contacts_view_top_section">
@@ -39,7 +44,7 @@ function ContactPageTopColumn() {
                return (
                   <li
                      id={labelObject.id}
-                     key={labelObject.id}
+                     key={nanoid()}
                      style={{ order: obj.order }}
                      >
                      {labelObject.innerText}

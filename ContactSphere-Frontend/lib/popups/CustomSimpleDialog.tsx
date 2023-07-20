@@ -28,15 +28,6 @@ export default function CustomSimpleDialog(props:IProps) {
             <DialogContentText>
                {dialogText}
             </DialogContentText>
-            <TextField
-               autoFocus
-               margin="dense"
-               id="name"
-               label="Email Address"
-               type="email"
-               fullWidth
-               variant="standard"
-            />
          </DialogContent>
          <DialogActions>
             <Button onClick={() => setOpen(false)}>{btnText1 || "Cancle"}</Button>

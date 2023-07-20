@@ -129,7 +129,7 @@ export function RestoreToActiveButton({handleRestore}:{ handleRestore:() => void
    return(
       <Tooltip title="Unarchive">
          <button className="contact_unarchive_button" type="button" onClick={handleRestore}>
-            <MdUnarchive style={{fontSize: '1.4rem'}} />
+            <MdUnarchive aria-label="unarchive" style={{fontSize: '1.4rem'}} />
          </button>
       </Tooltip>
    )
@@ -140,7 +140,7 @@ export function RestoreFromTrashButton({handleRestore}:{ handleRestore:() => voi
    return(
       <Tooltip title="Restore contact">
          <button className="contact_unarchive_button" type="button" onClick={handleRestore}>
-            <FaTrashRestore />
+            <FaTrashRestore aria-label="Restore" />
          </button>
       </Tooltip>
    )

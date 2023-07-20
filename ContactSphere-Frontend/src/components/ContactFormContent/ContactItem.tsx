@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import PhotoUrlAvatar from "../../../lib/Avatars/PhotoUrlAvatar";
-import { IContactsFromDB } from "../../vite-env";
-import { memo, useEffect, useState } from "react";
+import { ColumnOrderData, IContactsFromDB } from "../../vite-env";
+import { memo, useCallback, useEffect, useState } from "react";
 import { EditIconButton, RestoreFromTrashButton, RestoreToActiveButton, StarIconButton } from "../../../lib/with-tooltip";
 import CustomCheckbox from "../../../lib/customInputs/CustomCheckbox";
 import { useNavigate } from "react-router-dom";
@@ -47,6 +47,11 @@ function ContactItem(props:IContactItemProps){
    const [hideContact] = useHideContactMutation()
    const [hideMultipleContacts] = useHideMultipleContactsMutation()
    const dispatch = useAppDispatch()
+   const { columnOrder } = useAppSelector(store => store.userLocalSetting)
+   const nameAreaOrder = columnOrder.findIndex(v => v.colName === "name").order;
+   const phoneAreaOrder = columnOrder.findIndex(v => v.colName === "phone-number").order;
+   const emailAreaOrder = columnOrder.findIndex(v => v.colName === "email").order;
+   const jobTitleAreaOrder = columnOrder.findIndex(v => v.colName === "job-title").order;
    const { contacts } = useAppSelector(store => store.userData)
 
    const handleStarring = async() => {
@@ -104,6 +109,7 @@ function ContactItem(props:IContactItemProps){
 
 
 
+
    useEffect(() => {
       setIsSelected(selectedContacts.some(contactId => contactId === _id))
    },[selectedContacts.length])
@@ -112,15 +118,49 @@ function ContactItem(props:IContactItemProps){
       <div tabIndex={0} className={`contact ${isSelected ? "selected_contact" : ""}`} aria-label="Contact" aria-describedby={`${_id}-description`}>
          <PhotoUrlAvatar nameForAlt={`${firstName} ${lastName} image`} photoURL={repPhoto} size={42} />
          <CustomCheckbox handleCheck={() => dispatch(setSelected(_id))} checked={isSelected} />
-         <p id={`${_id}-description`} aria-label="Contact Name" aria-labelledby="name-col">{handleContactDetailsDisplay(`${firstName} ${lastName}`)}</p>
-         <Link to={`mailto:${email}`} aria-label="Email" aria-labelledby="email-col">{handleContactDetailsDisplay(email)}</Link>
-         <p aria-label="Contact Phone Number" aria-labelledby="phone-col">{handleContactDetailsDisplay(phoneNumber)}</p>
+
+         <p 
+           id={`${_id}-name`} 
+           aria-labelledby="name-col"
+           style={{order: `${nameAreaOrder}`}}
+           >
+            {handleContactDetailsDisplay(`${firstName} ${lastName}`)}
+         </p>
+
+         <Link 
+            to={`mailto:${email}`} 
+            id={`${_id}-email`}
+            aria-labelledby="email-col"
+            style={{order: `${emailAreaOrder}`}}
+            >
+            {handleContactDetailsDisplay(email)}
+         </Link>
+
+         <p 
+            id={`${_id}-phone`} 
+            aria-labelledby="phone-col"
+            style={{order: `${phoneAreaOrder}`}}
+            >
+            {handleContactDetailsDisplay(phoneNumber)}
+         </p>
 
          {
             props.location === ContactItemLocation.Trash ?
-            <p aria-label="Contact Delete Date" aria-describedby="deletedDate-col">{new Date(deletedAt).toLocaleDateString('en-US')}</p>
+            <p 
+              aria-labelledby="deletedDate-col"
+              id={`${_id}-deleteDate`} 
+              style={{order: `${emailAreaOrder}`}}
+              >
+               {new Date(deletedAt).toLocaleDateString('en-US')}
+            </p>
             :
-            <p aria-label="Contact Job Title" aria-describedby="jobTitle-col">{handleContactDetailsDisplay(jobTitle)}</p>
+            <p 
+               aria-labelledby="jobTitle-col"
+               id={`${_id}-jobTitle`} 
+               style={{order: `${jobTitleAreaOrder}`}}
+               >
+               {handleContactDetailsDisplay(jobTitle)}
+            </p>
          }
 
          {
