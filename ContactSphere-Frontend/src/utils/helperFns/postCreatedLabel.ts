@@ -23,11 +23,14 @@ export default async function postCreatedLabel(
       if(labels?.length){
          dispatch(updateLabels(labels))
       }
+      else{
+         throw new Error("Failed To Create Label, Try Again")
+      }
    }
 
-   catch(err){
+   catch(err:any){
       dispatch(setShowAlert({
-         alertMessage: "Failed To Create Label",
+         alertMessage: err.message || "Failed To Create Label",
          severity: AlertSeverity.ERROR
       }))
    }

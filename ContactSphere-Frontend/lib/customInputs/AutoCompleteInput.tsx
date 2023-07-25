@@ -5,7 +5,7 @@ import { ICustomInputsProps } from '../../src/vite-env';
 
 
 
-export function AutocompleteInput(props:ICustomInputsProps) {
+export function AutoCompleteInput(props:ICustomInputsProps) {
   const { setValue, registerField, error } = props;
   const timeoutRef = useRef<number>(-1)
   const [loading, setLoading] = useState(false)

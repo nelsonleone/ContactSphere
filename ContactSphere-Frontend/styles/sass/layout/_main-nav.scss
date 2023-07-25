@@ -1,0 +1,298 @@
+@use '../utils/' as *;
+@use '../global/' as *;
+
+
+
+
+// Navigation menu
+.main_nav{
+   position: fixed;
+   left: -2%;
+   top: 0;
+   z-index: 100;
+   padding: 3.5em 1.8em;
+   background: $generic_color_1;
+   transition: all .3s linear;
+   width: 74%;
+   height: 100vh;
+   box-shadow: 0 4px 4px 5px hsla(0, 0%, 0%, 0.137);
+   font-family:  $ff_primary;
+   scroll-behavior: smooth;
+   overflow-y: auto;
+
+
+
+   div{
+      margin-top: 3em;
+
+      p{
+         margin-block: 1.2em;
+         color: $text-color1;
+         font-weight: $fw_bold;
+         font-size: 1rem;
+      }
+   }
+
+  li{
+      margin-block: 1.6em;
+      font-family:  inherit;
+      font-weight: $fw_bold;
+      font-size: 1.05rem;
+      letter-spacing: .05rem;
+      z-index: 2;
+
+      svg + svg:last-of-type{
+         position: absolute;
+         right: .4em;
+         top: 0;
+         bottom: 0;
+         font-size: 1.3rem;
+         margin-block: auto;
+         z-index: -1;
+      }
+
+      // links
+      a{
+         color: $text-color2;
+         display: block;
+         @include flexObj($justify:flex-start);
+         gap: 1em;
+         position: relative;
+         z-index: 1;
+
+         &::before{
+            content: "";
+            width: calc(100% + 4em);
+            height: 2.5em;
+            left: -4em;
+            top: 0;
+            bottom: 0;
+            margin-block: auto;
+            background-color: $accent_color_3;
+            border-radius: 20px;
+            display: none;
+            position: absolute;
+            z-index: -1;
+         }
+   
+
+         &:hover:not(.active),
+         &:focus{
+            color: $accent_color_2;
+         }
+
+         &:focus{
+            border-color: $accent_color_2;
+         }
+      }
+
+
+      &>.active{
+         color: $text-color1;
+         &::before{
+            display: block;
+         }
+
+         &:hover,
+         &:focus{
+            color: $text-color1;
+         }
+      }
+   }
+
+   .contact_page_link{
+      span{
+         right: 1em;
+         position: absolute;
+      }
+   }
+
+
+
+   // User Saved Labels section
+   .label-area{
+      margin-top: 2em;
+      &>button{
+         margin-block: 1em;
+         font-family:  inherit;
+         font-size: 1rem;
+         @include flexObj;
+         width: 100%;
+         font-family: $ff_primary;
+         font-weight: $fw_bold;
+         color: $text-color2;
+         padding-right: .4em;
+         padding: .4em;
+         border-radius: 4px;
+
+         &:hover,
+         &:focus{
+            background-color: $bg_color1;
+            svg{
+               color: $accent_color_1;
+            }
+         }
+      }
+   
+
+      li{
+         font-size: .95rem;
+         margin-block: 1em;
+         font-family: $ff_secondary;
+         font-weight: $fw_bold;
+         padding-left: 1em;
+         @include flexObj;
+
+
+         & > .active .label_link_btns {
+            button{
+               opacity: 1;
+            }
+
+            p{
+               visibility: hidden;
+            }
+         }
+
+         a{
+            color: $text-color1;
+            width: 100%;
+         }
+
+         .active{
+            svg{
+               color: $bg_color2;
+            }
+         }
+
+         p{
+            position: absolute;
+            right: 1.3em;
+            font-weight: $fw_bold;
+            font-size: .88rem;
+            color: $text-color2;
+         }
+
+         .label_link_btns{
+            margin-block:0;
+            position: absolute;
+            right: 1em;
+            @include flexObj;
+            gap: .4em;
+            button{
+               background-color: transparent;
+               margin: 0;
+               padding: 0;
+               z-index: 1;
+               opacity: 0;
+
+               svg{
+                  color: $text-color1 !important ;
+                  font-size: 1.1rem;
+                  pointer-events: all;
+               }
+
+               &:hover svg,
+               &:focus svg{
+                  color: $radiant_color2 !important;
+                  scale: 1.03;
+               }
+
+               &:focus{
+                  opacity: 1;
+               }
+            }
+         }
+
+
+         // Active State
+         &:hover,
+         &:focus{
+            a > svg{
+               path{
+                  color: $accent_color_2;
+               }
+            }
+
+            .active{
+               svg path {
+                  color: $bg_color2;
+               }
+            }
+
+            a{
+               color: $text-color2;
+            }
+
+            p{
+               visibility: hidden;
+            }
+
+            .label_link_btns {
+              button{
+                 opacity: 1;
+              }
+            }
+         }
+      }
+   }
+}
+
+
+
+.hide_nav{
+  left: -400px !important;
+}
+
+
+@include useMediaQuery_MD{
+   .main_nav{
+      width: 38%;
+   }
+}
+
+@include useMediaQuery_LS{
+   .main_nav{
+      box-shadow: none;
+      background: transparent;
+      width: auto;
+      top: 9em;
+      padding-top: 0;
+      z-index: 1;
+      padding-right: .3em;
+      left: 0;
+      scrollbar-width: thin;
+      height: calc(100vh - 9em);
+      overflow: hidden;
+      scrollbar-color: $util_color2 transparent;
+
+      &:hover{
+         overflow-y: auto;
+      }
+
+      &>ul{
+         position: unset;
+      }
+
+      &::-webkit-scrollbar-track{
+         background: transparent;
+      }
+
+      &::-webkit-scrollbar{
+         width: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb{
+         width: 5px;
+         background: $util_color2;
+      }
+
+
+      li{
+         margin-block: 1.6em;
+         svg{
+           margin-right: .3em;
+         }
+      }
+   }
+}

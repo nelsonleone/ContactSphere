@@ -1,6 +1,11 @@
 const asyncHandler = require('express-async-handler')
 const AuthUserData = require('../../models/AuthUserData')
 const capitalizeString = require('../../utils/capitalizeString')
+const { 
+   checkForUid,
+   checkIfUserExists,
+   checkForContactId
+} = require('./onRequestHelperFns/index')
 
 
 // Create Contact 
@@ -16,21 +21,13 @@ const createContact = asyncHandler(async(request,response) => {
       middleName: capitalizeString(request.body.middleName)
    }
 
-   if(!authUserUid){
-      response.status(400)
-      throw new Error("UID QUERY IS INVALID")
-   }
-
    try{
+      await checkForUid(response,authUserUid)
+
       const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
 
-      if(!authUserDataDoc){
-         response.status(400)
-         throw new Error("NO USER WITH SPECIFIED UID WAS FOUND")
-         return;
-      }
+      await checkIfUserExists(response,authUserDataDoc)
 
-      // User Doc Has Already Been Initialized
       const newAuthUserData = await AuthUserData.findOneAndUpdate(
          { uid: authUserUid },
          { $push: { contacts: newContact } },
@@ -59,11 +56,7 @@ const getAuthUserData = asyncHandler(async(request,response) => {
       const diffInDate = new Date()
       diffInDate.setDate(diffInDate.getDate() - 30)
 
-      if(!authUserUid){
-         response.status(400)
-         throw new Error("INVALID UID QUERY PARAMETER PASSED")
-         return;
-      }
+      await checkForUid(response,authUserUid)
 
       let authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
 
@@ -113,14 +106,9 @@ const setNewLabel = asyncHandler(async(request,response) => {
 
 
    try{
+      await checkForUid(response,authUserUid)
       const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
-
-      if(!authUserDataDoc){
-         response.status(400)
-         throw new Error("NO USER WITH SPECIFIED UID WAS FOUND")
-         return;
-      }
-
+      await checkIfUserExists(response,authUserDataDoc)
       const labelAlreadyExists = authUserDataDoc.labels.some(val => val.label === capitalizeString(newLabelObj.label))
 
       // Don't Add Label If It Already Exist
@@ -151,10 +139,7 @@ const removeUserLabel = asyncHandler(async(request,response) => {
    const labelForDelete = {...request.body,label: capitalizeString(request.body.label)}
 
    try{
-      if(!uid){
-         response.status(400)
-         throw new Error("INVALID QUERY PARAMETERS PASSED")
-      }
+      await checkForUid(response,authUserUid)
 
       if(!labelForDelete){
          response.status(400)
@@ -163,10 +148,7 @@ const removeUserLabel = asyncHandler(async(request,response) => {
 
       const authUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
 
-      if(!authUserDataDoc){
-         response.status(404)
-         throw new Error("USER WITH SPECIDED UID WAS NOT FOUND")
-      }  
+      await checkIfUserExists(response,authUserDataDoc) 
 
       authUserDataDoc.labels.filter(v => v.label !== labelForDelete.label)
       // UPDATE CONTACTS WITH LABEL IN LABELLEDBY ARRAY
@@ -194,10 +176,7 @@ const editUserLabel = asyncHandler(async (request, response) => {
    const { labelForEditObj, oldLabel } = request.body;
  
    try {
-      if (!uid) {
-         response.status(400);
-         throw new Error("INVALID QUERY PARAMETERS PASSED");
-      }
+      await checkForUid(response,uid)
    
       if (!labelForEditObj || !oldLabel) {
          response.status(400);
@@ -207,11 +186,7 @@ const editUserLabel = asyncHandler(async (request, response) => {
       }
  
      const authUserDataDoc = await AuthUserData.findOne({ uid })
- 
-      if (!authUserDataDoc) {
-         response.status(404);
-         throw new Error("USER WITH SPECIFIED UID WAS NOT FOUND")
-      }
+     await checkIfUserExists(response,authUserDataDoc)
    
       const labelIndex = authUserDataDoc.labels.findIndex(
          (v) => v._id.toString() === labelForEditObj._id.toString()
@@ -253,11 +228,8 @@ const setFavourited = asyncHandler(async (request, response) => {
 
  
    try { 
-      if (!contactId || !uid) {
-         response.status(400)
-         throw new Error('USER UID OR CONTACT ID WAS NOT PROVIDED')
-         return;
-      }
+      await checkForUid(response,uid)
+      await checkForContactId(response,contactId)
 
       const updatedAuthUserData = await AuthUserData.findOneAndUpdate(
          { uid, 'contacts._id': contactId },
@@ -265,11 +237,7 @@ const setFavourited = asyncHandler(async (request, response) => {
          { new: true }
       )
  
-      if (!updatedAuthUserData) {
-         response.status(400)
-         throw new Error('NO CONTACT OF SUCH ID FOUND')
-         return;
-      }
+      await checkIfUserExists(response,updatedAuthUserData)
 
       const interactedContact = updatedAuthUserData.contacts.find(contact => contact._id.toString() === contactId.toString());
 
@@ -295,20 +263,12 @@ const manageUserContactsLabels = asyncHandler(async(request,response) => {
 
    const value = request.body;
 
-   if (!contactId || !uid ) {
-      response.status(400)
-      throw new Error('USER UID OR CONTACT ID WAS NOT PROVIDED')
-      return;
-   }
-
    try{
+      await checkForUid(response,uid)
+      await checkForContactId(response,contactId)
+      
       const authUserDataDoc = await AuthUserData.findOne({ uid, })
-
-      if(!authUserDataDoc){
-         response.status(404)
-         throw new Error("")
-         return;
-      }
+      await checkIfUserExists(response,authUserDataDoc)
 
       const contact = authUserDataDoc.contacts.find(c => c._id.toString() === contactId)
 
@@ -362,19 +322,11 @@ const setHideContactHandler = asyncHandler(async(request,response) => {
    const { status } = request.body;
    
    try {
-      if(!uid || !contactId){
-         response.status(400)
-         throw new Error("INVALID OR INCOMPLETE QUERY PARAMETERS PASSED")
-         return;
-      }
-
-      const authUserDataDoc = await AuthUserData.findOne({uid})
-
-      if (!authUserDataDoc) {
-         response.status(404)
-         throw new Error("NO USER WITH PROVIDED ID WAS FOUND")
-         return;
-      }
+      await checkForUid(response,uid)
+      await checkForContactId(response,contactId)
+      
+      const authUserDataDoc = await AuthUserData.findOne({ uid, })
+      await checkIfUserExists(response,authUserDataDoc)
  
       const contactIndex = authUserDataDoc.contacts.findIndex((contact) => contact._id.toString() === contactId.toString())
    
@@ -412,15 +364,13 @@ const setTrashContactHandler = asyncHandler(async (request, response) => {
    const { uid, contactId } = request.query;
  
    try {
-      const authUserDataDoc = await AuthUserData.findOne({ uid })
-   
-      if (!authUserDataDoc) {
-         response.status(404)
-         throw new Error("NO USER WITH PROVIDED ID WAS FOUND")
-         return;
-      }
+      await checkForUid(response,uid)
+      await checkForContactId(response,contactId)
+      
+      const authUserDataDoc = await AuthUserData.findOne({ uid, })
+      await checkIfUserExists(response,authUserDataDoc)
  
-      const contactIndex = user.contacts.findIndex((contact) => contact._id.toString() === contactId)
+      const contactIndex = authUserDataDoc.contacts.findIndex((contact) => contact._id.toString() === contactId)
    
       if (contactIndex === -1) {
          response.status(404)
@@ -453,15 +403,13 @@ const setRestoreFromTrash = asyncHandler(async(request,response) => {
    const { uid, contactId } = request.query;
  
    try {
-      const authUserDataDoc = await AuthUserData.findOne({ uid })
-   
-      if (!authUserDataDoc) {
-         response.status(404)
-         throw new Error("NO USER WITH PROVIDED ID WAS FOUND")
-         return;
-      }
+      await checkForUid(response,uid)
+      await checkForContactId(response,contactId)
+      
+      const authUserDataDoc = await AuthUserData.findOne({ uid, })
+      await checkIfUserExists(response,authUserDataDoc)
  
-      const contactIndex = user.contacts.findIndex((contact) => contact._id.toString() === contactId)
+      const contactIndex = authUserDataDoc.contacts.findIndex((contact) => contact._id.toString() === contactId)
    
       if (contactIndex === -1) {
          return res.status(404)
@@ -503,14 +451,13 @@ const setEdittedContact = async (request, response) => {
    }
  
    try {
-      const AuthUserDataDoc = await AuthUserData.findOne({ uid })
-   
-      if (!AuthUserDataDoc) {
-         return response.status(404)
-         throw new Error("USER WITH SPECIFIED UID DOES NOT EXIST")
-      }
+      await checkForUid(response,uid)
+      await checkForContactId(response,contactId)
+      
+      const authUserDataDoc = await AuthUserData.findOne({ uid, })
+      await checkIfUserExists(response,authUserDataDoc)
  
-      const contactIndex = AuthUserDataDoc.contacts.findIndex((contact) => contact._id.toString() === contactId.toString())
+      const contactIndex = authUserDataDoc.contacts.findIndex((contact) => contact._id.toString() === contactId.toString())
    
       if (contactIndex === -1) {
          response.status(404)
@@ -519,9 +466,9 @@ const setEdittedContact = async (request, response) => {
       }
    
       // Update the contact with the new data
-      AuthUserDataDoc.contacts[contactIndex] = Object.assign({}, authUser.contacts[contactIndex], edittedContactDetails)
+      authUserDataDoc.contacts[contactIndex] = Object.assign({}, authUserDataDoc.contacts[contactIndex], edittedContactDetails)
  
-     await AuthUserDataDoc.save()
+     await authUserDataDoc.save()
  
      response.status(200).json({ message: 'Contact updated successfully' })
    } 
@@ -540,7 +487,11 @@ const setDeleteContact = asyncHandler(async (request, response) => {
    const { contactId } = request.body;
    
    try {
-      const authUserDataDoc = await AuthUserData.findOne({ uid })
+      await checkForUid(response,uid)
+      await checkForContactId(response,contactId)
+      
+      const authUserDataDoc = await AuthUserData.findOne({ uid, })
+      await checkIfUserExists(response,authUserDataDoc)
 
       authUserDataDoc.contacts.filter(c => {
          return contactId.toString() !== c._id.toString()

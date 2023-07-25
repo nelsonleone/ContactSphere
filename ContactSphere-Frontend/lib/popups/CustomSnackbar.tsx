@@ -44,21 +44,11 @@ export default function CustomSnackbar() {
    return (
       <Snackbar
          open={showSnackbar}
-         className="popup-prompt"
+         className="custom-snackbar"
          autoHideDuration={6000}
          onClose={handleClose}
          message={snackbarMessage}
          action={action}
-         style={ {
-            color:"#FAFAFA",
-            position: "fixed",
-            bottom: "2em",
-            zIndex:"100",
-            backgroundColor: "#ff6600d5e4 !important" 
-         }}
-         sx={{
-            bgColor: "#ff6600d5e4"
-         }}
       />
    )
 }

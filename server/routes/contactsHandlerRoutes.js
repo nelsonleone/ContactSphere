@@ -6,7 +6,7 @@ const {
    setFavourited,
    setNewLabel,
    createContact,
-   setDeleteMultiSelectedContacts,
+   setTrashMultiSelectedContacts,
    setManageMultiContactLabels,
    setHideMultipleContacts,
    manageUserContactsLabels,
@@ -29,7 +29,7 @@ router.delete('/deleteContact',setDeleteContact)
 router.delete('/deleteMultiple',setDeleteMultipleContacts)
 router.post('/manageUserContactLabels',manageUserContactsLabels)
 router.delete('/sendToTrash',setTrashContactHandler)
-router.delete('/sendMultipleToTrash',setDeleteMultiSelectedContacts)
+router.delete('/sendMultipleToTrash',setTrashMultiSelectedContacts)
 router.post('/manageMultipleContactsLabels',setManageMultiContactLabels)
 router.put('/interact',setFavourited)
 router.put('/hideContact',setHideContactHandler)

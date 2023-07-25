@@ -5,7 +5,6 @@ import { ContactItemLocation } from "../enums";
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions";
 import ContactsPageColumnOrder from "../components/ContactFormContent/ContactsPageColumnOrder";
 import PageWrapper from "../components/PageWrapper";
-import InPageLoader from "../../lib/loaders/InPageLoader";
 
 function HiddenContacts({fetchingContacts}: { fetchingContacts:boolean }){
 
@@ -35,8 +34,6 @@ function HiddenContacts({fetchingContacts}: { fetchingContacts:boolean }){
             }
          </main>
       </PageWrapper>
-      :
-      <InPageLoader />
    )
 }
 

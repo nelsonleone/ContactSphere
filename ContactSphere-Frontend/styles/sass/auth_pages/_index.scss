@@ -16,9 +16,7 @@
 }
 
 .auth-contents{
-  width:95%;
-  margin-inline: auto;
-
+   @include flexObj($direction:column,$justify:center);
    // form styling
    form {
       &>div{
@@ -35,10 +33,10 @@
       }
 
       input{
-         width: 20em;
          font-family: $ff_primary;
          border: 2px solid $util_color1;
          height: 2.8em;
+         width: 22em;
          padding: 1em;
          font-weight: $fw_bold;
          color: $text-color1;
@@ -73,7 +71,7 @@
          .input-container{
             position: relative;
             height:  4.1em;
-            width: 19em;
+            width: 21em;
             border-radius: 4px;
             
             svg{
@@ -142,7 +140,7 @@
       
       .flex-row{
          margin-bottom: 1.6em;
-         @include flexObj;
+         @include flexObj($justify:space-between);
 
          a{
             color: $accent_color_1;
@@ -211,7 +209,6 @@
  
    .auth-contents{
       form{
-
          input{
             width: 27em;
          }
@@ -222,12 +219,9 @@
       }
 
       .alt_auth_methods{
-         h3{
-            text-align: left;
-         }
          button{
-            width: 26em;
             margin-inline: 0;
+            margin-block: 1.5em;
          }
       }
    }
@@ -236,9 +230,9 @@
 
 @include useMediaQuery_LS{
  
-   // overriding default layout styling in the [_layout] for auth_pages
    .auth_page{
-      padding-top: 7em !important;
+      margin-top: 3em;
+      padding-bottom: 0;
    }
 
    
@@ -270,6 +264,7 @@
          }
          button{
             width: 100%;
+            margin-block: 1em;
          }
       }
    }

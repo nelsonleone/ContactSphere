@@ -2,18 +2,16 @@ import ContactForm from "../components/ContactFormContent/ContactForm";
 import PageWrapper from "../components/PageWrapper";
 import { ContactFormAction } from "../enums";
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../customHooks/reduxCustomHooks'
+import { useAppSelector } from '../customHooks/reduxCustomHooks'
 import { useEffect, useState } from "react";
 import { IContactsFromDB } from "../vite-env";
 import setEditFormDefaultValues from "../utils/helperFns/setEditFormDefaultValues";
 import ErrorIdParamsMsg from "../components/ContactFormContent/ErrorIdParamsMsg";
-import { setShowSimpleModal } from "../RTK/features/simpleModalSlice";
 
 function EditContactPage() {
 
   const { id } = useParams()
   const { contacts } = useAppSelector(store => store.userData)
-  const dispatch = useAppDispatch()
   const { beenAuthenticated } = useAppSelector(store => store.authUser)
   const [contactForEdit,setContactForEdit]= useState<IContactsFromDB | undefined>(contacts.find(c => c._id.toString() === id?.toString()))
 
@@ -21,13 +19,6 @@ function EditContactPage() {
     setContactForEdit(contacts.find(c => c._id.toString() === id?.toString()))
   },[id,contacts.length,beenAuthenticated])
 
-
-  useEffect(() => {
-    dispatch(setShowSimpleModal({
-      text1: "Please Note",
-      text2: "Only Modified Fields Will Be Editted"
-    }))
-  },[])
 
   return (
     contactForEdit ? 

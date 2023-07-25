@@ -23,7 +23,7 @@ export default function CustomSimpleDialog(props:IProps) {
 
    return (
      <Dialog open={open} onClose={() => setOpen(false)} className="custom_simple_dialog">
-         <DialogTitle>{dialogTitle}</DialogTitle>
+         <DialogTitle className="custom_simple_dialog_title">{dialogTitle}</DialogTitle>
          <DialogContent>
             <DialogContentText>
                {dialogText}

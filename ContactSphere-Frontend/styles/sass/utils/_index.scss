@@ -14,10 +14,6 @@
    margin-inline: auto;
 }
 
-@mixin alignPage{
-   margin-inline: 16.5em 1em;
-   width: auto;
-}
 
 @mixin useMediaQuery_MD{
    @media (min-width:35rem){

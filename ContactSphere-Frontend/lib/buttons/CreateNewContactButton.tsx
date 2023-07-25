@@ -9,6 +9,13 @@ export default function CreateNewContactButton(){
    const navigate = useNavigate()
    const location = useLocation()
    const { beenAuthenticated } = useAppSelector(store => store.authUser)
+   const { openNav } = useAppSelector(store => store.openNav)
+   const [isDisabled,setIsDisabled] = React.useState(
+      !location.pathname.match("/auth") &&
+      location.pathname !== "/new" && 
+      !location.pathname.match('/edit') &&
+      beenAuthenticated ? false : true
+   )
    const [showText,setShowText] = React.useState(window.innerWidth >= Breakpoints.Large)
 
    const resizeHandler = () => {
@@ -21,15 +28,22 @@ export default function CreateNewContactButton(){
       return()=> window.removeEventListener('resize',resizeHandler)
    },[])
 
+   React.useEffect(() => {
+      setIsDisabled(
+         location.pathname !== "/new" && 
+         !location.pathname.match('/edit') &&
+         beenAuthenticated ? false : true
+      )
+   },[beenAuthenticated,location.pathname])
+
+
    return(
-      !location.pathname.match("/auth") &&
-      location.pathname !== "/new" && 
-      !location.pathname.match('/edit') &&
-      beenAuthenticated ? 
+      !location.pathname.match("/auth") ?
       <button
-         className="cnc_btn" 
-         title="Create New Contact"
-         onClick={() => navigate('/new')}
+         className={!openNav ? "cnc_btn cnc_btn_hide" : "cnc_btn"} 
+         title={isDisabled ? undefined : "Create New Contact"}
+         onClick={() => isDisabled ? {} : navigate("/new")}
+         disabled={isDisabled}
          >
          <FaPlus />
          {

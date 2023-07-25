@@ -7,7 +7,6 @@ import SortContacts from '../utils/helperFns/SortContacts'
 import ContactItem from '../components/ContactFormContent/ContactItem'
 import { ContactItemLocation } from '../enums'
 import { useEffect} from 'react'
-import InPageLoader from '../../lib/loaders/InPageLoader'
 
 export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean }){
 
@@ -16,12 +15,13 @@ export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean
    const {selectedContacts} = useAppSelector(store => store.multiSelect)
    const labelId = id ? id.toString() :"";
    const labelBeingPreviewed = labels.find(label => label._id.toString() === labelId)?.label;
-   const contactsWithLabel = contacts.filter(contact => contact.labelledBy.some(val => val.label === labelBeingPreviewed))
+   const contactsWithLabel = contacts.filter(contact =>
+      !contact.isHidden && !contact.inTrash && contact.labelledBy.some(val => val.label === labelBeingPreviewed)
+   )
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
 
    return(
-      !fetchingContacts ?
-      <PageWrapper className="labels_page" title={`Labels - ${labelBeingPreviewed}`}>
+      <PageWrapper fetchingContacts={fetchingContacts} className="labels_page" title={`Labels - ${labelBeingPreviewed}`}>
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions contactsForMultiSelect={contactsWithLabel}  />
@@ -45,7 +45,5 @@ export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean
             }
          </main>
       </PageWrapper>
-      :
-      <InPageLoader />
    )
 }

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import ContactItem from "../components/ContactFormContent/ContactItem";
 import ContactsPageColumnOrder from "../components/ContactFormContent/ContactsPageColumnOrder";
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions";
@@ -6,8 +5,6 @@ import { useAppSelector } from "../customHooks/reduxCustomHooks";
 import { ContactItemLocation } from "../enums";
 import SortContacts from "../utils/helperFns/SortContacts";
 import PageWrapper from "../components/PageWrapper";
-import InPageLoader from "../../lib/loaders/InPageLoader";
-import { IContactsFromDB } from "../vite-env";
 
 function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
 
@@ -17,11 +14,7 @@ function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
 
    return (
-      !fetchingContacts ? 
-      <PageWrapper className="favourites"  title="ContactSphere | Favourites">
-         <div className="favourites_page_prompt">
-            <h2 role="alert">If They Are Starred, Yes They Are Special.</h2>
-         </div>
+      <PageWrapper fetchingContacts={fetchingContacts} className="favourites"  title="ContactSphere | Favourites">
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions contactsForMultiSelect={starredContacts} />
@@ -41,8 +34,6 @@ function StarredContactsPage({fetchingContacts}: { fetchingContacts:boolean }) {
             }
          </main>
       </PageWrapper>
-      :
-      <InPageLoader />
    )
 }
 

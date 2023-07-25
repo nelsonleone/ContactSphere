@@ -1,5 +1,5 @@
 import  { FloatingLabelInput } from '../../../lib/customInputs/FloatingLabelInput'
-import  { AutocompleteInput } from '../../../lib/customInputs/AutoCompleteInput'
+import  { AutoCompleteInput } from '../../../lib/customInputs/AutoCompleteInput'
 import  AuthFormPasswordInput from '../../../lib/customInputs/PasswordInput'
 import  LoadingButton from '../../../lib/buttons/LoadingButton'
 import { Link } from 'react-router-dom';
@@ -34,7 +34,7 @@ function AuthForm(props:IAuthFormProps) {
 
   return (
    <form onSubmit={handleSubmit(handleAuthRequest)}>
-      <AutocompleteInput 
+      <AutoCompleteInput
          registerField={register} 
          error={errors.email?.message} 
          setValue={setValue}

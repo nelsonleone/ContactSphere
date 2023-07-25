@@ -22,6 +22,8 @@ import { setShowAlert } from "../../RTK/features/alertSlice"
 import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice"
 import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions"
 import cleanNewContactFormFields from "../../utils/helperFns/cleanNewContactFields"
+import CustomSimpleDialog from "../../../lib/popups/CustomSimpleDialog"
+import { setThereAreChanges } from "../../RTK/features/shouldDiscardChangesSlice"
 
 
 
@@ -32,14 +34,15 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    const { append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
    const [showLabelMenu,setShowLabelMenu] = useState(false)
    const [openAddLabelModal,setOpenAddLabelModal] = useState(false)
+   const [showDiscardWarning,setShowDiscardWarning] = useState(false)
    const navigate = useNavigate()
    const labelsArray = watch('labelledBy')
    const repPhoto = watch('repPhoto')
-   const birthday = watch('birthday')
    const phoneNumber = watch('phoneNumber')
    const relatedPeople = watch('relatedPeople')
    const [createContact, { isLoading }] = useCreateContactMutation()
    const [editContact, { isLoading:editting }] = useEditContactMutation()
+   const { openNav } = useAppSelector(store => store.openNav)
 
    const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(
       errors.firstName?.message || 
@@ -92,7 +95,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
 
             // Internal Server Error Occured [Catch Block Can't Catch Some Of Them ]
             if(!successRes){
-               throw new Error("An Error Occured Creating Contact")
+               throw new Error("An Error Occured Editting Contact")
             }
          }
 
@@ -111,12 +114,27 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
       }
    }
 
+   const handleCancelEdit = () => {
+      if(!isDirty){
+         navigate(-1)
+         return;
+      }
+
+      setShowDiscardWarning(true)
+   }
+
    useEffect(() => {
       // Disabled Save Button 
       errors.firstName?.message || 
       errors.birthday?.message ||
       !phoneNumber ||
       isLoading || !isDirty  ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
+
+      dispatch(setThereAreChanges(isDirty))
+
+      return () => {
+         dispatch(setThereAreChanges(false))
+      }
    },[
       errors.firstName?.message,
       errors.birthday?.message,
@@ -129,7 +147,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    return(
       <>
          <form onSubmit={handleSubmit(handleOnSubmit)}>
-            <div className="top_section">
+            <div className={`top_section ${openNav ? 'resize_top_section' : ''}`}>
                <ImageUploadInput repPhoto={repPhoto} name={InputPropertyValueName.RepPhoto} register={register} setValue={setValue} />
                {
                   labelsArray?.length ?
@@ -151,7 +169,8 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
                   sx={{ bgcolor: '#f57e0fd0',borderRadius:action === ContactFormAction.Edit ? "30px" : "4px" }} >
                   Save
                </Button>
-               <button type="button" disabled={isLoading || editting ? true : false} className="fx-button" onClick={() => navigate(-1)}>
+               
+               <button type="button" disabled={isLoading || editting ? true : false} className="fx-button" onClick={handleCancelEdit}>
                   <RxCross1 />
                </button>
 
@@ -177,6 +196,16 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
             :
             null
          }
+
+         <CustomSimpleDialog
+            dialogTitle="You have unsaved changes" 
+            dialogText="Are you sure you want to discard your unsaved changes?" 
+            open={showDiscardWarning} 
+            setOpen={setShowDiscardWarning} 
+            action={() => navigate(-1)}
+            btnText1="Cancel"
+            btnText2="Discard"
+         />
       </>
    )
 }

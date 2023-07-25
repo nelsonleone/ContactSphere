@@ -1,6 +1,5 @@
 import ContactItem from "../components/ContactFormContent/ContactItem"
 import { useAppSelector } from "../customHooks/reduxCustomHooks"
-import InPageLoader from '../../lib/loaders/InPageLoader'
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions"
 import { memo, useEffect, useState } from "react"
 import { ContactItemLocation } from "../enums"
@@ -20,8 +19,7 @@ function Homepage(props:IHomepageProps){
    const activeContacts = contacts.filter(c => !c.isHidden && !c.inTrash)
 
    return(
-      !props.fetchingContacts ?
-      <PageWrapper className="homepage" title="ContactSphere">
+      <PageWrapper fetchingContacts={fetchingContacts} className="homepage" title="ContactSphere">
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions contactsForMultiSelect={activeContacts} />
@@ -42,8 +40,6 @@ function Homepage(props:IHomepageProps){
             }
          </main>
       </PageWrapper>
-      :
-      <InPageLoader />
    )
 }
 

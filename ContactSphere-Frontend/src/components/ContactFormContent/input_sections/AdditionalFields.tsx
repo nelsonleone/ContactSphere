@@ -30,8 +30,6 @@ function AdditionalFields(props:IProps){
    const { fields, append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.RelatedPeople })
    const id = useId()
 
-   console.log(relatedPeople)
-
    return(
       <div className="additional_fields">
          <div className={'dx_container birthday_field_container'}>

@@ -10,8 +10,10 @@ import { BiPlus } from 'react-icons/bi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
 import { MdNewLabel, MdUnarchive } from 'react-icons/md';
-import { useAppSelector } from '../../src/customHooks/reduxCustomHooks'
+import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
 import { useNavigate } from 'react-router-dom';
+import { setShowAlert } from '../../src/RTK/features/alertSlice';
+import { AlertSeverity } from '../../src/enums';
 
 
 interface IProps {
@@ -76,7 +78,7 @@ export function ManageLabelButton({ className, penMode, handleClick, disabled }:
             {
                !penMode ?
                <>
-                  <BiPlus />
+                  <BiPlus aria-label="add" />
                   <span>Labels</span>
                </>
                :
@@ -95,9 +97,9 @@ export function ManageLabelButton({ className, penMode, handleClick, disabled }:
 export function StarIconButton({starred,handleStarring}: { starred:boolean,handleStarring:() => void }){
    return(
       <Tooltip title="Star Contact">
-         <button className="contact_star_button" type="button" onClick={handleStarring}>
-            <FiStar fill={starred ? "#09c9e2" : "white"} color={starred ? "#09c9e2" : "hsl(0, 3%, 16%) " } />
-         </button>
+         <IconButton className="contact_star_button" type="button" onClick={handleStarring}>
+            <FiStar aria-label="star" fill={starred ? "#09c9e2" : "white"} color={starred ? "#09c9e2" : "hsl(0, 3%, 16%) " } />
+         </IconButton>
       </Tooltip>
    )
 }
@@ -106,9 +108,9 @@ export function StarIconButton({starred,handleStarring}: { starred:boolean,handl
 export function EditIconButton({navigateToEditPage,toolTipText}:{ toolTipText?:string, navigateToEditPage:() => void}){
    return(
       <Tooltip title={toolTipText || "Edit Contact"}>
-         <button className="contact_edit_button" type="button" onClick={navigateToEditPage}>
-            <GoPencil color=" hsl(0, 3%, 16%)"  />
-         </button>
+         <IconButton className="contact_edit_button" type="button" onClick={navigateToEditPage}>
+            <GoPencil aria-label="edit" color=" hsl(0, 3%, 16%)"  />
+         </IconButton>
       </Tooltip>
    )
 }
@@ -139,9 +141,9 @@ export function RestoreToActiveButton({handleRestore}:{ handleRestore:() => void
 export function RestoreFromTrashButton({handleRestore}:{ handleRestore:() => void}){
    return(
       <Tooltip title="Restore contact">
-         <button className="contact_unarchive_button" type="button" onClick={handleRestore}>
+         <IconButton className="contact_unarchive_button" type="button" onClick={handleRestore}>
             <FaTrashRestore aria-label="Restore" />
-         </button>
+         </IconButton>
       </Tooltip>
    )
 }
@@ -167,15 +169,15 @@ export function ContactMenuButton(props:IContactMenuProps){
 
    return(
       <Tooltip title={tooltipText || "Contact Menu"}>
-         <button 
+         <IconButton 
             aria-controls={ariaControls || ''} 
             aria-expanded={ariaExpanded ? "true" : "false"} 
             aria-haspopup="menu" 
             className="contact_menu_button" 
             type="button" 
             onClick={openContactMenu}>
-            <BsThreeDotsVertical color={color || " hsl(0, 3%, 16%)"}  />
-         </button>
+            <BsThreeDotsVertical aria-label="menu" color={color || " hsl(0, 3%, 16%)"}  />
+         </IconButton>
       </Tooltip>
    )
 } 
@@ -184,6 +186,21 @@ export function ContactMenuButton(props:IContactMenuProps){
 
 
 function UserIcon(props:IProps,ref:Ref<HTMLButtonElement>){
+
+   const { beenAuthenticated } = useAppSelector(store => store.authUser)
+   const dispatch = useAppDispatch()
+
+   const handleClick = () => {
+      if(!beenAuthenticated){
+         dispatch(setShowAlert({
+            alertMessage: "No Currently Signed In User",
+            severity: AlertSeverity.ERROR
+         }))
+
+         return;
+      }
+      props.setState(prevState => ({ ...prevState,openUserMenu:!prevState.openUserMenu }))
+   }
 
    return(
       <Tooltip title="User Menu">
@@ -194,9 +211,10 @@ function UserIcon(props:IProps,ref:Ref<HTMLButtonElement>){
             aria-controls='user-menu' 
             aria-expanded={props.state.openUserMenu ? "true" : "false"}
             aria-haspopup="true"
-            onClick={() => props.setState(prevState => ({ ...prevState,openUserMenu:!prevState.openUserMenu }))}
+            onClick={handleClick}
             >
-            <FaUser />
+            <span className="AT_only">User Menu</span>
+            <FaUser aria-hidden="true" />
          </button>
       </Tooltip>
    )

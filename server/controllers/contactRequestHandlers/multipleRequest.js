@@ -1,20 +1,18 @@
 const asyncHandler = require('express-async-handler')
 const AuthUserData = require('../../models/AuthUserData')
+const { checkForUid, checkIfUserExists } = require('./onRequestHelperFns/index')
 
 
 // Handle Multi Contact Delete
-const setDeleteMultiSelectedContacts = asyncHandler(async (request, response) => {
+const setTrashMultiSelectedContacts = asyncHandler(async (request, response) => {
    const contactIds = request.body.selectedContacts;
    const { uid } = request.query;
 
    try {
-      const authUserDataDoc = await AuthUserData.findOne({ uid })
-
-      if (!authUserDataDoc) {
-         response.status(404);
-         throw new Error("NO USER WITH PROVIDED ID WAS FOUND")
-         return;
-      }
+      await checkForUid(response,uid)
+      
+      const authUserDataDoc = await AuthUserData.findOne({ uid, })
+      await checkIfUserExists(response,authUserDataDoc)
 
       for (const contactId of contactIds ){
          const contactIndex = authUserDataDoc.contacts.findIndex((contact) => contact._id.toString() === contactId)
@@ -40,13 +38,10 @@ const setRestoreMultipleContactsFromTrash = asyncHandler(async(request,response)
    const { uid } = request.query;
 
    try {
-      const authUserDataDoc = await AuthUserData.findOne({ uid })
-
-      if (!authUserDataDoc) {
-         response.status(404);
-         throw new Error("NO USER WITH PROVIDED ID WAS FOUND")
-         return;
-      }
+      await checkForUid(response,uid)
+      
+      const authUserDataDoc = await AuthUserData.findOne({ uid, })
+      await checkIfUserExists(response,authUserDataDoc)
 
       for (const contactId of contactIds ){
          const contactIndex = authUserDataDoc.contacts.findIndex((contact) => contact._id.toString() === contactId)
@@ -74,16 +69,13 @@ const setManageMultiContactLabels = asyncHandler(async (request, response) => {
    const { uid } = request.query;
 
    try {
-      const authUser = await AuthUserData.findOne({ uid })
-
-      if (!authUser) {
-         response.status(404)
-         throw new Error("NO USER WITH PROVIDED ID WAS FOUND")
-         return;
-      }
+      await checkForUid(response,uid)
+      
+      const authUserDataDoc = await AuthUserData.findOne({ uid, })
+      await checkIfUserExists(response,authUserDataDoc)
 
       // Find contacts with matching _ids
-      const matchedContacts = authUser.contacts.filter((contact) =>
+      const matchedContacts = authUserDataDoc.contacts.filter((contact) =>
          contactIds.includes(contact._id.toString())
       )
 
@@ -98,13 +90,6 @@ const setManageMultiContactLabels = asyncHandler(async (request, response) => {
             await AuthUserData.findOneAndUpdate(
                { uid, 'contacts._id': contact._id },
                { $push: { 'contacts.$.labelledBy': { label } }}
-            )
-         }
-
-         else if(labelAlreadyExists){
-            await AuthUserData.findOneAndUpdate(
-               { uid, 'contacts._id': contact._id },
-               { $pull: { 'contacts.$.labelledBy': { label } } }
             )
          }
       }
@@ -127,6 +112,8 @@ const setHideMultipleContacts = asyncHandler(async (request, response) => {
    const { selectedContacts: contactIds, status } = request.body;
    
    try {
+      await checkForUid(response,uid)
+      
       for (const contactId of contactIds){
          const query = { uid, 'contacts._id': contactId }
          const update = { $set: { 'contacts.$.isHidden': status } }
@@ -154,9 +141,12 @@ const setDeleteMultipleContacts = asyncHandler(async (request, response) => {
    const { selectedContacts: contactIds } = request.body;
    
    try {
-      const authUserDataDoc = await AuthUserData.findOne({ uid })
+      await checkForUid(response,uid)
+      
+      const authUserDataDoc = await AuthUserData.findOne({ uid, })
+      await checkIfUserExists(response,authUserDataDoc)
 
-      authUserDataDoc.contacts.filter(c => {
+      authUserDataDoc.contacts = authUserDataDoc.contacts.filter(c => {
          return !contactIds.includes(c._id.toString())
       })
 
@@ -171,7 +161,7 @@ const setDeleteMultipleContacts = asyncHandler(async (request, response) => {
 
 
 module.exports = {
-   setDeleteMultiSelectedContacts,
+   setTrashMultiSelectedContacts,
    setDeleteMultipleContacts,
    setManageMultiContactLabels,
    setHideMultipleContacts,

@@ -97,7 +97,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
 
       restoreFromTrash: builder.mutation<IServerResponseObj,{authUserUid:string,contactId:string}>({
          query: (args) => ({
-            url: `${CONTACTS_API_URL}/restoreFromTrash?uid=${args.authUserUid}`,
+            url: `${CONTACTS_API_URL}/restoreFromTrash?uid=${args.authUserUid}&contactId=${args.contactId}`,
             method: 'PUT',
          }),
          invalidatesTags: ['Contact']

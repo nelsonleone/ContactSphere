@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import PhotoUrlAvatar from "../../../lib/Avatars/PhotoUrlAvatar";
-import { ColumnOrderData, IContactsFromDB } from "../../vite-env";
-import { memo, useCallback, useEffect, useState } from "react";
+import { IContactsFromDB } from "../../vite-env";
+import { memo, useState, useEffect } from "react";
 import { EditIconButton, RestoreFromTrashButton, RestoreToActiveButton, StarIconButton } from "../../../lib/with-tooltip";
 import CustomCheckbox from "../../../lib/customInputs/CustomCheckbox";
 import { useNavigate } from "react-router-dom";
-import { useAddToFavouritesMutation, useHideContactMutation, useHideMultipleContactsMutation } from "../../RTK/features/injectedContactsApiQueries";
+import { useAddToFavouritesMutation,useHideContactMutation, useHideMultipleContactsMutation, useRestoreFromTrashMutation } from "../../RTK/features/injectedContactsApiQueries";
 import { useAppDispatch, useAppSelector } from "../../customHooks/reduxCustomHooks";
 import { setSelected } from "../../RTK/features/contactMultiSelectSlice";
 import { setShowAlert } from "../../RTK/features/alertSlice";
@@ -19,6 +19,7 @@ import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedAct
 import clientAsyncHandler from "../../utils/helperFns/clientAsyncHandler";
 import handleAsyncHideContact from "../../utils/helperFns/handleAsyncHideContact";
 import { Button } from "@mui/material";
+import handleAsyncRestore from "../../utils/helperFns/handleAsyncRestoreContacts";
 
 interface IContactItemProps extends IContactsFromDB {
    location: ContactItemLocation
@@ -46,17 +47,16 @@ function ContactItem(props:IContactItemProps){
    const [isSelected,setIsSelected] = useState(selectedContacts.some(contactId => contactId === _id))
    const [hideContact] = useHideContactMutation()
    const [hideMultipleContacts] = useHideMultipleContactsMutation()
+   const [restoreContactFromTrash] = useRestoreFromTrashMutation()
    const dispatch = useAppDispatch()
    const { columnOrder } = useAppSelector(store => store.userLocalSetting)
-   const nameAreaOrder = columnOrder.findIndex(v => v.colName === "name").order;
-   const phoneAreaOrder = columnOrder.findIndex(v => v.colName === "phone-number").order;
-   const emailAreaOrder = columnOrder.findIndex(v => v.colName === "email").order;
-   const jobTitleAreaOrder = columnOrder.findIndex(v => v.colName === "job-title").order;
+   const nameAreaOrder = columnOrder.find(v => v.colName === "name")?.order;
+   const phoneAreaOrder = columnOrder.find(v => v.colName === "phone-number")?.order;
+   const emailAreaOrder = columnOrder.find(v => v.colName === "email")?.order;
+   const jobTitleAreaOrder = columnOrder.find(v => v.colName === "job-title")?.order;
    const { contacts } = useAppSelector(store => store.userData)
 
    const handleStarring = async() => {
-
-      
       try{
          dispatch(setShowWrkSnackbar())
          await stopUnauthourizedActions(uid)
@@ -107,7 +107,23 @@ function ContactItem(props:IContactItemProps){
       dispatch
    )
 
-
+   const handleRestoreFromTrash = () => clientAsyncHandler(
+      async() => {
+         const method = selectedContacts.length > 0 ? "multi" : "single";
+         await stopUnauthourizedActions(uid)
+         await handleAsyncRestore(
+            restoreContactFromTrash,
+            null,
+            method,
+            uid!,
+            _id,
+            selectedContacts,
+            dispatch,
+            contacts
+         )
+      },
+      dispatch
+   )
 
 
    useEffect(() => {
@@ -149,7 +165,7 @@ function ContactItem(props:IContactItemProps){
             <p 
               aria-labelledby="deletedDate-col"
               id={`${_id}-deleteDate`} 
-              style={{order: `${emailAreaOrder}`}}
+              style={{order: `${jobTitleAreaOrder}`}}
               >
                {new Date(deletedAt).toLocaleDateString('en-US')}
             </p>
@@ -181,7 +197,7 @@ function ContactItem(props:IContactItemProps){
                   <RestoreToActiveButton handleRestore={handleRestoreToActive} />
                   :
                   props.location === ContactItemLocation.Trash ?
-                  <RestoreFromTrashButton handleRestore={() => {}} />
+                  <RestoreFromTrashButton handleRestore={handleRestoreFromTrash} />
                   :
                   props.location === ContactItemLocation.Duplicates ? 
                   <Button variant="contained" sx={{color:"#FAFAFA", bgColor:"hsl(182, 87%, 27%)"}}>Resolve</Button> 

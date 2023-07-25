@@ -61,6 +61,12 @@
 
 .custom_simple_dialog{
 
+   &_title{
+      font-family: $ff_secondary !important;
+      font-weight: $fw_bold;
+      color: $text-color1;
+   }
+
    &>*{
       color: $text-color2;
    }
@@ -68,6 +74,7 @@
    button{
       font-family: $ff_secondary;
       color: $radiant_color2;
+      text-transform: uppercase;
    }
 }
 
@@ -75,6 +82,7 @@
    width:20em;
    position: fixed;
    top: 5em;
+   text-transform: capitalize;
    z-index:1000;
    left: 2em;
 
@@ -83,6 +91,32 @@
    }
 
    @include useMediaQuery_LS{
-      @include alignPage;
+      left: 20%;
+   }
+}
+
+.custom-snackbar{
+   text-transform: capitalize;
+   word-spacing: 1.5px;
+   color: $generic_color_1;
+   bottom: 2em;
+   position: fixed;
+   z-index: 100;
+}
+
+
+
+.inpage_loader{
+   width: 100%;
+   top: 10em;
+   left: 0;
+   right: 0;
+   margin-inline: auto;
+   position: fixed;
+   z-index: 10;
+   @include flexObj($justify:center);
+
+   &>*{
+      color: $accent_color_1;
    }
 }

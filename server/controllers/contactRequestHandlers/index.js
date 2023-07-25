@@ -1,5 +1,5 @@
 const {
-   setDeleteMultiSelectedContacts,
+   setTrashMultiSelectedContacts,
    setManageMultiContactLabels,
    setHideMultipleContacts,
    setRestoreMultipleContactsFromTrash,
@@ -29,7 +29,7 @@ module.exports = {
    setNewLabel,
    getAuthUserData,
    createContact,
-   setDeleteMultiSelectedContacts,
+   setTrashMultiSelectedContacts,
    setManageMultiContactLabels,
    setHideMultipleContacts,
    manageUserContactsLabels,

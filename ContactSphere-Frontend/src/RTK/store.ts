@@ -12,6 +12,8 @@ import userLocalSettingReducer from './features/userLocalSettingSlice';
 import resolveDuplicatesReducer from './features/resolveDuplicatesSlice';
 import simpleModalReducer from './features/simpleModalSlice';
 import searchContactsReducer from './features/searchContactsSlice';
+import shouldDiscardChangesReducer from './features/shouldDiscardChangesSlice';
+import openNavMenuReducer from './features/openNavMenuSlice';
 
 const appStore = configureStore({
    reducer: {
@@ -25,7 +27,9 @@ const appStore = configureStore({
       userLocalSetting: userLocalSettingReducer,
       resolveDuplicates: resolveDuplicatesReducer,
       searchContacts: searchContactsReducer,
+      shouldDiscardChanges: shouldDiscardChangesReducer,
       simpleModal: simpleModalReducer,
+      openNav: openNavMenuReducer,
       [authQuerySlice.reducerPath]: authQuerySlice.reducer,
       [contactsQuerySlice.reducerPath]: contactsQuerySlice.reducer,
    },

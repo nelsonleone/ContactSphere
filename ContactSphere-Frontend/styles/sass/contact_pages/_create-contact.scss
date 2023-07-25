@@ -199,9 +199,8 @@
 
 
 
-      // Phoen Number Input
+      // Phone Number Input
       .phone_number_input{
-         
          border: 1px solid hsla(0, 3%, 74%, 0.897);
          width: 80%;
          padding: .6em .65em;
@@ -317,6 +316,7 @@
 
    span{
       font-family: $ff_primary;
+      font-weight: $fw_bold;
    }
 
    p{
@@ -391,7 +391,7 @@
    .create_contact_page{
       padding-top: 1em;
       form {
-         position: relative;
+         padding-inline: 0;
 
          .fields_area{
             padding-top: 13.5em;
@@ -405,10 +405,11 @@
             min-height: 11em;
             padding-inline: 0;
             position: fixed;
-            width: 95%;
+            width: 97%;
             margin-inline: auto;
             z-index: 2;
-            top: 4em;
+            transition: all .3s linear;
+            top: 3.7em;
             background-color: $generic_color_1;
 
             .add_label_btn{
@@ -445,7 +446,15 @@
             }
 
             button[type=submit]{
-               top: 5em;
+               top: 6em;
+               right: 2em;
+            }
+         }
+
+         
+         .resize_top_section{
+            @include useMediaQuery_LS{
+               width: 78%;
             }
          }
 

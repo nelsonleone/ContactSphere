@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
 import ContactItem from "../components/ContactFormContent/ContactItem";
 import ContactsPageColumnOrder from "../components/ContactFormContent/ContactsPageColumnOrder";
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions";
 import { useAppSelector } from "../customHooks/reduxCustomHooks";
 import { ContactItemLocation, SortBy } from "../enums";
 import SortContacts from "../utils/helperFns/SortContacts";
-import InPageLoader from "../../lib/loaders/InPageLoader";
 import PageWrapper from "../components/PageWrapper";
 
 function Duplicates({fetchingContacts}: {fetchingContacts:boolean}) {
@@ -16,8 +14,7 @@ function Duplicates({fetchingContacts}: {fetchingContacts:boolean}) {
 
 
    return (
-      !fetchingContacts ?
-      <PageWrapper className="duplicates" title="ContactSphere | Duplicates">
+      <PageWrapper fetchingContacts={fetchingContacts} className="duplicates" title="ContactSphere | Duplicates">
          <div className="duplicates_page_prompt">
           <p role="alert">Ensure to resolve the duplicates in your saved contacts, to enhance quality user experience</p>
          </div>
@@ -40,8 +37,6 @@ function Duplicates({fetchingContacts}: {fetchingContacts:boolean}) {
             }
          </main>
       </PageWrapper>
-      :
-      <InPageLoader />
    )
 }
 

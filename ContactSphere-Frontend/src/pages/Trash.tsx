@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ContactItem from "../components/ContactFormContent/ContactItem";
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions";
 import { useAppDispatch, useAppSelector } from "../customHooks/reduxCustomHooks";
@@ -9,20 +9,20 @@ import InPageLoader from "../../lib/loaders/InPageLoader";
 import CustomSimpleDialog from '../../lib/popups/CustomSimpleDialog'
 import clientAsyncHandler from "../utils/helperFns/clientAsyncHandler";
 import stopUnauthourizedActions from "../utils/helperFns/stopUnauthourizedActions";
-import { useSendMultipleToTrashMutation, useTrashContactMutation } from "../RTK/features/injectedContactsApiQueries";
+import { useDeleteMultipleContactsMutation, useTrashContactMutation } from "../RTK/features/injectedContactsApiQueries";
 import handleAsyncPermanentDelete from "../utils/helperFns/handleAsyncPermanentDelete";
 
 function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
 
    const { contacts } = useAppSelector(store => store.userData)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
-   const trashedContacts = contacts.filter(contact => contact.isHidden === true)
+   const trashedContacts = contacts.filter(contact => contact.inTrash === true)
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
    const [showDialog,setShowDialog] = useState(false)
    const dispatch = useAppDispatch()
    const { uid } = useAppSelector(store => store.authUser.userDetails)
    const [deleteContact] = useTrashContactMutation()
-   const [deleteMultiple] = useSendMultipleToTrashMutation()
+   const [deleteMultiple] = useDeleteMultipleContactsMutation()
 
    const handleEmptyTrash = () => clientAsyncHandler(
       async() => {
@@ -43,8 +43,7 @@ function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
    )
 
    return (
-      !fetchingContacts ? 
-      <PageWrapper className="trash" title="ContactSphere | Trash">
+      <PageWrapper fetchingContacts={fetchingContacts} className="trash" title="ContactSphere | Trash">
          <div className="trash_page_prompt">
             <p role="alert">
                Contacts Remain In Trash For 30days, after which they are automatically deleted permanently.
@@ -64,7 +63,7 @@ function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
                </ul>
             </div>
          }
-         <p aria-label="Hidden Contacts Count" className="contact_count_para">Contacts ({contacts.length})</p>
+         <p aria-label="Hidden Contacts Count" className="contact_count_para">Trash ({trashedContacts.length})</p>
          <main className="contacts_container">
             {
                trashedContacts.length ? SortContacts(sortBy,trashedContacts).map(contactProps => (
@@ -85,8 +84,6 @@ function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
             action={handleEmptyTrash}
          />
       </PageWrapper>
-      :
-      <InPageLoader />
    )
 }
 

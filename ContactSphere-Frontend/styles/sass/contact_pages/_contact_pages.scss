@@ -2,27 +2,11 @@
 @use '../global/colors' as *;
 @use '../global/typography' as *;
 
-.inpage_loader{
-   width: 100%;
-   top: 10em;
-   left: 0;
-   right: 0;
-   margin-inline: auto;
-   position: fixed;
-   z-index: 10;
-   @include flexObj($justify:center);
-
-   &>*{
-      color: $accent_color_1;
-   }
-}
-
 
 .contacts_view_top_section{
    padding-inline: .4em;
-   padding-top: 1em;
+   padding-block: .4em .6em;
    border-bottom: 1px solid $util_color1;
-   padding-bottom: .6em;
    padding-right: 3em;
 
    li{
@@ -61,7 +45,7 @@
       width: 100%;
       padding-block: 1em;
       cursor: pointer;
-      border-radius: 5px;
+      border-radius: 2px;
       padding-inline: .4em;
       position: relative;
       transition: .2s linear;
@@ -155,6 +139,12 @@
             visibility: visible;
          }
       }
+
+      &:focus-within{
+         &::after{
+            visibility: visible;
+         }
+      }
    }
 
 
@@ -169,9 +159,6 @@
          visibility: visible;
       }
 
-      &::after{
-         visibility: visible;
-      }
    }
 }
 
@@ -181,8 +168,7 @@
 .contact_menu{
    span{
       font-family: $ff_prompts;
-      font-weight: $fw_bold;
-      color: $generic_color_2 ;
+      color: $text-color2 ;
       font-size: .93rem;
    }
 
@@ -192,7 +178,7 @@
    }
 
    .label{
-      padding-right: 1em;
+      padding-right: 3em !important;
       .custom-checkbox{
          color: $radiant_color2;
          position: absolute;
@@ -223,7 +209,7 @@
 .multi_select_actions{
    @include flexObj;
    border-bottom: 1px solid $util_color1;
-   padding-bottom: .3em;
+   padding-block: 0;
 
    &>div:first-child{
       @include flexObj($justify:flex-start);
@@ -304,19 +290,19 @@
 
 .trash_page_prompt,
 .duplicates_page_prompt{
-   background: $bg_color2;
-   border-radius: 7px;
+   background: $radiant_color2;
+   border-radius: 5px;
    min-height: 3.2em;
    width: 100%;
    padding: .3em;
    text-align: center;
    @include flexObj($justify:center,$direction:column);
    gap: 1em;
-   border: 1px solid rgb(218, 215, 215);
 
    button{
-      color: $radiant_color2;
+      color: #FAFAFA;
       text-transform: capitalize;
+      text-decoration: underline;
       font-size: 1.1rem;
       font-family: $ff_prompts;
    }
@@ -324,17 +310,8 @@
       font-family: $ff_primary;
       font-weight: $fw_bold;
       font-size: .9rem;
-      color: $text-color1;
+      color: $generic_color_1;
       word-spacing: 2px;
-   }
-}
-
-.favourites_page_prompt{
-   margin-bottom: .3em;
-   h2{
-      font-size: .9rem;
-      color: $radiant_color2;
-      text-decoration: underline;
    }
 }
 
@@ -389,19 +366,6 @@
 
 
 @include useMediaQuery_LS{
-   .homepage,
-   .hidden_contacts_page,
-   .help_page,
-   .labels_page{
-      padding-top: 4em !important;
-   }
-
-
-   .favourites,
-   .duplicates,
-   .trash{
-      padding-top: 4.5em !important;
-   }
 
    .multi_select_actions{
       &>div:last-child{

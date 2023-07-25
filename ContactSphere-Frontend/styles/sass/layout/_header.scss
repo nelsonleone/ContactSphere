@@ -3,13 +3,13 @@
 @use '../global/typography' as *;
 
 .header_main{
-   @include flexObj($align:baseline);
-   padding-bottom:5.2em;
+   padding-block: .5em 6em;
    margin: auto;
    gap: 1em;
-   width: 100%;
+   width: 98%;
    z-index: 3;
    position: relative;
+   @include flexObj($justify:space-between);
    svg{
       font-size: 1.2rem;
       color: $text-color1;
@@ -26,8 +26,8 @@
 
    h1{
       position: relative;
-      margin-right:  .5em;
       cursor: pointer;
+      width: auto;
 
       &::before{
          content: "";
@@ -43,257 +43,6 @@
          z-index: -1;
       }
    }
-}
-
-
-
-// Navigation menu
-.main_nav{
-   position: absolute;
-   left: -2%;
-   top: 0;
-   z-index: 100;
-   padding: 5.2em 1.8em 4em;
-   background: $generic_color_1;
-   transition: all .2s linear;
-   width: 74%;
-   height: 100vh;
-   box-shadow: 0 4px 4px 5px hsla(0, 0%, 0%, 0.137);
-   font-family:  $ff_primary;
-   scroll-behavior: smooth;
-   
-   
-   &:hover{
-      overflow-y: auto;
-   }
-
-   &>ul{
-      position: relative;
-      top: 2em;
-   }
-
-
-   div{
-      margin-top: 3em;
-
-      p{
-         margin-block: 1.2em;
-         color: $text-color1;
-         font-weight: $fw_bold;
-         font-size: 1rem;
-      }
-   }
-
-  li{
-      margin-block: 1.2em;
-      font-family:  inherit;
-      font-weight: $fw_bold;
-      font-size: 1.05rem;
-      letter-spacing: .05rem;
-      z-index: 2;
-      min-width: 9em;
-
-      svg + svg:last-of-type{
-         position: absolute;
-         right: .4em;
-         top: 0;
-         bottom: 0;
-         margin-block: auto;
-         z-index: -1;
-      }
-
-      // links
-      a{
-         color: $text-color2;
-         display: block;
-         @include flexObj($justify:flex-start);
-         gap: 1em;
-         position: relative;
-         z-index: 1;
-
-         &::before{
-            content: "";
-            width: calc(100% + 4em);
-            height: 2.5em;
-            left: -4em;
-            top: 0;
-            bottom: 0;
-            margin-block: auto;
-            background-color: $accent_color_3;
-            border-radius: 20px;
-            display: none;
-            position: absolute;
-            z-index: -1;
-         }
-   
-
-         &:hover:not(.active),
-         &:focus{
-            color: $accent_color_2;
-         }
-
-         &:focus{
-            border-color: $accent_color_2;
-         }
-      }
-
-
-      &>.active{
-         color: $text-color1;
-         &::before{
-            display: block;
-         }
-
-         &:hover,
-         &:focus{
-            color: $text-color1;
-         }
-      }
-   }
-
-   .contact_page_link{
-      span{
-         right: 1em;
-         position: absolute;
-      }
-   }
-
-
-
-   // User Saved Labels section
-   .label-area{
-      margin-top: 2em;
-      min-height: auto;
-      &>button{
-         margin-block: 1em;
-         font-family:  inherit;
-         font-size: 1rem;
-         @include flexObj;
-         width: 100%;
-         font-family: $ff_primary;
-         font-weight: $fw_bold;
-         color: $text-color2;
-         padding-right: .4em;
-         padding: .4em;
-         border-radius: 4px;
-
-         &:hover,
-         &:focus{
-            background-color: $bg_color1;
-            svg{
-               color: $accent_color_1;
-            }
-         }
-      }
-   
-
-      ul li{
-         font-size: .9rem;
-         margin-block: 1em;
-         font-family: $ff_secondary;
-         font-weight: $fw_bold;
-         padding-left: 1em;
-         @include flexObj;
-
-
-         & > .active .label_link_btns {
-            button{
-               opacity: 1;
-            }
-
-            p{
-               visibility: hidden;
-            }
-         }
-
-         a{
-            color: $text-color1;
-            width: 100%;
-         }
-
-         .active{
-            svg{
-               color: $bg_color2;
-            }
-         }
-
-         p{
-            position: absolute;
-            right: 1.3em;
-            font-weight: $fw_bold;
-            font-size: .88rem;
-            color: $text-color2;
-         }
-
-         .label_link_btns{
-            margin-block:0;
-            position: absolute;
-            right: 1em;
-            @include flexObj;
-            gap: .4em;
-            button{
-               background-color: transparent;
-               margin: 0;
-               padding: 0;
-               z-index: 1;
-               opacity: 0;
-
-               svg{
-                  color: $text-color1 !important ;
-                  font-size: 1.1rem;
-                  pointer-events: all;
-               }
-
-               &:hover svg,
-               &:focus svg{
-                  color: $radiant_color2 !important;
-                  scale: 1.03;
-               }
-
-               &:focus{
-                  opacity: 1;
-               }
-            }
-         }
-
-
-         // Active State
-         &:hover,
-         &:focus{
-            a > svg{
-               path{
-                  color: $accent_color_2;
-               }
-            }
-
-            .active{
-               svg path {
-                  color: $bg_color2;
-               }
-            }
-
-            a{
-               color: $text-color2;
-            }
-
-            p{
-               visibility: hidden;
-            }
-
-            .label_link_btns {
-              button{
-                 opacity: 1;
-              }
-            }
-         }
-      }
-   }
-}
-
-
-
-.hide_nav{
-  left: -500px !important;
 }
 
 
@@ -313,9 +62,9 @@ button[aria-controls=user-menu]{
 .header_main .searchbar{
   position: absolute;
   left: .5em;
-  bottom: 2.1em;
+  bottom: 2.5em;
   width: 18em;
-  height: 3em;
+  height: 50px;
   margin-inline: auto;
 
   
@@ -323,15 +72,13 @@ button[aria-controls=user-menu]{
       height: 100%;
       width: 100%;
       padding: .9em 1em;
-      padding-left: 3em;
+      padding-left: 3.5em;
       font-family: $ff_primary;
       font-weight: 500;
-      font-size: .9rem;
+      font-size: 15px;
       color: $text-color1;
-      background-color: $generic_color_1;
       border-radius: 7px;
-      border: 1px solid rgb(218, 215, 215);
-      background: $bg_color2;
+      background: #F1F3F4;
    }
    
    svg{
@@ -340,6 +87,7 @@ button[aria-controls=user-menu]{
       top: 0;
       bottom: 0;
       margin-block: auto;
+      font-size: 1.2rem;
       color: $text-color1;
       opacity: .9;
    }
@@ -358,29 +106,42 @@ button[aria-controls=user-menu]{
 
 
 .hamburger-icon{
-  z-index: 101;
-  position: relative;
-  top: 1.2em;
-  @include flexObj($justify:center);
+  width: 2.7em;
 
-   &::before{
+   &>*{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+   }
+
+   &>*::before{
       content:"";
-      width: 3em;
+      width: 80%;
       border-radius: 50%;
       aspect-ratio: 1/1;
       background-color: $util_color1;
       z-index: -1;
       position: absolute;
-      @include centerContentObj;
-      top: .3em;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
       transition: .25s ease-in-out;
       opacity: 0;
    }
 
-   &:hover::before,
-   &:focus::before,
-   &:focus-within::before{
-      opacity: 1;
+   &:hover,
+   &:focus,
+   &:focus-within{
+      &>*::before{
+         opacity: 1;
+      }
    }
 }
 
@@ -393,13 +154,13 @@ button[aria-controls=user-menu]{
    animation-name: slideIn_One;
    animation-timing-function: linear;
    animation-fill-mode: forwards;
-   animation-duration: .2s;
+   animation-duration: .3s;
    width: 12em;
    height: 0;
    border-radius: 8px;
    right: 0;
    font-family: $ff_primary;
-   top: 4.7em;
+   top: 93px;
    box-shadow: 0px 2px 2px 2px #c5c3c3bd !important;
    @include flexObj($justify:center,$direction:column);
 
@@ -434,7 +195,7 @@ button[aria-controls=user-menu]{
    button {
       display: block;
       cursor: pointer;
-      margin-block: 1em;
+      margin-block: 1em 2em;
       margin-inline: auto;
       font-weight: $fw_bold;
       @include flexObj;
@@ -464,31 +225,18 @@ button[aria-controls=user-menu]{
    }
 }
 
-.no_user_para{
-   position: fixed;
-   top: 6em;
-   left: 0;
-   right: 0;
-   text-align: center;
-   color: $radiant_color1;
-   font-weight: $fw_xBold;
-   font-family: $ff_prompts;
-}
-
 
 
 // MEDIA QUERIES
 @include  useMediaQuery_MD{
    .header_main{
       gap: .5em;
-      padding-bottom: 2em;
+      padding-bottom: 3em;
 
       h1{
-         font-size: 1.8rem;
-         transform: translateX(0);
+         font-size: 27px;
       }
    }
-
 
 
    .header_main {
@@ -497,16 +245,10 @@ button[aria-controls=user-menu]{
          position: relative;
          bottom: unset;
          left: unset;
-         height: 2.8em;
          flex-basis: 70%;
       }
 
    }
-
-   .main_nav{
-      width: 40%;
-   }
-
 }
 
 
@@ -516,17 +258,15 @@ button[aria-controls=user-menu]{
 
 @include  useMediaQuery_LS{
    .header_main{
-      padding-block: .5em 1em;
-      position: relative;
+      padding-block: .5em ;
       top: 0;
-      padding-left: 4em;
-      width: 98%;
       background-color: $generic_color_1;
       z-index: 3;
-      position: fixed;
       margin-inline: auto;
       left: 0;
       right: 0;
+      position: fixed;
+      width: 98%;
 
          
       .user_utils{
@@ -534,79 +274,20 @@ button[aria-controls=user-menu]{
          gap: 1em;
 
          svg{
-            font-size: 1.2rem;
+            font-size: 1.3rem;
          }
       }
 
       h1{
          margin: 0;
-         font-size: 1.6rem;
-         transform: translateX(-.5em);
+         margin-right: 10px;
+         font-size: 26px;
       }
    }
 
-   button[aria-controls=user-menu]{
-      transform: translateY(.4em);
-   }
-
-
-  .main_nav{
-      box-shadow: none;
-      top: 8.6em;
-      background: transparent;
-      width: 16em;
-      padding-top:  0;
-      z-index: 1;
-      padding-right: .3em;
-      position: fixed;
-      left: 0;
-      scrollbar-width: thin;
-      scrollbar-color: $util_color2 transparent;
-      overflow: hidden;
-
-      &:hover{
-         overflow-y: auto;
-      }
-
-      &>ul{
-         position: unset;
-      }
-
-      .label-area{
-         min-height: 9em;
-      }
-
-      &::-webkit-scrollbar-track{
-         background: transparent;
-      }
-
-      &::-webkit-scrollbar{
-         width: 10px;
-      }
-
-      &::-webkit-scrollbar-thumb{
-         width: 5px;
-         background: $util_color2;
-      }
-
-      li{
-         margin-block:1.8em;
-
-         svg{
-            margin-right: .3em;
-         }
-      }
-   }
-
-   .hamburger-icon{
-      position: absolute;
-      left: 0;
-      top: .4em;
-   }
 
    .header_main .searchbar{
-      width: 54em;
-      flex-basis: 80%;
+      flex-basis:922px;
    }
 
 

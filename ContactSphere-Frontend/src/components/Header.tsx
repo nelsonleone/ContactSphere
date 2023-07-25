@@ -1,42 +1,37 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import HamburgerIcon from '../../lib/HamburgerIcon'
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SearchBar from './SearchBar'
 import {  MemoizedSetting as  Setting } from './UserUtils'
-import NavMenu from './NavMenu'
 import { HelpIcon, UserIcon } from '../../lib/with-tooltip/index'
 import UserMenu from './UserMenu'
 import ClickAwayListener from '@mui/base/ClickAwayListener';
 import { Breakpoints } from '../enums'
+import { setOpenNav } from '../RTK/features/openNavMenuSlice'
+import { useAppDispatch } from '../customHooks/reduxCustomHooks'
 
 export interface IHeaderState {
    openUserMenu: boolean,
    toggleSettingSection: boolean,
-   openHelpArea: boolean,
-   openNav: boolean
+   openHelpArea: boolean
 }
 
-interface IHeaderProps {
-   setResizePageWidth: Dispatch<SetStateAction<boolean>>
-}
-
-export default function Header(props:IHeaderProps){
+export default function Header(){
 
    const navigate = useNavigate()
    const location = useLocation()
    const userIconRef = useRef<HTMLButtonElement>(null)
-   const [hamburgerButtonClicked,setHamburgerButtonClicked] = useState(false)
+   const dispatch = useAppDispatch()
    const [state,setState] = useState<IHeaderState>({
       openUserMenu: false,
       toggleSettingSection: false,
       openHelpArea: false,
-      openNav: window.innerWidth >= Breakpoints.Large 
    })
 
    const handleResize = () => {
       window.innerWidth < Breakpoints.Large ?
-      setState(prevState => ({ ...prevState, openNav: false })) :
-      setState(prevState => ({ ...prevState, openNav: true }))
+      dispatch(setOpenNav(false)) :
+      dispatch(setOpenNav(true))
    }
 
    const handleClickAway = () => {
@@ -46,7 +41,7 @@ export default function Header(props:IHeaderProps){
    useEffect(() =>{
       // close nav menu onRouteChange
       if (window.innerWidth < Breakpoints.Large){
-         setState(prevState => ({ ...prevState, openNav: false }))
+         dispatch(setOpenNav(false))
       }
    },[location.pathname])
 
@@ -57,20 +52,13 @@ export default function Header(props:IHeaderProps){
       }
    },[])
 
-   useEffect(() => {
-      props.setResizePageWidth(state.openNav)
-   },[state.openNav])
-
 
    return(
-      <>
-        <header className="header_main">
-            <HamburgerIcon openNav={state.openNav} setState={setState} setHamburgerButtonClicked={setHamburgerButtonClicked}  />
+      <header>
+        <div className="header_main">
+            <HamburgerIcon />
             <h1 onClick={() => navigate('/')}>ContactSphere</h1>
-
-            <NavMenu openNav={state.openNav} setState={setState} setHamburgerButtonClicked={setHamburgerButtonClicked} hamburgerButtonClicked={hamburgerButtonClicked} />
             <SearchBar />
-
             <div className="user_utils">
                <HelpIcon />
                <Setting setState={setState} state={state} />
@@ -91,7 +79,7 @@ export default function Header(props:IHeaderProps){
                   }
                </div>
             </ClickAwayListener>
-         </header>
-      </>
+         </div>
+      </header>
    )
 }

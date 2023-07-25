@@ -85,7 +85,7 @@ export default async function handleAsyncAddLabel(
 
          dispatch(setShowSnackbar({
             snackbarMessage: actionType === "add" ?
-            `${label} Label Have Been Set On Selected Contacts`
+            `${selectedContacts.length} contacts have been labelled ${label} `
             :
             'Selected Contacts Labels Updated'
          }))

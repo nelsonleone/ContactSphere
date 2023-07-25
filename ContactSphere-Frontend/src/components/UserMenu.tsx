@@ -18,7 +18,6 @@ function UserMenu({ setState }:{setState:Dispatch<SetStateAction<IHeaderState>>}
       email,
       photoURL
    } } = useAppSelector(store => store.authUser)
-   const { beenAuthenticated }  = useAppSelector(store => store.authUser)
 
    const [setAuthSignOut, {isLoading:signingOut}] = useSetAuthSignOutMutation()
    const dispatch = useAppDispatch()
@@ -56,7 +55,6 @@ function UserMenu({ setState }:{setState:Dispatch<SetStateAction<IHeaderState>>}
    } 
 
    return(
-      beenAuthenticated ?
       <Card variant="elevation" className="user-menu" id="user-menu">
          <PhotoUrlAvatar nameForAlt={displayName || ''} photoURL={photoURL || ''} />
          <p>{displayName}</p>
@@ -66,10 +64,6 @@ function UserMenu({ setState }:{setState:Dispatch<SetStateAction<IHeaderState>>}
             <span>Sign Out</span>
          </Button>
       </Card>
-      :
-      <p role="alert" className="no_user_para">
-         No Currently Signed In User
-      </p>
    )
 }
 

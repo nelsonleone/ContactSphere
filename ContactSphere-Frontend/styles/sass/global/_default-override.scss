@@ -103,6 +103,7 @@ svg{
    input{
       font-family: $ff_primary;
       font-weight: $fw_bold;
+      color: $text-color2;
 
       &:focus{
          border-color: $radiant_color2 !important;

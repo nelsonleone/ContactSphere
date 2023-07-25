@@ -24,7 +24,7 @@ type RestoreMultipleContacts = MutationTrigger<MutationDefinition<{
 
 export default async function handleAsyncRestore(
    restoreContactFromTrash: RestoreContact,
-   restoreMultipleContacts: RestoreMultipleContacts,
+   restoreMultipleContacts: RestoreMultipleContacts | null,
    method: "single" | "multi",
    uid: string,
    contactId: string,
@@ -51,7 +51,7 @@ export default async function handleAsyncRestore(
          dispatch(setUpdatedLocalContacts(updatedLocalContactsData))
       }
 
-      else if(method === "multi"){
+      else if(method === "multi" && restoreMultipleContacts){
          res = await restoreMultipleContacts({
             selectedContacts,
             authUserUid: uid
