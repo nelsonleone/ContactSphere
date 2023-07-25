@@ -15,8 +15,7 @@ function HiddenContacts({fetchingContacts}: { fetchingContacts:boolean }){
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
 
    return (
-      !fetchingContacts ? 
-      <PageWrapper className="hidden_contacts_page" title="ContactSphere | Hidden Contacts">
+      <PageWrapper fetchingContacts={fetchingContacts} className="hidden_contacts_page" title="ContactSphere | Hidden Contacts">
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions contactsForMultiSelect={hiddenContacts} />
