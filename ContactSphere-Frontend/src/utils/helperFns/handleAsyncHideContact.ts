@@ -39,56 +39,57 @@ export default async function handleAsyncHideContact(
    try{
       dispatch(setShowWrkSnackbar())
 
-      let res;
-
       if(method === "single"){
-         res = await hideContact({
+         const res = await hideContact({
             authUserUid: uid,
             contactId,
             status
          }).unwrap()
+
+         if(!res){
+            throw new Error("Error Occured, Check Internet Connection and Try Again")
+         }
 
          // Update Local State, Before Data Refetch
          const updatedLocalContacts = contacts.map(c => {
             return c._id === contactId ? {...c,isHidden:status} : c
          })
 
-         console.log(updatedLocalContacts)
+
          dispatch(setUpdatedLocalContacts(updatedLocalContacts))
       }
 
       else if(method === "multi"){
-         res = await hideMultipleContacts({
+         const res = await hideMultipleContacts({
             selectedContacts,
             authUserUid: uid!,
             status
          }).unwrap()
-      }
 
-      if(!res){
-         throw new Error("Internal Error")
-      }
+         if(!res){
+            throw new Error("Error Occured, Check Internet Connection and Try Again")
+         }
 
-      
-      dispatch(setSelectNone())
+         dispatch(setSelectNone())
 
-      contacts.forEach(val => {
-         // Update Local State, Before Data Refetch
-         const updatedLocalContacts = contacts.map(c => {
-            return selectedContacts.includes(c._id) ? {...c,isHidden:status} : c
+         contacts.forEach(val => {
+            // Update Local State, Before Data Refetch
+            const updatedLocalContacts = contacts.map(c => {
+               return selectedContacts.some(j => j === c._id) ? {...c,isHidden:status} : c
+            })
+   
+            dispatch(setUpdatedLocalContacts(updatedLocalContacts))
          })
-
-         dispatch(setUpdatedLocalContacts(updatedLocalContacts))
-      })
+      }
 
       dispatch(setShowSnackbar({
          snackbarMessage: status === true ? "Succefully Hidden" : "Succefully Unarchived"
       }))
    }
 
-   catch(err){
+   catch(err:any){
       dispatch(setShowAlert({
-         alertMessage: "Error Occured, Check Internet Connection and Try Again",
+         alertMessage: err.message || "Error Occured, Check Internet Connection and Try Again",
          severity: AlertSeverity.ERROR
       }))
    }

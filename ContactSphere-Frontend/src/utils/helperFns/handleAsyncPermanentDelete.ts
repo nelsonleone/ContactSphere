@@ -35,13 +35,16 @@ export default async function handleAsyncPermanentDelete(
    try{
       dispatch(setShowWrkSnackbar())
 
-      let res;
-
       if(method === "single" && deleteContact){
-         res = await deleteContact({
+         const res = await deleteContact({
             authUserUid: uid,
             contactId
          }).unwrap()
+
+         
+         if(!res){
+            throw new Error("An Error Occured Completing Request")
+         }
 
          // Update Contacts Data Locally Before Data Refetch
          const updatedLocalContactsData : IContactsFromDB[] = contacts.filter(c => {
@@ -52,11 +55,14 @@ export default async function handleAsyncPermanentDelete(
       }
 
       else if(method === "multi"){
-         res = await deleteMultiple({
+         const res = await deleteMultiple({
             selectedContacts,
             authUserUid: uid
          })
 
+         if(!res){
+            throw new Error("An Error Occured Completing Request")
+         }
          // Update Contacts Data Locally Before Data Refetch
          contacts.forEach(val => {
             const updatedLocalContactsData = contacts.filter(c => {
@@ -67,10 +73,6 @@ export default async function handleAsyncPermanentDelete(
          })
       }
 
-      if(!res){
-         throw new Error("An Error Occured Completing Request")
-      }
-
       dispatch(setSelectNone())
       
       dispatch(setShowSnackbar({
@@ -79,9 +81,9 @@ export default async function handleAsyncPermanentDelete(
    }
 
 
-   catch(err){
+   catch(err:any){
       dispatch(setShowAlert({
-         alertMessage: "Error Occured During Deletion",
+         alertMessage: err.message || "Error Occured During Deletion",
          severity: AlertSeverity.ERROR
       }))
    }

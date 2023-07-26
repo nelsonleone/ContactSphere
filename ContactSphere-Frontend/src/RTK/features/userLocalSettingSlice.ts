@@ -6,11 +6,11 @@ import { ColumnOrderData } from "../../vite-env";
 const columnOrderData = [
    {
       colName: "name",
-      order: 1,
+      order: 2,
    },
    {
       colName: "email",
-      order: 2,
+      order: 1,
    },
    {
       colName: "phone-number",

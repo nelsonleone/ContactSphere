@@ -2,12 +2,13 @@ import { ReactNode } from "react";
 import  { HeadProvider, Title } from 'react-head'
 import NavMenu from "./Navigation/MainNavHandler";
 import { useAppSelector } from "../customHooks/reduxCustomHooks";
+import InPageLoader from "../../lib/loaders/InPageLoader";
 
 interface IPageWrapperProps {
    title: string,
    className: string,
    children: ReactNode,
-   fetchingContacts: boolean
+   fetchingContacts?: boolean
 }
 
 export default function PageWrapper(props:IPageWrapperProps){

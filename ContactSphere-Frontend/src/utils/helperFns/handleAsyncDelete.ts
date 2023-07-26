@@ -37,13 +37,16 @@ export default async function handleAsyncDelete(
    try{
       dispatch(setShowWrkSnackbar())
 
-      let res;
-
       if(method === "single"){
-         res = await sendToTrash({
+         const res = await sendToTrash({
             authUserUid: uid,
             contactId
          }).unwrap()
+
+         
+         if(!res){
+            throw new Error("An Error Occured Completing Request")
+         }
 
          // Update Contacts Data Locally Before Data Refetch
          const updatedLocalContactsData : IContactsFromDB[] = contacts.map(c => {
@@ -54,10 +57,15 @@ export default async function handleAsyncDelete(
       }
 
       else if(method === "multi"){
-         res = await sendMultipleToTrash({
+         const res = await sendMultipleToTrash({
             selectedContacts,
             authUserUid: uid
          })
+
+         
+         if(!res){
+            throw new Error("An Error Occured Completing Request")
+         }
 
          // Update Contacts Data Locally Before Data Refetch
          contacts.forEach(val => {
@@ -67,10 +75,6 @@ export default async function handleAsyncDelete(
 
             dispatch(setUpdatedLocalContacts(updatedLocalContactsData))
          })
-      }
-
-      if(!res){
-         throw new Error("An Error Occured Completing Request")
       }
 
       dispatch(setSelectNone())

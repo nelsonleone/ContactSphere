@@ -2,13 +2,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import HamburgerIcon from '../../lib/HamburgerIcon'
 import { useEffect, useRef, useState } from 'react'
 import SearchBar from './SearchBar'
-import {  MemoizedSetting as  Setting } from './UserUtils'
 import { HelpIcon, UserIcon } from '../../lib/with-tooltip/index'
 import UserMenu from './UserMenu'
 import ClickAwayListener from '@mui/base/ClickAwayListener';
 import { Breakpoints } from '../enums'
 import { setOpenNav } from '../RTK/features/openNavMenuSlice'
 import { useAppDispatch } from '../customHooks/reduxCustomHooks'
+import Settings from './UserUtils/Settings'
 
 export interface IHeaderState {
    openUserMenu: boolean,
@@ -61,7 +61,7 @@ export default function Header(){
             <SearchBar />
             <div className="user_utils">
                <HelpIcon />
-               <Setting setState={setState} state={state} />
+               <Settings setState={setState} state={state} />
             </div>
 
             <ClickAwayListener

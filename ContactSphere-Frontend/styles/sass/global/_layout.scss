@@ -36,9 +36,9 @@
       justify-content: space-between;
       padding-top: 4.3em;
       &>*:nth-child(2){
-         flex-basis: 86%;
-         width: 86%;
-         margin-inline: 256px auto;
+         flex-basis: 84%;
+         width: 84%;
+         margin-inline: 265px auto;
       }
    
       .main_nav{
@@ -46,11 +46,6 @@
          width: 255px;
          position: fixed;
       } 
-      
-      .inpage_loader{
-         width: 86%;
-         margin-inline: 256px auto;
-      }
    }
 }
 

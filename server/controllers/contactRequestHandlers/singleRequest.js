@@ -11,14 +11,29 @@ const {
 // Create Contact 
 const createContact = asyncHandler(async(request,response) => {
    const authUserUid = request.query.uid;
+   const {
+      firstName,
+      lastName,
+      middleName,
+      prefix,
+      suffix
+   } = request.body;
+
    const newContact = { 
       ...request.body, 
       inTrash: false,
       inFavourites: false,
       isHidden: false, 
-      firstName: capitalizeString(request.body.firstName),
-      lastName: capitalizeString(request.body.lastName),
-      middleName: capitalizeString(request.body.middleName)
+      firstName: capitalizeString(firstName),
+      lastName: capitalizeString(lastName),
+      middleName: capitalizeString(middleName),
+      name: capitalizeString(`${prefix} ${firstName} ${lastName} ${suffix}`),
+      address: {
+         ...request.body.address,
+         country: capitalizeString(request.body.address.country),
+         state: capitalizeString(request.body.address.state),
+         city: capitalizeString(request.body.address.city),
+      }
    }
 
    try{
@@ -438,16 +453,31 @@ const setRestoreFromTrash = asyncHandler(async(request,response) => {
 
 
 // Edit Contact Handler
-const setEdittedContact = async (request, response) => {
+const setEdittedContact = asyncHandler(async (request, response) => {
    const { uid, contactId } = request.query;
-   const edittedContactDetails = { 
+   const {
+      firstName,
+      lastName,
+      middleName,
+      prefix,
+      suffix
+   } = request.body;
+
+   const newContact = { 
       ...request.body, 
       inTrash: false,
       inFavourites: false,
       isHidden: false, 
-      firstName: capitalizeString(request.body.firstName),
-      lastName: capitalizeString(request.body.lastName),
-      middleName: capitalizeString(request.body.middleName)
+      firstName: capitalizeString(firstName),
+      lastName: capitalizeString(lastName),
+      middleName: capitalizeString(middleName),
+      name: capitalizeString(`${prefix} ${firstName} ${lastName} ${suffix}`),
+      address: {
+         ...request.body.address,
+         country: capitalizeString(request.body.address.country),
+         state: capitalizeString(request.body.address.state),
+         city: capitalizeString(request.body.address.city)
+      }
    }
  
    try {
@@ -477,7 +507,7 @@ const setEdittedContact = async (request, response) => {
      response.status(500)
      throw new Error(error.message)
    }
-}
+})
 
 
 

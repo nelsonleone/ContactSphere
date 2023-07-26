@@ -143,6 +143,12 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
       isDirty
    ])
 
+   useEffect(() => {
+      if(!errors.firstName && !errors.phoneNumber && phoneNumber){
+         setValue
+      }
+   })
+
 
    return(
       <>

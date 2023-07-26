@@ -60,24 +60,6 @@ const authUserSchema = new Schema({
    labels: [labelsSchema]
 })
 
-
-authUserSchema.pre('save', function (next) {
-   const contacts = this.contacts;
- 
-   for (let i = 0; i < contacts.length; i++) {
-     const contact = contacts[i]
- 
-      if (contact) {
-         const { firstName, lastName, prefix, suffix } = contact;
-   
-         contact.name = `${prefix} ${firstName} ${lastName} ${suffix}`;
-      }
-   }
-   next()
-})
- 
-
-
 const AuthUserData = model('AuthUserData',authUserSchema,'authuserdata')
 
 module.exports = AuthUserData;

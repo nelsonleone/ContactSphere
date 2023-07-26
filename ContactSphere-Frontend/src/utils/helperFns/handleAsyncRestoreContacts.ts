@@ -35,13 +35,17 @@ export default async function handleAsyncRestore(
 ){
    try{
       dispatch(setShowWrkSnackbar())
-      let res;
 
       if(method === "single"){
-         res = await restoreContactFromTrash({
+         const res = await restoreContactFromTrash({
             authUserUid: uid,
             contactId
          }).unwrap()
+
+               
+         if(!res){
+            throw new Error("An Error Occured While During Restore")
+         }
 
          // Update Contacts Data Locally Before Data Refetch
          const updatedLocalContactsData : IContactsFromDB[] = contacts.map(c => {
@@ -52,10 +56,15 @@ export default async function handleAsyncRestore(
       }
 
       else if(method === "multi" && restoreMultipleContacts){
-         res = await restoreMultipleContacts({
+         const res = await restoreMultipleContacts({
             selectedContacts,
             authUserUid: uid
          }).unwrap()
+
+         
+         if(!res){
+            throw new Error("An Error Occured While During Restore")
+         }
 
          // Update Contacts Data Locally Before Data Refetch
          contacts.forEach(val => {
@@ -66,10 +75,6 @@ export default async function handleAsyncRestore(
             dispatch(setUpdatedLocalContacts(updatedLocalContactsData))
          })
       }
-
-      if(!res){
-         throw new Error("An Error Occured While During Restore")
-      }
       
       dispatch(setShowSnackbar({
          snackbarMessage:"Successfully Restored"
@@ -77,9 +82,9 @@ export default async function handleAsyncRestore(
    }
 
 
-   catch(err){
+   catch(err:any){
       dispatch(setShowAlert({
-         alertMessage: "Error Occured During Restoration",
+         alertMessage: err.message || "Error Occured During Restoration",
          severity: AlertSeverity.ERROR
       }))
    }

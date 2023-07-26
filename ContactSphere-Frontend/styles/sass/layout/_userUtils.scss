@@ -63,7 +63,6 @@
 
    &_title{
       font-family: $ff_secondary !important;
-      font-weight: $fw_bold;
       color: $text-color1;
    }
 
@@ -72,7 +71,8 @@
    }
 
    button{
-      font-family: $ff_secondary;
+      font-family: $ff_primary;
+      font-weight: $fw_xBold;
       color: $radiant_color2;
       text-transform: uppercase;
    }
@@ -91,7 +91,7 @@
    }
 
    @include useMediaQuery_LS{
-      left: 20%;
+      left: 268px;
    }
 }
 
@@ -108,12 +108,7 @@
 
 .inpage_loader{
    width: 100%;
-   top: 10em;
-   left: 0;
-   right: 0;
-   margin-inline: auto;
-   position: fixed;
-   z-index: 10;
+   padding-top: 10em;
    @include flexObj($justify:center);
 
    &>*{

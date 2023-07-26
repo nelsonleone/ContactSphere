@@ -44,25 +44,31 @@ export function HelpIcon(){
 export function SettingsIcon(props:IProps){
 
    const { beenAuthenticated } = useAppSelector(store => store.authUser)
+   const dispatch = useAppDispatch()
+
+   const handleClick = () => {
+      if(!beenAuthenticated){
+         dispatch(setShowAlert({
+            alertMessage: "No Currently Signed In User",
+            severity: AlertSeverity.ERROR
+         }))
+         return;
+      }
+      props.setState((prevState) => ({ ...prevState, toggleSettingSection: !prevState.toggleSettingSection }))
+   }
 
    return(
       <div>
          <Tooltip title="Settings Menu">
-            {
-               beenAuthenticated ?
-               <IconButton
-                  aria-expanded={props.state.toggleSettingSection}
-                  type="button"
-                  onClick={() => props.setState((prevState) => ({ ...prevState, toggleSettingSection: !prevState.toggleSettingSection }))} 
-                  aria-controls="setting-section" 
-               >
-                  <AiFillSetting  />
-               </IconButton>
-               :
-               <IconButton>
-                  <AiFillSetting style={{cursor:"not-allowed"}} />
-               </IconButton>
-            }
+            <IconButton
+               aria-expanded={props.state.toggleSettingSection}
+               type="button"
+               onClick={handleClick} 
+               aria-controls="setting-section" 
+               aria-haspopup="dialog"
+            >
+               <AiFillSetting  />
+            </IconButton>
          </Tooltip>
       </div>
    )

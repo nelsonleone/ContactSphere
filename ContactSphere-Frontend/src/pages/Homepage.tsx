@@ -19,7 +19,7 @@ function Homepage(props:IHomepageProps){
    const activeContacts = contacts.filter(c => !c.isHidden && !c.inTrash)
 
    return(
-      <PageWrapper fetchingContacts={fetchingContacts} className="homepage" title="ContactSphere">
+      <PageWrapper fetchingContacts={props.fetchingContacts} className="homepage" title="ContactSphere">
          {
             selectedContacts.length > 0 ?
             <MultiSelectActions contactsForMultiSelect={activeContacts} />

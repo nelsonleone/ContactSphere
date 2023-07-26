@@ -1,13 +1,17 @@
 const capitalizeString = (string) => {
-   if(!string){
-      return string;
+   if (!string) {
+     return string;
    }
-
-   const val = string.trim()
-   const firstLetter = val.slice(0,1).toUpperCase()
-   const otherLetters = val.slice(1,val.length).toLowerCase()
-
-   return`${firstLetter}${otherLetters}`.trim()
+ 
+   const words = string.trim().split(' ')
+   const capitalizedWords = words.map((word) => {
+     const firstLetter = word.slice(0, 1).toUpperCase()
+     const otherLetters = word.slice(1).toLowerCase()
+     return `${firstLetter}${otherLetters}`;
+   });
+ 
+   return capitalizedWords.join(' ')
 }
-
+ 
 module.exports = capitalizeString;
+ 

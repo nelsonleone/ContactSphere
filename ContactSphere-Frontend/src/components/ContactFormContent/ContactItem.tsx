@@ -132,7 +132,7 @@ function ContactItem(props:IContactItemProps){
 
    return(
       <div tabIndex={0} className={`contact ${isSelected ? "selected_contact" : ""}`} aria-label="Contact" aria-describedby={`${_id}-description`}>
-         <PhotoUrlAvatar nameForAlt={`${firstName} ${lastName} image`} photoURL={repPhoto} size={42} />
+         <PhotoUrlAvatar nameForAlt={`${firstName} ${lastName} image`} photoURL={repPhoto} size={44} />
          <CustomCheckbox handleCheck={() => dispatch(setSelected(_id))} checked={isSelected} />
 
          <p 

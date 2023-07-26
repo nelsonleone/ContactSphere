@@ -46,12 +46,13 @@ export default function MainNav(props:IProps){
       handleDialogAction,
       labelForEdit,
       setLabelForEdit,
-      addLabelMode
+      addLabelMode,
+      showDiscardDialog,
+      setShowDiscardDialog
    } = props;
    const { beenAuthenticated } = useAppSelector(store => store.authUser)
    const { labels, contacts } = useAppSelector(store => store.userData)
    const activeContacts = contacts.filter(c => !c.isHidden && !c.inTrash)
-   const [showDiscardDialog,setShowDiscardDialog] = useState(false)
 
    // Navigation Display Var
    const { openNav } = useAppSelector(store => store.openNav)
