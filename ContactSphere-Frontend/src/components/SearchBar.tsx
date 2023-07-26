@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from '../customHooks/reduxCustomHooks'
 import findSearchedContacts from '../utils/helperFns/findSearchedContacts';
 import { setSearchResult } from '../RTK/features/searchContactsSlice';
 import { nanoid } from '@reduxjs/toolkit';
-import { Breakpoints } from '../enums'
 import { useNavigate } from 'react-router-dom';
 
 function SearchBar() {
@@ -36,7 +35,7 @@ function SearchBar() {
       </div>
       {
         searchValue !== "" &&
-        <div className="search_results">
+        <Menu className="search_results">
           {
             searchValue && searchedContacts.length ? searchedContacts.map(c => (
               <div className="search-result" key={nanoid()} onClick={() => navigate(`/c/${c._id}`)}>
