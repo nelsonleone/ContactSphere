@@ -37,7 +37,8 @@ function ContactItem(props:IContactItemProps){
       _id,
       inFavourites,
       labelledBy,
-      deletedAt
+      deletedAt,
+      company
    } = props;
 
    const navigate = useNavigate()
@@ -132,7 +133,7 @@ function ContactItem(props:IContactItemProps){
 
    return(
       <div tabIndex={0} className={`contact ${isSelected ? "selected_contact" : ""}`} aria-label="Contact" aria-describedby={`${_id}-description`}>
-         <PhotoUrlAvatar nameForAlt={`${firstName} ${lastName} image`} photoURL={repPhoto} size={44} />
+         <PhotoUrlAvatar nameForAlt={`${firstName} ${lastName}`} photoURL={repPhoto} size={44} />
          <CustomCheckbox handleCheck={() => dispatch(setSelected(_id))} checked={isSelected} />
 
          <p 
@@ -175,7 +176,7 @@ function ContactItem(props:IContactItemProps){
                id={`${_id}-jobTitle`} 
                style={{order: `${jobTitleAreaOrder}`}}
                >
-               {handleContactDetailsDisplay(jobTitle)}
+               {handleContactDetailsDisplay(`${jobTitle},${companyName}`)}
             </p>
          }
 

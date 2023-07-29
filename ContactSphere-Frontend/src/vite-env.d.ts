@@ -45,7 +45,6 @@ type Contact = {
   address: IAddressProperties,
   birthday:  Date | string,
   email: string;
-  chat: string;
   companyName: string;
   department: string;
   firstName: string;
@@ -64,6 +63,10 @@ type Contact = {
     name: string;
     label: string;
   }[];
+  social: {
+    site: string,
+    handle: string
+  }
   suffix: string;
   website: string;
 }
@@ -107,3 +110,22 @@ interface IServerResponseObj {
 
 
 type ColumnOrderData = { colName:string,order:number }[]
+
+
+// country list for dropdown
+type countryDataObj = {
+  name:{
+    common:string,
+    official:string,
+    nativeName:{
+      dan:{
+        official:string,
+        common:string
+      },
+      fao:{
+        official: string,
+        common:string
+      }
+    }
+  }
+}

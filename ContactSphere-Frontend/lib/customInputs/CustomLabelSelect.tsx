@@ -3,28 +3,50 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
-import { Contact } from '../../src/vite-env.d'
+import { UseFormSetValue } from 'react-hook-form'
+import { Contact, countryDataObj } from '../../src/vite-env.d'
 import { nanoid } from '@reduxjs/toolkit';
 import { relatedPeopleArray } from './relatedPeopleArray'
+import { socialSites } from './socialSitesArray'
+import fetchCountriesNameListData from '../../src/utils/helperFns/fetchCountriesData';
+import { InputPropertyValueName } from '../../src/enums';
 
 
 
 interface IProps {
    label: string,
    setValue: UseFormSetValue<Contact>,
-   index: number,
+   index?: number,
+   selectFor: "social" | "relatedPeople" | "country"
    show: boolean,
    value: string,
 }
 
 export default function CustomLabelSelect(props:IProps) {
 
-   const { show, label, setValue, value, index} = props; 
+   const { show, label, setValue, value, index, selectFor} = props; 
    const [selectValue,setSelectValue] = React.useState(value)
+   const [countriesNameListData,setCountriesNameListData] = React.useState<countryDataObj[]>()
+   const getData = async() => {
+      const data = await fetchCountriesNameListData()
+      setCountriesNameListData(data)
+   }
 
+   React.useEffect(() => {
+      getData()
+   },[])
+
+   // Manually Set Form Field Values From Select
    React.useEffect(() =>  {
-      setValue(`relatedPeople[${index}].label` as keyof Contact,selectValue)
+      if(selectFor === "country"){
+         setValue(InputPropertyValueName.AddressCountry as keyof Contact,selectValue)
+      }
+      else if(selectFor === "relatedPeople" && index){
+         setValue(`relatedPeople[${index}].label` as keyof Contact,selectValue)
+      }
+      else if(selectFor === "social"){
+         setValue(InputPropertyValueName.SocialSite as keyof Contact,selectValue)
+      }
    },[selectValue])
 
    return (
@@ -41,9 +63,22 @@ export default function CustomLabelSelect(props:IProps) {
             onChange={(e) => setSelectValue(e.target.value)}
          >
          {
+            selectFor === "relatedPeople" ?
             relatedPeopleArray.map(value => (
                <MenuItem  key={nanoid()} value={value.value.toLowerCase()}>{value.text}</MenuItem>
             ))
+            :
+            selectFor === "country" ?
+            countriesNameListData?.map(value => (
+               <MenuItem  key={nanoid()} value={value.name.common.toLowerCase()}>{value.name.common}</MenuItem>
+            ))
+            :
+            selectFor === "social" ?
+            socialSites.map(value => (
+               <MenuItem  key={nanoid()} value={value.name.toLowerCase()}>{value.text}</MenuItem>
+            ))
+            :
+            null
          }
          </Select>
       </FormControl>

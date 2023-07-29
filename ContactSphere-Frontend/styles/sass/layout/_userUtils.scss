@@ -110,6 +110,7 @@
    width: 100%;
    padding-top: 10em;
    @include flexObj($justify:center);
+   overflow: hidden;
 
    &>*{
       color: $accent_color_1;

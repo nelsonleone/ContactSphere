@@ -1,5 +1,6 @@
 @use '../utils/' as *;
 @use '../global/' as *;
+@use '../animations/' as *;
 
 
 
@@ -12,7 +13,7 @@
    z-index: 100;
    padding: 3.5em 1.8em;
    background: $generic_color_1;
-   transition: all .3s linear;
+   transition: all .2s linear;
    width: 74%;
    height: 100vh;
    box-shadow: 0 4px 4px 5px hsla(0, 0%, 0%, 0.137);
@@ -82,7 +83,11 @@
          }
 
          &:focus{
-            border-color: $accent_color_2;
+            &::before{
+               display: block;
+            }
+            outline: none;
+            color: $generic_color_1;
          }
       }
 
@@ -142,6 +147,12 @@
          font-weight: $fw_bold;
          padding-left: 1em;
          @include flexObj;
+
+         &:focus-within{
+            p{
+               visibility: hidden;
+            }
+         }
 
 
          & > .active .label_link_btns {

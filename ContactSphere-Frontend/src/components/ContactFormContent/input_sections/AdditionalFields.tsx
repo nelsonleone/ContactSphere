@@ -16,6 +16,10 @@ interface IProps {
    showMore: boolean,
    setValue: UseFormSetValue<Contact>,
    control:  Control<Contact, any>,
+   social: {
+      site: string,
+      handle: string
+   },
    error: string | undefined,
    relatedPeople: {
       label: string,
@@ -26,7 +30,7 @@ interface IProps {
 
 function AdditionalFields(props:IProps){
 
-   const { register, showMore, setValue, control, error, relatedPeople } = props;
+   const { register, showMore, setValue, control, error, relatedPeople, social } = props;
    const { fields, append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.RelatedPeople })
    const id = useId()
 
@@ -82,6 +86,7 @@ function AdditionalFields(props:IProps){
                      index={index}
                      label="Label"
                      show={showMore}
+                     selectFor="relatedPeople"
                      value={relatedPeople[index].label}
                   />
                   <button type="button" className={`field_append_btn append_btn_${index}`} onClick={() => append({ name: '', label: '' })}>
@@ -97,11 +102,18 @@ function AdditionalFields(props:IProps){
                showMore &&
                <BsChatRightText />
             }
+            <CustomLabelSelect 
+               setValue={setValue}
+               label="Social Site"
+               selectFor="social"
+               show={showMore}
+               value={social.site}
+            />
             <NewContactFormInput
                label='Chat'
                register={register}
-               name={InputPropertyValueName.Chat}
-               id={`${id}-website`}
+               name={InputPropertyValueName.SocialHandle}
+               id={`${id}-social-handle`}
                type='text'
                show={showMore}
             />

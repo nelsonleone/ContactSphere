@@ -9,6 +9,7 @@ import { Dispatch, SetStateAction, memo } from "react";
 import { useNavigate } from 'react-router-dom'
 import { setLocalLogout } from '../RTK/features/authUserSlice'
 import { IHeaderState } from './Header'
+import { deepOrange } from '@mui/material/colors'
 
 
 function UserMenu({ setState }:{setState:Dispatch<SetStateAction<IHeaderState>>}){
@@ -56,7 +57,7 @@ function UserMenu({ setState }:{setState:Dispatch<SetStateAction<IHeaderState>>}
 
    return(
       <Card variant="elevation" className="user-menu" id="user-menu">
-         <PhotoUrlAvatar nameForAlt={displayName || ''} photoURL={photoURL || ''} />
+         <PhotoUrlAvatar bgColor={deepOrange[400]} nameForAlt={displayName || ''} photoURL={photoURL || ''} />
          <p>{displayName}</p>
          <span>{email}</span>
 

@@ -27,6 +27,7 @@
    h1{
       position: relative;
       cursor: pointer;
+      font-size: 1.6rem;
       width: auto;
 
       &::before{
@@ -75,30 +76,82 @@ button[aria-controls=user-menu]{
       padding-left: 3.5em;
       font-family: $ff_primary;
       font-weight: 500;
-      font-size: 15px;
+      font-size: 16px;
       color: $text-color1;
       border-radius: 7px;
       background: #F1F3F4;
    }
-   
-   svg{
-      position: absolute;
-      left: 1em;
+
+   &>svg,
+   button{
       top: 0;
       bottom: 0;
       margin-block: auto;
-      font-size: 1.2rem;
+      position: absolute;
       color: $text-color1;
+   }
+   
+   &>svg:first-of-type{
+      left: 1em;
+      font-size: 1.2rem;
       opacity: .9;
+   }
+
+
+   &>button:last-of-type{
+      right: .5em;
+      width: 1.6em;
+      aspect-ratio: 1/1;
+      
+      svg{
+         font-size: 1.8rem;
+      }
    }
 
   &:focus{
      border: 1px solid $accent_color_2;
-  }
+   }
 
 
    &::placeholder{
       color: grey !important;
+   }
+}
+
+
+
+.search_results{
+   position: absolute;
+   z-index: 10;
+   padding: .5em .2em;
+   left: 0;
+   max-height: 20em;
+   overflow-y: auto !important;
+   width: 100%;
+
+   &>p{
+      font-family: $ff_prompts;
+      text-align: center;
+   }
+
+   .search-result{
+      @include flexObj($justify:flex-start);
+      gap: 1em;
+      height: 2.8em;
+      padding-block: 1em;
+      cursor: default;
+      padding-inline: .3em;
+
+
+      &:hover{
+         background-color: $util_color1;
+      }
+
+      p{
+         font-family: $ff_primary;
+         font-weight: $fw_bold;
+         color: $text-color1;
+      }
    }
 }
 

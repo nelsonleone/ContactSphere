@@ -9,11 +9,12 @@ import {  FiStar } from 'react-icons/fi'
 import { BiPlus } from 'react-icons/bi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
-import { MdNewLabel, MdUnarchive } from 'react-icons/md';
+import { MdNewLabel, MdOutlineCancel, MdUnarchive } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
 import { useNavigate } from 'react-router-dom';
 import { setShowAlert } from '../../src/RTK/features/alertSlice';
 import { AlertSeverity } from '../../src/enums';
+import { removeSearchResult } from '../../src/RTK/features/searchContactsSlice';
 
 
 interface IProps {
@@ -188,6 +189,29 @@ export function ContactMenuButton(props:IContactMenuProps){
    )
 } 
 //
+
+
+
+export function SearchbarCancelSearchIcon({setSearchValue}:{ setSearchValue: Dispatch<SetStateAction<string>>}){
+
+   const dispatch = useAppDispatch()
+   const handleClick = () => {
+      dispatch(removeSearchResult())
+      setSearchValue("")
+   }
+
+   return(
+      <Tooltip title="Clear Search">
+         <IconButton 
+            aria-controls="search-bar" 
+            aria-label="clear"
+            type="button" 
+            onClick={handleClick}>
+            <MdOutlineCancel />
+         </IconButton>
+      </Tooltip>
+   )
+}
 
 
 

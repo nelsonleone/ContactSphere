@@ -53,7 +53,6 @@ export enum InputPropertyValueName {
    AddressPostalCode = 'address.postalCode',
    Birthday = 'birthday',
    Email = 'email',
-   Chat = 'chat',
    CompanyName = 'companyName',
    Department = 'department',
    FirstName = 'firstName',
@@ -69,6 +68,8 @@ export enum InputPropertyValueName {
    Prefix = 'prefix',
    RepPhoto = 'repPhoto',
    RelatedPeople = 'relatedPeople',
+   SocialSite = 'social.site',
+   SocialHandle = 'social.handle',
    Suffix = 'suffix',
    Website = 'website',
  }

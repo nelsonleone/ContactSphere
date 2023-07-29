@@ -175,8 +175,11 @@ const removeUserLabel = asyncHandler(async(request,response) => {
             })
          }
       })
+      
       authUserDataDoc.save()
-      response.status(201).json(authUserDataDoc.labels)
+
+      const updatedUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
+      response.status(201).json(updatedUserDataDoc.labels)
    }
 
    catch(error){

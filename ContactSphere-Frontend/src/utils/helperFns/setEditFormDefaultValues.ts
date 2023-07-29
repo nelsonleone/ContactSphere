@@ -16,7 +16,6 @@ export default function setEditFormDefaultValues(contactDetails:IContactsFromDB|
          postalCode: contactDetails.address.postalCode
       },
       birthday:  new Date(contactDetails.birthday).toLocaleDateString('en-US'),
-      chat: contactDetails.chat,
       companyName: contactDetails.companyName,
       department: contactDetails.department,
       email: contactDetails.email,
@@ -30,6 +29,10 @@ export default function setEditFormDefaultValues(contactDetails:IContactsFromDB|
       prefix: contactDetails.prefix,
       repPhoto: contactDetails.repPhoto,
       relatedPeople:  contactDetails.relatedPeople,
+      social: {
+         site: contactDetails.social.site,
+         handle: contactDetails.social.handle
+      },
       suffix: contactDetails.suffix,
       website: contactDetails.website,    
    }

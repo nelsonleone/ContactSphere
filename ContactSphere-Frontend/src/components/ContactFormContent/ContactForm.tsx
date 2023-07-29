@@ -29,20 +29,27 @@ import { setThereAreChanges } from "../../RTK/features/shouldDiscardChangesSlice
 
 function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contact, action:ContactFormAction, contactId?:string }){
 
-   const { register, handleSubmit, setValue, watch, setError, formState: {errors, isDirty}, control} = useForm<Contact>({defaultValues: defaultValue || staticDefaultValue})
+   const { register, handleSubmit, setValue, watch, trigger, setError, formState: {errors, isDirty}, control} = useForm<Contact>({defaultValues: defaultValue || staticDefaultValue})
    const [showMore,setShowMore] = useState(false)
    const { append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
    const [showLabelMenu,setShowLabelMenu] = useState(false)
    const [openAddLabelModal,setOpenAddLabelModal] = useState(false)
    const [showDiscardWarning,setShowDiscardWarning] = useState(false)
    const navigate = useNavigate()
+   const { openNav } = useAppSelector(store => store.openNav)
+
+
+   // Get Values For Manually Set Onchange Input Functions
    const labelsArray = watch('labelledBy')
    const repPhoto = watch('repPhoto')
    const phoneNumber = watch('phoneNumber')
    const relatedPeople = watch('relatedPeople')
+   const social = watch('social')
+   const country = watch('address.country')
+
+   // Mutations
    const [createContact, { isLoading }] = useCreateContactMutation()
    const [editContact, { isLoading:editting }] = useEditContactMutation()
-   const { openNav } = useAppSelector(store => store.openNav)
 
    const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(
       errors.firstName?.message || 
@@ -144,10 +151,8 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    ])
 
    useEffect(() => {
-      if(!errors.firstName && !errors.phoneNumber && phoneNumber){
-         setValue
-      }
-   })
+      trigger(InputPropertyValueName.PhoneNumber)
+   },[phoneNumber])
 
 
    return(
@@ -187,8 +192,8 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
                <NameInputSection error={errors?.firstName?.message} showMore={showMore} register={register} />
                <FormalInputSection showMore={showMore} register={register} />
                <ContactInputSection error={errors?.phoneNumber?.message} phoneNumber={phoneNumber} setValue={setValue} register={register} />
-               <AddressInputSection error={errors?.address?.postalCode?.message} showMore={showMore} register={register} setValue={setValue}  />
-               <AdditionalFields relatedPeople={relatedPeople} error={errors?.birthday?.message} control={control} setValue={setValue} register={register} showMore={showMore} />
+               <AddressInputSection country={country} error={errors?.address?.postalCode?.message} showMore={showMore} register={register} setValue={setValue}  />
+               <AdditionalFields social={social} relatedPeople={relatedPeople} error={errors?.birthday?.message} control={control} setValue={setValue} register={register} showMore={showMore} />
             </div>
             <button type="button"  className="show_more_btn" onClick={() => setShowMore(!showMore)}>Show {showMore ? "Less" : "More"}</button>
          </form>

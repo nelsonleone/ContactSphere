@@ -27,7 +27,7 @@ function ContactPageTopColumn() {
          {
             label: 'job-title',
             id: 'jobTitle-col',
-            innerText: 'Job Title',
+            innerText: 'Job Title/Company',
          }
       ]
    },[location])

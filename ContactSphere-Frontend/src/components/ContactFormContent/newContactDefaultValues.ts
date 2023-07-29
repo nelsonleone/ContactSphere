@@ -9,7 +9,6 @@ export const staticDefaultValue: Contact = {
      postalCode: ''
     },
    birthday:  '',
-   chat: '',
    companyName: '',
    department: '',
    email: '',
@@ -28,6 +27,10 @@ export const staticDefaultValue: Contact = {
          label: ''
       }
    ],
+   social: {
+      site:'',
+      handle: ''
+   },
    suffix: '',
    website: '',
 }

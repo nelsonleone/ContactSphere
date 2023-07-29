@@ -3,19 +3,18 @@
 @use '../utils' as *;
 
 .page{
-   width: 98%;
+   width: calc(98% - 1em);
    margin-inline:  auto;
    background-color: $generic_color_1;
-   
-   transition: all .3s linear;
    &>*:nth-child(2){
-      transition: all .3s linear;
+      transition: width .2s linear, flex-basis .2s linear, margin .2s linear;
    }
    
    
    @include useMediaQuery_LS{
-      padding-top: 4em;
+      padding-top: 4.3em;
       @include flexObj($justify:center);
+      min-height: 100vh;
       .main_nav{
          flex-basis: 0;
          align-self: flex-start;
@@ -34,11 +33,10 @@
 .resize-page{
    @include useMediaQuery_LS{
       justify-content: space-between;
-      padding-top: 4.3em;
       &>*:nth-child(2){
-         flex-basis: 84%;
-         width: 84%;
-         margin-inline: 265px auto;
+         flex-basis: 85%;
+         width: 85%;
+         margin-inline: 250px auto;
       }
    
       .main_nav{
@@ -62,7 +60,7 @@
    right: 1.5em;
    font-family: $ff_primary;
    font-weight: $fw_bold;
-   transition: left .3s linear, scale .2s ease-in-out;
+   transition: left .2s linear, scale .2s ease-in-out;
 
    &:disabled{
       opacity: .5;

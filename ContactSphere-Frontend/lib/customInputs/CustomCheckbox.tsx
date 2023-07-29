@@ -17,6 +17,7 @@ export default function CustomCheckbox(props:ICheckboxProps){
          {...label}
          checked={props.checked}
          onChange={props.handleCheck}
+         tabIndex={0}
          className='custom-checkbox'
          size={props.size || 'medium'}
          disabled={props.disabled ? true : false}

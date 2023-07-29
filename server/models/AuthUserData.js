@@ -13,7 +13,6 @@ const Contact = new Schema({
       postalCode: Number
    },
    birthday:  Date,
-   chat: String,
    companyName: String,
    department: String,
    email: String,
@@ -42,6 +41,10 @@ const Contact = new Schema({
          label: String
       }
    ],
+   social: {
+      site: String,
+      handle: String
+   },
    suffix: String,
    website: String,
 },{ timestamps: true })

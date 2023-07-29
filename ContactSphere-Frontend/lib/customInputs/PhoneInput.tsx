@@ -43,7 +43,7 @@ export default function CustomPhoneInput(props:IPhoneInputProps){
          placeholder="Phone Number"
          defaultCountry="US"
          onChange={handlePhoneInputChange}
-         className={!props.error ? "phone_number_input" : "phone_number_input error_phone_input"}
+         className={props.error ? "phone_number_input" : "phone_number_input error_phone_input"}
          value={props.phoneNumber}
          autoFocus={autoFocus}
       />
