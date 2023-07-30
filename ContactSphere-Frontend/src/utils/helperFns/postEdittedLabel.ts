@@ -1,9 +1,9 @@
 import { Dispatch } from "@reduxjs/toolkit"
 import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta, MutationDefinition } from "@reduxjs/toolkit/dist/query";
-import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/wrkSnackbarSlice";
-import { setShowAlert } from "../../RTK/features/alertSlice";
-import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice";
+import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/slices/wrkSnackbarSlice";
+import { setShowAlert } from "../../RTK/features/slices/alertSlice";
+import { setShowSnackbar } from "../../RTK/features/slices/snackbarDisplaySlice";
 import { AlertSeverity } from "../../enums";
 
 type EditLabel =  MutationTrigger<MutationDefinition<{

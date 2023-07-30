@@ -1,8 +1,8 @@
 import { Dispatch } from "@reduxjs/toolkit"
-import { updateLabels } from "../../RTK/features/userDataSlice"
+import { updateLabels } from "../../RTK/features/slices/userDataSlice"
 import { UserLabels } from "../../vite-env"
-import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/wrkSnackbarSlice"
-import { setShowAlert } from "../../RTK/features/alertSlice"
+import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/slices/wrkSnackbarSlice"
+import { setShowAlert } from "../../RTK/features/slices/alertSlice"
 import { AlertSeverity } from "../../enums"
 
 export default async function postCreatedLabel(

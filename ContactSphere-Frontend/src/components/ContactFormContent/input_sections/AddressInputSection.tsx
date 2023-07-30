@@ -22,22 +22,20 @@ function AddressInputSection(props:IProps){
    const id = useId()
 
    return(
-      <div className="address_input_section">
-        <div className="dx_container address_section">
-            {
-               showMore &&
-               <>
-                  <MdLocationOn />
-                  <CustomLabelSelect
-                     setValue={setValue}
-                     label="Country"
-                     selectFor="country"
-                     show={showMore}
-                     value={country}
-                  />
-               </>
-            }
-         </div>
+      <div className="dx_container">
+         {
+            showMore &&
+            <>
+               <MdLocationOn />
+               <CustomLabelSelect
+                  setValue={setValue}
+                  label="Country"
+                  selectFor="country"
+                  show={showMore}
+                  value={country}
+               />
+            </>
+         }
          <div>
             {
                addressSectionInputPropsArray.map(propValues => {

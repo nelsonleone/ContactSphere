@@ -1,4 +1,4 @@
-import { Contact, IContactsFromDB, UserData, UserLabels, IServerResponseObj } from "../../vite-env";
+import { Contact, IContactsFromDB, UserData, UserLabels, IServerResponseObj } from "../../../vite-env";
 import { contactsQuerySlice } from "./contactsQuerySlice";
 
 const CONTACTS_API_URL = '/contacts';
@@ -163,7 +163,7 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
             body: { selectedContacts: args.selectedContacts, status:args.status }
          }),
          invalidatesTags: ['Contact']
-      }),
+      })
    })
 })
 

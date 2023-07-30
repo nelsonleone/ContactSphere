@@ -110,7 +110,7 @@ function AdditionalFields(props:IProps){
                value={social.site}
             />
             <NewContactFormInput
-               label='Chat'
+               label='Handle'
                register={register}
                name={InputPropertyValueName.SocialHandle}
                id={`${id}-social-handle`}

@@ -25,16 +25,9 @@ interface IProps {
 export default function CustomLabelSelect(props:IProps) {
 
    const { show, label, setValue, value, index, selectFor} = props; 
-   const [selectValue,setSelectValue] = React.useState(value)
-   const [countriesNameListData,setCountriesNameListData] = React.useState<countryDataObj[]>()
-   const getData = async() => {
-      const data = await fetchCountriesNameListData()
-      setCountriesNameListData(data)
-   }
+   const [selectValue,setSelectValue] = React.useState(value.toLowerCase())
+   const countriesNameListData = useAppSelector(store => store.countriesNames)
 
-   React.useEffect(() => {
-      getData()
-   },[])
 
    // Manually Set Form Field Values From Select
    React.useEffect(() =>  {

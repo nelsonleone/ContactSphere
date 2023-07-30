@@ -1,5 +1,5 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { setShowAlert } from "../../RTK/features/alertSlice";
+import { setShowAlert } from "../../RTK/features/slices/alertSlice";
 import { AlertSeverity } from "../../enums";
 
 // Helper Fn To Catch Unhandled Errors

@@ -3,7 +3,7 @@ import { MouseEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from '../../customHooks/reduxCustomHooks'
 import { Breakpoints } from "../../enums";
 import clientAsyncHandler from "../../utils/helperFns/clientAsyncHandler";
-import { useEditUserLabelMutation, useRemoveUserLabelMutation } from "../../RTK/features/injectedContactsApiQueries";
+import { useEditUserLabelMutation, useRemoveUserLabelMutation } from "../../RTK/features/api/injectedContactsApiQueries";
 import handleAsyncRemoveUserLabel from "../../utils/helperFns/handleAsyncRemoveUserLabel";
 import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions";
 import postEdittedLabel from "../../utils/helperFns/postEdittedLabel";

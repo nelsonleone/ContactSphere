@@ -5,19 +5,19 @@ import { useAppDispatch, useAppSelector } from "../customHooks/reduxCustomHooks"
 import { ContactItemLocation } from "../enums";
 import SortContacts from "../utils/helperFns/SortContacts";
 import PageWrapper from "../components/PageWrapper";
-import InPageLoader from "../../lib/loaders/InPageLoader";
 import CustomSimpleDialog from '../../lib/popups/CustomSimpleDialog'
 import clientAsyncHandler from "../utils/helperFns/clientAsyncHandler";
 import stopUnauthourizedActions from "../utils/helperFns/stopUnauthourizedActions";
-import { useDeleteMultipleContactsMutation, useTrashContactMutation } from "../RTK/features/injectedContactsApiQueries";
+import { useDeleteMultipleContactsMutation, useTrashContactMutation } from "../RTK/features/api/injectedContactsApiQueries";
 import handleAsyncPermanentDelete from "../utils/helperFns/handleAsyncPermanentDelete";
 
 function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
 
    const { contacts } = useAppSelector(store => store.userData)
    const { sortBy } = useAppSelector(store => store.userLocalSetting)
+   const { selectedContacts }= useAppSelector(store => store.multiSelect)
    const trashedContacts = contacts.filter(contact => contact.inTrash === true)
-   const { selectedContacts } = useAppSelector(store => store.multiSelect)
+   const trashedContactsIds = trashedContacts.map(c => c._id)
    const [showDialog,setShowDialog] = useState(false)
    const dispatch = useAppDispatch()
    const { uid } = useAppSelector(store => store.authUser.userDetails)
@@ -36,7 +36,7 @@ function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
             "multi",
             dispatch,
             contacts,
-            selectedContacts
+            trashedContactsIds
          )
       },
       dispatch
@@ -48,7 +48,7 @@ function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
             <p role="alert">
                Contacts Remain In Trash For 30days, after which they are automatically deleted permanently.
             </p>
-            <button onClick={() => setShowDialog(true)}>Empty Trash</button>
+            <button disabled={trashedContacts.length < 1} onClick={() => setShowDialog(true)}>Empty Trash</button>
          </div>
          {
             selectedContacts.length > 0 ?
@@ -78,7 +78,7 @@ function Trash({fetchingContacts}: { fetchingContacts:boolean }) {
 
          <CustomSimpleDialog  
             dialogTitle="Permanent Action" 
-            dialogText="This will empty your trash, permanently delete all the contacts in it." 
+            dialogText="This will empty your trash, permanently deleting all the contacts in it." 
             open={showDialog} 
             setOpen={setShowDialog} 
             action={handleEmptyTrash}

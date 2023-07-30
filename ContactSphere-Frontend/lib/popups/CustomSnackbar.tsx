@@ -3,7 +3,7 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
-import { hideSnackbar } from '../../src/RTK/features/snackbarDisplaySlice';
+import { hideSnackbar } from '../../src/RTK/features/slices/snackbarDisplaySlice';
 import { useLocation } from 'react-router-dom';
 
 

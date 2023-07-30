@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { AlertSeverity } from "../../enums";
+import { AlertSeverity } from "../../../enums";
 
 interface IinitialState {
    showAlert: boolean,

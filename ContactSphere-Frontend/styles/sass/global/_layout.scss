@@ -3,7 +3,7 @@
 @use '../utils' as *;
 
 .page{
-   width: calc(98% - 1em);
+   width: 98%;
    margin-inline:  auto;
    background-color: $generic_color_1;
    &>*:nth-child(2){
@@ -36,7 +36,7 @@
       &>*:nth-child(2){
          flex-basis: 85%;
          width: 85%;
-         margin-inline: 250px auto;
+         margin-inline: 255px auto;
       }
    
       .main_nav{

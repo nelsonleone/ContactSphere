@@ -74,8 +74,8 @@
          @include flexObj;
          visibility: hidden;
          position: absolute;
-         right: 1em;
-         gap: 1em;
+         right: .2em;
+         gap: .5em;
 
 
          button{
@@ -144,10 +144,6 @@
          &::after{
             visibility: visible;
          }
-      }
-
-      &:focus{
-         outline: 1px solid $accent_color_1;
       }
    }
 
@@ -241,16 +237,14 @@
       &> .unarchive_btn,
       &>.rft_btn{
          font-family: $ff_prompts;
-         background: $radiant_color2;
+         background: $text-color1;
          color: $generic_color_1;
+         margin-block: .3em;
          
          &:hover{
             opacity:.8;
          }
 
-         &:focus{
-            outline: 2px solid $text-color2;
-         }
       }
    }
 }
@@ -298,10 +292,8 @@
    border-radius: 5px;
    min-height: 3.2em;
    width: 100%;
-   padding: .3em;
-   text-align: center;
-   @include flexObj($justify:center,$direction:column);
-   gap: 1em;
+   padding: .3em .5em;
+   margin-bottom: 1em;
 
    button{
       color: #FAFAFA;
@@ -309,6 +301,7 @@
       text-decoration: underline;
       font-size: 1.1rem;
       font-family: $ff_prompts;
+      margin-top:1em;
    }
    p{
       font-family: $ff_primary;
@@ -406,13 +399,19 @@
    }
 
    .trash_page_prompt{
-      @include flexObj($justify:center,$direction:row); 
+      @include flexObj($align:center);
       height: 3.2em;
+
+      button{
+         margin-right: 7em;
+         margin-block: 0;
+      }
    }
 
    .contact_count_para{
       font-size: .8rem;
    }
+   
 }
 
 

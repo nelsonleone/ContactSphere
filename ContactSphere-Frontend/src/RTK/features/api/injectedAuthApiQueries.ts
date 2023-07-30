@@ -1,4 +1,4 @@
-import { UserCredentials } from '../../vite-env';
+import { UserCredentials } from '../../../vite-env';
 import { authQuerySlice } from './authQuerySlice';
 
 interface IMutationArgs {
@@ -36,7 +36,7 @@ const extendedAuthQuerySlice = authQuerySlice.injectEndpoints({
     }),
 
     setAuthSignOut: builder.mutation<void,void>({
-      query: (args) => ({
+      query: () => ({
         url: `${AUTH_URL}/signout`,
         method: 'POST',
         credentials: 'include',

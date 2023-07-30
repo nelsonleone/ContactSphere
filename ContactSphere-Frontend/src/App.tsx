@@ -1,18 +1,20 @@
 import { useEffect } from 'react'
-import { setUserDetails } from './RTK/features/authUserSlice'
-import { useGetAuthStateQuery, useGetCsrfTokenQuery } from "./RTK/features/injectedAuthApiQueries";
-import { setLoad } from './RTK/features/loadingSlice'
+import { setUserDetails } from './RTK/features/slices/authUserSlice'
+import { useGetAuthStateQuery, useGetCsrfTokenQuery } from "./RTK/features/api/injectedAuthApiQueries";
+import { setLoad } from './RTK/features/slices/loadingSlice'
 import Layout from './pages/Layout'
 import RouteHandler from './routes'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './customHooks/reduxCustomHooks';
-import { useGetUserDataQuery } from './RTK/features/injectedContactsApiQueries';
-import { setUserData } from './RTK/features/userDataSlice';
-import { setShowAlert } from './RTK/features/alertSlice';
-import { AlertSeverity, AuthMethod, SortBy } from './enums';
-import { setSelectNone } from './RTK/features/contactMultiSelectSlice';
-import { setDuplicates } from './RTK/features/resolveDuplicatesSlice';
+import { useGetUserDataQuery } from './RTK/features/api/injectedContactsApiQueries';
+import { setUserData } from './RTK/features/slices/userDataSlice';
+import { setShowAlert } from './RTK/features/slices/alertSlice';
+import { AlertSeverity, AuthMethod } from './enums';
+import { setSelectNone } from './RTK/features/slices/contactMultiSelectSlice';
+import { setDuplicates } from './RTK/features/slices/resolveDuplicatesSlice';
 import findDuplicates from './utils/helperFns/findDuplicates';
+import { setCountriesNames } from './RTK/features/slices/countriesNameSlice';
+import fetchCountriesNameListData from './utils/helperFns/fetchCountriesData';
 
 
 export default function App(){
@@ -95,6 +97,17 @@ export default function App(){
       dispatch(setDuplicates(duplicates))
     }
   },[contacts.length])
+
+  
+
+  // Set Countries Name
+  const getData = async() => {
+    const data = await fetchCountriesNameListData()
+    dispatch(setCountriesNames(data))
+  }
+  useEffect(() => {
+    getData()
+  },[])
 
 
   return(

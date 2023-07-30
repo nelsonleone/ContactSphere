@@ -5,16 +5,16 @@ import { memo, useState, useEffect } from "react";
 import { EditIconButton, RestoreFromTrashButton, RestoreToActiveButton, StarIconButton } from "../../../lib/with-tooltip";
 import CustomCheckbox from "../../../lib/customInputs/CustomCheckbox";
 import { useNavigate } from "react-router-dom";
-import { useAddToFavouritesMutation,useHideContactMutation, useHideMultipleContactsMutation, useRestoreFromTrashMutation } from "../../RTK/features/injectedContactsApiQueries";
+import { useAddToFavouritesMutation,useHideContactMutation, useHideMultipleContactsMutation, useRestoreFromTrashMutation } from "../../RTK/features/api/injectedContactsApiQueries";
 import { useAppDispatch, useAppSelector } from "../../customHooks/reduxCustomHooks";
-import { setSelected } from "../../RTK/features/contactMultiSelectSlice";
-import { setShowAlert } from "../../RTK/features/alertSlice";
+import { setSelected } from "../../RTK/features/slices/contactMultiSelectSlice";
+import { setShowAlert } from "../../RTK/features/slices/alertSlice";
 import { AlertSeverity, ContactItemLocation } from "../../enums";
-import { setEdittedContact } from "../../RTK/features/userDataSlice";
+import { setEdittedContact } from "../../RTK/features/slices/userDataSlice";
 import handleContactDetailsDisplay from "../../utils/helperFns/handleContactDetailsDisplay";
 import ContactMenu from "./ContactMenu";
-import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice";
-import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/wrkSnackbarSlice";
+import { setShowSnackbar } from "../../RTK/features/slices/snackbarDisplaySlice";
+import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/slices/wrkSnackbarSlice";
 import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions";
 import clientAsyncHandler from "../../utils/helperFns/clientAsyncHandler";
 import handleAsyncHideContact from "../../utils/helperFns/handleAsyncHideContact";
@@ -38,7 +38,7 @@ function ContactItem(props:IContactItemProps){
       inFavourites,
       labelledBy,
       deletedAt,
-      company
+      companyName
    } = props;
 
    const navigate = useNavigate()

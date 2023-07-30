@@ -6,7 +6,7 @@ import { HelpIcon, UserIcon } from '../../lib/with-tooltip/index'
 import UserMenu from './UserMenu'
 import ClickAwayListener from '@mui/base/ClickAwayListener';
 import { Breakpoints } from '../enums'
-import { setOpenNav } from '../RTK/features/openNavMenuSlice'
+import { setOpenNav } from '../RTK/features/slices/openNavMenuSlice'
 import { useAppDispatch } from '../customHooks/reduxCustomHooks'
 import Settings from './UserUtils/Settings'
 

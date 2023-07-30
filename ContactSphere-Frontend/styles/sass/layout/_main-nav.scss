@@ -77,17 +77,13 @@
          }
    
 
-         &:hover:not(.active),
-         &:focus{
+         &:hover:not(.active){
             color: $accent_color_2;
+            outline: none;
          }
 
          &:focus{
-            &::before{
-               display: block;
-            }
             outline: none;
-            color: $generic_color_1;
          }
       }
 

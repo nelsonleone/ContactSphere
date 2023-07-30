@@ -5,7 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useAddLabelMutation } from '../../src/RTK/features/injectedContactsApiQueries';
+import { useAddLabelMutation } from '../../src/RTK/features/api/injectedContactsApiQueries';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
 import LoadingButton from '../buttons/LoadingButton';
 import { UseFieldArrayAppend } from "react-hook-form";

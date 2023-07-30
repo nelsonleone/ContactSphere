@@ -1,19 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authUserReducer from './features/authUserSlice'
-import { authQuerySlice } from './features/authQuerySlice'
-import { contactsQuerySlice } from './features/contactsQuerySlice'
-import snackbarDisplayReducer from './features/snackbarDisplaySlice';
-import alertReducer from './features/alertSlice';
-import loadingReducer from './features/loadingSlice';
-import userDataReducer from './features/userDataSlice';
-import contactsMultiSelectReducer from './features/contactMultiSelectSlice';
-import wrkSnackbarReducer from './features/wrkSnackbarSlice';
-import userLocalSettingReducer from './features/userLocalSettingSlice';
-import resolveDuplicatesReducer from './features/resolveDuplicatesSlice';
-import simpleModalReducer from './features/simpleModalSlice';
-import searchContactsReducer from './features/searchContactsSlice';
-import shouldDiscardChangesReducer from './features/shouldDiscardChangesSlice';
-import openNavMenuReducer from './features/openNavMenuSlice';
+import authUserReducer from './features/slices/authUserSlice'
+import { authQuerySlice } from './features/api/authQuerySlice'
+import { contactsQuerySlice } from './features/api/contactsQuerySlice'
+import snackbarDisplayReducer from './features/slices/snackbarDisplaySlice';
+import alertReducer from './features/slices/alertSlice';
+import loadingReducer from './features/slices/loadingSlice';
+import userDataReducer from './features/slices/userDataSlice';
+import contactsMultiSelectReducer from './features/slices/contactMultiSelectSlice';
+import wrkSnackbarReducer from './features/slices/wrkSnackbarSlice';
+import userLocalSettingReducer from './features/slices/userLocalSettingSlice';
+import resolveDuplicatesReducer from './features/slices/resolveDuplicatesSlice';
+import simpleModalReducer from './features/slices/simpleModalSlice';
+import searchContactsReducer from './features/slices/searchContactsSlice';
+import shouldDiscardChangesReducer from './features/slices/shouldDiscardChangesSlice';
+import openNavMenuReducer from './features/slices/openNavMenuSlice';
+import countriesNamesReducer from './features/slices/countriesNameSlice';
 
 const appStore = configureStore({
    reducer: {
@@ -28,6 +29,7 @@ const appStore = configureStore({
       resolveDuplicates: resolveDuplicatesReducer,
       searchContacts: searchContactsReducer,
       shouldDiscardChanges: shouldDiscardChangesReducer,
+      countriesNames: countriesNamesReducer,
       simpleModal: simpleModalReducer,
       openNav: openNavMenuReducer,
       [authQuerySlice.reducerPath]: authQuerySlice.reducer,

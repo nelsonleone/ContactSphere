@@ -1,12 +1,12 @@
 import { Dispatch } from "@reduxjs/toolkit"
-import { setShowAlert } from "../../RTK/features/alertSlice"
-import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice"
-import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/wrkSnackbarSlice"
+import { setShowAlert } from "../../RTK/features/slices/alertSlice"
+import { setShowSnackbar } from "../../RTK/features/slices/snackbarDisplaySlice"
+import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/slices/wrkSnackbarSlice"
 import { AlertSeverity } from "../../enums"
 import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks"
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta, MutationDefinition } from "@reduxjs/toolkit/dist/query";
 import { UserLabels } from "../../vite-env"
-import { updateLabels } from "../../RTK/features/userDataSlice"
+import { updateLabels } from "../../RTK/features/slices/userDataSlice"
 
 type RemoveLabel = MutationTrigger<MutationDefinition<{
    label: string;

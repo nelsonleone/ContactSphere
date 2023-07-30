@@ -6,9 +6,9 @@ import { MouseEvent, useState } from 'react'
 import SimpleMenu from '../../../lib/popups/SimpleMenu'
 import ContactMenu from "./ContactMenu";
 import AddLabelDialog from "../../../lib/popups/AddLabelDialog";
-import { setSelectAll, setSelectNone } from "../../RTK/features/contactMultiSelectSlice";
+import { setSelectAll, setSelectNone } from "../../RTK/features/slices/contactMultiSelectSlice";
 import { useLocation } from "react-router-dom";
-import { useHideContactMutation, useHideMultipleContactsMutation, useRestoreFromTrashMutation, useRestoreMultipleFromTrashMutation } from "../../RTK/features/injectedContactsApiQueries";
+import { useHideContactMutation, useHideMultipleContactsMutation, useRestoreFromTrashMutation, useRestoreMultipleFromTrashMutation } from "../../RTK/features/api/injectedContactsApiQueries";
 import clientAsyncHandler from "../../utils/helperFns/clientAsyncHandler";
 import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions";
 import handleAsyncHideContact from "../../utils/helperFns/handleAsyncHideContact";
@@ -110,7 +110,7 @@ export default function MultiSelectActions({contactsForMultiSelect}:{contactsFor
                <ContactMenu method="multi" id="contact-mts-menu" setOpenDialog={setOpenDialog}  />
                :
                location.pathname === "/hidden" ? 
-               <Button className="unarchive_btn" onClick={() => handleRestoreToActive('hidden')}>Unarchive Contacts</Button>
+               <Button className="unarchive_btn" onClick={() => handleRestoreToActive('hidden')}>Restore Contacts</Button>
                :
                location.pathname === "/trash" ? 
                <Button className="rft_btn" onClick={() => handleRestoreToActive('trash')}>Remove From Trash</Button>

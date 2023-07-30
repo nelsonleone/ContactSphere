@@ -1,12 +1,12 @@
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta, MutationDefinition } from "@reduxjs/toolkit/dist/query";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/wrkSnackbarSlice";
-import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice";
-import { setShowAlert } from "../../RTK/features/alertSlice";
+import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/slices/wrkSnackbarSlice";
+import { setShowSnackbar } from "../../RTK/features/slices/snackbarDisplaySlice";
+import { setShowAlert } from "../../RTK/features/slices/alertSlice";
 import { AlertSeverity } from "../../enums";
 import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
 import { IContactsFromDB, IServerResponseObj } from "../../vite-env";
-import { setUpdatedLocalContacts } from "../../RTK/features/userDataSlice";
+import { setUpdatedLocalContacts } from "../../RTK/features/slices/userDataSlice";
 
 type RestoreContact = MutationTrigger<MutationDefinition<{
    authUserUid: string;
@@ -77,7 +77,7 @@ export default async function handleAsyncRestore(
       }
       
       dispatch(setShowSnackbar({
-         snackbarMessage:"Successfully Restored"
+         snackbarMessage:"Successfully Recovered"
       }))
    }
 

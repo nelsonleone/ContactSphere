@@ -1,13 +1,13 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/wrkSnackbarSlice";
-import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice";
-import { setShowAlert } from "../../RTK/features/alertSlice";
+import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/slices/wrkSnackbarSlice";
+import { setShowSnackbar } from "../../RTK/features/slices/snackbarDisplaySlice";
+import { setShowAlert } from "../../RTK/features/slices/alertSlice";
 import { AlertSeverity } from "../../enums";
 import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta, MutationDefinition } from "@reduxjs/toolkit/dist/query";
 import { IContactsFromDB, IServerResponseObj } from "../../vite-env";
-import { setEdittedContact } from "../../RTK/features/userDataSlice";
-import { setSelectNone } from "../../RTK/features/contactMultiSelectSlice";
+import { setEdittedContact } from "../../RTK/features/slices/userDataSlice";
+import { setSelectNone } from "../../RTK/features/slices/contactMultiSelectSlice";
 
 type ManageLabel = MutationTrigger<MutationDefinition<{
    label: string;

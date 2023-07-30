@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
-import { setHideAlert } from '../../src/RTK/features/alertSlice';
+import { setHideAlert } from '../../src/RTK/features/slices/alertSlice';
 import { useLocation } from 'react-router-dom';
 
 export default function CustomAlert() {

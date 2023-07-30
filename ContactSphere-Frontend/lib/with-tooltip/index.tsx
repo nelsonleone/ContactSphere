@@ -12,7 +12,7 @@ import { GoPencil } from 'react-icons/go';
 import { MdNewLabel, MdOutlineCancel, MdUnarchive } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
 import { useNavigate } from 'react-router-dom';
-import { setShowAlert } from '../../src/RTK/features/alertSlice';
+import { setShowAlert } from '../../src/RTK/features/slices/alertSlice';
 import { AlertSeverity } from '../../src/enums';
 import { removeSearchResult } from '../../src/RTK/features/searchContactsSlice';
 

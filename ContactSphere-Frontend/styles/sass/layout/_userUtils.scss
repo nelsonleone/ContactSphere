@@ -91,13 +91,13 @@
    }
 
    @include useMediaQuery_LS{
-      left: 268px;
+      left: 269px;
    }
 }
 
 .custom-snackbar{
    text-transform: capitalize;
-   word-spacing: 1.5px;
+   word-spacing: 1.2px;
    color: $generic_color_1;
    bottom: 2em;
    position: fixed;

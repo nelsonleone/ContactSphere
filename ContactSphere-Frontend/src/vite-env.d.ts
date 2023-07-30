@@ -73,9 +73,9 @@ type Contact = {
 
 interface IContactsFromDB extends Contact {
   _id: string,
-  createdAt: Date,
-  updatedAt: Date,
-  deletedAt: Date,
+  createdAt: string,
+  updatedAt: string,
+  deletedAt: string,
   inTrash: boolean,
   isHidden: boolean,
   name: string

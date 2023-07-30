@@ -16,14 +16,14 @@ import { ManageLabelButton } from "../../../lib/with-tooltip"
 import AddLabelDialog from "../../../lib/popups/AddLabelDialog"
 import { useNavigate } from "react-router-dom"
 import AddedLabels from "./input_sections/AddedLabels"
-import { useCreateContactMutation, useEditContactMutation } from '../../RTK/features/injectedContactsApiQueries'
+import { useCreateContactMutation, useEditContactMutation } from '../../RTK/features/api/injectedContactsApiQueries'
 import { useAppDispatch, useAppSelector } from "../../customHooks/reduxCustomHooks"
-import { setShowAlert } from "../../RTK/features/alertSlice"
-import { setShowSnackbar } from "../../RTK/features/snackbarDisplaySlice"
+import { setShowAlert } from "../../RTK/features/slices/alertSlice"
+import { setShowSnackbar } from "../../RTK/features/slices/snackbarDisplaySlice"
 import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions"
 import cleanNewContactFormFields from "../../utils/helperFns/cleanNewContactFields"
 import CustomSimpleDialog from "../../../lib/popups/CustomSimpleDialog"
-import { setThereAreChanges } from "../../RTK/features/shouldDiscardChangesSlice"
+import { setThereAreChanges } from "../../RTK/features/slices/shouldDiscardChangesSlice"
 
 
 

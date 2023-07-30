@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from '../../customHooks/reduxCustomHoo
 import { useState } from 'react'
 import { ContactMenuButton } from '../../../lib/with-tooltip';
 import { MouseEvent, SetStateAction, Dispatch, memo } from 'react';
-import { useTrashContactMutation, useSendMultipleToTrashMutation, useHideContactMutation, useHideMultipleContactsMutation, useManageLabelsMutation, useManageMultiContactLabelsMutation } from '../../RTK/features/injectedContactsApiQueries';
+import { useTrashContactMutation, useSendMultipleToTrashMutation, useHideContactMutation, useHideMultipleContactsMutation, useManageLabelsMutation, useManageMultiContactLabelsMutation } from '../../RTK/features/api/injectedContactsApiQueries';
 import { Divider, Menu, MenuItem } from '@mui/material';
 import { ListItemIcon, ListItemText, MenuList } from '@mui/material';
 import stopUnauthourizedActions from '../../utils/helperFns/stopUnauthourizedActions';

@@ -1,10 +1,10 @@
 import { IFormData } from '../../vite-env';
 import { AlertSeverity, AuthFormLocation, AuthMethod } from '../../enums';
 import { useAppDispatch } from '../../customHooks/reduxCustomHooks';
-import { setShowAlert } from '../../RTK/features/alertSlice'
+import { setShowAlert } from '../../RTK/features/slices/alertSlice'
 import { setUserDetails } from '../../RTK/features/authUserSlice';
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useAuthorizeUserMutation } from '../../RTK/features/injectedAuthApiQueries';
+import { useAuthorizeUserMutation } from '../../RTK/features/api/injectedAuthApiQueries';
 import emailSignInHandler from '../../firebaseClient/signInWithEmailAndPassword';
 import emailSignupHandler from '../../firebaseClient/createUserWithEmailAndPassword';
 import { useState, useEffect } from 'react'
