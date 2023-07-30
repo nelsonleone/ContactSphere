@@ -8,8 +8,8 @@ import handleAsyncRemoveUserLabel from "../../utils/helperFns/handleAsyncRemoveU
 import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions";
 import postEdittedLabel from "../../utils/helperFns/postEdittedLabel";
 import { ILabelObj } from "../../vite-env";
-import { setThereAreChanges } from "../../RTK/features/shouldDiscardChangesSlice";
-import { setOpenNav } from "../../RTK/features/openNavMenuSlice";
+import { setThereAreChanges } from "../../RTK/features/slices/shouldDiscardChangesSlice";
+import { setOpenNav } from "../../RTK/features/slices/openNavMenuSlice";
 import MainNav from "./MainNav";
 
 function NavMenu(){

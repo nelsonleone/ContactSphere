@@ -1,7 +1,7 @@
 import { Divide as Hamburger } from 'hamburger-react'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../src/customHooks/reduxCustomHooks'
-import { setOpenNav } from '../src/RTK/features/openNavMenuSlice'
+import { setOpenNav } from '../src/RTK/features/slices/openNavMenuSlice'
 
 function HamburgerIcon(){
    

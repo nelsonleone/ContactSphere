@@ -13,8 +13,6 @@ import { AlertSeverity, AuthMethod } from './enums';
 import { setSelectNone } from './RTK/features/slices/contactMultiSelectSlice';
 import { setDuplicates } from './RTK/features/slices/resolveDuplicatesSlice';
 import findDuplicates from './utils/helperFns/findDuplicates';
-import { setCountriesNames } from './RTK/features/slices/countriesNameSlice';
-import fetchCountriesNameListData from './utils/helperFns/fetchCountriesData';
 
 
 export default function App(){
@@ -98,16 +96,6 @@ export default function App(){
     }
   },[contacts.length])
 
-  
-
-  // Set Countries Name
-  const getData = async() => {
-    const data = await fetchCountriesNameListData()
-    dispatch(setCountriesNames(data))
-  }
-  useEffect(() => {
-    getData()
-  },[])
 
 
   return(

@@ -18,7 +18,8 @@ export default function Loader(){
          position: "fixed" as 'fixed',
          display: "flex",
          alignItems: "center",
-         justifyContent: "center"
+         justifyContent: "center",
+         overflow: "hidden"
       }
    },[])
 

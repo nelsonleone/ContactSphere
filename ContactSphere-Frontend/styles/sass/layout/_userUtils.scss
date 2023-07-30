@@ -66,8 +66,8 @@
       color: $text-color1;
    }
 
-   &>*{
-      color: $text-color2;
+   &_content{
+      color: $text-color1 !important;
    }
 
    button{

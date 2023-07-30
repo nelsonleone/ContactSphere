@@ -12,9 +12,7 @@ import { BsChatRightText } from "react-icons/bs";
 import { TbCirclesRelation } from 'react-icons/tb'
 
 interface IProps {
-   register:UseFormRegister<Contact>,
    showMore: boolean,
-   setValue: UseFormSetValue<Contact>,
    control:  Control<Contact, any>,
    social: {
       site: string,
@@ -30,7 +28,7 @@ interface IProps {
 
 function AdditionalFields(props:IProps){
 
-   const { register, showMore, setValue, control, error, relatedPeople, social } = props;
+   const { showMore, control, error, relatedPeople, social } = props;
    const { fields, append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.RelatedPeople })
    const id = useId()
 
@@ -43,7 +41,7 @@ function AdditionalFields(props:IProps){
             }
             <NewContactFormInput
                label='Birthday'
-               register={register}
+               control={control}
                name={InputPropertyValueName.Birthday}
                id={`${id}-birthday`}
                type='text'
@@ -60,7 +58,7 @@ function AdditionalFields(props:IProps){
             }
             <NewContactFormInput
                label='Website'
-               register={register}
+               control={control}
                name={InputPropertyValueName.Website}
                id={`${id}-website`}
                type='text'
@@ -74,7 +72,7 @@ function AdditionalFields(props:IProps){
                   <TbCirclesRelation className={`related_people_icon related_people_icon_${index}`} />
                   <NewContactFormInput 
                      label='Related People'
-                     register={register}
+                     control={control}
                      name={`${InputPropertyValueName.RelatedPeople}[${index}].name`}
                      id={`${id}-relatedpeople-${index}-name`}
                      type='text'
@@ -82,9 +80,9 @@ function AdditionalFields(props:IProps){
                   />
 
                   <CustomLabelSelect 
-                     setValue={setValue}
-                     index={index}
+                     control={control}
                      label="Label"
+                     name={`${InputPropertyValueName.RelatedPeople}[${index}].label`}
                      show={showMore}
                      selectFor="relatedPeople"
                      value={relatedPeople[index].label}
@@ -103,7 +101,8 @@ function AdditionalFields(props:IProps){
                <BsChatRightText />
             }
             <CustomLabelSelect 
-               setValue={setValue}
+               control={control}
+               name={InputPropertyValueName.SocialSite}
                label="Social Site"
                selectFor="social"
                show={showMore}
@@ -111,7 +110,7 @@ function AdditionalFields(props:IProps){
             />
             <NewContactFormInput
                label='Handle'
-               register={register}
+               control={control}
                name={InputPropertyValueName.SocialHandle}
                id={`${id}-social-handle`}
                type='text'

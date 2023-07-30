@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { useAppSelector, useAppDispatch } from '../../src/customHooks/reduxCustomHooks'
-import { setHideSimpleModal } from '../../src/RTK/features/simpleModalSlice'
+import { setHideSimpleModal } from '../../src/RTK/features/slices/simpleModalSlice'
 
 const style = {
   position: 'absolute' as 'absolute',

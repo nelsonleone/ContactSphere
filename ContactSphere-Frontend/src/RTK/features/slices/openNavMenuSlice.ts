@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { Breakpoints } from '../../enums'
+import { Breakpoints } from '../../../enums'
 
 const openNavMenuSlice = createSlice({
    name: 'openNavMenu',

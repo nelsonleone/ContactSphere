@@ -176,7 +176,7 @@ function ContactItem(props:IContactItemProps){
                id={`${_id}-jobTitle`} 
                style={{order: `${jobTitleAreaOrder}`}}
                >
-               {handleContactDetailsDisplay(`${jobTitle},${companyName}`)}
+               {handleContactDetailsDisplay(`${jobTitle}${jobTitle || companyName ? "," : ""}${companyName}`)}
             </p>
          }
 

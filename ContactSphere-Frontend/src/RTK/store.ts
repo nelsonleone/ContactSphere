@@ -14,7 +14,6 @@ import simpleModalReducer from './features/slices/simpleModalSlice';
 import searchContactsReducer from './features/slices/searchContactsSlice';
 import shouldDiscardChangesReducer from './features/slices/shouldDiscardChangesSlice';
 import openNavMenuReducer from './features/slices/openNavMenuSlice';
-import countriesNamesReducer from './features/slices/countriesNameSlice';
 
 const appStore = configureStore({
    reducer: {
@@ -29,7 +28,6 @@ const appStore = configureStore({
       resolveDuplicates: resolveDuplicatesReducer,
       searchContacts: searchContactsReducer,
       shouldDiscardChanges: shouldDiscardChangesReducer,
-      countriesNames: countriesNamesReducer,
       simpleModal: simpleModalReducer,
       openNav: openNavMenuReducer,
       [authQuerySlice.reducerPath]: authQuerySlice.reducer,

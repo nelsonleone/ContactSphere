@@ -245,6 +245,7 @@
             font-family: $ff_secondary;
             font-size: .9rem;
             color: $text_color1;
+            text-transform: capitalize;
          } 
 
          label{
@@ -252,12 +253,13 @@
             text-align:center;
             font-weight: $fw_regular;
          }
+
       }
 
    }
 
 
-   .related_people_field_inputs{
+   .additional_fields .related_people_field_inputs{
       position: relative;
 
       &>div:last-of-type{
@@ -291,7 +293,42 @@
       .related_people_icon_0{
          display: block;
       }
+
+      @include useMediaQuery_LS{
+         @include flexObj($justify:space-between,$direction:row);
+         margin-block: .6em;
+         &>div:first-of-type{
+            width: 68%;
+         }
+         &>div:last-of-type{
+            width: 30%;
+            margin: 0;
+         }
+
+         .append_btn_0{
+            right: -1em;
+         }
+      }
    }
+
+
+
+   .additional_fields .chat_field_container{
+      @include flexObj($justify:space-between,$direction:row);
+      margin-block: .6em;
+
+      &>div:first-of-type{
+         width: 30%;
+      }
+      &>div:last-of-type{
+         width: 68%;
+         margin: 0;
+      }
+   }
+
+
+
+
 
    .show_more_btn{
       color: $text_color1;
@@ -483,12 +520,6 @@
 
          svg{
             top: 1.1em;
-         }
-      }
-
-      .related_people_field_inputs{
-         .append_btn_0{
-            right: -1em;
          }
       }
    }

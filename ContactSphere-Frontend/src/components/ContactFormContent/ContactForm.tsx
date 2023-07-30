@@ -29,7 +29,7 @@ import { setThereAreChanges } from "../../RTK/features/slices/shouldDiscardChang
 
 function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contact, action:ContactFormAction, contactId?:string }){
 
-   const { register, handleSubmit, setValue, watch, trigger, setError, formState: {errors, isDirty}, control} = useForm<Contact>({defaultValues: defaultValue || staticDefaultValue})
+   const { register, handleSubmit, setValue, watch, setError, formState: {errors, isDirty}, control} = useForm<Contact>({defaultValues: defaultValue || staticDefaultValue})
    const [showMore,setShowMore] = useState(false)
    const { append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
    const [showLabelMenu,setShowLabelMenu] = useState(false)
@@ -45,11 +45,11 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    const phoneNumber = watch('phoneNumber')
    const relatedPeople = watch('relatedPeople')
    const social = watch('social')
-   const country = watch('address.country')
 
    // Mutations
    const [createContact, { isLoading }] = useCreateContactMutation()
    const [editContact, { isLoading:editting }] = useEditContactMutation()
+   const [oldPhoneNumberValue,setOldPhoneNumberValue] = useState(phoneNumber)
 
    const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(
       errors.firstName?.message || 
@@ -132,28 +132,34 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
 
    useEffect(() => {
       // Disabled Save Button 
-      errors.firstName?.message || 
-      errors.birthday?.message ||
+      errors.firstName || 
+      errors.birthday ||
       !phoneNumber ||
       isLoading || !isDirty  ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
-
-      dispatch(setThereAreChanges(isDirty))
 
       return () => {
          dispatch(setThereAreChanges(false))
       }
    },[
-      errors.firstName?.message,
-      errors.birthday?.message,
+      errors.firstName,
+      errors.birthday,
       isLoading,
       phoneNumber,
       isDirty
    ])
 
    useEffect(() => {
-      trigger(InputPropertyValueName.PhoneNumber)
-   },[phoneNumber])
+     dispatch(setThereAreChanges(isDirty))
+   },[isDirty])
 
+   // // IsDirty Functionality is not recognising changes made to phone input manually using "SetValue" 
+   // // to set the isDirty to true if the phoneNumber field value changes, so we manually enable the button
+   // useEffect(() => {
+   //    if(oldPhoneNumberValue !== phoneNumber && !errors.firstName && !errors.birthday && !isLoading){
+
+   //       dispatch(setThereAreChanges(true))
+   //    }
+   // },[phoneNumber])
 
    return(
       <>
@@ -189,11 +195,11 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
             </div>
 
             <div className="fields_area">
-               <NameInputSection error={errors?.firstName?.message} showMore={showMore} register={register} />
-               <FormalInputSection showMore={showMore} register={register} />
-               <ContactInputSection error={errors?.phoneNumber?.message} phoneNumber={phoneNumber} setValue={setValue} register={register} />
-               <AddressInputSection country={country} error={errors?.address?.postalCode?.message} showMore={showMore} register={register} setValue={setValue}  />
-               <AdditionalFields social={social} relatedPeople={relatedPeople} error={errors?.birthday?.message} control={control} setValue={setValue} register={register} showMore={showMore} />
+               <NameInputSection error={errors?.firstName?.message} showMore={showMore} control={control} />
+               <FormalInputSection showMore={showMore} control={control} />
+               <ContactInputSection control={control} error={errors?.phoneNumber?.message} />
+               <AddressInputSection error={errors?.address?.postalCode?.message} showMore={showMore} control={control}  />
+               <AdditionalFields social={social} relatedPeople={relatedPeople} error={errors?.birthday?.message} control={control} showMore={showMore} />
             </div>
             <button type="button"  className="show_more_btn" onClick={() => setShowMore(!showMore)}>Show {showMore ? "Less" : "More"}</button>
          </form>

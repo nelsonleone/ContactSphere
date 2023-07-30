@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCusto
 import { useNavigate } from 'react-router-dom';
 import { setShowAlert } from '../../src/RTK/features/slices/alertSlice';
 import { AlertSeverity } from '../../src/enums';
-import { removeSearchResult } from '../../src/RTK/features/searchContactsSlice';
+import { removeSearchResult } from '../../src/RTK/features/slices/searchContactsSlice';
 
 
 interface IProps {

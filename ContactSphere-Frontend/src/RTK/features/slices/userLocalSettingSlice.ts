@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { SortBy } from "../../enums";
-import { ColumnOrderData } from "../../vite-env";
+import { SortBy } from "../../../enums";
+import { ColumnOrderData } from "../../../vite-env";
 
 
 const columnOrderData = [

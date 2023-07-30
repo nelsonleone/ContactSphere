@@ -42,7 +42,35 @@ export const nameSectionInputPropsArray = [
 
 
 
+export const formalDetailsPropArray = [
+   {
+      label: "Company",
+      name: InputPropertyValueName.CompanyName,
+      type: "text",
+      id: 'company'
+   },
+   {
+      label: "Job Title",
+      name: InputPropertyValueName.JobTitle,
+      type: "text",
+      id: 'jobtitle'
+   },
+   {
+      label: "Department",
+      name: InputPropertyValueName.Department,
+      type: "text",
+      id: 'department'
+   }
+]
+
+
 export const addressSectionInputPropsArray = [
+   {
+      label: "Country",
+      name: InputPropertyValueName.AddressCountry,
+      type: "text",
+      id: 'country'
+   },
    {
       label: "State",
       name: InputPropertyValueName.AddressState,

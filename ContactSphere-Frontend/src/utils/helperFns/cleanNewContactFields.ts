@@ -1,5 +1,5 @@
 import { Contact } from "../../vite-env";
-import capitalizeString from "./cleanContactFields";
+import capitalizeString from "./capitalizeString";
 
 export default function cleanNewContactFormFields(fields:Contact):Contact{
    const cleanedFormFields = {
@@ -8,7 +8,6 @@ export default function cleanNewContactFormFields(fields:Contact):Contact{
       firstName: capitalizeString(fields.firstName),
       lastName: capitalizeString(fields.lastName),
       middleName: capitalizeString(fields.middleName),
-      nickname: capitalizeString(fields.nickname),
       relatedPeople: fields.relatedPeople.filter(val => val.name !== '' && val.name !== undefined)
    }
 

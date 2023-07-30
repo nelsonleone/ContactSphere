@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../customHooks/reduxCustomHooks';
 import { useAuthorizeUserMutation } from '../../RTK/features/api/injectedAuthApiQueries';
 import googleAuthHandler from '../../firebaseClient/googleAuthHandler';
 import { auth } from '../../firebaseClient/firebaseInit';
-import { setUserDetails } from '../../RTK/features/authUserSlice';
+import { setUserDetails } from '../../RTK/features/slices/authUserSlice';
 import { setShowAlert } from '../../RTK/features/slices/alertSlice';
 import { AlertSeverity, AuthMethod } from '../../enums';
 import handlePostCredentials from '../../utils/helperFns/handlePostCredentials';

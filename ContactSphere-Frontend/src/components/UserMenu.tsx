@@ -7,7 +7,7 @@ import { AlertSeverity } from '../enums'
 import { CgLogOut } from 'react-icons/cg'
 import { Dispatch, SetStateAction, memo } from "react";
 import { useNavigate } from 'react-router-dom'
-import { setLocalLogout } from '../RTK/features/authUserSlice'
+import { setLocalLogout } from '../RTK/features/slices/authUserSlice'
 import { IHeaderState } from './Header'
 import { deepOrange } from '@mui/material/colors'
 

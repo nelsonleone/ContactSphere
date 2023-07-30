@@ -5,7 +5,7 @@ import { SettingsIcon } from '../../../lib/with-tooltip/index'
 import { IHeaderState } from '../Header'
 import { Paper, Dialog } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../customHooks/reduxCustomHooks';
-import { setSortBy } from '../../RTK/features/userLocalSettingSlice';
+import { setSortBy } from '../../RTK/features/slices/userLocalSettingSlice';
 import { SortBy } from '../../enums';
 
 interface IProps {

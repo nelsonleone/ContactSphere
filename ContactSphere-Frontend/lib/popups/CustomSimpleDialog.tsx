@@ -25,12 +25,12 @@ export default function CustomSimpleDialog(props:IProps) {
      <Dialog open={open} onClose={() => setOpen(false)} className="custom_simple_dialog">
          <DialogTitle className="custom_simple_dialog_title">{dialogTitle}</DialogTitle>
          <DialogContent>
-            <DialogContentText>
+            <DialogContentText className="custom_simple_dialog_content">
                {dialogText}
             </DialogContentText>
          </DialogContent>
          <DialogActions>
-            <Button onClick={() => setOpen(false)}>{btnText1 || "Cancle"}</Button>
+            <Button onClick={() => setOpen(false)}>{btnText1 || "Cancel"}</Button>
             <Button onClick={action}>{btnText2 || "Proceed"}</Button>
          </DialogActions>
       </Dialog>

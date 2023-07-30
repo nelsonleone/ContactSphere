@@ -1,21 +1,21 @@
 import { memo, useId } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import NewContactFormInput from "../../../../lib/customInputs/NewContactFormInput";
-import { UseFormRegister } from "react-hook-form";
+import { Control } from "react-hook-form";
 import { Contact } from "../../../vite-env";
 import { CiUser } from 'react-icons/ci';
 import { nameSectionInputPropsArray } from "./inputPropsArray";
 import { InputPropertyValueName } from "../../../enums";
 
 interface IProps {
-   register:UseFormRegister<Contact>,
+   control: Control<Contact,any>,
    showMore: boolean,
    error: string | undefined;
 }
 
 function NameInputSection(props:IProps){
 
-   const { register, showMore, error } = props;
+   const { control, showMore, error } = props;
    const id = useId()
 
    return(
@@ -28,7 +28,7 @@ function NameInputSection(props:IProps){
                   <NewContactFormInput
                      key={nanoid()}
                      label={value.label}
-                     register={register}
+                     control={control}
                      error={error}
                      name={value.name}
                      id={`${id}-${value.id}`}

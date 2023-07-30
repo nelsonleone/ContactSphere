@@ -2,7 +2,7 @@ import { HiSearch } from 'react-icons/hi';
 import { useState, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../customHooks/reduxCustomHooks';
 import findSearchedContacts from '../utils/helperFns/findSearchedContacts';
-import { setSearchResult } from '../RTK/features/searchContactsSlice';
+import { setSearchResult } from '../RTK/features/slices/searchContactsSlice';
 import { nanoid } from '@reduxjs/toolkit';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '@mui/material';
