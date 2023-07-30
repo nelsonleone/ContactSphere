@@ -1,13 +1,13 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-import { UseFormRegister } from 'react-hook-form';
+import { Controller, Control } from 'react-hook-form';
 import { Contact } from "../../src/vite-env"
 import { InputPropertyValueName } from '../../src/enums'
 
 interface IFormInputProps {
+   control: Control<Contact,any>,
    id: string,
    type: string,
-   register:UseFormRegister<Contact>,
    label: string,
    name: string,
    show: boolean,
@@ -20,7 +20,7 @@ interface IFormInputProps {
 function NewContactFormInput(props:IFormInputProps){
 
    const {
-      register,
+      control,
       name,
       label,
       id,
@@ -47,29 +47,35 @@ function NewContactFormInput(props:IFormInputProps){
 
    return(
       show && type === "text" ?
-      <TextField
-         className="contact-input textField"
-         error={
-            name === InputPropertyValueName.FirstName && error ||
-            name === InputPropertyValueName.AddressPostalCode && error || 
-            name === InputPropertyValueName.Birthday && error ? true : false
-         }
-         id={id}
-         size="small"
-         margin="dense"
-         helperText={helperText ? helperText : ""}
-         {
-            ...register(
-               name as keyof Contact,
-               {
-                  required: isRequired,
-                  pattern: name === InputPropertyValueName.Birthday ?  birthdayPatternRule :
-                  name === InputPropertyValueName.AddressPostalCode ?  postalCodePatternRule :  /^.*$/
+      <Controller
+         name={name as keyof Contact}
+         control={control}
+
+         rules={{    
+            required: isRequired,
+            pattern: name === InputPropertyValueName.Birthday ?  birthdayPatternRule :
+            name === InputPropertyValueName.AddressPostalCode ?  postalCodePatternRule :  /^.*$/
+         }}
+
+         render={
+            ({ field }) => 
+            
+            <TextField
+               className="contact-input textField"
+               error={
+                  name === InputPropertyValueName.FirstName && error ||
+                  name === InputPropertyValueName.AddressPostalCode && error || 
+                  name === InputPropertyValueName.Birthday && error ? true : false
                }
-            )
+               {...field}
+               id={id}
+               size="small"
+               margin="dense"
+               helperText={helperText ? helperText : ""}
+               label={label}
+               placeholder={label}
+            />
          }
-         label={label}
-         placeholder={label}
       />
       :
       null
