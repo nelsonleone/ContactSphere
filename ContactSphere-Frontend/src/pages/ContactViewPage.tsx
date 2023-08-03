@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom"
 import { useAppSelector } from "../customHooks/reduxCustomHooks"
 import PageWrapper from "../components/PageWrapper"
-import { ManageLabelButton, StarIconButton } from "../../lib/with-tooltip"
+import { EmailLinkButton, GoBackButton, ManageLabelButton, SocialSiteLink, StarIconButton } from "../../lib/with-tooltip"
 import ContactMenu from "../components/ContactFormContent/ContactMenu"
 import { Button } from "@mui/material"
 
 export default function ContactViewPage(){
-
+   
    const { id } = useParams()
    const { contacts } = useAppSelector(store => store.userData)
    const contact = contacts.find(c => c._id === id)
@@ -19,6 +19,7 @@ export default function ContactViewPage(){
                contact ?
                <>
                   <div className="top_section">
+                     <GoBackButton />
                      <div className="contact_repPhoto_view">
                         <img src={contact?.repPhoto || "images/placeholder-for-user.png"} />
                      </div>
@@ -51,6 +52,11 @@ export default function ContactViewPage(){
                            Edit
                         </Button>
                      </div>
+                  </div>
+
+                  <div className="contact_net_links">
+                     <EmailLinkButton mailTo={contact.email} />
+                     <SocialSiteLink site={contact.social.handle} />
                   </div>
                </>
                :
