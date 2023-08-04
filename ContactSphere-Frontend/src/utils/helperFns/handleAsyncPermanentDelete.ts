@@ -24,7 +24,7 @@ type DeleteMultiple = MutationTrigger<MutationDefinition<{
 
 export default async function handleAsyncPermanentDelete(
   deleteContact: DeleteContact | null,
-  deleteMultiple: DeleteMultiple,
+  deleteMultiple: DeleteMultiple | null,
   contactId: string,
   uid: string,
   method: "multi" | "single",
@@ -54,7 +54,7 @@ export default async function handleAsyncPermanentDelete(
          dispatch(setUpdatedLocalContacts(updatedLocalContactsData))
       }
 
-      else if(method === "multi"){
+      else if(method === "multi" && deleteMultiple){
          const res = await deleteMultiple({
             selectedContacts,
             authUserUid: uid

@@ -466,7 +466,7 @@ const setEdittedContact = asyncHandler(async (request, response) => {
       suffix
    } = request.body;
 
-   const newContact = { 
+   const edittedContactDetails = { 
       ...request.body, 
       inTrash: false,
       inFavourites: false,
@@ -538,6 +538,7 @@ const setDeleteContact = asyncHandler(async (request, response) => {
       throw new Error(error.message)
    }
 }) 
+
  
  
 

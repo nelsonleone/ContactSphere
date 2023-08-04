@@ -66,7 +66,8 @@
       opacity: .5;
       cursor: not-allowed;
 
-      &:hover{
+      &:hover,
+      &:focus{
          scale: unset;
       }
    }
@@ -76,8 +77,14 @@
       font-size: 1.4rem;
    }
 
-   &:hover{
+   &:hover,
+   &:focus{
       scale: 1.05;
+   }
+
+   
+   &:focus{
+      outline: 2px solid $radiant_color2 !important;
    }
 
 

@@ -9,10 +9,10 @@ import { useAppDispatch, useAppSelector } from './customHooks/reduxCustomHooks';
 import { useGetUserDataQuery } from './RTK/features/api/injectedContactsApiQueries';
 import { setUserData } from './RTK/features/slices/userDataSlice';
 import { setShowAlert } from './RTK/features/slices/alertSlice';
+import { setDuplicates } from './RTK/features/slices/resolveDuplicatesSlice';
+import findDuplicates from './utils/helperFns/findDuplicates'
 import { AlertSeverity, AuthMethod } from './enums';
 import { setSelectNone } from './RTK/features/slices/contactMultiSelectSlice';
-import { setDuplicates } from './RTK/features/slices/resolveDuplicatesSlice';
-import findDuplicates from './utils/helperFns/findDuplicates';
 
 
 export default function App(){
@@ -28,6 +28,7 @@ export default function App(){
   const dispatch = useAppDispatch()
   const { data, isError:fetchDataError, isLoading:gettingData } = useGetUserDataQuery(uid || '')
   const { contacts } = useAppSelector(store => store.userData)
+  const foundDuplicates = findDuplicates(contacts)
 
 
   useEffect(() => {
@@ -87,15 +88,11 @@ export default function App(){
     dispatch(setSelectNone())
   },[location.pathname])
 
-
-  // Find Duplicates In Contacts
   useEffect(() => {
-    if(contacts.length){
-      const duplicates = findDuplicates(contacts)
-      dispatch(setDuplicates(duplicates))
+    if(foundDuplicates?.length){
+      dispatch(setDuplicates(foundDuplicates))
     }
   },[contacts.length])
-
 
 
   return(

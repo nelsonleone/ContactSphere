@@ -14,5 +14,9 @@ export const socialSites = [
    {
       name: "snapchat",
       text: "SnapChat"
+   },
+   {
+      name: "youtube",
+      text: "Youtube"
    }
 ]

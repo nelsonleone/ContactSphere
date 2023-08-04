@@ -6,6 +6,8 @@ import { UseFormGetValues, UseFormRegister, UseFormSetValue } from 'react-hook-f
 
 
 
+type Sites = "facebook" | "instagram" | "snapchat" | "twitter" | "youtube" | ""
+
 type IFormData = {
   email: string,
   password: string
@@ -72,7 +74,7 @@ type Contact = {
 }
 
 interface IContactsFromDB extends Contact {
-  _id: string,
+  _id: Readonly<string>,
   createdAt: string,
   updatedAt: string,
   deletedAt: string,
@@ -85,7 +87,7 @@ interface IContactsFromDB extends Contact {
 
 interface ILabelObj {
   label: string,
-  _id: string
+  _id: Readonly<string>,
 }
 
 type UserLabels = ILabelObj[]
@@ -96,13 +98,11 @@ type UserData = {
 }
 
 
-interface IDuplicates extends IContactsFromDB {
-  refId: string
+type ContactDuplicateProps = Pick<IContactsFromDB,'name'|'_id'|'phoneNumber'|'firstName'|'lastName'|'repPhoto'>
+
+interface Duplicate extends ContactDuplicateProps {
+  mergeRef: string
 }
-
-type Duplicates = IDuplicates[]
-
-
 
 interface IServerResponseObj {
   message: string

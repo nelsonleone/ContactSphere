@@ -1,13 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { BiUser , BiErrorCircle, BiStar , BiTrashAlt, BiPlus } from 'react-icons/bi'
 import { FiEyeOff } from 'react-icons/fi'
-import { GrClone } from 'react-icons/gr'
-import { Dispatch, MouseEvent, ReactNode, SetStateAction, useState } from "react";
+import { Dispatch, MouseEvent, ReactNode, SetStateAction } from "react";
 import { FiLogIn } from 'react-icons/fi';
 import { FaUserPlus } from 'react-icons/fa';
 import { useAppSelector } from '../../customHooks/reduxCustomHooks'
 import ClickAwayListener from '@mui/base/ClickAwayListener';
-import { MdLabel } from 'react-icons/md'
+import { MdLabel, MdOutlineAutoFixHigh } from 'react-icons/md'
 import { DeleteIconButton, EditIconButton } from "../../../lib/with-tooltip";
 import AddLabelDialog from "../../../lib/popups/AddLabelDialog";
 import { ILabelObj } from "../../vite-env";
@@ -70,7 +69,7 @@ export default function MainNav(props:IProps){
                   <ul>
                      <li>
                         <NavLink to="/" className="contact_page_link" onClick={handleNavigate}>
-                           <BiUser title="User icon"  />
+                           <BiUser aria-hidden="true"  />
                            Contacts
                            {
                               contacts.length ?
@@ -82,13 +81,13 @@ export default function MainNav(props:IProps){
                      </li>
                      <li>
                         <NavLink to="/favourites" onClick={handleNavigate}>
-                           <BiStar title="Star icon" />
+                           <BiStar aria-hidden="true" />
                            Favourites
                         </NavLink>
                      </li>
                      <li>
                         <NavLink to="/hidden" onClick={handleNavigate}>
-                           <FiEyeOff title="Eye icon"  />
+                           <FiEyeOff aria-hidden="true"  />
                            Hidden
                         </NavLink>
                      </li>
@@ -97,8 +96,8 @@ export default function MainNav(props:IProps){
                         <p id="fxm_id">Fix & manage</p>
                         <li aria-labelledby="fxm_id">
                            <NavLink to="/duplicates" onClick={handleNavigate}>
-                              <GrClone title="clone/duplicate icon" />
-                              Duplicates
+                              <MdOutlineAutoFixHigh aria-hidden="true" />
+                              Merge & fix
                               <BiErrorCircle title="error icon" />
                            </NavLink>
                         </li>
@@ -113,7 +112,7 @@ export default function MainNav(props:IProps){
                      <div className="label-area">
                         <button onClick={handleCreateLabelBtnClick}>
                            <span>Labels</span>
-                           <BiPlus title="plus icon"  />
+                           <BiPlus aria-hidden="true"  />
                         </button>
                         {
                            labels && labels.map(value => {

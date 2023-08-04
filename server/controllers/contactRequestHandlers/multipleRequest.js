@@ -160,10 +160,39 @@ const setDeleteMultipleContacts = asyncHandler(async (request, response) => {
 }) 
 
 
+
+
+
+// Handle Contacts Merge and Fix
+const setMergeDuplicates = asyncHandler(async (request, response) => {
+   const { uid } = request.query;
+   const { duplicatesIds } = request.body;
+   
+   try {
+      await checkForUid(response,uid)
+      
+      const authUserDataDoc = await AuthUserData.findOne({ uid, })
+      await checkIfUserExists(response,authUserDataDoc)
+
+      const aboutToBeMerged = authUserDataDoc.contacts.filter(c => duplicatesIds.includes(c._id.toString()))
+
+
+
+      response.status(200).json({ message: "Selected Contacts Are Now Permanently Deleted" })
+   }
+   
+   catch (error) {
+      response.status(500)
+      throw new Error(error.message)
+   }
+}) 
+
+
 module.exports = {
    setTrashMultiSelectedContacts,
    setDeleteMultipleContacts,
    setManageMultiContactLabels,
    setHideMultipleContacts,
-   setRestoreMultipleContactsFromTrash
+   setRestoreMultipleContactsFromTrash,
+   setMergeDuplicates
 }

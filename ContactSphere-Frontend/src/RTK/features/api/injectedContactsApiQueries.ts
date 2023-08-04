@@ -163,6 +163,18 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
             body: { selectedContacts: args.selectedContacts, status:args.status }
          }),
          invalidatesTags: ['Contact']
+      }),
+
+
+
+      // Merge and fix contacts
+      mergeDuplicateContacts: builder.mutation<IServerResponseObj,{authUserUid:string,duplicatesIds:string[]}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/mergeDuplicates?uid=${args.authUserUid}`,
+            method: 'PUT',
+            body: { duplicatesIds: args.duplicatesIds }
+         }),
+         invalidatesTags: ['Contact']
       })
    })
 })
@@ -184,5 +196,6 @@ export const {
    useRemoveUserLabelMutation,
    useEditUserLabelMutation,
    useSendMultipleToTrashMutation,
-   useTrashContactMutation
+   useTrashContactMutation,
+   useMergeDuplicateContactsMutation
 } = extendedContactsQuerySlice;

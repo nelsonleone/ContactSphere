@@ -1,20 +1,23 @@
 import { Dispatch, MouseEvent, Ref, SetStateAction, forwardRef } from 'react'
-import { BiHelpCircle, BiTrashAlt } from 'react-icons/bi'
+import { BiArrowBack, BiHelpCircle, BiTrashAlt } from 'react-icons/bi'
 import { IHeaderState } from '../../src/components/Header'
 import { AiFillSetting } from 'react-icons/ai'
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import {  FaTrashRestore, FaUser } from 'react-icons/fa'
+import { FaTrashRestore, FaUser } from 'react-icons/fa'
 import {  FiStar } from 'react-icons/fi'
 import { BiPlus } from 'react-icons/bi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
-import { MdNewLabel, MdOutlineCancel, MdUnarchive } from 'react-icons/md';
+import { MdNewLabel, MdOutlineCancel, MdOutlineEmail, MdUnarchive } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { setShowAlert } from '../../src/RTK/features/slices/alertSlice';
 import { AlertSeverity } from '../../src/enums';
 import { removeSearchResult } from '../../src/RTK/features/slices/searchContactsSlice';
+import { RxCross1 } from 'react-icons/rx';
+import useRenderSiteIcon from '../../src/customHooks/useRenderSiteIcon';
+import { Sites } from '../../src/vite-env';
 
 
 interface IProps {
@@ -74,6 +77,66 @@ export function SettingsIcon(props:IProps){
       </div>
    )
 }
+
+
+
+
+export function CancelButton({ handleClick,editting,isLoading }: { handleClick: () => void, editting: boolean, isLoading:boolean }){
+   return(
+      <Tooltip title="Cancel">
+         <IconButton aria-label="cancel" type="button" disabled={isLoading || editting ? true : false} className="fx-button" onClick={handleClick}>
+            <RxCross1 />
+         </IconButton>
+      </Tooltip>
+   )
+}
+
+
+export function GoBackButton(){
+
+   const navigate = useNavigate()
+
+   return(
+      <Tooltip title="Back">
+         <IconButton aria-label="Back" type="button" className="back-button" onClick={() => navigate(-1)}>
+            <BiArrowBack />
+         </IconButton>
+      </Tooltip>
+   )
+}
+
+
+export function EmailLinkButton({ mailTo }: { mailTo:string }){
+
+   return(
+      <Tooltip title="Enmail">
+         <Link to={mailTo}>
+            <MdOutlineEmail aria-describedby="contact-email-icon-desc" />
+            <span id="contact-email-icon-desc">Send Email To Contact</span>
+         </Link>
+      </Tooltip>
+   )
+}
+
+
+export function SocialSiteLink({ site }: { site:Sites }){
+
+   const IconComponent = useRenderSiteIcon(site)
+
+   return(
+      <Tooltip title="Email">
+         <Link to={site}>
+            {
+               IconComponent &&
+               <IconComponent />
+            }
+         </Link>
+      </Tooltip>
+   )
+}
+
+
+
 
 
 

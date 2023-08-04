@@ -82,6 +82,11 @@ button[aria-controls=user-menu]{
       background: #F1F3F4;
    }
 
+   p{
+      font-family: $ff_prompts;
+      text-align: center;
+   }
+
    &>svg,
    button{
       top: 0;
@@ -340,7 +345,7 @@ button[aria-controls=user-menu]{
 
 
    .header_main .searchbar{
-      flex-basis:922px;
+      flex-basis:923px;
    }
 
 

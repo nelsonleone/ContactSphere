@@ -10,7 +10,8 @@ interface IButtonProps {
   loading: boolean,
   buttonText?: string,
   className?: string
-  handleClick?: () => void
+  handleClick?: () => void,
+  size?: "sm"|"lg"|"md"
 }
 
 export default function LoadingButton(props:IButtonProps){
@@ -18,7 +19,8 @@ export default function LoadingButton(props:IButtonProps){
       <Button 
        type={props.buttonType} 
        className={props.className}
-       loading={props.loading} 
+       loading={props.loading}
+       size={props.size}
        disabled={props.loading}
        onClick={() => props.handleClick? props.handleClick() : ""}
        leftIcon={

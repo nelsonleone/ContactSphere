@@ -11,8 +11,7 @@ import AdditionalFields from "./input_sections/AdditionalFields"
 import ImageUploadInput from '../../../lib/customInputs/ImageUploadInput'
 import LabelMenu from '../../../lib/popups/LabelMenu'
 import { Button, LinearProgress } from "@mui/material"
-import { RxCross1 } from 'react-icons/rx'
-import { ManageLabelButton } from "../../../lib/with-tooltip"
+import { CancelButton, ManageLabelButton } from "../../../lib/with-tooltip"
 import AddLabelDialog from "../../../lib/popups/AddLabelDialog"
 import { useNavigate } from "react-router-dom"
 import AddedLabels from "./input_sections/AddedLabels"
@@ -49,7 +48,6 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    // Mutations
    const [createContact, { isLoading }] = useCreateContactMutation()
    const [editContact, { isLoading:editting }] = useEditContactMutation()
-   const [oldPhoneNumberValue,setOldPhoneNumberValue] = useState(phoneNumber)
 
    const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(
       errors.firstName?.message || 
@@ -115,13 +113,13 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
 
       catch(err:any|unknown){
          dispatch(setShowAlert({
-            alertMessage: err?.message || `Error Occured ${ContactFormAction.Create ? "Creating" : "Editting"} Contact`,
+            alertMessage: err?.message || `Error Occured ${action === ContactFormAction.Create ? "Creating" : "Editting"} Contact`,
             severity: AlertSeverity.ERROR
          }))
       }
    }
 
-   const handleCancelEdit = () => {
+   const handleCancel = () => {
       if(!isDirty){
          navigate(-1)
          return;
@@ -152,15 +150,6 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
      dispatch(setThereAreChanges(isDirty))
    },[isDirty])
 
-   // // IsDirty Functionality is not recognising changes made to phone input manually using "SetValue" 
-   // // to set the isDirty to true if the phoneNumber field value changes, so we manually enable the button
-   // useEffect(() => {
-   //    if(oldPhoneNumberValue !== phoneNumber && !errors.firstName && !errors.birthday && !isLoading){
-
-   //       dispatch(setThereAreChanges(true))
-   //    }
-   // },[phoneNumber])
-
    return(
       <>
          <form onSubmit={handleSubmit(handleOnSubmit)}>
@@ -186,10 +175,8 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
                   sx={{ bgcolor: '#f57e0fd0',borderRadius:action === ContactFormAction.Edit ? "30px" : "4px" }} >
                   Save
                </Button>
-               
-               <button type="button" disabled={isLoading || editting ? true : false} className="fx-button" onClick={handleCancelEdit}>
-                  <RxCross1 />
-               </button>
+
+               <CancelButton handleClick={handleCancel} isLoading={isLoading} editting={editting} />
 
                <LabelMenu labelsArray={labelsArray} setOpenAddLabelModal={setOpenAddLabelModal} register={register} control={control} showLabelMenu={showLabelMenu} setShowLabelMenu={setShowLabelMenu} />
             </div>

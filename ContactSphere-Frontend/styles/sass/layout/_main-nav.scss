@@ -38,7 +38,7 @@
       margin-block: 1.6em;
       font-family:  inherit;
       font-weight: $fw_bold;
-      font-size: 1.05rem;
+      font-size: 1.035rem;
       letter-spacing: .05rem;
       z-index: 2;
 
@@ -61,7 +61,8 @@
          position: relative;
          z-index: 1;
 
-         &::before{
+         &::before,
+         &::after{
             content: "";
             width: calc(100% + 4em);
             height: 2.5em;
@@ -69,17 +70,27 @@
             top: 0;
             bottom: 0;
             margin-block: auto;
-            background-color: $accent_color_3;
             border-radius: 20px;
             display: none;
             position: absolute;
             z-index: -1;
+            background-color: $accent_color_3;
          }
+
+         &::after{
+            opacity: .6;
+         }
+
+
    
 
-         &:hover:not(.active){
-            color: $accent_color_2;
+         &:hover:not(.active),
+         &:focus:not(.active){
             outline: none;
+
+            &::after{
+               display: block;
+            }
          }
 
          &:focus{
@@ -94,8 +105,12 @@
             display: block;
          }
 
+         
          &:hover,
          &:focus{
+            &::after{
+               display: none;
+            }
             color: $text-color1;
          }
       }

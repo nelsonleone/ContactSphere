@@ -5,7 +5,7 @@ import { memo, useState, useEffect } from "react";
 import { EditIconButton, RestoreFromTrashButton, RestoreToActiveButton, StarIconButton } from "../../../lib/with-tooltip";
 import CustomCheckbox from "../../../lib/customInputs/CustomCheckbox";
 import { useNavigate } from "react-router-dom";
-import { useAddToFavouritesMutation,useHideContactMutation, useHideMultipleContactsMutation, useRestoreFromTrashMutation } from "../../RTK/features/api/injectedContactsApiQueries";
+import { useAddToFavouritesMutation, useHideContactMutation, useHideMultipleContactsMutation, useRestoreFromTrashMutation } from "../../RTK/features/api/injectedContactsApiQueries";
 import { useAppDispatch, useAppSelector } from "../../customHooks/reduxCustomHooks";
 import { setSelected } from "../../RTK/features/slices/contactMultiSelectSlice";
 import { setShowAlert } from "../../RTK/features/slices/alertSlice";
@@ -18,7 +18,6 @@ import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/slice
 import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions";
 import clientAsyncHandler from "../../utils/helperFns/clientAsyncHandler";
 import handleAsyncHideContact from "../../utils/helperFns/handleAsyncHideContact";
-import { Button } from "@mui/material";
 import handleAsyncRestore from "../../utils/helperFns/handleAsyncRestoreContacts";
 
 interface IContactItemProps extends IContactsFromDB {
@@ -132,7 +131,13 @@ function ContactItem(props:IContactItemProps){
    },[selectedContacts.length])
 
    return(
-      <div tabIndex={0} className={`contact ${isSelected ? "selected_contact" : ""}`} aria-label="Contact" aria-describedby={`${_id}-description`}>
+      <div 
+         tabIndex={0} 
+         className={`contact ${isSelected ? "selected_contact" : ""}`} 
+         aria-label="Contact" 
+         aria-describedby={`${_id}-description`}
+         onClick={() => navigate(`/c/${_id}`)}
+         >
          <PhotoUrlAvatar nameForAlt={`${firstName} ${lastName}`} photoURL={repPhoto} size={44} />
          <CustomCheckbox handleCheck={() => dispatch(setSelected(_id))} checked={isSelected} />
 
@@ -199,9 +204,6 @@ function ContactItem(props:IContactItemProps){
                   :
                   props.location === ContactItemLocation.Trash ?
                   <RestoreFromTrashButton handleRestore={handleRestoreFromTrash} />
-                  :
-                  props.location === ContactItemLocation.Duplicates ? 
-                  <Button variant="contained" sx={{color:"#FAFAFA", bgColor:"hsl(182, 87%, 27%)"}}>Resolve</Button> 
                   :
                   null
                }  

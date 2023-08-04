@@ -1,0 +1,3 @@
+const mergeContacts = (contacts) => {
+   
+}

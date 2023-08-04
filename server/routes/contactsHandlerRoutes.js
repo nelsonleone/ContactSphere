@@ -17,7 +17,8 @@ const {
    removeUserLabel,
    setDeleteContact,
    setDeleteMultipleContacts,
-   setRestoreMultipleContactsFromTrash
+   setRestoreMultipleContactsFromTrash,
+   setMergeDuplicates
 } = require('../controllers/contactRequestHandlers/index')
 
 router.get('/getAuthUserData',getAuthUserData)
@@ -37,6 +38,7 @@ router.put('/hideMultipleContacts',setHideMultipleContacts)
 router.put('/setEdittedContact',setEdittedContact)
 router.put('/restoreFromTrash',setRestoreFromTrash)
 router.put('/restoreMultipleFromTrash',setRestoreMultipleContactsFromTrash)
+router.put('/mergeDuplicates',setMergeDuplicates)
 
 
 module.exports = router;
