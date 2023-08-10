@@ -10,7 +10,13 @@
 .custom_working_snackbar{
    position: fixed;
    transition: .2s linear;
-   bottom: 0;
+   display: none;
+   bottom: -10em;
+   opacity: 0;
+   animation-name: slideUpCWS;
+   animation-duration: .3s;
+   animation-timing-function: linear;
+   animation-fill-mode: forwards;
    left: 0;
    right: 0;
    margin-inline: auto;
@@ -22,10 +28,14 @@
       width: 14em;
       color: #FAFAFA;
       font-size:1rem;
-      padding:.7em 1em;
+      padding: 1em;
       border-top-left-radius: 4px;
       border-top-right-radius: 4px;
    }
+}
+
+.hide_custom_working_snackbar{
+   animation-name: slideDownCWS;
 }
 
 .setting-section{
@@ -36,13 +46,15 @@
    div[role=tabpanel]{
       @include flexObj($justify:flex-start);
       gap: 2em;
-      margin-top: 1em;
+      margin-block: 1em .5em;
 
       button{
          font-family: $ff_primary;
          font-weight: $fw_bold;
          display: inline-block;
          position: relative;
+         font-size: 1rem;
+         color: $text-color2;
       }
 
       .active-tab-button{
@@ -52,7 +64,7 @@
             width: 100%;
             height: 3px;
             background-color: $generic_color_1;
-            bottom: -.2em;
+            bottom: -.7em;
             left: 0;
             display: block;
             position: absolute;
@@ -123,7 +135,7 @@
    }
 
    @include useMediaQuery_LS{
-      left: 269px;
+      left: 263px;
    }
 }
 
@@ -146,5 +158,114 @@
 
    &>*{
       color: $accent_color_1;
+   }
+}
+
+
+.add_label_btn{
+   text-decoration: underline $accent_color_1;
+   color: $text_color1;
+   @include flexObj($justify:center);
+   gap: .4em;
+   font-weight: $fw_xBold;
+   font-family: $ff_primary;
+   border-radius: 7px;
+   display: block;
+   margin: 2em auto;
+
+   svg{
+      color: $accent_color_1;
+      font-size: 1.3rem;
+   }
+
+   @include useMediaQuery_LS{
+      position: absolute;
+      top: 5em;
+      left: 20em;
+   }
+}
+
+
+// Label Menu Styling
+.label_menu{
+   padding: .3em;
+   position: absolute;
+   left: 20%;
+   top: 9em;
+   z-index: 10;
+
+   span{
+      font-family: $ff_primary;
+      font-weight: $fw_bold;
+   }
+
+   p{
+      font-weight: $fw_bold;
+      font-family: $ff_prompts;
+   }
+
+   svg{
+      font-size: 1.3rem;
+   }
+
+   .label{
+      margin-block: 0 !important;
+   }
+
+   .flex-row{
+      @include flexObj($justify:flex-start);
+      gap: .5em;
+      margin-top: 1em;
+
+      span{
+         font-size: .9rem;
+         font-weight: $fw_regular;
+         font-family: $ff_secondary;
+         color: $text_color2;
+      }
+   }
+}
+
+.added_labels_container{
+   margin-block: .5em;
+
+   &>div{
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      grid-template-rows: auto;
+      gap:.4em;
+
+      @include useMediaQuery_LS{
+         grid-template-columns: repeat(8,1fr);
+         grid-template-rows: 1fr 1fr;
+      }
+   }
+
+   button{
+      @include flexObj($justify:center);
+      gap: .2em;
+      background-color: transparent;
+      border: 1px solid $text_color1;
+      border-radius: 10px;
+      padding:.2em .5em;
+
+      &:hover{
+         opacity: .9;
+      }
+
+      
+      span{
+         font-family: $ff_primary;
+         color: $radiant_color2;
+         font-weight: $fw_bold;
+      }
+
+      @include useMediaQuery_LS{
+         font-size: .85rem;
+
+         &>*{
+            font-size: inherit;
+         }
+      }
    }
 }

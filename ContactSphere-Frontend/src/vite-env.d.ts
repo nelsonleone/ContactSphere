@@ -66,7 +66,7 @@ type Contact = {
     label: string;
   }[];
   social: {
-    site: string,
+    site: Sites | string,
     handle: string
   }
   suffix: string;

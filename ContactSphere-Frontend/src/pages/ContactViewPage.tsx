@@ -10,14 +10,29 @@ import { FaBirthdayCake } from "react-icons/fa"
 import { CgWebsite } from "react-icons/cg"
 import { TbCirclesRelation } from "react-icons/tb"
 import { nanoid } from '@reduxjs/toolkit'
+import PhotoUrlAvatar from "../../lib/Avatars/PhotoUrlAvatar"
+import EditButton from "../components/ContactFormContent/EditButton"
+import { formatPhoneNumber, formatPhoneNumberIntl } from 'react-phone-number-input'
+import { Breakpoints } from '../enums'
+import { IContactsFromDB } from "../vite-env"
+import { useState } from "react"
+import LabelMenu from "../../lib/popups/LabelMenu"
+import AddLabelDialog from "../../lib/popups/AddLabelDialog"
+import checkExternalLinks from "../utils/helperFns/checkExternalLinks"
+import { useAddToFavouritesMutation } from "../RTK/features/api/injectedContactsApiQueries"
+import AddedLabels from "../components/ContactFormContent/input_sections/AddedLabels"
 
 export default function ContactViewPage(){
    
    const { id } = useParams()
    const { contacts } = useAppSelector(store => store.userData)
-   const contact = contacts.find(c => c._id === id?.toString())
+   const contact: IContactsFromDB = contacts.find(c => c._id === id?.toString())
    const contactName = contact?.name || `${contact?.prefix} ${contact?.firstName} ${contact?.lastName} ${contact?.suffix}`;
-
+   const { openNav } = useAppSelector(store => store.openNav)
+   const [openAddLabelDialog,setOpenAddLabelDialog] = useState(false)
+   const [showLabelMenu,setShowLabelMenu] = useState(false)
+   const [addToFavourites] = useAddToFavouritesMutation()
+   const avatarNameForAlt = contactName.split(' ').filter(v => v !== "").join(' ')
 
    return(
       <PageWrapper className="contact_view_page" title={`ContactSphere ${contact ? `- ${contactName}` : ""}`}>
@@ -25,104 +40,159 @@ export default function ContactViewPage(){
             {
                contact ?
                <>
-                  <div className="top_section">
+                  <div className={!openNav ? "top_section_rx" : "top_section_rx resize_page_top_section_rx"}>
                      <GoBackButton />
                      <div className="contact_repPhoto_view">
-                        <img src={contact?.repPhoto || "images/placeholder-for-user.png"} />
+                        <PhotoUrlAvatar size={window.innerWidth < Breakpoints.Large ? 140 : 180} nameForAlt={avatarNameForAlt} photoURL={contact.repPhoto} />
                      </div>
                      
-                     <div>
-                        <p>{contact?.name}</p>
-                        <span>{contact?.phoneNumber}</span>
-                        <ul>
-                           <li>{contact.jobTitle}</li>
-                           <li>{contact.department}</li>
-                           <li>{contact.companyName}</li>
-                        </ul>
+                     <div className="top_details_highlight">
+                        <h2>{contactName}</h2>
+                        <span>{formatPhoneNumberIntl(contact?.phoneNumber)}</span>
+
+                        {
+                           contact.jobTitle || contact.department || contact.companyName &&
+                           <ul>
+                              {
+                                 contact.jobTitle &&
+                                 <li>{contact.jobTitle}</li>
+                              }
+                              {
+                                 contact.department &&
+                                 <li>{contact.department}</li>
+                              }
+                              {
+                                 contact.companyName &&
+                                 <li>{contact.companyName}</li>
+                              }
+                           </ul>
+                        }
+
+                        <AddedLabels contactId={contact._id} phoneNumber={contact.phoneNumber} labelsArray={contact.labelledBy} />
 
                         <ManageLabelButton 
-                           handleClick={() => {}} 
+                           handleClick={() => setShowLabelMenu(!showLabelMenu)} 
                            disabled={false} 
                            penMode={contact.labelledBy?.length > 0} 
                            className={!contact.labelledBy?.length ? "add_label_btn" : "add_label_btn penMode"} 
                         />
+                        <LabelMenu 
+                           setOpenAddLabelModal={setOpenAddLabelDialog} 
+                           labelMenuFor="contactPage" 
+                           labelsArray={contact.labelledBy} 
+                           showLabelMenu={showLabelMenu} 
+                           setShowLabelMenu={setShowLabelMenu} 
+                           contactId={contact._id}
+                           phoneNumber={contact.phoneNumber}
+                        />
+                        <AddLabelDialog mode="create" setOpen={setOpenAddLabelDialog} open={openAddLabelDialog} />
                      </div>
 
                      <div>
-                        <StarIconButton starred={contact.inFavourites} handleStarring={() => {}} />
-                        <ContactMenu method="single" />
-                        <Button
-                           type="submit" 
-                           className="fx-button" 
-                           variant="contained"  
-                          >
-                           Edit
-                        </Button>
+                        <StarIconButton 
+                          starred={contact.inFavourites}  
+                          inFavourites={contact.inFavourites}
+                          _id={contact._id}
+                          phoneNumber={contact.phoneNumber}
+                          addToFavourites={addToFavourites}
+                        />
+                        <ContactMenu method="single" contactId={contact._id} />
+                        <EditButton navigateTo={`/c/edit/${contact._id}`} />
+                     </div>
+
+                     <div className="contact_net_links">
+                        <EmailLinkButton mailTo={contact.email} />
+                        <SocialSiteLink site={contact.social.site} handle={contact.social.handle} />
                      </div>
                   </div>
 
-                  <div className="contact_net_links">
-                     <EmailLinkButton mailTo={contact.email} />
-                     <SocialSiteLink site={contact.social.handle} />
-                  </div>
 
                   <section className="details_preview_section">
-                     <h3>Contact Details</h3>
                      <div>
-                        <MdOutlineEmail aria-hidden="true" />
-                        <p>{contact.email}</p>
-                        <Button variant="outlined">Send Mail</Button>
-                     </div>
+                        <h3>Contact Details</h3>
 
-                     <div>
-                        <BsTelephone aria-hidden="true" />
-                        <p>{contact.phoneNumber}</p>
-                        <Tooltip title={`Call ${contact.phoneNumber}`}>
-                           <Link to={`tel:${contact.phoneNumber}`}>
-                              Call
-                           </Link>
-                        </Tooltip>
-                     </div>
-
-                     <div>
-                        <MdOutlineLocationOn aria-hidden="true" />
-                        <Link to={`https://www.google.com/maps/dir/${contact.street},${contact.city},${contact.state}+${contact.country}`}>
-                           <p>{contact.address.street}</p>
-                           <p>{contact.address.postalCode}</p>
-                           <p>{contact.address.city}</p>
-                           <p>{contact.address.state}</p>
-                           <p>{contact.address.country}</p>
-                        </Link>
-                     </div>
-
-                     <div>
-                        <FaBirthdayCake aria-hidden="true" />
-                        <p>{contact.birthday}</p>
-                     </div>
-
-                     <div>
-                        <CgWebsite aria-hidden="true" />
-                        <p>{contact.website}</p>
-                        <Link to={contact.website}>Visit Website</Link>
-                     </div>
-
-                     <div className="relatedPeople_details_view">
-                        <TbCirclesRelation aria-hidden="true" />
                         {
-                           contact.relatedPeople.map(val => (
-                              <div key={nanoid()}>
-                                 <p>{val.name}</p>
-                                 <p>{val.label}</p>
-                              </div>
-                           ))
+                           contact.email &&
+                           <div>
+                              <MdOutlineEmail aria-hidden="true" />
+                              <p>{contact.email}</p>
+                              <Button variant="text" onClick={() => {}}>Send Mail</Button>
+                           </div>
                         }
-                     </div>
 
-                     <div className="social_details">
-                        <BsChatHeartFill />
-                        <p>{contact.social.site}</p>
-                        <span>{contact.social.handle}</span>
-                        <Link to={contact.social.handle}>See Profile</Link>
+                        {
+                           contact.phoneNumber &&
+                           <div>
+                              <BsTelephone aria-hidden="true" />
+                              <p>{formatPhoneNumber(contact.phoneNumber)}</p>
+                              <Tooltip title={`Call ${contact.phoneNumber}`}>
+                                 <Link to={`tel:${contact.phoneNumber}`}>
+                                    Call
+                                 </Link>
+                              </Tooltip>
+                           </div>
+                        }
+
+                        {
+                           Object.values(contact.address).length ?
+                           <div>
+                              <MdOutlineLocationOn aria-hidden="true" />
+                              <Link to={`https://maps.google.com/maps?q=${contact.address.street},${contact.address.postalCode},${contact.address.city},${contact.address.state},${contact.address.country}`}>
+                                 <p>{contact.address.street}</p>
+                                 <p>{contact.address.postalCode}</p>
+                                 <p>{contact.address.city}</p>
+                                 <p>{contact.address.state}</p>
+                                 <p>{contact.address.country}</p>
+                              </Link>
+                           </div>
+                           :
+                           null
+                        }
+
+                        {
+                           contact.birthday &&
+                           <div>
+                              <FaBirthdayCake aria-hidden="true" />
+                              <p>{new Date(contact.birthday).toLocaleDateString('en')}</p>
+                           </div>
+                        }
+
+                        {
+                           contact.website &&
+                           <div>
+                              <CgWebsite aria-hidden="true" />
+                              <p>{contact.website}</p>
+                              <Link to={contact.website}>Visit Website</Link>
+                           </div>
+                        }
+                        {
+                           contact.relatedPeople.length ?
+                           <div className="relatedPeople_details_view">
+                              <TbCirclesRelation aria-hidden="true" />
+                              {
+                                 contact.relatedPeople.map(val => (
+                                    <div key={nanoid()}>
+                                       <p>{val.name}</p>
+                                       <p>{val.label}</p>
+                                    </div>
+                                 ))
+                              }
+                           </div>
+                           :
+                           null
+                        }
+
+                        {
+                           contact.social.site && contact.social.handle ?
+                           <div className="social_details">
+                              <BsChatHeartFill />
+                              <p>{contact.social.site}</p>
+                              <span>{contact.social.handle}</span>
+                              <Link to={checkExternalLinks(contact.social.handle)}>See Profile</Link>
+                           </div>
+                           : 
+                           null
+                        }
                      </div>
                   </section>
                </>

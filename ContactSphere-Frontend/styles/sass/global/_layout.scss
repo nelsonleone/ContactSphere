@@ -7,7 +7,7 @@
    margin-inline:  auto;
    background-color: $generic_color_1;
    &>*:nth-child(2){
-      transition: width .2s linear, flex-basis .2s linear, margin .2s linear;
+      transition: width .3s linear, flex-basis .3s linear, margin .3s linear;
    }
    
    
@@ -38,6 +38,12 @@
          width: 85%;
          margin-inline: 255px auto;
       }
+
+      .details_preview_section::before{
+         width: 85%;
+         margin-inline: 255px auto;
+      }
+      
    
       .main_nav{
          flex-basis: 255px;
@@ -60,7 +66,7 @@
    right: 1.5em;
    font-family: $ff_primary;
    font-weight: $fw_bold;
-   transition: left .2s linear, scale .2s ease-in-out;
+   transition: left .24s linear, scale .24s ease-in-out;
 
    &:disabled{
       opacity: .5;
@@ -113,6 +119,6 @@
 
 .cnc_btn_hide{
    @include useMediaQuery_LS {
-      left: -400px;
+      left: -300px;
    }
 }

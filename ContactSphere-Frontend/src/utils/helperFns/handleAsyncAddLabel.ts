@@ -37,7 +37,7 @@ export default async function handleAsyncAddLabel(
   
   //  Mutation Hooks Actions
   manageLabels: ManageLabel,
-   manageMultiContactsLabels: ManageMultiContactsLabels
+   manageMultiContactsLabels: ManageMultiContactsLabels | null
 ){
    
    // Contact Menu Used In Individual Contacts
@@ -70,7 +70,7 @@ export default async function handleAsyncAddLabel(
          }))
       }
 
-      else if(method === "multi"){
+      else if(method === "multi" && manageMultiContactsLabels){
          const res = await manageMultiContactsLabels({
             authUserUid: uid,
             label,
@@ -78,7 +78,7 @@ export default async function handleAsyncAddLabel(
          }).unwrap()
 
          if(!res){
-            throw new Error("Internal Error Occured While Adding Label To Contacts")
+            throw new Error("Error Occured While Adding Label To Contacts")
          }
 
          dispatch(setSelectNone())
@@ -95,7 +95,7 @@ export default async function handleAsyncAddLabel(
 
    catch(err:any|unknown){
       dispatch(setShowAlert({
-         alertMessage: err.message || "Error While Adding Label, Try Again" ,
+         alertMessage: err.message || err.code || "An Error Occured While Adding Label, Try Again" ,
          severity: AlertSeverity.ERROR
       }))
    }

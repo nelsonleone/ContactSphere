@@ -13,10 +13,7 @@ import { TbCirclesRelation } from 'react-icons/tb'
 interface IProps {
    showMore: boolean,
    control:  Control<Contact, any>,
-   social: {
-      site: string,
-      handle: string
-   },
+   social: Contact['social'],
    error: string | undefined,
    relatedPeople: {
       label: string,
@@ -114,6 +111,8 @@ function AdditionalFields(props:IProps){
                id={`${id}-social-handle`}
                type='text'
                show={showMore}
+               haveSelectedSite={social.site ? true : false}
+               inputFor="socialHandle"
             />
          </div>
       </div>

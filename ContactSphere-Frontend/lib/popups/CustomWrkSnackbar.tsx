@@ -7,11 +7,8 @@ export default function CustomWrkSnackbar(){
    const { showWrkSnackbar } = useAppSelector(store => store.wrkSnackbar)
 
    return(
-      showWrkSnackbar ?
-      <div className="custom_working_snackbar">
+      <div className={showWrkSnackbar ? "custom_working_snackbar" : "hide_custom_working_snackbar custom_working_snackbar"}>
          <p role="alert">Working...</p>
       </div>
-      :
-      null
    )
 }

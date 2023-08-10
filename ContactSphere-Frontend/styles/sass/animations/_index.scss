@@ -9,3 +9,35 @@
    min-height: 210px;
   }
 }
+
+
+@keyframes slideUpCWS {
+  0% {
+    display: none;
+    bottom: -10em;
+    opacity: 0;
+  }
+
+  100% {
+    display: block;
+    bottom: 0;
+    opacity:  1;
+  }
+}
+
+@keyframes slideDownCWS {
+  0% {
+    display: block;
+    bottom: 0;
+    opacity: 1;
+  }
+
+  50% {
+    bottom: -10em;
+  }
+
+  100% {
+    display: none;
+    opacity: 0;
+  }
+}

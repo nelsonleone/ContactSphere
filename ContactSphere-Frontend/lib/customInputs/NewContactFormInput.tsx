@@ -14,7 +14,9 @@ interface IFormInputProps {
    error?: string | undefined,
    helperText?: string,
    setShowLabelInput?: React.Dispatch<React.SetStateAction<number|null>>,
-   index?: number
+   index?: number,
+   haveSelectedSite?: boolean,
+   inputFor?: "socialHandle" | any
 }
 
 function NewContactFormInput(props:IFormInputProps){
@@ -27,7 +29,9 @@ function NewContactFormInput(props:IFormInputProps){
       type,
       error,
       show,
-      helperText
+      helperText,
+      haveSelectedSite,
+      inputFor
    } = props;
    
    const isRequired = name === InputPropertyValueName.FirstName || 
@@ -61,7 +65,7 @@ function NewContactFormInput(props:IFormInputProps){
             ({ field }) => 
             
             <TextField
-               className="contact-input textField"
+               className={inputFor === "socialHandle" && !haveSelectedSite ? "contact-input textField hide_input" : "contact-input textField"}
                error={
                   name === InputPropertyValueName.FirstName && error ||
                   name === InputPropertyValueName.AddressPostalCode && error || 

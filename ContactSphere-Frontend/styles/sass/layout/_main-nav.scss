@@ -13,7 +13,7 @@
    z-index: 100;
    padding: 3.5em 1.8em;
    background: $generic_color_1;
-   transition: all .2s linear;
+   transition: left .24s linear;
    width: 74%;
    height: 100vh;
    box-shadow: 0 4px 4px 5px hsla(0, 0%, 0%, 0.137);
@@ -263,7 +263,7 @@
 
 
 .hide_nav{
-  left: -400px !important;
+  left: -300px !important;
 }
 
 
@@ -280,7 +280,7 @@
       width: auto;
       top: 9em;
       padding-block: 0 .3em;
-      z-index: 1;
+      z-index: 10;
       padding-right: .3em;
       left: 0;
       scrollbar-width: thin;

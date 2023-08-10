@@ -11,14 +11,20 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
 import { MdNewLabel, MdOutlineCancel, MdOutlineEmail, MdUnarchive } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { setShowAlert } from '../../src/RTK/features/slices/alertSlice';
 import { AlertSeverity } from '../../src/enums';
 import { removeSearchResult } from '../../src/RTK/features/slices/searchContactsSlice';
 import { RxCross1 } from 'react-icons/rx';
-import useRenderSiteIcon from '../../src/customHooks/useRenderSiteIcon';
-import { Sites } from '../../src/vite-env';
-
+import { IContactsFromDB, Sites } from '../../src/vite-env';
+import SocialIconLink from './SocialIconLink'
+import checkExternalLinks from '../../src/utils/helperFns/checkExternalLinks';
+import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta, MutationDefinition } from "@reduxjs/toolkit/dist/query";
+import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
+import stopUnauthourizedActions from '../../src/utils/helperFns/stopUnauthourizedActions';
+import { setHideWrkSnackbar, setShowWrkSnackbar } from '../../src/RTK/features/slices/wrkSnackbarSlice';
+import { setEdittedContact } from '../../src/RTK/features/slices/userDataSlice';
+import { setShowSnackbar } from '../../src/RTK/features/slices/snackbarDisplaySlice';
 
 interface IProps {
    setState: Dispatch<SetStateAction<IHeaderState>>,
@@ -109,29 +115,37 @@ export function GoBackButton(){
 export function EmailLinkButton({ mailTo }: { mailTo:string }){
 
    return(
-      <Tooltip title="Enmail">
-         <Link to={mailTo}>
+      mailTo ? 
+      <Tooltip title="Email">
+         <a href={mailTo} className="active_net_link">
             <MdOutlineEmail aria-describedby="contact-email-icon-desc" />
-            <span id="contact-email-icon-desc">Send Email To Contact</span>
-         </Link>
+            <span className="AT_only" id="contact-email-icon-desc">Send Email To Contact</span>
+         </a>
       </Tooltip>
+      :
+      <button disabled={true}>
+         <MdOutlineEmail aria-describedby="contact-email-icon-desc" />
+         <span className="AT_only" id="contact-email-icon-desc">No Email For This Contact</span>
+      </button>
    )
 }
 
 
-export function SocialSiteLink({ site }: { site:Sites }){
-
-   const IconComponent = useRenderSiteIcon(site)
+export function SocialSiteLink({ site, handle }: { site:Sites, handle:string }){
+   
+   const contactSocialSiteHandle = checkExternalLinks(handle)
 
    return(
-      <Tooltip title="Email">
-         <Link to={site}>
-            {
-               IconComponent &&
-               <IconComponent />
-            }
-         </Link>
+      handle ?
+      <Tooltip title={`View ${site} page`}>
+         <a href={contactSocialSiteHandle} className={handle ? "active_net_link" : ""}>
+            <SocialIconLink site={site} />
+         </a>
       </Tooltip>
+      :
+      <button disabled={true}>
+         <SocialIconLink site={site} />
+      </button>
    )
 }
 
@@ -163,8 +177,56 @@ export function ManageLabelButton({ className, penMode, handleClick, disabled }:
 
 
 // Contact Item Action Buttons With ToolTip
+interface IStarButtonProps {
+   inFavourites: boolean,
+   addToFavourites: MutationTrigger<MutationDefinition<{
+      contactId: string;
+      authUserUid: string;
+      status: boolean;
+   }, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, "Contact" | "Label", IContactsFromDB, "contactsQueryApi">> ,
+   _id: string,
+   phoneNumber: string,
+   starred: boolean
+}
 
-export function StarIconButton({starred,handleStarring}: { starred:boolean,handleStarring:() => void }){
+export function StarIconButton(props:IStarButtonProps){
+
+   const { inFavourites, addToFavourites, _id, phoneNumber, starred } = props;
+   const { uid } = useAppSelector(store => store.authUser.userDetails)
+   const dispatch = useAppDispatch()
+
+   const handleStarring = async() => {
+      try{
+         dispatch(setShowWrkSnackbar())
+         await stopUnauthourizedActions(uid)
+         // Status Is Used To Update The Interacted Contact [updates "inFavourites" to false if true and vice-versa]
+         const status = inFavourites ? false : true;
+         const interactedContact = await addToFavourites({contactId:_id,authUserUid:uid!,status}).unwrap()
+
+         if(!interactedContact){
+            throw new Error("An Error Occured Starring Contact, Try Again")
+         }
+
+         dispatch(setEdittedContact(interactedContact))
+         
+         dispatch(setShowSnackbar({
+            // inFavourites Is Still In Previous State Due to Function Still Running
+            snackbarMessage: inFavourites  ? `Star removed from ${phoneNumber}` : `${phoneNumber} have been  Starred`,
+         }))
+      }
+
+      catch(err:any|unknown){
+         dispatch(setShowAlert({
+            alertMessage: err.message || "Error Interacting With Contact, Try Again" ,
+            severity: AlertSeverity.ERROR
+         }))
+      }
+
+      finally{
+         dispatch(setHideWrkSnackbar())
+      }
+   }
+
    return(
       <Tooltip title="Star Contact">
          <IconButton className="contact_star_button" type="button" onClick={handleStarring}>
@@ -175,15 +237,17 @@ export function StarIconButton({starred,handleStarring}: { starred:boolean,handl
 }
 
 
-export function EditIconButton({navigateToEditPage,toolTipText}:{ toolTipText?:string, navigateToEditPage:() => void}){
+export function EditIconButton({navigateTo,toolTipText}:{ toolTipText?:string, navigateTo:string }){
+   const navigate = useNavigate()
    return(
       <Tooltip title={toolTipText || "Edit Contact"}>
-         <IconButton className="contact_edit_button" type="button" onClick={navigateToEditPage}>
+         <IconButton className="contact_edit_button" type="button" onClick={() =>  navigate(navigateTo)}>
             <GoPencil aria-label="edit" color=" hsl(0, 3%, 16%)"  />
          </IconButton>
       </Tooltip>
    )
 }
+
 
 
 export function DeleteIconButton({handleDelete,toolTipText}:{ toolTipText?:string, handleDelete:() => void}){
@@ -198,9 +262,15 @@ export function DeleteIconButton({handleDelete,toolTipText}:{ toolTipText?:strin
 
 
 export function RestoreToActiveButton({handleRestore}:{ handleRestore:() => void}){
+
+   const handleClick = (e:MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      handleRestore()
+   }
+
    return(
       <Tooltip title="Unarchive">
-         <button className="contact_unarchive_button" type="button" onClick={handleRestore}>
+         <button className="contact_unarchive_button" type="button" onClick={handleClick}>
             <MdUnarchive aria-label="unarchive" style={{fontSize: '1.4rem'}} />
          </button>
       </Tooltip>
@@ -209,9 +279,15 @@ export function RestoreToActiveButton({handleRestore}:{ handleRestore:() => void
 
 
 export function RestoreFromTrashButton({handleRestore}:{ handleRestore:() => void}){
+
+   const handleClick = (e:MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      handleRestore()
+   }
+
    return(
       <Tooltip title="Restore contact">
-         <IconButton className="contact_unarchive_button" type="button" onClick={handleRestore}>
+         <IconButton className="contact_unarchive_button" type="button" onClick={handleClick}>
             <FaTrashRestore aria-label="Restore" />
          </IconButton>
       </Tooltip>

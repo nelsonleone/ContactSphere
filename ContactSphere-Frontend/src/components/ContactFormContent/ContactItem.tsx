@@ -8,13 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { useAddToFavouritesMutation, useHideContactMutation, useHideMultipleContactsMutation, useRestoreFromTrashMutation } from "../../RTK/features/api/injectedContactsApiQueries";
 import { useAppDispatch, useAppSelector } from "../../customHooks/reduxCustomHooks";
 import { setSelected } from "../../RTK/features/slices/contactMultiSelectSlice";
-import { setShowAlert } from "../../RTK/features/slices/alertSlice";
-import { AlertSeverity, ContactItemLocation } from "../../enums";
-import { setEdittedContact } from "../../RTK/features/slices/userDataSlice";
+import { ContactItemLocation } from "../../enums";
 import handleContactDetailsDisplay from "../../utils/helperFns/handleContactDetailsDisplay";
 import ContactMenu from "./ContactMenu";
-import { setShowSnackbar } from "../../RTK/features/slices/snackbarDisplaySlice";
-import { setHideWrkSnackbar, setShowWrkSnackbar } from "../../RTK/features/slices/wrkSnackbarSlice";
 import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions";
 import clientAsyncHandler from "../../utils/helperFns/clientAsyncHandler";
 import handleAsyncHideContact from "../../utils/helperFns/handleAsyncHideContact";
@@ -37,12 +33,14 @@ function ContactItem(props:IContactItemProps){
       inFavourites,
       labelledBy,
       deletedAt,
-      companyName
+      companyName,
+      prefix,
+      suffix
    } = props;
 
    const navigate = useNavigate()
    const uid = useAppSelector(store => store.authUser.userDetails.uid)
-   const [addToFavourites,{}] = useAddToFavouritesMutation()
+   const [addToFavourites] = useAddToFavouritesMutation()
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
    const [isSelected,setIsSelected] = useState(selectedContacts.some(contactId => contactId === _id))
    const [hideContact] = useHideContactMutation()
@@ -56,37 +54,6 @@ function ContactItem(props:IContactItemProps){
    const jobTitleAreaOrder = columnOrder.find(v => v.colName === "job-title")?.order;
    const { contacts } = useAppSelector(store => store.userData)
 
-   const handleStarring = async() => {
-      try{
-         dispatch(setShowWrkSnackbar())
-         await stopUnauthourizedActions(uid)
-         // Status Is Used To Update The Interacted Contact [updates "inFavourites" to false if true and vice-versa]
-         const status = inFavourites ? false : true;
-         const interactedContact = await addToFavourites({contactId:_id,authUserUid:uid!,status}).unwrap()
-
-         if(!interactedContact){
-            throw new Error("An Error Occured Starring Contact, Try Again")
-         }
-
-         dispatch(setEdittedContact(interactedContact))
-         
-         dispatch(setShowSnackbar({
-            // inFavourites Is Still In Previous State Due to Function Still Running
-            snackbarMessage: inFavourites  ? `Star removed from ${phoneNumber}` : `${phoneNumber} have been  Starred`,
-         }))
-      }
-
-      catch(err:any|unknown){
-         dispatch(setShowAlert({
-            alertMessage: err.message || "Error Interacting With Contact, Try Again" ,
-            severity: AlertSeverity.ERROR
-         }))
-      }
-
-      finally{
-         dispatch(setHideWrkSnackbar())
-      }
-   }
 
    const handleRestoreToActive = () => clientAsyncHandler(
       async() => {
@@ -138,7 +105,11 @@ function ContactItem(props:IContactItemProps){
          aria-describedby={`${_id}-description`}
          onClick={() => navigate(`/c/${_id}`)}
          >
-         <PhotoUrlAvatar nameForAlt={`${firstName} ${lastName}`} photoURL={repPhoto} size={44} />
+         <PhotoUrlAvatar 
+            nameForAlt={`${prefix} ${firstName} ${lastName} ${suffix}`.split(' ').filter(v => v !== "").join(' ')} 
+            photoURL={repPhoto} 
+            size={44}
+         />
          <CustomCheckbox handleCheck={() => dispatch(setSelected(_id))} checked={isSelected} />
 
          <p 
@@ -194,8 +165,14 @@ function ContactItem(props:IContactItemProps){
                   props.location === ContactItemLocation.LabelsPage ||
                   props.location === ContactItemLocation.Favourites ?
                   <>
-                     <StarIconButton starred={inFavourites} handleStarring={() => handleStarring()} />
-                     <EditIconButton navigateToEditPage={() => navigate(`c/edit/${_id}`)} />
+                     <StarIconButton 
+                        starred={inFavourites} 
+                        addToFavourites={addToFavourites} 
+                        phoneNumber={phoneNumber} 
+                        _id={_id} 
+                        inFavourites={inFavourites}
+                     />
+                     <EditIconButton navigateTo={`c/edit/${_id}`} />
                      <ContactMenu method="single" phoneNumber={phoneNumber} contactId={_id} contactLabels={labelledBy} />
                   </>
                   :

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Divider from '@mui/material/Divider';
-import { useAppSelector } from '../../src/customHooks/reduxCustomHooks'
+import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
 import { MdLabelOutline } from 'react-icons/md'
 import { BiPlus } from 'react-icons/bi'
 import ClickAwayListener from '@mui/base/ClickAwayListener';
@@ -9,18 +9,24 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { UseFormRegister, Control, useFieldArray } from 'react-hook-form'
+import { Control, useFieldArray, UseFieldArrayAppend } from 'react-hook-form'
 import { Contact } from '../../src/vite-env';
-import { InputPropertyValueName } from '../../src/enums'
+import { AlertSeverity, InputPropertyValueName } from '../../src/enums'
+import handleAsyncAddLabel from '../../src/utils/helperFns/handleAsyncAddLabel';
+import { useManageLabelsMutation, useManageMultiContactLabelsMutation } from '../../src/RTK/features/api/injectedContactsApiQueries';
+import { setShowAlert } from '../../src/RTK/features/slices/alertSlice';
+import stopUnauthourizedActions from '../../src/utils/helperFns/stopUnauthourizedActions';
 
 
 interface ILabelMenuProps { 
    showLabelMenu: boolean, 
    setShowLabelMenu:React.Dispatch<React.SetStateAction<boolean>>,
-   register: UseFormRegister<Contact>,
-   control:  Control<Contact, any>,
+   control?:  Control<Contact, any>,
    setOpenAddLabelModal: React.Dispatch<React.SetStateAction<boolean>>,
-   labelsArray: Contact['labelledBy']
+   labelsArray: Contact['labelledBy'],
+   labelMenuFor: "contactPage" | "contactForm",
+   contactId?: string,
+   phoneNumber?: string
 }
 
 function LabelMenu(props:ILabelMenuProps) {
@@ -30,16 +36,28 @@ function LabelMenu(props:ILabelMenuProps) {
       setShowLabelMenu,
       control,
       setOpenAddLabelModal,
-      labelsArray
+      labelsArray,
+      labelMenuFor,
+      contactId,
+      phoneNumber
    } = props;
+
    const { labels } = useAppSelector(state => state.userData)
-   const { append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
+
+   let append:UseFieldArrayAppend<Contact, "labelledBy" | "relatedPeople">
+   if (control){
+      append = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy }).append;
+   }
+   const [manageLabels] = useManageLabelsMutation()
+   const [manageMultipleLabels] = useManageMultiContactLabelsMutation()
+   const { uid } = useAppSelector(store => store.authUser.userDetails)
+   const dispatch = useAppDispatch()
 
    const handleClickAway = () => {
       setShowLabelMenu(false)
    }
    
-   const handleAddLabel = (e:React.MouseEvent<HTMLLIElement>,label:string) => {
+   const handleAddLabel = async (e:React.MouseEvent<HTMLLIElement>,label:string) => {
       e.stopPropagation()
       const labelAlreadyAdded = labelsArray.some(field => field.label === label)
       if (labelAlreadyAdded){
@@ -47,8 +65,38 @@ function LabelMenu(props:ILabelMenuProps) {
          return;
       }
       
-      append({label})
-      setShowLabelMenu(false)
+      if(labelMenuFor === "contactForm"){
+         append({label})
+         setShowLabelMenu(false)
+      }
+
+      else if(labelMenuFor === "contactPage"){
+         setShowLabelMenu(false)
+         try{
+            if(!contactId || !phoneNumber){
+               throw new Error("Incomplete properties passed, 'contactId or phoneNumber was not passed'")
+            }
+            await stopUnauthourizedActions(uid)
+            await handleAsyncAddLabel(
+               dispatch,
+               "add",
+               contactId,
+               uid!,
+               "single",
+               [],
+               label,
+               phoneNumber,
+               manageLabels,
+               manageMultipleLabels
+            )
+         }
+         catch(err:any|unknown){
+            dispatch(setShowAlert({
+               alertMessage: err.message || "Error Occured Adding Label",
+               severity: AlertSeverity.ERROR
+            }))
+         }
+      }
    }
 
    return (

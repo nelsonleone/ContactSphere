@@ -59,7 +59,7 @@ export default function ColumnReOrder({ data }: IColumnReOrderProps) {
           {...provided.draggableProps}
         >
           <div {...provided.dragHandleProps} className={classes.dragHandle}>
-            <MdDragHandle size="1.05rem" stroke={1.5} />
+            <MdDragHandle size="1.4rem" stroke={1.5} />
           </div>
           <div>
             <Text>{item.name}</Text>

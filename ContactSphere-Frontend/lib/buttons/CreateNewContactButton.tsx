@@ -38,7 +38,8 @@ export default function CreateNewContactButton(){
 
 
    return(
-      !location.pathname.match("/auth") ?
+      !location.pathname.match("/auth") &&
+      !location.pathname.match('/c')  ?
       <button
          className={!openNav ? "cnc_btn cnc_btn_hide" : "cnc_btn"} 
          title={isDisabled ? undefined : "Create New Contact"}

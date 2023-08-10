@@ -92,48 +92,8 @@
          margin-top: 2.5em;
       }
 
-      .add_label_btn{
-         text-decoration: underline $accent_color_1;
-         color: $text_color1;
-         @include flexObj($justify:center);
-         gap: .4em;
-         font-weight: $fw_xBold;
-         font-family: $ff_primary;
-         border-radius: 7px;
-         display: block;
-         margin: 2em auto;
-
-         svg{
-            color: $accent_color_1;
-            font-size: 1.3rem;
-         }
-      }
-
-
-
-      // Added Label Section In Form Top Section
       .added_labels_container{
-         @include flexObj($direction:column,$justify:flex-start);
-         gap:.4em;
          margin-block: 1em;
-         button{
-            @include flexObj($justify:center);
-            gap: .2em;
-            background-color: transparent;
-            border: 1px solid $text_color1;
-            border-radius: 10px;
-            padding:.2em .5em;
-
-            &:hover{
-               opacity: .9;
-            }
-
-            
-            span{
-               font-family: $ff_primary;
-               color: $radiant_color2;
-            }
-         }
       }
    }
 }
@@ -343,46 +303,6 @@
 }
 
 
-// Label Menu Styling
-.create_contact_page form .label_menu{
-   padding: .3em;
-   position: absolute;
-   left: 20%;
-   top: 9em;
-   z-index: 10;
-
-   span{
-      font-family: $ff_primary;
-      font-weight: $fw_bold;
-   }
-
-   p{
-      font-weight: $fw_bold;
-      font-family: $ff_prompts;
-   }
-
-   svg{
-      font-size: 1.3rem;
-   }
-
-   .label{
-      margin-block: 0 !important;
-   }
-
-   .flex-row{
-      @include flexObj($justify:flex-start);
-      gap: .5em;
-      margin-top: 1em;
-
-      span{
-         font-size: .9rem;
-         font-weight: $fw_regular;
-         font-family: $ff_secondary;
-         color: $text_color2;
-      }
-   }
-}
-
 
 
 
@@ -403,6 +323,10 @@
    &>*{
       top: 0;
    }
+}
+
+.hide_input{
+   display: none;
 }
 
 
@@ -442,18 +366,11 @@
             min-height: 11em;
             padding-inline: 0;
             position: fixed;
-            width: 97%;
-            margin-inline: auto;
             z-index: 2;
             transition: all .3s linear;
             top: 3.7em;
             background-color: $generic_color_1;
 
-            .add_label_btn{
-               position: absolute;
-               top: 5em;
-               left: 20em;
-            }
 
             .image_upload_input{
                margin-top: .7em;
@@ -464,17 +381,6 @@
                position: absolute;
                top: 5.2em;
                left: 19.7em;
-               display: grid;
-               grid-template-columns: auto;
-               grid-template-rows: 1fr 1fr;
-
-               button{
-                  font-size: .85rem;
-
-                  &>*{
-                     font-size: inherit;
-                  }
-               }
             }
 
             .fx-button:nth-of-type(3){

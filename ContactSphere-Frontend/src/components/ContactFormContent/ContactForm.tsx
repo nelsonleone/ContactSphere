@@ -178,7 +178,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
 
                <CancelButton handleClick={handleCancel} isLoading={isLoading} editting={editting} />
 
-               <LabelMenu labelsArray={labelsArray} setOpenAddLabelModal={setOpenAddLabelModal} register={register} control={control} showLabelMenu={showLabelMenu} setShowLabelMenu={setShowLabelMenu} />
+               <LabelMenu labelMenuFor="contactForm" labelsArray={labelsArray} setOpenAddLabelModal={setOpenAddLabelModal} control={control} showLabelMenu={showLabelMenu} setShowLabelMenu={setShowLabelMenu} />
             </div>
 
             <div className="fields_area">
@@ -186,7 +186,8 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
                <FormalInputSection showMore={showMore} control={control} />
                <ContactInputSection control={control} error={errors?.phoneNumber?.message} />
                <AddressInputSection error={errors?.address?.postalCode?.message} showMore={showMore} control={control}  />
-               <AdditionalFields social={social} relatedPeople={relatedPeople} error={errors?.birthday?.message} control={control} showMore={showMore} />
+               <Additiona
+               lFields social={social} relatedPeople={relatedPeople} error={errors?.birthday?.message} control={control} showMore={showMore} />
             </div>
             <button type="button"  className="show_more_btn" onClick={() => setShowMore(!showMore)}>Show {showMore ? "Less" : "More"}</button>
          </form>

@@ -1,0 +1,463 @@
+@use '../utils/' as *;
+@use '../global/' as *;
+
+.contact_view_page{
+
+   // Top Area Styling
+   .top_section_rx {
+      position: relative;
+      padding-block: 1em;
+      border-top: 1px solid $bg_color2;
+      z-index: 1;
+      transition: width .4s linear;
+
+      &::after{
+         content:"";
+         width: 100%;
+         height: 1px;
+         bottom: 0;
+         left: 0;
+         right: 0;
+         margin-inline: auto;
+         position: absolute;
+         background-color: $util_color2;
+         z-index: -2;
+         opacity: .9;
+      }
+
+      .back-button{
+         font-size: 1.3rem;
+      }
+
+      .contact_repPhoto_view{
+         @include flexObj($justify:center);
+         margin-top: .5em;
+         
+         .avatar{
+            font-size: 5rem !important;
+         }
+      }
+      
+      h2{
+         font-size: 1.6rem;
+         text-align: center;
+         font-family: $ff_primary;
+         text-transform: capitalize;
+         margin-block: .8em .5em;
+         color: $text-color1;
+         font-weight: $fw_bold;
+      }
+      
+      .top_details_highlight{
+         @include flexObj($justify:center,$direction:column);
+         position: relative;
+         &>span:first-of-type{
+            font-family: $ff_primary;
+            font-size: 1.1rem;
+            text-align: center;
+            display: block;
+            color: $text-color1;
+            font-weight: $fw_bold;
+            letter-spacing: 1px;
+         }
+
+         &>ul:first-of-type{
+            margin-top: .3em;
+            li{
+               display: inline-block;
+               font-family: $ff_primary;
+               margin-inline: .5em;
+               color:$text-color1;
+               position: relative;
+               text-transform: capitalize;
+               font-size: 1.1rem;
+            }
+
+            li:nth-child(1),
+            li:nth-child(2){
+               &::after{
+                  content: "";
+                  width: 5px;
+                  aspect-ratio: 1/1;
+                  border-radius: 50%;
+                  background: $text-color1;
+                  right: -.6em;
+                  top: 0;
+                  bottom: 0;
+                  margin-block: auto;
+                  display: block;
+                  position: absolute;
+               }
+            }
+         }
+
+         .add_label_btn{
+            margin-top: .5em;
+         }
+      }
+
+
+
+
+      .top_details_highlight + div{
+         &>*:nth-child(1),
+         &>*:nth-child(2){
+            position: absolute;
+            top: .8em;
+            right: 1.6em;
+            font-size: 1.1rem;
+            color: $text-color1;
+            opacity: .7;
+
+            &:hover{
+               opacity: 1;
+            }
+
+            @include useMediaQuery_LS{
+               right: 11em;
+               top: unset;
+               bottom: 1.8em;
+            }
+         }
+
+         &>*:nth-child(2){
+            right: 0;
+
+            @include useMediaQuery_LS{
+               right: 9em;
+            }
+         }
+
+
+         .edit-button{
+            width: 3em;
+            border-radius: 50%;
+            aspect-ratio: 1/1;
+            background: $radiant_color2;
+            position: fixed;
+            bottom: 3em;
+            right: 1em;
+            z-index: 5;
+
+            svg{
+               font-size: 1.1rem;
+            }
+
+            @include useMediaQuery_LS{
+               position: absolute;
+               bottom: 2em;
+               right: 5em;
+               border-radius: unset;
+               aspect-ratio: unset;
+               width: 5.3em;
+               font-weight: $fw_bold;
+               font-family: $ff_secondary;
+               text-transform: capitalize;
+               border-radius: 4px;
+               transform: .2s ease-in-out;
+
+               &:hover{
+                  opacity: .8;
+               }
+            }
+         }
+      }
+
+
+
+      // Media Queries For TOP_SECTION_RX
+      @include  useMediaQuery_LS{
+         padding-bottom: 3em;
+         padding-top: 1.3em;
+         min-height: 11em;
+         padding-inline: 0;
+         position: fixed;
+         z-index: 2;
+         transition: all .3s linear;
+         top: 3.7em;
+         width: 97%;
+         margin-inline: auto;
+         background-color: $generic_color_1;
+
+
+         .back-button{
+            position: relative;
+            svg{
+               position: absolute;
+               left: -.2;
+            }
+         }
+
+         .contact_repPhoto_view{
+            display: block;
+            margin-left: 3em;
+            margin-top: 0;
+         }
+
+         .top_details_highlight{
+            justify-content: flex-start;
+            align-items: flex-start;
+            position: absolute;
+            left: 16em;
+            top: 2.3em;
+         }
+
+         h2,
+         span{
+            text-align: left;
+         }
+
+         h2{
+            font-size: 1.8rem;
+         }
+
+         .add_label_btn{
+            position: absolute;
+            left: 0;
+            top: 9em;
+         }
+
+         .added_labels_container{
+            position: absolute;
+            bottom: -6em;
+            top: unset;
+            left: 2.5em;
+         }
+      }
+   }
+}
+
+
+
+
+
+.resize_page_top_section_rx{
+   @include useMediaQuery_LS{
+      width: 78% !important;
+   }
+}
+
+
+.contact_view_page .top_section_rx .contact_net_links{
+   @include flexObj($justify:center);
+   gap: 1em;
+   position: absolute;
+   bottom: -1.3em;
+   left: 0;
+   right: 0;
+   margin-inline: auto;
+
+   a,
+   button{
+      width: 2.6em;
+      position: relative;
+      border-radius: 50%;
+      display: block;
+      aspect-ratio: 1/1;
+      color: $text-color1;
+      pointer-events: none;
+      @include flexObj($justify:center);
+      z-index: 2;
+      padding: 0;
+
+      &::after{
+         content:"";
+         width: 100%;
+         height: 100%;
+         position: absolute;
+         @include centerContentObj;
+         display: block;
+         margin: auto;
+         background-color: $disabled_net_link_bg;;
+         border-radius: 50%;
+         z-index: -1;
+         transition: .25s ease-in-out;
+      }
+
+      
+      &::before{
+         content:"";
+         width: calc(100% + 2em);
+         aspect-ratio: 1/1;
+         position: absolute;
+         top: 0;
+         left: -1em;
+         bottom: 0;
+         right: 0;
+         margin: auto;
+         display: block;
+         background-color: $generic_color_1;
+         background-blend-mode: normal;
+         border-radius: 50%;
+         z-index: -1;
+      }
+
+      svg{
+         font-size: 1.4rem;
+      }
+   }
+
+   .active_net_link{
+      color: $text-color2;
+      cursor: pointer;
+      pointer-events: all;
+
+      &:hover::after{
+        background-color: $active_net_link_bg_hover;
+      }
+
+      &::after{
+         background-color: $active_net_link_bg ;
+      }
+   }
+
+
+
+   // Media Queries
+   @include useMediaQuery_LS{
+      justify-content: flex-start;
+      margin-left: 17.5em;
+   }
+}
+
+
+
+
+
+
+.details_preview_section{
+
+   &>div:first-of-type{
+      background-color: $bg_color2;
+      border-radius: 6px;
+      padding: 1em;
+      position: relative;
+      margin-block: 2.3em 1em;
+      margin-inline: 1em;
+
+      
+      h3{
+         font-size: 1.1rem;
+      }
+
+      &>div:first-of-type{
+         margin-top: .5em;
+      }
+
+      &>div{
+         @include flexObj;
+         padding-left: 2em;
+         margin-block: 1.2em;
+
+         &>svg:first-of-type{
+            position: absolute;
+            left: .7em;
+            color: $text-color1;
+            font-size: 1.3rem;
+            opacity: .9;
+         }
+
+         p,
+         span{
+            font-family: $ff_primary;
+            color: $text-color2;
+         }
+
+         button,a{
+            text-transform: capitalize;
+            font-family: $ff_primary;
+            color: $radiant_color2;
+            font-weight: $fw_bold;
+         }
+      }
+
+      &>div:nth-of-type(3){
+         p{
+            color: $radiant_color2;
+         }
+      }
+
+      .relatedPeople_details_view{
+         display: block;
+   
+         div{
+            @include flexObj($justify:flex-start);
+            gap: 1em;
+            margin-block: .4em;
+            position: relative;
+   
+            p:first-of-type{
+               font-size: 1rem;
+               position: relative;
+   
+               &::after{
+                  content: "";
+                  width: 4px;
+                  aspect-ratio: 1/1;
+                  border-radius: 50%;
+                  background: $text-color2;
+                  position: absolute;
+                  right: -.6em;
+                  top: 0;
+                  bottom: 0;
+                  margin-block: auto;
+               }
+            }
+   
+            p:last-of-type{
+               color: $text-color1;
+               text-transform: capitalize;
+               font-size: .95rem;
+               font-family: $ff_prompts;
+            }
+         }
+      }
+   
+      &>div:last-of-type{
+         flex-direction: column;
+         align-items: flex-start;
+   
+         p:nth-of-type(1){
+            text-transform: uppercase;
+            font-weight: $fw_bold;
+            font-size: .9rem;
+            margin-bottom: .3em;
+         }
+   
+         span{
+            color: $accent_color_1;
+         }
+   
+         a{
+            margin-block: .3em;
+            display: inline-block;
+         }
+      }
+   }
+
+
+
+   // Media Queries
+   @include useMediaQuery_LS{
+      position: relative;
+      top: 16.5em;
+      @include flexObj($justify:center);
+
+      &::before{
+         content: "";
+         height: 3em;
+         top: 50%;
+         left: 0;
+         z-index: 1;
+         background: $generic_color_1;
+         position: fixed;
+         width: 97%;
+         margin-inline: auto;
+         transition: all .3s linear;
+      }
+
+      &>div:first-of-type{
+         width: 32em;
+      }
+   }
+}
