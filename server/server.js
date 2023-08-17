@@ -4,10 +4,12 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-
 const authRoutes = require('./routes/authRoutes')
 const contactsHandlerRoutes = require('./routes/contactsHandlerRoutes')
 const { noContentFound, errorHandler } = require('./middlewares/errorMiddlewares')
+
+
+// Setup Cors
 const corsOptions = {
   origin: process.env.FRONTEND_APP_URL ,
   optionsSuccessStatus: 200, 
@@ -22,8 +24,8 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(process.env.PORT || 9000)
-    console.log(`Connected To DB!......Server served at port ${process.env.PORT || 9000}`)
+    app.listen(process.env.PORT)
+    console.log(`Connected To DB!......Server served at port ${process.env.PORT}`)
   })
   .catch((err) => {
     console.log('Error connecting to the database', err.message)
@@ -46,6 +48,6 @@ app.use('/server/auth',authRoutes)
 app.use('/server/contacts',contactsHandlerRoutes)
 
 
-
+// Error Handlers
 app.use(noContentFound)
 app.use(errorHandler)
