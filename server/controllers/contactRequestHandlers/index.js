@@ -4,7 +4,8 @@ const {
    setHideMultipleContacts,
    setRestoreMultipleContactsFromTrash,
    setDeleteMultipleContacts,
-   setMergeDuplicates
+   setMergeDuplicates,
+   setMergeAll
 } = require('./multipleRequest')
 const {
    setTrashContactHandler,
@@ -24,6 +25,7 @@ const {
 module.exports = {
    setMergeDuplicates,
    setTrashContactHandler,
+   setMergeAll,
    setHideContactHandler,
    setFavourited,
    editUserLabel,

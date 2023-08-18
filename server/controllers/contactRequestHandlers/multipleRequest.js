@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const AuthUserData = require('../../models/AuthUserData')
 const { checkForUid, checkIfUserExists } = require('./onRequestHelperFns/index')
+const _ = require('lodash')
 
 
 // Handle Multi Contact Delete
@@ -150,6 +151,8 @@ const setDeleteMultipleContacts = asyncHandler(async (request, response) => {
          return !contactIds.includes(c._id.toString())
       })
 
+      await authUserDataDoc.save()
+
       response.status(200).json({ message: "Selected Contacts Are Now Permanently Deleted" })
    }
    
@@ -176,16 +179,55 @@ const setMergeDuplicates = asyncHandler(async (request, response) => {
 
       const aboutToBeMerged = authUserDataDoc.contacts.filter(c => duplicatesIds.includes(c._id.toString()))
 
+      const mergedContact = _.merge({},...aboutToBeMerged)
 
+      authUserDataDoc.contacts = authUserDataDoc.contacts.filter(c => !duplicatesIds.includes(c._id.toString()))
 
-      response.status(200).json({ message: "Selected Contacts Are Now Permanently Deleted" })
+      if(mergedContact){
+         authUserDataDoc.contacts = [...authUserDataDoc.contacts, mergedContact ]
+      }
+
+      await authUserDataDoc.save()
+
+      response.status(200).json( { mergedContact })
    }
    
    catch (error) {
       response.status(500)
       throw new Error(error.message)
    }
-}) 
+})
+
+
+
+
+
+
+
+const setMergeAll = asyncHandler(async() => {
+   const { uid } = request.query;
+   const { allDuplicates } = request.body;
+   
+   try {
+      await checkForUid(response,uid)
+      
+      for(const duplicateGroup of allDuplicates){
+         console.log(duplicateGroup)
+      }
+      
+
+      // await authUserDataDoc.save()
+
+      // response.status(200).json( { mergedContact })
+   }
+
+   catch(err){
+      throw new Error(err.message)
+   }
+})
+
+
+
 
 
 module.exports = {
@@ -194,5 +236,6 @@ module.exports = {
    setManageMultiContactLabels,
    setHideMultipleContacts,
    setRestoreMultipleContactsFromTrash,
-   setMergeDuplicates
+   setMergeDuplicates,
+   setMergeAll
 }

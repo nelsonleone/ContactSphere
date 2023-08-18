@@ -88,9 +88,7 @@
          &:focus:not(.active){
             outline: none;
 
-            &::after{
-               display: block;
-            }
+            color: $accent_color_1;
          }
 
          &:focus{
@@ -263,7 +261,7 @@
 
 
 .hide_nav{
-  left: -300px !important;
+  left: -330px !important;
 }
 
 

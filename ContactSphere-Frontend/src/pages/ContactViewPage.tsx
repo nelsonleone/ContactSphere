@@ -14,13 +14,14 @@ import PhotoUrlAvatar from "../../lib/Avatars/PhotoUrlAvatar"
 import EditButton from "../components/ContactFormContent/EditButton"
 import { formatPhoneNumber, formatPhoneNumberIntl } from 'react-phone-number-input'
 import { Breakpoints } from '../enums'
-import { IContactsFromDB } from "../vite-env"
+import { IContactsFromDB, Sites } from "../vite-env"
 import { useState } from "react"
 import LabelMenu from "../../lib/popups/LabelMenu"
 import AddLabelDialog from "../../lib/popups/AddLabelDialog"
 import checkExternalLinks from "../utils/helperFns/checkExternalLinks"
 import { useAddToFavouritesMutation } from "../RTK/features/api/injectedContactsApiQueries"
 import AddedLabels from "../components/ContactFormContent/input_sections/AddedLabels"
+import formatDate from "../utils/helperFns/formatDate"
 
 export default function ContactViewPage(){
    
@@ -51,8 +52,8 @@ export default function ContactViewPage(){
                         <span>{formatPhoneNumberIntl(contact?.phoneNumber)}</span>
 
                         {
-                           contact.jobTitle || contact.department || contact.companyName &&
-                           <ul>
+                           contact.jobTitle || contact.department || contact.companyName ?
+                           <ul className="job_details">
                               {
                                  contact.jobTitle &&
                                  <li>{contact.jobTitle}</li>
@@ -66,6 +67,8 @@ export default function ContactViewPage(){
                                  <li>{contact.companyName}</li>
                               }
                            </ul>
+                           :
+                           null
                         }
 
                         <AddedLabels contactId={contact._id} phoneNumber={contact.phoneNumber} labelsArray={contact.labelledBy} />
@@ -96,13 +99,13 @@ export default function ContactViewPage(){
                           phoneNumber={contact.phoneNumber}
                           addToFavourites={addToFavourites}
                         />
-                        <ContactMenu method="single" contactId={contact._id} />
+                        <ContactMenu method="single" contactId={contact._id} phoneNumber={contact.phoneNumber} />
                         <EditButton navigateTo={`/c/edit/${contact._id}`} />
                      </div>
 
                      <div className="contact_net_links">
                         <EmailLinkButton mailTo={contact.email} />
-                        <SocialSiteLink site={contact.social.site} handle={contact.social.handle} />
+                        <SocialSiteLink site={contact.social.site as Sites} handle={contact.social.handle} />
                      </div>
                   </div>
 
@@ -116,7 +119,7 @@ export default function ContactViewPage(){
                            <div>
                               <MdOutlineEmail aria-hidden="true" />
                               <p>{contact.email}</p>
-                              <Button variant="text" onClick={() => {}}>Send Mail</Button>
+                              <Button LinkComponent='a' href={`https://mail.google.com/mail/?view=cm&to=${contact.email}`} variant="text" target="_blank">Send Mail</Button>
                            </div>
                         }
 
@@ -153,7 +156,7 @@ export default function ContactViewPage(){
                            contact.birthday &&
                            <div>
                               <FaBirthdayCake aria-hidden="true" />
-                              <p>{new Date(contact.birthday).toLocaleDateString('en')}</p>
+                              <p>{formatDate(contact.birthday as string)}</p>
                            </div>
                         }
 
@@ -162,7 +165,7 @@ export default function ContactViewPage(){
                            <div>
                               <CgWebsite aria-hidden="true" />
                               <p>{contact.website}</p>
-                              <Link to={contact.website}>Visit Website</Link>
+                              <Link to={checkExternalLinks(contact.website)}>Visit Website</Link>
                            </div>
                         }
                         {

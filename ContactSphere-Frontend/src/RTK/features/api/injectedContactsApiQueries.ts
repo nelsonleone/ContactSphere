@@ -1,4 +1,4 @@
-import { Contact, IContactsFromDB, UserData, UserLabels, IServerResponseObj } from "../../../vite-env";
+import { Contact, IContactsFromDB, UserData, UserLabels, IServerResponseObj, Duplicate } from "../../../vite-env";
 import { contactsQuerySlice } from "./contactsQuerySlice";
 
 const CONTACTS_API_URL = '/contacts';
@@ -175,6 +175,16 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
             body: { duplicatesIds: args.duplicatesIds }
          }),
          invalidatesTags: ['Contact']
+      }),
+
+      // Merge and fix contacts
+      mergeAllDuplicateContacts: builder.mutation<IServerResponseObj,{authUserUid:string,allDuplicates:Duplicate[][]}>({
+         query: (args) => ({
+            url: `${CONTACTS_API_URL}/mergeAllDuplicates?uid=${args.authUserUid}`,
+            method: 'PUT',
+            body: { allDuplicates: args.allDuplicates  }
+         }),
+         invalidatesTags: ['Contact']
       })
    })
 })
@@ -197,5 +207,6 @@ export const {
    useEditUserLabelMutation,
    useSendMultipleToTrashMutation,
    useTrashContactMutation,
-   useMergeDuplicateContactsMutation
+   useMergeDuplicateContactsMutation,
+   useMergeAllDuplicateContactsMutation
 } = extendedContactsQuerySlice;

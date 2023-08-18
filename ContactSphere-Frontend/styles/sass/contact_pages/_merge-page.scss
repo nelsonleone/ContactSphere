@@ -1,0 +1,167 @@
+@use '../utils' as *;
+@use '../global/' as *;
+
+.merge_area{
+    margin-top: 2em;
+    position: relative;
+    padding-bottom:  7em;
+    .duplicates_count_container{
+        display: none;
+
+        @include useMediaQuery_LS{
+            display: block;
+            background-color: $bg_color2;
+            padding: 1em;
+            @include flexObj($justify:flex-start);
+            gap: 1em;
+            align-self: baseline;
+
+            h5{
+                font-size: 1rem;
+            }
+
+            p{
+                font-size: 1rem;
+                font-family: $ff_primary;
+                color: $text-color1;
+                margin-block: .4em;
+            }
+        }
+    }
+
+    .duplicates_container{
+        width: 94%;
+        margin-inline: auto;
+        &>div:first-child{
+            border-bottom: 1px solid $bg_color1;
+            padding-bottom: .7em;
+            span{
+                color: $text-color1;
+                text-transform: capitalize;
+                font-size: 1rem;
+                font-family: $ff_primary;
+                margin-block: .3em;
+            }
+
+            button{
+                position: absolute;
+                bottom: 1em;
+                right: 1em;
+                background: $radiant_color2;
+                text-transform: capitalize;
+                font-family: $ff_primary;
+                font-weight: $fw_bold;
+            }
+        }
+    }
+
+
+    @include useMediaQuery_LS{
+        display: grid;
+        grid-template-columns: 34% 60%;
+        gap: 6%;
+        padding-bottom: 3em;
+
+        &::after{
+            content:"";
+            width: 1px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 36%;
+            background-color: $bg_color1;
+            display: block;
+        }
+
+        .duplicates_container>div:first-child {
+            @include flexObj;
+            button{
+                bottom: unset;
+                position: unset;
+            }
+        }
+    }
+}
+
+
+.merge_area .duplicate_group{
+    border: 1px solid $bg_color1;
+    padding: 1em 2em;
+    border-radius: 10px;
+    margin-block: 1em;
+    position: relative;
+    padding-bottom: 3.4em;
+
+    &::after{
+        content: "";
+        bottom: 3.4em;
+        width: 100%;
+        left: 0;
+        background: $bg_color1;
+        height: 1px;
+        display: block;
+        position: absolute;
+    }
+
+    .duplicate_contact{
+        @include flexObj($justify:flex-start);
+        gap: 1em;
+        cursor: pointer;
+        margin-bottom: 1.4em;
+        
+
+        &>div{
+            @include flexObj($direction: column,$align:flex-start);
+            gap: .2em;
+
+            p{
+                font-weight: $fw_xBold;
+                color: $text-color1;
+                letter-spacing: .04px;
+                font-family: $ff_primary;
+                font-size: .9rem;
+                text-transform: uppercase;
+            }
+            
+            span{
+                font-family: $ff_primary;
+                color: $text-color1;
+                font-size: 1rem;
+                letter-spacing: 0.4px;
+            }
+
+            @include useMediaQuery_LS{
+                p{
+                    letter-spacing: 0.7px;
+                    font-size: .95rem;
+                }
+            }
+        }
+
+    }
+
+    &>div:last-child{
+        @include flexObj($justify:flex-end);
+        gap: 1.5em;
+        position: absolute;
+        bottom: 1em;
+        width: 80%;
+        margin-inline: auto;
+
+        &>*{ 
+            font-family: $ff_primary ;
+            font-weight: $fw_bold !important;
+            background: transparent;
+            color: $radiant_color2;
+            font-size: 1rem;
+            text-transform: capitalize;
+        }
+    }
+
+                
+    @include useMediaQuery_LS{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+      justify-items: center;
+    }
+}

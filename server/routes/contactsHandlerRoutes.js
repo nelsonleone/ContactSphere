@@ -18,7 +18,8 @@ const {
    setDeleteContact,
    setDeleteMultipleContacts,
    setRestoreMultipleContactsFromTrash,
-   setMergeDuplicates
+   setMergeDuplicates,
+   setMergeAll
 } = require('../controllers/contactRequestHandlers/index')
 
 router.get('/getAuthUserData',getAuthUserData)
@@ -39,6 +40,7 @@ router.put('/setEdittedContact',setEdittedContact)
 router.put('/restoreFromTrash',setRestoreFromTrash)
 router.put('/restoreMultipleFromTrash',setRestoreMultipleContactsFromTrash)
 router.put('/mergeDuplicates',setMergeDuplicates)
+router.put('/mergeAllDuplicates',setMergeAll)
 
 
 module.exports = router;

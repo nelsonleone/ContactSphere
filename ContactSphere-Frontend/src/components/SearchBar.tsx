@@ -1,5 +1,5 @@
 import { HiSearch } from 'react-icons/hi';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { useAppDispatch, useAppSelector } from '../customHooks/reduxCustomHooks';
 import findSearchedContacts from '../utils/helperFns/findSearchedContacts';
 import { setSearchResult } from '../RTK/features/slices/searchContactsSlice';
@@ -23,6 +23,12 @@ function SearchBar() {
     dispatch(setSearchResult(result))
   }
 
+  const handleNavigate = (id:string) => {
+    navigate(`c/${id}`)
+    setSearchValue("")
+    setSearchResult([])
+  }
+
   useEffect(() => {
     if(searchValue === "")return;
 
@@ -37,26 +43,26 @@ function SearchBar() {
         <HiSearch aria-hidden="true" />
         <input type="text" aria-haspopup="listbox" aria-expanded={searchValue ? "true": "false"} value={searchValue} onChange={(e) => setSearchValue(e.target.value)} id="searchbar-input" name="searchbar-input" placeholder="Search" className="searchbar-input" />
         <SearchbarCancelSearchIcon setSearchValue={setSearchValue} />
-        {
-          searchValue !== "" && searchValue.length > 2 &&
+        { 
+          searchValue !== "" && searchValue.length > 2 ?
           <Card className="search_results" style={{bottom: `calc(-100% - ${searchedContacts.length * 2.8})em`}}>
-            <div>
-              {
-                searchValue && searchedContacts.length ? searchedContacts.map(c => (
-                  <div tabIndex={0} className="search-result" key={nanoid()} onClick={() => navigate(`/c/${c._id}`)}>
-                    <PhotoUrlAvatar size={30} aria-labelledBy={c._id} photoURL={c.repPhoto} nameForAlt={c.firstName} />
-                    <p id={c._id}>{handleContactDetailsDisplay(`${c.prefix} ${c.firstName} ${c.lastName} ${c.middleName} ${c.suffix}`)}</p>
-                  </div>
-                ))
-                :
-                <p>No Result From Search</p>
-              }
-            </div>
+            {
+              searchValue && searchedContacts.length ? searchedContacts.map(c => (
+                <div tabIndex={0} className="search-result" key={nanoid()} onClick={() => handleNavigate(c._id)}>
+                  <PhotoUrlAvatar size={30} photoURL={c.repPhoto} nameForAlt={c.firstName} />
+                  <p id={c._id}>{handleContactDetailsDisplay(`${c.prefix} ${c.firstName} ${c.lastName} ${c.middleName} ${c.suffix}`)}</p>
+                </div>
+              ))
+              :
+              <p>No Result From Search</p>
+            }
           </Card>
+          :
+          null
         }
       </div>
     </>
   )
 }
 
-export default SearchBar;
+export default memo(SearchBar);

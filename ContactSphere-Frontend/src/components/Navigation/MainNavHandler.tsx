@@ -86,6 +86,8 @@ function NavMenu(){
       setOpenDialog(true)
    }
 
+
+
    // Prompt User Before Navigation If There Are Changes Made In Create\Edit Contact Pages
    const handleNavigate = (e:MouseEvent<HTMLAnchorElement>) => {
       if(thereAreChanges){

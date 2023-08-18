@@ -74,24 +74,27 @@ function ContactMenu(props:IProps){
       },dispatch)
    }
 
-   const handleMenuHideContact = () => clientAsyncHandler(
-      async() => {
-         handleClose()
-         await stopUnauthourizedActions(uid)
-         await handleAsyncHideContact(
-            dispatch,
-            props.method,
-            props.contactId || '',
-            true,
-            uid!,
-            selectedContacts,
-            contacts,
-            hideContact,
-            hideMultipleContacts
-         )
-      },
-      dispatch
-   )
+   const handleMenuHideContact = (e:MouseEvent<HTMLLIElement>) => {
+      e.stopPropagation()
+      clientAsyncHandler(
+         async() => {
+            handleClose()
+            await stopUnauthourizedActions(uid)
+            await handleAsyncHideContact(
+               dispatch,
+               props.method,
+               props.contactId || '',
+               true,
+               uid!,
+               selectedContacts,
+               contacts,
+               hideContact,
+               hideMultipleContacts
+            )
+         },
+         dispatch
+      )
+   }
 
 
 
@@ -118,6 +121,11 @@ function ContactMenu(props:IProps){
       props.setOpenDialog && props.setOpenDialog(prevState => prevState = !prevState)
    }
 
+   const handleMenuDeleteButtonClick = (e:MouseEvent<HTMLLIElement>) => {
+      e.stopPropagation()
+      setShowDialog(prevState => prevState = !prevState)
+   }
+
    return(
       <>
          <ContactMenuButton ariaExpanded={open} ariaControls={props.id || 'contact-menu'} tooltipText='More actions' openContactMenu={(e) => handleClick(e)} />
@@ -138,7 +146,7 @@ function ContactMenu(props:IProps){
                   </ListItemIcon>
                   <ListItemText>{props.method === "single" ? "Hide Contact" : "Hide From Contacts"}</ListItemText>
                </MenuItem>
-               <MenuItem onClick={() => setShowDialog(prevState => prevState = !prevState)}>
+               <MenuItem onClick={handleMenuDeleteButtonClick}>
                   <ListItemIcon>
                      <BsTrash3Fill />
                   </ListItemIcon>

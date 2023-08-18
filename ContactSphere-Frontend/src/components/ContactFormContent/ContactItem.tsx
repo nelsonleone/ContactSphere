@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import PhotoUrlAvatar from "../../../lib/Avatars/PhotoUrlAvatar";
 import { IContactsFromDB } from "../../vite-env";
-import { memo, useState, useEffect } from "react";
+import { memo, useState, useEffect, MouseEvent } from "react";
 import { EditIconButton, RestoreFromTrashButton, RestoreToActiveButton, StarIconButton } from "../../../lib/with-tooltip";
 import CustomCheckbox from "../../../lib/customInputs/CustomCheckbox";
 import { useNavigate } from "react-router-dom";
@@ -92,6 +92,11 @@ function ContactItem(props:IContactItemProps){
       dispatch
    )
 
+   const handleContactItemClick = (e:MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation()
+      navigate(`/c/${_id}`)
+   }
+
 
    useEffect(() => {
       setIsSelected(selectedContacts.some(contactId => contactId === _id))
@@ -103,7 +108,6 @@ function ContactItem(props:IContactItemProps){
          className={`contact ${isSelected ? "selected_contact" : ""}`} 
          aria-label="Contact" 
          aria-describedby={`${_id}-description`}
-         onClick={() => navigate(`/c/${_id}`)}
          >
          <PhotoUrlAvatar 
             nameForAlt={`${prefix} ${firstName} ${lastName} ${suffix}`.split(' ').filter(v => v !== "").join(' ')} 
@@ -116,12 +120,14 @@ function ContactItem(props:IContactItemProps){
            id={`${_id}-name`} 
            aria-labelledby="name-col"
            style={{order: `${nameAreaOrder}`}}
+           onClick={handleContactItemClick}
            >
             {handleContactDetailsDisplay(`${firstName} ${lastName}`)}
          </p>
 
          <Link 
-            to={`mailto:${email}`} 
+            to={`https://mail.google.com/mail/?view=cm&to=${email}`}
+            target="_blank"
             id={`${_id}-email`}
             aria-labelledby="email-col"
             style={{order: `${emailAreaOrder}`}}
@@ -133,6 +139,7 @@ function ContactItem(props:IContactItemProps){
             id={`${_id}-phone`} 
             aria-labelledby="phone-col"
             style={{order: `${phoneAreaOrder}`}}
+            onClick={handleContactItemClick}
             >
             {handleContactDetailsDisplay(phoneNumber)}
          </p>
@@ -143,6 +150,7 @@ function ContactItem(props:IContactItemProps){
               aria-labelledby="deletedDate-col"
               id={`${_id}-deleteDate`} 
               style={{order: `${jobTitleAreaOrder}`}}
+              onClick={handleContactItemClick}
               >
                {new Date(deletedAt).toLocaleDateString('en-US')}
             </p>
@@ -151,6 +159,7 @@ function ContactItem(props:IContactItemProps){
                aria-labelledby="jobTitle-col"
                id={`${_id}-jobTitle`} 
                style={{order: `${jobTitleAreaOrder}`}}
+               onClick={handleContactItemClick}
                >
                {handleContactDetailsDisplay(`${jobTitle}${jobTitle || companyName ? "," : ""}${companyName}`)}
             </p>

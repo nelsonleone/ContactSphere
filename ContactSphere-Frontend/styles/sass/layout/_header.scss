@@ -130,8 +130,10 @@ button[aria-controls=user-menu]{
       gap: 1em;
       height: 2.8em;
       padding-block: 1em;
-      cursor: default;
+      cursor: pointer;
       padding-inline: .3em;
+      z-index: 2;
+      position: relative;
 
 
       &:hover{
@@ -331,7 +333,7 @@ button[aria-controls=user-menu]{
 
 
    .header_main .searchbar{
-      flex-basis:923px;
+      flex-basis: 61em;
    }
 
 

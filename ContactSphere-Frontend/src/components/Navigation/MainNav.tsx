@@ -124,7 +124,7 @@ export default function MainNav(props:IProps){
                                        <p aria-label={`contacts-with-${value.label}-label`}>{checkContactsWithLabel(value.label)}</p>
                                     </NavLink>
                                     <div className="label_link_btns">
-                                       <EditIconButton toolTipText="Rename Label" navigateToEditPage={() => handleOpenDialog(value)} aria-label="Edit" />
+                                       <EditIconButton toolTipText="Rename Label" action={() => handleOpenDialog(value)} aria-label="Edit" />
                                        <DeleteIconButton toolTipText="Delete Label" handleDelete={() => handleLabelDelete(value.label)} />
                                     </div>
                                  </li>

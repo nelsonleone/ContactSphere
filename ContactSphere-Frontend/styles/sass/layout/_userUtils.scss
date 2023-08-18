@@ -29,6 +29,7 @@
       color: #FAFAFA;
       font-size:1rem;
       padding: 1em;
+      margin-inline: auto;
       border-top-left-radius: 4px;
       border-top-right-radius: 4px;
    }
@@ -146,6 +147,11 @@
    bottom: 2em;
    position: fixed;
    z-index: 100;
+
+   *{
+      font-family: $ff_prompts !important;
+      font-size: 1rem;
+   }
 }
 
 
@@ -228,18 +234,18 @@
 
 .added_labels_container{
    margin-block: .5em;
+   display: grid;
+   row-gap: .4em;
+   grid-template-columns: 1fr 1fr;
+   grid-template-rows: auto;
+   justify-items: center;
 
-   &>div{
-      display: grid;
-      grid-template-columns: repeat(2,1fr);
-      grid-template-rows: auto;
-      gap:.4em;
-
-      @include useMediaQuery_LS{
-         grid-template-columns: repeat(8,1fr);
-         grid-template-rows: 1fr 1fr;
-      }
+   @include useMediaQuery_LS{
+      grid-template-columns: repeat(8,1fr);
+      grid-template-rows: 1fr 1fr;
+      gap: 0;
    }
+
 
    button{
       @include flexObj($justify:center);
@@ -248,6 +254,7 @@
       border: 1px solid $text_color1;
       border-radius: 10px;
       padding:.2em .5em;
+      margin-block: .3em;
 
       &:hover{
          opacity: .9;

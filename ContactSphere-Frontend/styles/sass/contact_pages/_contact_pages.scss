@@ -294,6 +294,8 @@
    width: 100%;
    padding: .3em .5em;
    margin-bottom: 1em;
+   z-index: 2;
+   position: relative;
    @include flexObj($justify:flex-start);
 
    button{

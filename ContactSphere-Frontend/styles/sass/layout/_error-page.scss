@@ -1,5 +1,6 @@
 @use '../global/typography' as *;
 @use '../global/colors' as *;
+@use '../utils' as *;
 
 .not_found_page{
    padding-block: 1em;
@@ -23,5 +24,9 @@
    p{
       margin-block: 1em;
       font-weight: $fw_bold;
+   }
+
+   @include useMediaQuery_LS{
+      padding-top: 10em;
    }
 }

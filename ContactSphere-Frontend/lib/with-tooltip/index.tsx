@@ -195,7 +195,8 @@ export function StarIconButton(props:IStarButtonProps){
    const { uid } = useAppSelector(store => store.authUser.userDetails)
    const dispatch = useAppDispatch()
 
-   const handleStarring = async() => {
+   const handleStarring = async(e:MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
       try{
          dispatch(setShowWrkSnackbar())
          await stopUnauthourizedActions(uid)
@@ -237,11 +238,23 @@ export function StarIconButton(props:IStarButtonProps){
 }
 
 
-export function EditIconButton({navigateTo,toolTipText}:{ toolTipText?:string, navigateTo:string }){
+export function EditIconButton({navigateTo,toolTipText, action}:{ toolTipText?:string, navigateTo?:string, action?: () => void }){
    const navigate = useNavigate()
+
+   const handleClick = (e:MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      if(navigateTo){
+         navigate(navigateTo)
+      }
+      
+      if(action){
+         action()
+      }
+   }
+
    return(
       <Tooltip title={toolTipText || "Edit Contact"}>
-         <IconButton className="contact_edit_button" type="button" onClick={() =>  navigate(navigateTo)}>
+         <IconButton className="contact_edit_button" type="button" onClick={handleClick}>
             <GoPencil aria-label="edit" color=" hsl(0, 3%, 16%)"  />
          </IconButton>
       </Tooltip>
@@ -313,6 +326,14 @@ export function ContactMenuButton(props:IContactMenuProps){
       ariaExpanded
    } = props;
 
+   const handleClick = (e:MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      
+      if(openContactMenu){
+         openContactMenu(e)
+      }
+   }
+
    return(
       <Tooltip title={tooltipText || "Contact Menu"}>
          <IconButton 
@@ -321,7 +342,7 @@ export function ContactMenuButton(props:IContactMenuProps){
             aria-haspopup="menu" 
             className="contact_menu_button" 
             type="button" 
-            onClick={openContactMenu}>
+            onClick={handleClick}>
             <BsThreeDotsVertical aria-label="menu" color={color || " hsl(0, 3%, 16%)"}  />
          </IconButton>
       </Tooltip>

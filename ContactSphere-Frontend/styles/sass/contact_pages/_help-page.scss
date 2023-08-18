@@ -1,0 +1,104 @@
+@use '../utils' as *;
+@use '../global' as *;
+
+.help_page{
+    padding-top: 2em;
+    .help-faq{
+        position: unset;
+        width: 90%;
+        margin-inline: auto;
+        margin-block: 2em;
+
+        h4{
+            color: $radiant-color2;
+            margin-block: .3em;
+        }
+
+        *{
+            font-family: $ff_primary !important;
+        }
+    }
+
+    h2{
+        margin-block: 1em;
+    }
+
+    main > section{
+        @include flexObj($direction:column);
+        gap: 1em;
+
+        &>div:last-of-type{
+            h3{
+                text-align: center;
+            }
+            p{
+                font-family: $ff_primary;
+                color: $text-color1;
+                line-height: 26px;
+            }
+        }
+    }
+
+    footer{
+        background: $text-color2;
+        width: 100%;
+        padding: .5em;
+        border-radius: 1px;
+        @include flexObj($justify:center);
+        position: relative;
+        padding-bottom: 1.8em;
+        gap: .5em;
+
+        span:last-child{
+            position: absolute;
+            bottom: .5em;
+            font-family: $ff_prompts;
+            color: $generic_color_1;
+        }
+
+        svg{
+            color: $generic_color_1;
+        }
+    }
+
+
+
+    // Media Query
+    @include useMediaQuery_LS{
+        padding-top: 5em;
+
+        .help-faq{
+            width: 50%;
+            margin-inline: 0;
+            margin-block: 3em;
+        }
+
+        main section {
+            flex-direction: row;
+
+            &>div:first-of-type{
+                width: 40%;
+                @include flexObj($justify:center);
+            }
+
+            &>div:last-of-type{
+                flex-basis: 60%;
+                h3{
+                    text-align: left;
+                }
+
+                p{
+                    font-size: 1.1rem;
+                    line-height: 28px;
+                }
+            }
+        }
+
+        footer{
+            gap: 1em;
+            svg{
+                font-size: 2rem;
+            }
+        }
+    }
+}

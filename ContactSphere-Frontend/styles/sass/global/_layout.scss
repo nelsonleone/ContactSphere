@@ -3,7 +3,7 @@
 @use '../utils' as *;
 
 .page{
-   width: 98%;
+   width: 95%;
    margin-inline:  auto;
    background-color: $generic_color_1;
    &>*:nth-child(2){

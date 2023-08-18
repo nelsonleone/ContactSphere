@@ -11,6 +11,7 @@ function Faq(){
 
    return(
       <div id="help-faq" aria-hidden="true" className="help-faq">
+         <h4>Frequently asked questions</h4>
          <div className="accordion-container">
             <Accordion expanded={expanded === 'panel1'} onChange={() => handleChange('panel1')}>
                <AccordionSummary
@@ -18,7 +19,7 @@ function Faq(){
                   aria-controls="panel1bh-content"
                   id="panel1bh-header"
                >
-                  <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                  <Typography sx={{ width: '80%', flexShrink: 0 }}>
                      Are My Contacts Secure
                   </Typography>
                   <Typography sx={{ color: 'text.secondary' }}></Typography>
@@ -37,7 +38,7 @@ function Faq(){
                   aria-controls="panel2bh-content"
                   id="panel2bh-header"
                >
-                  <Typography sx={{ width: '33%', flexShrink: 0 }}>Can I Get Back My Deleted Contacts</Typography>
+                  <Typography sx={{ width: '80%', flexShrink: 0 }}>Can I Get Back My Deleted Contacts</Typography>
                </AccordionSummary>
                <AccordionDetails>
                   <Typography>
@@ -53,7 +54,7 @@ function Faq(){
                   aria-controls="panel3bh-content"
                   id="panel3bh-header"
                >
-                  <Typography sx={{ width: '33%', flexShrink: 0}}>
+                  <Typography sx={{ width: '80%', flexShrink: 0}}>
                      How Do I Group My Contacts
                   </Typography>
                </AccordionSummary>
@@ -71,7 +72,7 @@ function Faq(){
                   aria-controls="panel4bh-content"
                   id="panel4bh-header"
                >
-                  <Typography sx={{ width: '33%', flexShrink: 0 }}>Restoring Back Contacts</Typography>
+                  <Typography sx={{ width: '80%', flexShrink: 0 }}>Restoring Back Contacts</Typography>
                </AccordionSummary>
                <AccordionDetails>
                   <Typography>

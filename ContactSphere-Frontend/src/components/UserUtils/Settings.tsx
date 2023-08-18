@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from '../../customHooks/reduxCustomHoo
 import { setSortBy } from '../../RTK/features/slices/userLocalSettingSlice';
 import { SortBy } from '../../enums';
 import SortOrder from './SortOrder';
-import ColumnReOrder from './ColumnReOrder';
 
 interface IProps {
    setState: Dispatch<SetStateAction<IHeaderState>>,
@@ -44,20 +43,7 @@ function Settings(props:IProps){
                         activeTab === "sortBy" ?
                         <SortOrder setSelectedValue={setSelectedValue} selectedValue={selectedValue} />
                         :
-                        <ColumnReOrder data={[
-                           {
-                              name: "item1",
-                              id: "item1"
-                           },
-                           {
-                              name: "item2",
-                              id: "item2"
-                           },
-                           {
-                              name: "item3",
-                              id: "item3"
-                           },
-                        ]} />
+                        "Coming Soon!!"
                      }
                   </div>
                </div>

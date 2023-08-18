@@ -21,6 +21,15 @@ export default function CustomSimpleDialog(props:IProps) {
 
    const { open, setOpen, action, btnText1, btnText2, dialogTitle, dialogText } = props;
 
+   const handleCancel = (e:React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      setOpen(false)
+   }
+   const handleAction = (e:React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      action()
+   }
+
    return (
      <Dialog open={open} onClose={() => setOpen(false)} className="custom_simple_dialog">
          <DialogTitle className="custom_simple_dialog_title">{dialogTitle}</DialogTitle>
@@ -30,8 +39,8 @@ export default function CustomSimpleDialog(props:IProps) {
             </DialogContentText>
          </DialogContent>
          <DialogActions>
-            <Button onClick={() => setOpen(false)}>{btnText1 || "Cancel"}</Button>
-            <Button onClick={action}>{btnText2 || "Proceed"}</Button>
+            <Button onClick={handleCancel}>{btnText1 || "Cancel"}</Button>
+            <Button onClick={handleAction}>{btnText2 || "Proceed"}</Button>
          </DialogActions>
       </Dialog>
    )
