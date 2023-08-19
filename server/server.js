@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const path = require('path')
 require('dotenv').config()
 const mongoose = require('mongoose')
 const cors = require('cors')
@@ -38,14 +39,19 @@ app.use(cors(corsOptions))
 app.use(express.json({limit: "10mb", extended: true}))
 app.use(express.urlencoded({limit: "10mb", extended: true, parameterLimit: 50000}))
 
-
-
 // Auth Route
 app.use('/server/auth',authRoutes)
 
 
 // Contacts Route
 app.use('/server/contacts',contactsHandlerRoutes)
+
+if(process.env.NODE_ENV === "production"){
+  const __dirname = path.resolve()
+  app.use(express.static(path.join((__dirname,'ContactSphere-Frontend/dist'))))
+
+  app.get('*',(req,res) => res.sendFile(path.resolve(__dirname,'ContactSphere-Frontend', 'dist', 'index.html')))
+}
 
 
 // Error Handlers
