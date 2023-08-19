@@ -72,7 +72,7 @@ export default async function handleAsyncHideContact(
 
          dispatch(setSelectNone())
 
-         contacts.forEach(val => {
+         contacts.forEach(() => {
             // Update Local State, Before Data Refetch
             const updatedLocalContacts = contacts.map(c => {
                return selectedContacts.some(j => j === c._id) ? {...c,isHidden:status} : c

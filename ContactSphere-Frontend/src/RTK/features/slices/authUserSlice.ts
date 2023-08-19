@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { AuthMethod } from "../../enums";
+import { AuthMethod } from "../../../enums";
 
 
 interface ISliceState {

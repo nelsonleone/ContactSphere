@@ -13,9 +13,9 @@ import clientAsyncHandler from "../../utils/helperFns/clientAsyncHandler";
 import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions";
 import handleAsyncHideContact from "../../utils/helperFns/handleAsyncHideContact";
 import handleAsyncRestore from "../../utils/helperFns/handleAsyncRestoreContacts";
-import { Duplicates, IContactsFromDB } from "../../vite-env";
+import { IContactsFromDB, Duplicate } from "../../vite-env";
 
-export default function MultiSelectActions({contactsForMultiSelect}:{contactsForMultiSelect:IContactsFromDB[] | Duplicates}){
+export default function MultiSelectActions({contactsForMultiSelect}:{contactsForMultiSelect:IContactsFromDB[] | Duplicate[]}){
 
    const { selectedContacts } = useAppSelector(store => store.multiSelect)
    const { contacts } = useAppSelector(store => store.userData)

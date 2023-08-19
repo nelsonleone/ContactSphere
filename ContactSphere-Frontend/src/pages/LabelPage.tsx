@@ -6,7 +6,6 @@ import ContactPageTopColumn from '../components/ContactFormContent/ContactPageTo
 import SortContacts from '../utils/helperFns/SortContacts'
 import ContactItem from '../components/ContactFormContent/ContactItem'
 import { ContactItemLocation } from '../enums'
-import { useEffect} from 'react'
 
 export default function LabelPage({fetchingContacts}: { fetchingContacts:boolean }){
 

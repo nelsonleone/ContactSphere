@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { IContactsFromDB } from '../../vite-env';
+import { IContactsFromDB } from '../../../vite-env';
 
 interface IinitialState {
    searchedContacts: IContactsFromDB[]

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { IContactsFromDB, UserData, UserLabels } from '../../vite-env'
+import { IContactsFromDB, UserData, UserLabels } from '../../../vite-env'
 
 const initialState:UserData = {
    labels: [],

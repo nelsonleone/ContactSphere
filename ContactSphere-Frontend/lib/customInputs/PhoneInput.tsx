@@ -1,6 +1,5 @@
 import PhoneInput from 'react-phone-number-input'
 import { Controller, Control } from 'react-hook-form'
-import * as React from 'react'
 import { Contact } from '../../src/vite-env'
 import { InputPropertyValueName } from "../../src/enums";
 import 'react-phone-number-input/style.css'

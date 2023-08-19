@@ -2,7 +2,6 @@ import { AiOutlineYoutube } from "react-icons/ai"
 import { FaFacebookSquare, FaInstagram, FaSnapchat } from "react-icons/fa"
 import { FiTwitter } from "react-icons/fi"
 import { Sites } from '../../src/vite-env'
-import * as React from 'react'
 import { BsChatHeartFill } from "react-icons/bs"
 
 

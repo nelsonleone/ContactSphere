@@ -8,5 +8,5 @@ export const contactsQuerySlice = createApi({
   reducerPath: 'contactsQueryApi',
   baseQuery,
   tagTypes: ['Contact','Label'],
-  endpoints: builder => ({})
+  endpoints: () => ({})
 })

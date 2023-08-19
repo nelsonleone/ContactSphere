@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { Autocomplete, Loader } from '@mantine/core';
-import React from 'react';
 import { ICustomInputsProps } from '../../src/vite-env';
 
 

@@ -1,7 +1,7 @@
 import ContactItem from "../components/ContactFormContent/ContactItem"
 import { useAppSelector } from "../customHooks/reduxCustomHooks"
 import MultiSelectActions from "../components/ContactFormContent/MultiSelectActions"
-import { memo, useEffect, useState } from "react"
+import { memo } from "react"
 import { ContactItemLocation } from "../enums"
 import SortContacts from "../utils/helperFns/SortContacts"
 import PageWrapper from "../components/PageWrapper"

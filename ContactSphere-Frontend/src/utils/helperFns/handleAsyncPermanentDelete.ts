@@ -64,7 +64,7 @@ export default async function handleAsyncPermanentDelete(
             throw new Error("An Error Occured Completing Request")
          }
          // Update Contacts Data Locally Before Data Refetch
-         contacts.forEach(val => {
+         contacts.forEach(() => {
             const updatedLocalContactsData = contacts.filter(c => {
                return !selectedContacts.includes(c._id)
             })

@@ -68,7 +68,7 @@ export default async function handleAsyncDelete(
          }
 
          // Update Contacts Data Locally Before Data Refetch
-         contacts.forEach(val => {
+         contacts.forEach(() => {
             const updatedLocalContactsData : IContactsFromDB[] = contacts.map(c => {
                return selectedContacts.includes(c._id) ? { ...c,inTrash:true, deletedAt: new Date().toISOString() } : c
             })

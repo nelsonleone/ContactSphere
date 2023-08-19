@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { TextInput, createStyles, rem } from '@mantine/core';
-import React from 'react';
 import { ICustomInputsProps_Password } from '../../src/vite-env';
 
 
