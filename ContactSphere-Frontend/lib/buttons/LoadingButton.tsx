@@ -1,5 +1,4 @@
 import { Button } from '@mantine/core';
-import React from 'react';
 import { FaSignInAlt, FaUserPlus } from "react-icons/fa"
 import { AuthFormLocation } from '../../src/enums'
 

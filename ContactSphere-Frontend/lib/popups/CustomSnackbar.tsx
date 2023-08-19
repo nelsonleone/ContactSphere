@@ -14,6 +14,7 @@ export default function CustomSnackbar() {
    const location = useLocation()
 
    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+      event.stopPropagation()
       if (reason === 'clickaway') {
          return;
       }

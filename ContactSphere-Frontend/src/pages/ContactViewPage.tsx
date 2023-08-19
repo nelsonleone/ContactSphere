@@ -14,7 +14,7 @@ import PhotoUrlAvatar from "../../lib/Avatars/PhotoUrlAvatar"
 import EditButton from "../components/ContactFormContent/EditButton"
 import { formatPhoneNumber, formatPhoneNumberIntl } from 'react-phone-number-input'
 import { Breakpoints } from '../enums'
-import { IContactsFromDB, Sites } from "../vite-env"
+import { Sites } from "../vite-env"
 import { useState } from "react"
 import LabelMenu from "../../lib/popups/LabelMenu"
 import AddLabelDialog from "../../lib/popups/AddLabelDialog"
@@ -27,7 +27,7 @@ export default function ContactViewPage(){
    
    const { id } = useParams()
    const { contacts } = useAppSelector(store => store.userData)
-   const contact: IContactsFromDB = contacts.find(c => c._id === id?.toString())
+   const contact = contacts.find(c => c._id === id?.toString())
    const contactName = contact?.name || `${contact?.prefix} ${contact?.firstName} ${contact?.lastName} ${contact?.suffix}`;
    const { openNav } = useAppSelector(store => store.openNav)
    const [openAddLabelDialog,setOpenAddLabelDialog] = useState(false)
