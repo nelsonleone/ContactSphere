@@ -184,7 +184,6 @@ const setMergeDuplicates = asyncHandler(async (request, response) => {
 
       const mergedContact = handleMerge(duplicates)
 
-      return;
 
       if(mergedContact){
          authUserDataDoc.contacts = authUserDataDoc.contacts.filter(c => !duplicates.some(val => val._id.toString() === c._id.toString()))

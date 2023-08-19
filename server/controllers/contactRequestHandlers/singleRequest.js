@@ -153,6 +153,7 @@ const removeUserLabel = asyncHandler(async(request,response) => {
    const authUserUid = request.query.uid;
    const labelForDelete = {...request.body,label: capitalizeString(request.body.label)}
 
+
    try{
       await checkForUid(response,authUserUid)
 
@@ -165,7 +166,7 @@ const removeUserLabel = asyncHandler(async(request,response) => {
 
       await checkIfUserExists(response,authUserDataDoc) 
 
-      authUserDataDoc.labels.filter(v => v.label !== labelForDelete.label)
+      authUserDataDoc.labels = authUserDataDoc.labels.filter(v => v.label !== labelForDelete.label)
       // UPDATE CONTACTS WITH LABEL IN LABELLEDBY ARRAY
       authUserDataDoc.contacts = authUserDataDoc.contacts.map(c => {
          return {
@@ -176,7 +177,7 @@ const removeUserLabel = asyncHandler(async(request,response) => {
          }
       })
       
-      authUserDataDoc.save()
+      await authUserDataDoc.save()
 
       const updatedUserDataDoc = await AuthUserData.findOne({ uid: authUserUid })
       response.status(201).json(updatedUserDataDoc.labels)
