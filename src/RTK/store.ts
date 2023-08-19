@@ -14,6 +14,11 @@ import simpleModalReducer from './features/slices/simpleModalSlice';
 import searchContactsReducer from './features/slices/searchContactsSlice';
 import shouldDiscardChangesReducer from './features/slices/shouldDiscardChangesSlice';
 import openNavMenuReducer from './features/slices/openNavMenuSlice';
+import { disableReactDevTools } from '@fvilers/disable-react-devtools'
+
+if(import.meta.env.NODE_ENV !== "development"){
+   disableReactDevTools()
+}
 
 const appStore = configureStore({
    reducer: {
@@ -33,7 +38,11 @@ const appStore = configureStore({
       [authQuerySlice.reducerPath]: authQuerySlice.reducer,
       [contactsQuerySlice.reducerPath]: contactsQuerySlice.reducer,
    },
-   middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(),authQuerySlice.middleware,contactsQuerySlice.middleware]
+   middleware: (getDefaultMiddleware) => [
+      ...getDefaultMiddleware(),
+      authQuerySlice.middleware,contactsQuerySlice.middleware
+   ],
+   devTools: import.meta.env.NODE_ENV !== "development" ? false : true
 })
 
 export type AppDispatch = typeof appStore.dispatch;
