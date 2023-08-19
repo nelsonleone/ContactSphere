@@ -187,7 +187,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
                <FormalInputSection showMore={showMore} control={control} />
                <ContactInputSection control={control} error={errors?.phoneNumber?.message} />
                <AddressInputSection error={errors?.address?.postalCode?.message} showMore={showMore} control={control}  />
-               <AdditionalFields social={social} relatedPeople={relatedPeople} error={errors?.birthday?.message} control={control} showMore={showMore} />
+               <AdditionalFields setValue={setValue} register={register} social={social} relatedPeople={relatedPeople} error={errors?.birthday?.message} control={control} showMore={showMore} />
             </div>
             <button type="button"  className="show_more_btn" onClick={() => setShowMore(!showMore)}>Show {showMore ? "Less" : "More"}</button>
          </form>

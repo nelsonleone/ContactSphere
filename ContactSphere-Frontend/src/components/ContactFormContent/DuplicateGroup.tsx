@@ -5,7 +5,6 @@ import { useMergeDuplicateContactsMutation } from "../../RTK/features/api/inject
 import { useAppDispatch, useAppSelector } from "../../customHooks/reduxCustomHooks"
 import LoadingButton from "../../../lib/buttons/LoadingButton"
 import stopUnauthourizedActions from "../../utils/helperFns/stopUnauthourizedActions"
-import { Button } from "@mui/material"
 import { setShowAlert } from "../../RTK/features/slices/alertSlice"
 import { AlertSeverity } from "../../enums"
 
@@ -16,13 +15,12 @@ export default function DuplicateGroup( { group }:{ group:Duplicate[]}){
    const dispatch = useAppDispatch()
    
    const handleMerge = async(mergeGroup:Duplicate[]) => {
-      const duplicatesIds = mergeGroup.map(v => v._id)
 
       try{
          await stopUnauthourizedActions(uid)
          const res = await mergeDuplicates({
             authUserUid: uid!,
-            duplicatesIds
+            duplicates: mergeGroup
          })
 
          if(!res){
@@ -32,6 +30,7 @@ export default function DuplicateGroup( { group }:{ group:Duplicate[]}){
             alertMessage: "Merged Successfully",
             severity: AlertSeverity.SUCCESS
          }))
+
       }
 
       catch(err:unknown|any){
@@ -43,22 +42,22 @@ export default function DuplicateGroup( { group }:{ group:Duplicate[]}){
    }
 
    return(
+      group.length ?
       <div key={nanoid()} className="duplicate_group">
          {
             group.map(val => (
                <DuplicateContact {...val} />
             ))
          }
-         <div>
-            <Button>Ignore</Button>
-            <LoadingButton 
-               size="sm"
-               loading={isLoading}
-               buttonType="button"
-               buttonText="Merge"
-               handleClick={() => handleMerge(group)}
-            />
-         </div>
+         <LoadingButton 
+            size="sm"
+            loading={isLoading}
+            buttonType="button"
+            buttonText="Merge"
+            handleClick={() => handleMerge(group)}
+         />
       </div>
+      :
+      null
    )
 }

@@ -35,6 +35,7 @@ export default function ContactViewPage(){
    const [addToFavourites] = useAddToFavouritesMutation()
    const avatarNameForAlt = contactName.split(' ').filter(v => v !== "").join(' ')
 
+
    return(
       <PageWrapper className="contact_view_page" title={`ContactSphere ${contact ? `- ${contactName}` : ""}`}>
          <main>
@@ -48,7 +49,7 @@ export default function ContactViewPage(){
                      </div>
                      
                      <div className="top_details_highlight">
-                        <h2>{contactName}</h2>
+                        <h2>{contactName} <i>{contact.nickname}</i></h2>
                         <span>{formatPhoneNumberIntl(contact?.phoneNumber)}</span>
 
                         {
@@ -116,7 +117,7 @@ export default function ContactViewPage(){
 
                         {
                            contact.email &&
-                           <div>
+                           <div className="email_detail">
                               <MdOutlineEmail aria-hidden="true" />
                               <p>{contact.email}</p>
                               <Button LinkComponent='a' href={`https://mail.google.com/mail/?view=cm&to=${contact.email}`} variant="text" target="_blank">Send Mail</Button>
@@ -125,7 +126,7 @@ export default function ContactViewPage(){
 
                         {
                            contact.phoneNumber &&
-                           <div>
+                           <div className="phoneNumber_detail">
                               <BsTelephone aria-hidden="true" />
                               <p>{formatPhoneNumber(contact.phoneNumber)}</p>
                               <Tooltip title={`Call ${contact.phoneNumber}`}>
@@ -138,14 +139,39 @@ export default function ContactViewPage(){
 
                         {
                            Object.values(contact.address).length ?
-                           <div>
-                              <MdOutlineLocationOn aria-hidden="true" />
-                              <Link to={`https://maps.google.com/maps?q=${contact.address.street},${contact.address.postalCode},${contact.address.city},${contact.address.state},${contact.address.country}`}>
-                                 <p>{contact.address.street}</p>
-                                 <p>{contact.address.postalCode}</p>
-                                 <p>{contact.address.city}</p>
-                                 <p>{contact.address.state}</p>
-                                 <p>{contact.address.country}</p>
+                           <div className="location_detail">
+                              {
+                                 Object.values(contact.address).some(val => val !== "") &&
+                                 <MdOutlineLocationOn aria-hidden="true" />
+                              }
+                              <Link target="_blank" to={`
+                                 https://maps.google.com/maps?q=
+                                  ${contact.address.street ? contact.address.street + "," : ""}
+                                  ${contact.address.postalCode ? contact.address.postalCode + "," : ""}
+                                  ${contact.address.city ? contact.address.city + "," : ""}
+                                  ${contact.address.state ? contact.address.state + "," : ""}
+                                  ${contact.address.country ? contact.address.country : ""}`}
+                                 >
+                                 {
+                                    contact.address.street &&
+                                    <p>{contact.address.street}</p>
+                                 }
+                                 {
+                                    contact.address.postalCode &&
+                                    <p>{contact.address.postalCode}</p>
+                                 }
+                                 {
+                                    contact.address.city &&
+                                    <p>{contact.address.city}</p>
+                                 }
+                                 {
+                                    contact.address.state &&
+                                    <p>{contact.address.state}</p>
+                                 }
+                                 {
+                                    contact.address.country &&
+                                    <p>{contact.address.country}</p>
+                                 }
                               </Link>
                            </div>
                            :
@@ -156,7 +182,7 @@ export default function ContactViewPage(){
                            contact.birthday &&
                            <div>
                               <FaBirthdayCake aria-hidden="true" />
-                              <p>{formatDate(contact.birthday as string)}</p>
+                              <p>{formatDate(contact.birthday as string,true)}</p>
                            </div>
                         }
 
@@ -165,7 +191,7 @@ export default function ContactViewPage(){
                            <div>
                               <CgWebsite aria-hidden="true" />
                               <p>{contact.website}</p>
-                              <Link to={checkExternalLinks(contact.website)}>Visit Website</Link>
+                              <Link target="_blank" to={checkExternalLinks(contact.website)}>Visit Website</Link>
                            </div>
                         }
                         {
@@ -196,6 +222,11 @@ export default function ContactViewPage(){
                            : 
                            null
                         }
+                     </div>
+
+                     <div>
+                        <h3>History</h3>
+                        <p>Last editted <span>{formatDate(contact.updatedAt,false)}</span></p>
                      </div>
                   </section>
                </>

@@ -30,6 +30,13 @@ export default function App(){
   const { contacts } = useAppSelector(store => store.userData)
   const foundDuplicates = findDuplicates(contacts)
 
+  if(foundDuplicates?.length){
+    dispatch(setDuplicates(foundDuplicates))
+  }
+  else{
+    dispatch(setDuplicates([]))
+  }
+
 
   useEffect(() => {
     // Don't Try Set User Data When There Is An Unauthourized User
@@ -87,12 +94,6 @@ export default function App(){
   useEffect(()  => {
     dispatch(setSelectNone())
   },[location.pathname])
-
-  useEffect(() => {
-    if(foundDuplicates?.length){
-      dispatch(setDuplicates(foundDuplicates))
-    }
-  },[contacts.length])
 
 
   return(

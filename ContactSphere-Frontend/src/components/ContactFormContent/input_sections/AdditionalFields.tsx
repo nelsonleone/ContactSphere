@@ -1,7 +1,7 @@
 import { useId } from "react";
 import NewContactFormInput from "../../../../lib/customInputs/NewContactFormInput";
 import CustomLabelSelect from "../../../../lib/customInputs/CustomLabelSelect";
-import { Control, useFieldArray } from "react-hook-form"
+import { Control, UseFormRegister, UseFormSetValue, useFieldArray } from "react-hook-form"
 import { Contact } from "../../../vite-env";
 import { InputPropertyValueName } from "../../../enums";
 import { HiPlusCircle } from "react-icons/hi";
@@ -13,18 +13,20 @@ import { TbCirclesRelation } from 'react-icons/tb'
 interface IProps {
    showMore: boolean,
    control:  Control<Contact, any>,
+   register: UseFormRegister<Contact>,
    social: Contact['social'],
    error: string | undefined,
    relatedPeople: {
       label: string,
       name: string
-   }[]
+   }[],
+   setValue: UseFormSetValue<Contact>
 }
 
 
 function AdditionalFields(props:IProps){
 
-   const { showMore, control, error, relatedPeople, social } = props;
+   const { showMore, control, setValue, error, relatedPeople, social, register } = props;
    const { fields, append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.RelatedPeople })
    const id = useId()
 
@@ -76,12 +78,13 @@ function AdditionalFields(props:IProps){
                   />
 
                   <CustomLabelSelect 
-                     control={control}
+                     register={register}
                      label="Label"
                      name={`${InputPropertyValueName.RelatedPeople}[${index}].label`}
                      show={showMore}
                      selectFor="relatedPeople"
                      value={relatedPeople[index].label}
+                     setValue={setValue}
                   />
                   <button type="button" className={`field_append_btn append_btn_${index}`} onClick={() => append({ name: '', label: '' })}>
                      <HiPlusCircle />
@@ -97,12 +100,13 @@ function AdditionalFields(props:IProps){
                <BsChatRightText />
             }
             <CustomLabelSelect 
-               control={control}
+               register={register}
                name={InputPropertyValueName.SocialSite}
                label="Social Site"
                selectFor="social"
                show={showMore}
                value={social.site}
+               setValue={setValue}
             />
             <NewContactFormInput
                label='Handle'

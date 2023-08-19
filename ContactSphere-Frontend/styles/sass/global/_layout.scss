@@ -34,14 +34,14 @@
    @include useMediaQuery_LS{
       justify-content: space-between;
       &>*:nth-child(2){
-         flex-basis: 85%;
-         width: 85%;
-         margin-inline: 255px auto;
+         flex-basis: 88%;
+         width: 88%;
+         margin-inline: 240px auto;
       }
 
       .details_preview_section::before{
-         width: 85%;
-         margin-inline: 255px auto;
+         width: 88%;
+         margin-inline: 240px auto;
       }
       
    
@@ -90,7 +90,7 @@
 
    
    &:focus{
-      outline: 2px solid $radiant_color2 !important;
+      outline: 2px solid $bg_color1 !important;
    }
 
 

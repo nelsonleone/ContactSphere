@@ -1,4 +1,4 @@
-export default function formatDate(dateString:string) {
+export default function formatDate(dateString:string,shouldIncludeYear?:boolean) {
     const months = [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
@@ -9,5 +9,5 @@ export default function formatDate(dateString:string) {
     const month = months[date.getMonth()]
     const year = date.getFullYear()
   
-    return `${day} ${month} ${year}`;
+    return shouldIncludeYear ? `${day} ${month} ${year}` : `${day} ${month}`;
 } 

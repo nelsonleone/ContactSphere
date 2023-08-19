@@ -13,26 +13,7 @@ export default function findDuplicates(contacts:IContactsFromDB[]){
       const obj2 = sortedArray[i + 1]
       
       if(obj1.firstName.match(obj2.firstName) && obj1.phoneNumber === obj2.phoneNumber){
-        helperArr.push(
-          {
-            name: obj1.name,
-            _id: obj1._id,
-            phoneNumber: obj1.phoneNumber,
-            firstName: obj1.firstName,
-            lastName: obj1.lastName,
-            repPhoto: obj1.repPhoto,
-            mergeRef: ""
-          },
-          {
-            name: obj2.name,
-            _id: obj2._id,
-            phoneNumber: obj2.phoneNumber,
-            firstName: obj2.firstName,
-            lastName: obj2.lastName,
-            repPhoto: obj2.repPhoto,
-            mergeRef: ""
-          },
-        )
+        helperArr.push({...obj1,mergeRef:""},{...obj2,mergeRef:""})
       }
     }
   })

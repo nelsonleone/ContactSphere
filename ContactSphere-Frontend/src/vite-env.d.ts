@@ -98,9 +98,8 @@ type UserData = {
 }
 
 
-type ContactDuplicateProps = Pick<IContactsFromDB,'name'|'_id'|'phoneNumber'|'firstName'|'lastName'|'repPhoto'>
 
-interface Duplicate extends ContactDuplicateProps {
+interface Duplicate extends IContactsFromDB {
   mergeRef: string
 }
 

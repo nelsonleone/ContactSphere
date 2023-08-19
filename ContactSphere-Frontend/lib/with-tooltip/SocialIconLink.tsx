@@ -3,6 +3,7 @@ import { FaFacebookSquare, FaInstagram, FaSnapchat } from "react-icons/fa"
 import { FiTwitter } from "react-icons/fi"
 import { Sites } from '../../src/vite-env'
 import * as React from 'react'
+import { BsChatHeartFill } from "react-icons/bs"
 
 
 export default function SocialIconLink({ site }: { site:Sites }){
@@ -38,6 +39,9 @@ export default function SocialIconLink({ site }: { site:Sites }){
             <span className="AT_only" id="contact-social-handle-twitter-icon">View Contact Twitter Page</span>
          </>
       :
-      null
+      <>
+         <BsChatHeartFill aria-describedby="contact-social-handle-disabled-icon" />
+         <span className="AT_only" id="contact-social-handle-disabled-icon">No Social Site Handle </span>
+      </>
    )
 }

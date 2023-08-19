@@ -168,11 +168,11 @@ const extendedContactsQuerySlice = contactsQuerySlice.injectEndpoints({
 
 
       // Merge and fix contacts
-      mergeDuplicateContacts: builder.mutation<IServerResponseObj,{authUserUid:string,duplicatesIds:string[]}>({
+      mergeDuplicateContacts: builder.mutation<IServerResponseObj,{authUserUid:string,duplicates:Duplicate[]}>({
          query: (args) => ({
             url: `${CONTACTS_API_URL}/mergeDuplicates?uid=${args.authUserUid}`,
             method: 'PUT',
-            body: { duplicatesIds: args.duplicatesIds }
+            body: { duplicates: args.duplicates }
          }),
          invalidatesTags: ['Contact']
       }),

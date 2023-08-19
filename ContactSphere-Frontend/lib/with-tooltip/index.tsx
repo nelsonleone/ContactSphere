@@ -136,16 +136,16 @@ export function SocialSiteLink({ site, handle }: { site:Sites, handle:string }){
    const contactSocialSiteHandle = checkExternalLinks(handle)
 
    return(
-      handle ?
+      handle  ?
       <Tooltip title={`View ${site} page`}>
-         <a href={contactSocialSiteHandle} className={handle ? "active_net_link" : ""}>
+         <a target="_blank" href={contactSocialSiteHandle} className={handle ? "active_net_link" : ""}>
             <SocialIconLink site={site} />
          </a>
       </Tooltip>
       :
-      <button disabled={true}>
+      <a>
          <SocialIconLink site={site} />
-      </button>
+      </a>
    )
 }
 

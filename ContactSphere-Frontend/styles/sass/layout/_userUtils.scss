@@ -136,7 +136,7 @@
    }
 
    @include useMediaQuery_LS{
-      left: 263px;
+      left: 272px;
    }
 }
 
@@ -235,15 +235,15 @@
 .added_labels_container{
    margin-block: .5em;
    display: grid;
-   row-gap: .4em;
    grid-template-columns: 1fr 1fr;
    grid-template-rows: auto;
    justify-items: center;
+   gap: .4em;
 
    @include useMediaQuery_LS{
-      grid-template-columns: repeat(8,1fr);
+      grid-template-columns: repeat(8,40%);
       grid-template-rows: 1fr 1fr;
-      gap: 0;
+      justify-content: flex-start;
    }
 
 
@@ -269,6 +269,8 @@
 
       @include useMediaQuery_LS{
          font-size: .85rem;
+         margin:0;
+         min-width: 5em;
 
          &>*{
             font-size: inherit;

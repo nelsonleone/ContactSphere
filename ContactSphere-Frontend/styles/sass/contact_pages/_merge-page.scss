@@ -108,6 +108,10 @@
         gap: 1em;
         cursor: pointer;
         margin-bottom: 1.4em;
+
+        .avatar{
+            @include flexObj($justify:center);
+        }
         
 
         &>div{
@@ -140,22 +144,15 @@
 
     }
 
-    &>div:last-child{
-        @include flexObj($justify:flex-end);
-        gap: 1.5em;
+    &>button{
+        font-family: $ff_primary ;
+        font-weight: $fw_bold !important;
+        background-color: $radiant_color2;
+        font-size: 1rem;
+        text-transform: capitalize;
         position: absolute;
-        bottom: 1em;
-        width: 80%;
-        margin-inline: auto;
-
-        &>*{ 
-            font-family: $ff_primary ;
-            font-weight: $fw_bold !important;
-            background: transparent;
-            color: $radiant_color2;
-            font-size: 1rem;
-            text-transform: capitalize;
-        }
+        right: 1em;
+        bottom: .5em;
     }
 
                 

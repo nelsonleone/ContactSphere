@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const AuthUserData = require('../../models/AuthUserData')
 const { checkForUid, checkIfUserExists } = require('./onRequestHelperFns/index')
-const _ = require('lodash')
+const handleMerge = require('../../utils/handleMerge')
 
 
 // Handle Multi Contact Delete
@@ -169,7 +169,7 @@ const setDeleteMultipleContacts = asyncHandler(async (request, response) => {
 // Handle Contacts Merge and Fix
 const setMergeDuplicates = asyncHandler(async (request, response) => {
    const { uid } = request.query;
-   const { duplicatesIds } = request.body;
+   const { duplicates } = request.body;
    
    try {
       await checkForUid(response,uid)
@@ -177,19 +177,24 @@ const setMergeDuplicates = asyncHandler(async (request, response) => {
       const authUserDataDoc = await AuthUserData.findOne({ uid, })
       await checkIfUserExists(response,authUserDataDoc)
 
-      const aboutToBeMerged = authUserDataDoc.contacts.filter(c => duplicatesIds.includes(c._id.toString()))
+      if(!duplicates.length){
+         throw new Error("DUPLIACTES WERE NOT PROVIDED")
+         return;
+      }
 
-      const mergedContact = _.merge({},...aboutToBeMerged)
+      const mergedContact = handleMerge(duplicates)
 
-      authUserDataDoc.contacts = authUserDataDoc.contacts.filter(c => !duplicatesIds.includes(c._id.toString()))
+      return;
 
       if(mergedContact){
-         authUserDataDoc.contacts = [...authUserDataDoc.contacts, mergedContact ]
+         authUserDataDoc.contacts = authUserDataDoc.contacts.filter(c => !duplicates.some(val => val._id.toString() === c._id.toString()))
+         authUserDataDoc.contacts = [...authUserDataDoc.contacts,mergedContact]
       }
 
       await authUserDataDoc.save()
 
-      response.status(200).json( { mergedContact })
+      response.status(201).json({ message: "Duplicates Merged Successfully"})
+      
    }
    
    catch (error) {
@@ -204,21 +209,34 @@ const setMergeDuplicates = asyncHandler(async (request, response) => {
 
 
 
-const setMergeAll = asyncHandler(async() => {
+const setMergeAll = asyncHandler(async(request,response) => {
    const { uid } = request.query;
    const { allDuplicates } = request.body;
    
    try {
       await checkForUid(response,uid)
-      
-      for(const duplicateGroup of allDuplicates){
-         console.log(duplicateGroup)
+
+      const authUserDataDoc = await AuthUserData.findOne({ uid, })
+      await checkIfUserExists(response,authUserDataDoc)
+
+      if(!allDuplicates.length){
+         throw new Error("DUPLIACTES WERE NOT PROVIDED")
+         return;
       }
-      
 
-      // await authUserDataDoc.save()
+            
+      for(const duplicateGroup of allDuplicates){
+         const mergedContact = handleMerge(duplicateGroup)
 
-      // response.status(200).json( { mergedContact })
+         if(mergedContact){
+            authUserDataDoc.contacts = authUserDataDoc.contacts.filter(c => !duplicateGroup.some(val => val._id.toString() === c._id.toString()))
+            authUserDataDoc.contacts = [...authUserDataDoc.contacts,mergedContact]
+         }
+      }
+
+      await authUserDataDoc.save()
+
+      response.status(201).json({ message: "Duplicates Merged Successfully"})
    }
 
    catch(err){
