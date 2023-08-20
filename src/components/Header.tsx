@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import SearchBar from './SearchBar'
 import { HelpIcon, UserIcon } from '../../lib/with-tooltip/index'
 import UserMenu from './UserMenu'
-import ClickAwayListener from '@mui/base/ClickAwayListener';
+import { ClickAwayListener } from '@mui/base';
 import { Breakpoints } from '../enums'
 import { setOpenNav } from '../RTK/features/slices/openNavMenuSlice'
 import { useAppDispatch } from '../customHooks/reduxCustomHooks'
