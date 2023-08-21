@@ -5,7 +5,7 @@ import { Dispatch, MouseEvent, ReactNode, SetStateAction } from "react";
 import { FiLogIn } from 'react-icons/fi';
 import { FaUserPlus } from 'react-icons/fa';
 import { useAppSelector } from '../../customHooks/reduxCustomHooks'
-import ClickAwayListener from '@mui/base/ClickAwayListener';
+import { ClickAwayListener } from '@mui/base';
 import { MdLabel, MdOutlineAutoFixHigh } from 'react-icons/md'
 import { DeleteIconButton, EditIconButton } from "../../../lib/with-tooltip";
 import AddLabelDialog from "../../../lib/popups/AddLabelDialog";

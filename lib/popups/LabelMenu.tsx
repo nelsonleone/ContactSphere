@@ -3,7 +3,7 @@ import Divider from '@mui/material/Divider';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
 import { MdLabelOutline } from 'react-icons/md'
 import { BiPlus } from 'react-icons/bi'
-import ClickAwayListener from '@mui/base/ClickAwayListener';
+import { ClickAwayListener } from '@mui/base';
 import Paper from '@mui/material/Paper';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
