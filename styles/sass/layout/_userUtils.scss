@@ -21,6 +21,7 @@
    right: 0;
    margin-inline: auto;
    width: 100%;
+   z-index: 1000;
    @include flexObj($justify:center);
    p{
       font-family: $ff_prompts;
@@ -136,15 +137,17 @@
    }
 
    @include useMediaQuery_LS{
-      left: 272px;
+      left: 274px;
    }
 }
 
 .custom-snackbar{
    text-transform: capitalize;
+   height: 3.5em;
+   width: 20em;
    word-spacing: 1.2px;
    color: $generic_color_1;
-   bottom: 2em;
+   bottom: 1.5em !important;
    position: fixed;
    z-index: 100;
 

@@ -64,9 +64,9 @@ export default async function handleAsyncAddLabel(
          
          dispatch(setShowSnackbar({
             snackbarMessage: actionType === "add" ?
-            `${label} Label Have Been Set on ${phoneNumber}`
+            `${label} Label Set on ${phoneNumber}`
             :
-            `${label} Label Have Been Removed ${method === "single" ? `from ${phoneNumber}` :""}`
+            `${label} Label Removed`
          }))
       }
 

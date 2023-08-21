@@ -100,7 +100,7 @@ export default function ContactViewPage(){
                           phoneNumber={contact.phoneNumber}
                           addToFavourites={addToFavourites}
                         />
-                        <ContactMenu method="single" contactId={contact._id} phoneNumber={contact.phoneNumber} />
+                        <ContactMenu contactLabels={contact.labelledBy}  method="single" contactId={contact._id} phoneNumber={contact.phoneNumber} />
                         <EditButton navigateTo={`/c/edit/${contact._id}`} />
                      </div>
 
