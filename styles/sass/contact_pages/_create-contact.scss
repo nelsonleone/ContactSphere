@@ -275,15 +275,24 @@
 
 
    .additional_fields .chat_field_container{
-      @include flexObj($justify:space-between,$direction:row);
-      margin-block: .6em;
+      @include flexObj($justify:space-between,$direction:column);
+      margin-bottom: .6em;
 
       &>div:first-of-type{
-         width: 30%;
+         margin-top: 0;
       }
-      &>div:last-of-type{
-         width: 68%;
-         margin: 0;
+
+      @include useMediaQuery_LS{
+         flex-direction: row;
+         &>div:first-of-type{
+            width: 30%;
+            margin-top: 1em;
+         }
+
+         &>div:last-of-type{
+            width: 68%;
+            margin: 0;
+         }
       }
    }
 
