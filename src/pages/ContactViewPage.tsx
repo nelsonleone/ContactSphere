@@ -34,6 +34,8 @@ export default function ContactViewPage(){
    const [showLabelMenu,setShowLabelMenu] = useState(false)
    const [addToFavourites] = useAddToFavouritesMutation()
    const avatarNameForAlt = contactName.split(' ').filter(v => v !== "").join(' ')
+   const googleMapsQuery = `https://maps.google.com/maps?q=${contact?.address.street ? contact?.address.street + "," : ""}${contact?.address.postalCode ? contact?.address.postalCode + "," : ""}${contact?.address.city ? contact.address.city + "," : ""}${contact?.address.state ? contact?.address.state + "," : ""}${contact?.address.country ? contact?.address.country : ""}`;
+
 
 
    return(
@@ -144,14 +146,7 @@ export default function ContactViewPage(){
                                  Object.values(contact.address).some(val => val !== "") &&
                                  <MdOutlineLocationOn aria-hidden="true" />
                               }
-                              <a target="_blank" href={`
-                                 https://maps.google.com/maps?q=
-                                  ${contact.address.street ? contact.address.street + "," : ""}
-                                  ${contact.address.postalCode ? contact.address.postalCode + "," : ""}
-                                  ${contact.address.city ? contact.address.city + "," : ""}
-                                  ${contact.address.state ? contact.address.state + "," : ""}
-                                  ${contact.address.country ? contact.address.country : ""}`}
-                                 >
+                              <a target="_blank" href={googleMapsQuery}>
                                  {
                                     contact.address.street &&
                                     <p>{contact.address.street}</p>
