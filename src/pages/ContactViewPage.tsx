@@ -144,7 +144,7 @@ export default function ContactViewPage(){
                                  Object.values(contact.address).some(val => val !== "") &&
                                  <MdOutlineLocationOn aria-hidden="true" />
                               }
-                              <Link target="_blank" to={`
+                              <a target="_blank" href={`
                                  https://maps.google.com/maps?q=
                                   ${contact.address.street ? contact.address.street + "," : ""}
                                   ${contact.address.postalCode ? contact.address.postalCode + "," : ""}
@@ -172,7 +172,7 @@ export default function ContactViewPage(){
                                     contact.address.country &&
                                     <p>{contact.address.country}</p>
                                  }
-                              </Link>
+                              </a>
                            </div>
                            :
                            null
