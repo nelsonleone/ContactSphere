@@ -181,7 +181,7 @@ function ContactItem(props:IContactItemProps){
                         _id={_id} 
                         inFavourites={inFavourites}
                      />
-                     <EditIconButton navigateTo={`c/edit/${_id}`} />
+                     <EditIconButton navigateTo={`/c/edit/${_id}`} />
                      <ContactMenu method="single" phoneNumber={phoneNumber} contactId={_id} contactLabels={labelledBy} />
                   </>
                   :
