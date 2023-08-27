@@ -1,7 +1,6 @@
 # ContactSphere
 A User-Friendly and Feature-Rich Contacts Management Application
 
-**Still In Beta till 1st September 2023**
 
 ## Features
 - Highly accessible and interactive
