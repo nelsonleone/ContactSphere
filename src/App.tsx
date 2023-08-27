@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { setUserDetails } from './RTK/features/slices/authUserSlice'
-import { useGetAuthStateQuery, useGetCsrfTokenQuery } from "./RTK/features/api/injectedAuthApiQueries";
 import { setLoad } from './RTK/features/slices/loadingSlice'
 import Layout from './pages/Layout'
 import RouteHandler from './routes'
@@ -13,14 +12,14 @@ import { setDuplicates } from './RTK/features/slices/resolveDuplicatesSlice';
 import findDuplicates from './utils/helperFns/findDuplicates'
 import { AlertSeverity, AuthMethod } from './enums';
 import { setSelectNone } from './RTK/features/slices/contactMultiSelectSlice';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebaseClient/firebaseInit';
 
 
 export default function App(){
 
   const navigate = useNavigate()
   const location = useLocation()
-  const { data:UserDetails, isError:getAuthStateError, isLoading:authenticating } = useGetAuthStateQuery()
-  const { } = useGetCsrfTokenQuery()
   const { beenAuthenticated, userDetails: {
       uid
     }
@@ -68,26 +67,35 @@ export default function App(){
 
 
   useEffect(() => {
-    if(authenticating){
-      dispatch(setLoad(true))
-    }
+    dispatch(setLoad(true))
 
-    // Navigate User To Auth Page
-    if(!authenticating && getAuthStateError){
-      
-      if(location.pathname !== "auth/create_account" && location.pathname !== "auth/signin"){
-        navigate('/auth/signin')
+    const unSubscribe = onAuthStateChanged(auth,user => {
+      if(!user){
+        // Navigate User To Auth Page
+        if(location.pathname !== "auth/create_account" && location.pathname !== "auth/signin"){
+          navigate('/auth/signin')
+        }
+        dispatch(setLoad(false))
       }
-      dispatch(setLoad(false))
+
+      else if(user){
+        dispatch(setUserDetails({
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          authMethod: AuthMethod.AuthSession,
+          uid: user.uid
+        }))
+        dispatch(setLoad(false))
+      }
+
+    })
+
+    return () => {
+      unSubscribe()
     }
 
-      
-    if(UserDetails && !getAuthStateError){
-      dispatch(setUserDetails({...UserDetails,authMethod:AuthMethod.AuthSession}))
-      dispatch(setLoad(false))
-    }
-
-  },[UserDetails,authenticating,getAuthStateError])
+  },[])
 
 
   // Empty Multi Select Array

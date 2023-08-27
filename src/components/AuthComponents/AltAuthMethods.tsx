@@ -2,22 +2,23 @@ import Button from '@mui/material/Button';
 import { FcGoogle } from 'react-icons/fc';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { useAppDispatch } from '../../customHooks/reduxCustomHooks';
-import { useAuthorizeUserMutation } from '../../RTK/features/api/injectedAuthApiQueries';
 import googleAuthHandler from '../../firebaseClient/googleAuthHandler';
-import { auth } from '../../firebaseClient/firebaseInit';
 import { setUserDetails } from '../../RTK/features/slices/authUserSlice';
 import { setShowAlert } from '../../RTK/features/slices/alertSlice';
 import { AlertSeverity, AuthMethod } from '../../enums';
-import handlePostCredentials from '../../utils/helperFns/handlePostCredentials';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react'
 
 function AltAuthMethods() {
 
    const dispatch = useAppDispatch()
-   const [authorizeUser, {isLoading}] = useAuthorizeUserMutation()
    const navigate = useNavigate()
+   const [loading,setLoading] = useState(false)
 
   const handleClick = async(authType:string) => {
+     
+     setLoading(true)
+
      try{
          const userDetails = authType === "google" ? await googleAuthHandler() : "";
          
@@ -29,15 +30,8 @@ function AltAuthMethods() {
             ...userDetails,
             authMethod: AuthMethod.Google
          }))
-         const token = await auth?.currentUser?.getIdToken() || '';
-         if(token){
-            handlePostCredentials(token,authorizeUser)
-            navigate("/")
-         }
-         else{
-            throw new Error("Error Occured While Signing In")
-         }
 
+         navigate('/')
 
          dispatch(setShowAlert(
             {
@@ -56,9 +50,8 @@ function AltAuthMethods() {
          ))
       }
 
-     finally{
-      // remove default firebase browser persisted user
-       auth.signOut()
+      finally{
+         setLoading(false)
       }
   }
 
@@ -66,7 +59,7 @@ function AltAuthMethods() {
   return (
       <div className='alt_auth_methods'>
          <h3>Continue With..</h3>
-         <Button startIcon={<FcGoogle />} onClick={() => handleClick("google")} disabled={isLoading}>
+         <Button startIcon={<FcGoogle />} onClick={() => handleClick("google")} disabled={loading}>
             Google
          </Button>
 

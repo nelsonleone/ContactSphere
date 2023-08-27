@@ -4,17 +4,15 @@ import { useAppDispatch } from '../../customHooks/reduxCustomHooks';
 import { setShowAlert } from '../../RTK/features/slices/alertSlice'
 import { setUserDetails } from '../../RTK/features/slices/authUserSlice';
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useAuthorizeUserMutation } from '../../RTK/features/api/injectedAuthApiQueries';
 import emailSignInHandler from '../../firebaseClient/signInWithEmailAndPassword';
 import emailSignupHandler from '../../firebaseClient/createUserWithEmailAndPassword';
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import updateUserProfile from '../../firebaseClient/updateUserProfile';
-import Cookies from 'js-cookie';
 import { auth } from '../../firebaseClient/firebaseInit';
 import AltAuthMethods from './AltAuthMethods'
 import AuthForm from './AuthForm';
 import cleanDisplayName from '../../utils/helperFns/cleanDisplayName';
-import { inMemoryPersistence, setPersistence } from 'firebase/auth';
+import { browserSessionPersistence, setPersistence } from 'firebase/auth';
  
 
 interface IProps{
@@ -26,8 +24,7 @@ export default function AuthFormHandler(props:IProps){
 
    const dispatch = useAppDispatch()
    const { location } = props;
-   const [ authorizeUser, { isLoading } ] = useAuthorizeUserMutation()
-   const [requestLoading,setRequestLoading] = useState(isLoading)
+   const [requestLoading,setRequestLoading] = useState(false)
 
    // Form Handler
    const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm<IFormData>({
@@ -35,11 +32,6 @@ export default function AuthFormHandler(props:IProps){
          displayName: "#"
       }
    })
-
-   useEffect(() => {
-      setPersistence(auth, inMemoryPersistence)
-      setRequestLoading(isLoading)
-   },[isLoading])
 
 
    const handleAuthRequest :SubmitHandler<IFormData> = async(formData)  =>  {
@@ -51,6 +43,7 @@ export default function AuthFormHandler(props:IProps){
 
       try{
          setRequestLoading(true)
+         setPersistence(auth, browserSessionPersistence)
          const userCredentials= location === AuthFormLocation.SIGN_IN ?
           await emailSignInHandler(email,password)  :
           await emailSignupHandler(email,password)
@@ -65,10 +58,6 @@ export default function AuthFormHandler(props:IProps){
             await updateUserProfile(cleanDisplayName(displayName))
          }
 
-         // send IdToken To Server For Further Authentication
-         const idToken = await userCredentials.user.getIdToken()
-         const csrfToken = Cookies.get('csrfToken') || '';
-         await authorizeUser({idToken,csrfToken})
          dispatch(
             setShowAlert(
                {
@@ -96,9 +85,6 @@ export default function AuthFormHandler(props:IProps){
 
       finally{
          setRequestLoading(false)
-         
-         // remove Browser Persisted Auth User (precaution)
-         auth.signOut()
       }
    }
 
