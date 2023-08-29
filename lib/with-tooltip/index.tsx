@@ -11,7 +11,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
 import { MdNewLabel, MdOutlineCancel, MdOutlineEmail, MdUnarchive } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../../src/customHooks/reduxCustomHooks'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { setShowAlert } from '../../src/RTK/features/slices/alertSlice';
 import { AlertSeverity } from '../../src/enums';
 import { removeSearchResult } from '../../src/RTK/features/slices/searchContactsSlice';
@@ -117,10 +117,10 @@ export function EmailLinkButton({ mailTo }: { mailTo:string }){
    return(
       mailTo ? 
       <Tooltip title="Email">
-         <a href={mailTo} className="active_net_link">
+         <Link to={`https://mail.google.com/mail/?view=cm&to=${mailTo}`} className="active_net_link">
             <MdOutlineEmail aria-describedby="contact-email-icon-desc" />
             <span className="AT_only" id="contact-email-icon-desc">Send Email To Contact</span>
-         </a>
+         </Link>
       </Tooltip>
       :
       <button disabled={true}>
