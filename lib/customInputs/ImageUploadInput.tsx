@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Control, Controller, UseFormSetValue } from 'react-hook-form';
+import { Control, UseFormSetValue } from 'react-hook-form';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md'
 import { Contact } from '../../src/vite-env';
 import { InputPropertyValueName } from '../../src/enums';
@@ -30,13 +30,7 @@ export default function ImageUploadInput(props:IProps){
    return(
       <div className="image_upload_input">
          <MdOutlineAddPhotoAlternate />
-         <Controller 
-           control={props.control}
-           name={props.name}
-           render={({ field }) => (
-            <input {...field} type="file" name={props.name} onChange={handleImageFileOutput} multiple={false} accept=".jpg, .jpeg, .png, .gif, .pdf" />
-           )}
-         />
+         <input type="file" name={props.name} multiple={false} accept=".jpg, .jpeg, .png, .gif, .pdf" onChange={handleImageFileOutput} />
          <output>
             {
                props.repPhoto &&
