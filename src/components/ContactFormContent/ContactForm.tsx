@@ -133,7 +133,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
       errors.firstName || 
       errors.birthday ||
       !phoneNumber ||
-      isLoading || !isDirty || (defaultValue?.repPhoto === repPhoto)  ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
+      isLoading || !isDirty || (defaultValue?.repPhoto === repPhoto || staticDefaultValue.repPhoto === repPhoto)  ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
 
       return () => {
          dispatch(setThereAreChanges(false))
