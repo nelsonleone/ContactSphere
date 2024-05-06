@@ -8,7 +8,8 @@ interface IProps {
    name: string,
    setValue: UseFormSetValue<Contact> ,
    control: Control<any>,
-   repPhoto: string
+   repPhoto: string,
+   setMadeImageUpload: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function ImageUploadInput(props:IProps){
@@ -23,6 +24,7 @@ export default function ImageUploadInput(props:IProps){
          if(result){
             // refactoring soon [REASON: Large Image  Data String]
             props.setValue(InputPropertyValueName.RepPhoto,result as string)
+            props.setMadeImageUpload(true)
          }
       }
    }

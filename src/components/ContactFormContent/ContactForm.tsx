@@ -34,6 +34,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    const [showLabelMenu,setShowLabelMenu] = useState(false)
    const [openAddLabelModal,setOpenAddLabelModal] = useState(false)
    const [showDiscardWarning,setShowDiscardWarning] = useState(false)
+   const [madeImageUpload,setMadeImageUpload] = useState(false)
    const navigate = useNavigate()
    const { openNav } = useAppSelector(store => store.openNav)
 
@@ -130,10 +131,11 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
 
    useEffect(() => {
       // Disabled Save Button 
-      errors.firstName || 
-      errors.birthday ||
-      !phoneNumber ||
-      isLoading || !isDirty || (defaultValue?.repPhoto === repPhoto || staticDefaultValue.repPhoto === repPhoto)  ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
+      if(errors.firstName || errors.birthday || !phoneNumber || isLoading || !isDirty || !madeImageUpload){
+         setDisableSaveBtn(true)
+      }else{
+         setDisableSaveBtn(false)
+      }
 
       return () => {
          dispatch(setThereAreChanges(false))
@@ -143,7 +145,8 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
       errors.birthday,
       isLoading,
       phoneNumber,
-      isDirty
+      isDirty,
+      madeImageUpload
    ])
 
    useEffect(() => {
@@ -174,7 +177,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
       <>
          <form onSubmit={handleSubmit(handleOnSubmit)}>
             <div className={`top_section ${openNav ? 'resize_top_section' : ''}`}>
-               <ImageUploadInput repPhoto={repPhoto} setValue={setValue} name={InputPropertyValueName.RepPhoto} control={control} />
+               <ImageUploadInput setMadeImageUpload={setMadeImageUpload} repPhoto={repPhoto} setValue={setValue} name={InputPropertyValueName.RepPhoto} control={control} />
                {
                   labelsArray?.length ?
                   <AddedLabels setValue={setValue} labelsArray={labelsArray} control={control} />
