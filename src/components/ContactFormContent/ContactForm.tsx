@@ -151,6 +151,25 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    },[isDirty,phoneNumber])
 
 
+   // prevent backward navigation if theres input
+   
+  useEffect(() => {
+   const handleBeforeUnload = (event:BeforeUnloadEvent) => {
+     if (isDirty) {
+         event.preventDefault()
+         event.returnValue = '';
+         setShowDiscardWarning(true)
+      }
+   }
+
+   window.addEventListener('beforeunload', handleBeforeUnload)
+
+   return () => {
+     window.removeEventListener('beforeunload', handleBeforeUnload)
+   }
+ }, [isDirty])
+
+
    return(
       <>
          <form onSubmit={handleSubmit(handleOnSubmit)}>
