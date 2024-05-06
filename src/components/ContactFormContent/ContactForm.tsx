@@ -158,7 +158,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    
   useEffect(() => {
    const handleBeforeUnload = (event:BeforeUnloadEvent) => {
-     if (isDirty) {
+     if (isDirty || madeImageUpload) {
          event.preventDefault()
          event.returnValue = '';
          setShowDiscardWarning(true)
