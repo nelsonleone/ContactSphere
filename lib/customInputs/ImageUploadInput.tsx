@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import { Control, Controller, UseFormSetValue } from 'react-hook-form';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md'
 import { Contact } from '../../src/vite-env';
 import { InputPropertyValueName } from '../../src/enums';
@@ -7,7 +7,7 @@ import { InputPropertyValueName } from '../../src/enums';
 interface IProps {
    name: string,
    setValue: UseFormSetValue<Contact> ,
-   register: UseFormRegister<Contact>,
+   control: Control<any>,
    repPhoto: string
 }
 
@@ -27,14 +27,16 @@ export default function ImageUploadInput(props:IProps){
       }
    }
 
-   React.useEffect(() => {
-      props.register(InputPropertyValueName.RepPhoto)
-   },[])
-
    return(
       <div className="image_upload_input">
          <MdOutlineAddPhotoAlternate />
-         <input type="file" name={props.name} accept=".jpg, .jpeg, .png, .gif, .pdf" onChange={handleImageFileOutput} />
+         <Controller 
+           control={props.control}
+           name={props.name}
+           render={({ field }) => (
+            <input {...field} type="file" name={props.name} onChange={handleImageFileOutput} multiple={false} accept=".jpg, .jpeg, .png, .gif, .pdf" />
+           )}
+         />
          <output>
             {
                props.repPhoto &&

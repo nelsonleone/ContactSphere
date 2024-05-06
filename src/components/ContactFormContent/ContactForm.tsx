@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm, useFieldArray } from "react-hook-form"
+import { SubmitHandler, useForm, useFieldArray, useWatch } from "react-hook-form"
 import { staticDefaultValue } from "./newContactDefaultValues"
 import { Contact } from "../../vite-env"
 import { memo, useEffect, useState } from "react"
@@ -28,7 +28,7 @@ import { setThereAreChanges } from "../../RTK/features/slices/shouldDiscardChang
 
 function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contact, action:ContactFormAction, contactId?:string }){
 
-   const { register, handleSubmit, setValue, watch, setError, formState: {errors, isDirty}, control} = useForm<Contact>({defaultValues: defaultValue || staticDefaultValue})
+   const { register, handleSubmit, setValue, setError, formState: {errors, isDirty}, control} = useForm<Contact>({defaultValues: defaultValue || staticDefaultValue})
    const [showMore,setShowMore] = useState(false)
    const { append } = useFieldArray<Contact>({ control, name: InputPropertyValueName.LabelledBy })
    const [showLabelMenu,setShowLabelMenu] = useState(false)
@@ -39,11 +39,11 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
 
 
    // Get Values For Manually Set Onchange Input Functions
-   const labelsArray = watch('labelledBy')
-   const repPhoto = watch('repPhoto')
-   const phoneNumber = watch('phoneNumber')
-   const relatedPeople = watch('relatedPeople')
-   const social = watch('social')
+   const labelsArray = useWatch({ name:'labelledBy', control })
+   const repPhoto = useWatch({ name:'repPhoto', control })
+   const phoneNumber = useWatch({ name:'phoneNumber', control })
+   const relatedPeople = useWatch({ name:'relatedPeople', control })
+   const social = useWatch({ name:'social', control })
 
    // Mutations
    const [createContact, { isLoading }] = useCreateContactMutation()
@@ -133,7 +133,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
       errors.firstName || 
       errors.birthday ||
       !phoneNumber ||
-      isLoading || !isDirty  ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
+      isLoading || !isDirty || (defaultValue?.repPhoto === repPhoto)  ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
 
       return () => {
          dispatch(setThereAreChanges(false))
@@ -174,7 +174,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
       <>
          <form onSubmit={handleSubmit(handleOnSubmit)}>
             <div className={`top_section ${openNav ? 'resize_top_section' : ''}`}>
-               <ImageUploadInput repPhoto={repPhoto} name={InputPropertyValueName.RepPhoto} register={register} setValue={setValue} />
+               <ImageUploadInput repPhoto={repPhoto} setValue={setValue} name={InputPropertyValueName.RepPhoto} control={control} />
                {
                   labelsArray?.length ?
                   <AddedLabels setValue={setValue} labelsArray={labelsArray} control={control} />
