@@ -172,7 +172,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
      window.removeEventListener('beforeunload', handleBeforeUnload)
      window.removeEventListener('popstate', handleBeforeUnload)
    }
- }, [isDirty])
+ }, [isDirty,madeImageUpload])
 
 
    return(
