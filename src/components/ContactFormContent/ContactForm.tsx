@@ -166,9 +166,11 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    }
 
    window.addEventListener('beforeunload', handleBeforeUnload)
+   window.addEventListener('popstate', handleBeforeUnload)
 
    return () => {
      window.removeEventListener('beforeunload', handleBeforeUnload)
+     window.removeEventListener('popstate', handleBeforeUnload)
    }
  }, [isDirty])
 
