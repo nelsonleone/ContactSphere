@@ -23,8 +23,8 @@ export default function ImageUploadInput(props:IProps){
          const result = e.target?.result;
          if(result){
             // refactoring soon [REASON: Large Image  Data String]
-            props.setValue(InputPropertyValueName.RepPhoto,result as string)
             props.setMadeImageUpload(true)
+            props.setValue(InputPropertyValueName.RepPhoto,result as string)
          }
       }
    }
