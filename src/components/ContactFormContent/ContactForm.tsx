@@ -131,11 +131,16 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
 
    useEffect(() => {
       // Disabled Save Button 
-      errors.firstName || 
-      errors.birthday ||
-      !phoneNumber ||
-      isLoading || !isDirty || !madeImageUpload  ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
 
+      if(errors.firstName || errors.birthday || !phoneNumber || isLoading){
+         if(!madeImageUpload){
+            if(!isDirty){
+               setDisableSaveBtn(true) 
+            }else{
+               setDisableSaveBtn(false)
+            }
+         }
+      }
 
       return () => {
          dispatch(setThereAreChanges(false))
@@ -151,7 +156,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
 
    useEffect(() => {
      dispatch(setThereAreChanges(isDirty))
-   },[isDirty,phoneNumber])
+   },[isDirty,phoneNumber,madeImageUpload])
 
 
    // prevent backward navigation if theres input
