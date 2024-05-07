@@ -140,15 +140,20 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
         isDirty,
         madeImageUpload
       )
-      errors.firstName ||
-      errors.birthday ||
-      !phoneNumber ||
-      isLoading ||
-      !madeImageUpload ||
-      !isDirty ||
-      editting
-        ? setDisableSaveBtn(true)
-        : setDisableSaveBtn(false)
+
+      if(errors.firstName || errors.birthday || isLoading || editting){
+         setDisableSaveBtn(true)
+      }
+      else{
+         setDisableSaveBtn(false)
+      }
+
+
+      if(isDirty || madeImageUpload || (action === ContactFormAction.Create && phoneNumber)){
+         setDisableSaveBtn(false)
+      }else{
+         setDisableSaveBtn(true)
+      }
     
       return () => {
         dispatch(setThereAreChanges(false))
