@@ -50,12 +50,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    const [createContact, { isLoading }] = useCreateContactMutation()
    const [editContact, { isLoading:editting }] = useEditContactMutation()
 
-   const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(
-      !madeImageUpload ||
-      errors.firstName?.message || 
-      !phoneNumber ||
-      isLoading || editting || !isDirty ? true : false
-   )
+   const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(true)
 
    const uid = useAppSelector(store => store.authUser.userDetails.uid)
    const dispatch = useAppDispatch()
@@ -136,7 +131,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
         errors.firstName,
         errors.birthday,
         isLoading,
-        phoneNumber,
+        !phoneNumber,
         isDirty,
         madeImageUpload
       )
@@ -149,7 +144,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
       }
 
 
-      if(isDirty || madeImageUpload || (action === ContactFormAction.Create && phoneNumber)){
+      if(isDirty || madeImageUpload){
          setDisableSaveBtn(false)
       }else{
          setDisableSaveBtn(true)
