@@ -159,7 +159,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    ])
 
    useEffect(() => {
-     dispatch(setThereAreChanges(isDirty))
+     dispatch(setThereAreChanges(isDirty || madeImageUpload))
    },[isDirty,phoneNumber,madeImageUpload])
 
 
