@@ -53,7 +53,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(
       errors.firstName?.message || 
       errors.phoneNumber?.message ||
-      isLoading || editting || !isDirty ? true : false
+      isLoading || editting || !isDirty || !madeImageUpload ? true : false
    )
 
    const uid = useAppSelector(store => store.authUser.userDetails.uid)
@@ -130,33 +130,36 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    }
 
    useEffect(() => {
-      // Disabled Save Button 
+      // Disabled Save Button
       console.log(
-         errors.firstName,
-         errors.birthday,
-         isLoading,
-         phoneNumber,
-         isDirty,
-         madeImageUpload
+        errors.firstName,
+        errors.birthday,
+        isLoading,
+        phoneNumber,
+        isDirty,
+        madeImageUpload
       )
-      console.log(repPhoto,madeImageUpload)
-      errors.firstName || 
+      errors.firstName ||
       errors.birthday ||
       !phoneNumber ||
-      isLoading || !isDirty || !madeImageUpload  ? setDisableSaveBtn(true) : setDisableSaveBtn(false)
-
-
+      isLoading ||
+      !isDirty ||
+      !madeImageUpload
+        ? setDisableSaveBtn(true)
+        : setDisableSaveBtn(false)
+    
       return () => {
-         dispatch(setThereAreChanges(false))
+        dispatch(setThereAreChanges(false))
       }
-   },[
+    }, [
       errors.firstName,
       errors.birthday,
       isLoading,
       phoneNumber,
       isDirty,
-      madeImageUpload
-   ])
+      madeImageUpload,
+    ])
+    
 
    useEffect(() => {
      dispatch(setThereAreChanges(isDirty || madeImageUpload))
@@ -169,7 +172,7 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    const handleBeforeUnload = (event:BeforeUnloadEvent) => {
      if (isDirty || madeImageUpload) {
          event.preventDefault()
-         event.returnValue = '';
+         event.returnValue = ''
          setShowDiscardWarning(true)
       }
    }
