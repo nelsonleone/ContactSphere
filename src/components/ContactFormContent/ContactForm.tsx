@@ -143,8 +143,8 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
       errors.birthday ||
       !phoneNumber ||
       isLoading ||
-      !isDirty ||
-      !madeImageUpload
+      !madeImageUpload ||
+      !isDirty 
         ? setDisableSaveBtn(true)
         : setDisableSaveBtn(false)
     
@@ -152,17 +152,17 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
         dispatch(setThereAreChanges(false))
       }
     }, [
+      madeImageUpload,
       errors.firstName,
       errors.birthday,
       isLoading,
       phoneNumber,
       isDirty,
-      madeImageUpload,
     ])
     
 
    useEffect(() => {
-     dispatch(setThereAreChanges(isDirty || madeImageUpload))
+     dispatch(setThereAreChanges(isDirty || madeImageUpload ? true : false))
    },[isDirty,phoneNumber,madeImageUpload])
 
 
@@ -251,4 +251,4 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    )
 }
 
-export default memo(ContactForm)
+export default ContactForm;
