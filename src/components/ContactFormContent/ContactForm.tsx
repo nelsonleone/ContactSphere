@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm, useFieldArray, useWatch } from "react-hook-form"
 import { staticDefaultValue } from "./newContactDefaultValues"
 import { Contact } from "../../vite-env"
-import { memo, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import NameInputSection from "./input_sections/NameSection"
 import FormalInputSection from "./input_sections/FormalInputSection"
 import ContactInputSection from "./input_sections/ContactInputSection"
@@ -51,9 +51,10 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
    const [editContact, { isLoading:editting }] = useEditContactMutation()
 
    const [disabledSaveBtn,setDisableSaveBtn] = useState<boolean>(
+      !madeImageUpload ||
       errors.firstName?.message || 
-      errors.phoneNumber?.message ||
-      isLoading || editting || !isDirty || !madeImageUpload ? true : false
+      !phoneNumber ||
+      isLoading || editting || !isDirty ? true : false
    )
 
    const uid = useAppSelector(store => store.authUser.userDetails.uid)
@@ -144,7 +145,8 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
       !phoneNumber ||
       isLoading ||
       !madeImageUpload ||
-      !isDirty 
+      !isDirty ||
+      editting
         ? setDisableSaveBtn(true)
         : setDisableSaveBtn(false)
     
@@ -158,11 +160,12 @@ function ContactForm({ action, contactId, defaultValue }: { defaultValue?:Contac
       isLoading,
       phoneNumber,
       isDirty,
-    ])
+      editting
+   ])
     
 
    useEffect(() => {
-     dispatch(setThereAreChanges(isDirty || madeImageUpload ? true : false))
+     dispatch(setThereAreChanges(isDirty || madeImageUpload || (phoneNumber !== defaultValue?.phoneNumber) ? true : false))
    },[isDirty,phoneNumber,madeImageUpload])
 
 
